@@ -28,6 +28,8 @@ public class Test {
  // Github commit test
 >>>>>>> branch 'master' of https://github.com/SvenC56/vierpunkt
 */
+	
+	// Das ist noch ein Test!
 
 }
 >>>>>>> origin/master
