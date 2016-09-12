@@ -75,9 +75,6 @@ public class DraftLogik {
 		}
 	}
 	
-	private int getValidRow(int x) {
-		
-	}
 	
 	//Chip einwerfen
 	private void setChip (int x) {
