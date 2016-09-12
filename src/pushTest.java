@@ -1,8 +1,10 @@
-package pusher;
+
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
+import com.pusher.client.util.HttpAuthorizer;
 import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
@@ -13,18 +15,21 @@ public class pushTest
 	public static void main(String[] args) throws InterruptedException
 	{
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
-		Pusher pusher = new Pusher("8434be5fdcb3cf404d93");
-		
+		PusherOptions options = new PusherOptions();
+		options.setCluster("eu");
+		Pusher pusher = new Pusher("6deb1d433f80e99f5864", options);
+	
 		pusher.connect(new ConnectionEventListener() {
 		    @Override
 		    public void onConnectionStateChange(ConnectionStateChange change) {
 		        System.out.println("Der Status hat sich von " + change.getPreviousState() +
-		                           " zu " + change.getCurrentState() + " geändert.");
+		                           " zu " + change.getCurrentState() + " geï¿½ndert.");
 		    }
 
 		    @Override
 		    public void onError(String message, String code, Exception e) {
 		        System.out.println("Es gab ein Problem beim Verbindungsaufbau.");
+		        System.out.println(message);
 		    }
 		}, ConnectionState.ALL);
 	
@@ -40,8 +45,7 @@ public class pushTest
 		// Auf das "my-event" wird reagiert, indem die empfangenen Daten in der Konsole ausgegeben werden
 		channel.bind("my-event", new SubscriptionEventListener() {
 		    public void onEvent(String channel, String event, String data) {
-		        System.out.println("Empfangene Daten: " + data);
-		    }
+		        System.out.println("Empfangene Daten: " + data);		    }
 		});
 	}
 }
