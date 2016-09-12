@@ -1,5 +1,3 @@
-package Logik;
-
 /**
  * DRAFTLogik / Zum Reinkommen in die Spiellogik, Versuch: Alpha-Beta
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung
@@ -49,27 +47,44 @@ public class DraftLogik {
 	public void setField (int x, int y, int value) {
 		field[x][y] = value;
 	}
+	
+	//Setter fuer validMove
+	public void setValidMove (boolean move) {
+		validMove = move;
+	}
 
 	/**************************************************************/
 	/************************LOGIK*********************************/
 	/**************************************************************/
 	
 	//Prueft, ob Chip eingeworfen werden kann
-	private boolean validPosition (int x) {
+	private int validPosition (int x) {
+		int temp=0;
 		//Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x >= 0 && x < column) {
-			int y = 0;
-			while (y < row && field[x][y]!=0) {
-				y++;
-				}
-			if (y < row) {
-				 return true; //Position ist gueltig!
-				} else {
-			return false;
-				}
+			for (int y = 0; y < row; y++) {
+				if (field[x][y]==0) { //leere Position gefunden
+					return y;
+				} //kein leeres Feld
+				else temp = -1;
+			}
+		else temp = -1; //Eingabe ausserhalb des Spielbereichs
 		}
-		else {
-			return false;	
+		if (temp == -1) { //temp nur zurueckgeben, wenn noch keine Zeile returned wurde
+			return temp;
 		}
 	}
+	
+	private int getValidRow(int x) {
+		
+	}
+	
+	//Chip einwerfen
+	private void setChip (int x) {
+		int y = validPosition(x);
+		if (y != -1) {
+			field[x][y]=1;
+			}
+	}
+	
 }
