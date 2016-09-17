@@ -28,7 +28,7 @@ public class connectHSQL {
 
 	public static void main(String[] args) {
 		connectHSQL connect = new connectHSQL();
-		//connect.selectAll();
+		// connect.selectAll();
 		ResultSet r = connect.executeSQL("Select * From Match");
 		connect.printResult(r);
 	}
