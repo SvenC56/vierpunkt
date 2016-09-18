@@ -19,7 +19,7 @@ public class connectHSQL {
 
 		try {
 			con = DriverManager.getConnection(
-					"jdbc:hsqldb:file:C:\\Users\\Sven\\workspace\\vierpunkt\\VierGewinntDB; shutdown=true", "root",
+					"jdbc:hsqldb:file:.\\VierGewinntDB; shutdown=true", "root",
 					"vierpunkt");
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -29,7 +29,7 @@ public class connectHSQL {
 	public static void main(String[] args) {
 		connectHSQL connect = new connectHSQL();
 		// connect.selectAll();
-		ResultSet r = connect.executeSQL("Select * From Match");
+		ResultSet r = connect.executeSQL("Select * From Game");
 		connect.printResult(r);
 	}
 
