@@ -14,10 +14,10 @@ public class DraftLogik {
 	
 	//Spielfeld
 	//MAXIMALE ANZAHL SPALTEN
-	private int column = 7;
+	private int column = 6;
 	//Idee: 6 tief (+ Kopfzeile (? Umsetzung mit oder ohne Kopfzeile?))
 	//MAXIMALE ANZAHL ZEILEN
-	private int row = 6;	
+	private int row = 5;	
 	//Array fuer Feld
 	private int [][] field = new int[column][row];
 	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
@@ -39,9 +39,9 @@ public class DraftLogik {
 	/*******************ZUGRIFFSMETHODEN***************************/
 	/**************************************************************/
 	
-	//Getter fuer field
-	public int [][] getField () {
-		return field;
+	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
+	public int [][] getField (int x, int y) {
+		return field[x][y];
 	}
 	
 	//Setter fuer field
@@ -79,7 +79,7 @@ public class DraftLogik {
 	
 	
 	/**Chip einwerfen
-	Ueberlegung: Informationen werden in Array geschrieben! Spieler 1 = 1 --> Spieler 2 = 2**/
+	Ueberlegung: Informationen werden in Array geschrieben! Spieler 1 == 1 --> Spieler 2 == 2**/
 	private void setChip (int x, int spieler) {
 		int y = validPosition(x);
 		if (y != -1 && spieler == 1) {
@@ -94,26 +94,82 @@ public class DraftLogik {
 	/**************************************************************/
 	/************************BEWERTUNG*****************************/
 	/**************************************************************/
-	/**Gibt Anzahl der Chips des gleichen spieler in Reihe zurueck**/
-	private int inRow(int x, int spieler) {
-		int count=0; //Zaehler der validen Chips && Chips des gleichen Spielers
-		if (validPosition(x) == spieler) { 
-			int y= validPosition(x); //merken der Zeile, da alle Chips in gleicher Zeile sein muessen, damit diese in Reihe sind
-			count++;
-			if (validPosition(x+1) == spieler && validPosition(x)==y) {
-				count++;
-				if (validPosition(x+2) == spieler && validPosition(x)==y) {
-					count++
-					if (validPosition(x+3) == spieler && validPosition(x)==y) {
-						count++;
-				}
-				
-				}
-			}
-		}
-		return count; 
+	
+	/**Bewertungsfunktion - Bewertet den Pfad nach aktuellem Stand und liefert Zahlenwert!**/
+	private int pathEval (int x, int y, int spieler) {
 		
 	}
+	
+	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/
+	private int inColumn(int x, int y, int spieler) {
+		int count=0; //Zaehler der validen Chips des gleichen Spielers in Spalte
+		int temp = y;
+		for (; y <= 0 ; y--) { //von unten nach oben!
+			if (getField(x, y) == spieler) {
+				count++;
+			}
+			else break;
+		}
+		if (count < 4) { //von oben nach unten! (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
+			y = temp;
+			for (; y < row; y++) { //Limitiert durch Anzahl Zeilen!
+				if (getField(x, y) == spieler) {
+					count++;
+				}
+				else break;
+			}
+		}
+		return count;	
+	}
+	/**Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
+	private int inDiagonal(int x, int y, int spieler) {
+		int count=0;
+		int startX = x;
+		int startY = y;
+		for (; x < column || y <= 0; x++, y--) { //Idee: Zwei Bedingungen in einer for-Schleife! PRUEFEN!
+			if (getField(x,y) == spieler) {
+				count++;
+			}
+			else break;
+		}
+		if (count < 4) {
+			x = startX;
+			y = startY;
+		for (; x <= 0 || y < row; x--, y++) {
+			
+			if (getField(x,y) == spieler) {
+				count++;
+			}
+			else break;
+		}
+		}
+		return count;
+	}
+	
+	
+	/**Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck**/
+	private int inRow(int x, int y int spieler) {
+		int count=0;
+		int temp = x;
+		for (; x<column; x++) { //von links nach rechts! Limitiert durch Anzahl Spalten!
+			if (getField(x,y) == spieler) {
+				count++;
+			}
+			else break;
+		}
+		if (count < 4) { //von rechts nach links (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
+			x = temp;
+			for (; x <= 0; x--) {
+			if getField(x,y) == spieler) {
+				count++;
+			}
+			else break;
+			
+			}	
+		}
+		return count;	
+	}
+
 	
 	
 	
