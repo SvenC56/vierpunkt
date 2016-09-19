@@ -20,6 +20,7 @@ public class DraftLogik {
 	private int row = 6;	
 	//Array fuer Feld
 	private int [][] field = new int[column][row];
+	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
 
 	/**************************************************************/
 	/*******************KONSTRUKTOR********************************/
@@ -57,14 +58,15 @@ public class DraftLogik {
 	/************************LOGIK*********************************/
 	/**************************************************************/
 	
-	//Prueft, ob Chip eingeworfen werden kann
+	/**Prueft, ob Chip eingeworfen werden kann
+	 * gibt -1(keine valide Position) oder Zeile zurueck!**/
 	private int validPosition (int x) {
 		int temp=0;
 		//Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x >= 0 && x < column) {
 			for (int y = 0; y < row; y++) {
 				if (field[x][y]==0) { //leere Position gefunden
-					return y;
+					return y; //gibt Zeile zurueck!
 				} //kein leeres Feld
 				else temp = -1;
 			}
@@ -76,12 +78,43 @@ public class DraftLogik {
 	}
 	
 	
-	//Chip einwerfen
-	private void setChip (int x) {
+	/**Chip einwerfen
+	Ueberlegung: Informationen werden in Array geschrieben! Spieler 1 = 1 --> Spieler 2 = 2**/
+	private void setChip (int x, int spieler) {
 		int y = validPosition(x);
-		if (y != -1) {
+		if (y != -1 && spieler == 1) {
 			field[x][y]=1;
 			}
+		if (y!= -1 && spieler == 2) {
+			field[x][y]=2;
+		}
 	}
+	
+	
+	/**************************************************************/
+	/************************BEWERTUNG*****************************/
+	/**************************************************************/
+	/**Gibt Anzahl der Chips des gleichen spieler in Reihe zurueck**/
+	private int inRow(int x, int spieler) {
+		int count=0; //Zaehler der validen Chips && Chips des gleichen Spielers
+		if (validPosition(x) == spieler) { 
+			int y= validPosition(x); //merken der Zeile, da alle Chips in gleicher Zeile sein muessen, damit diese in Reihe sind
+			count++;
+			if (validPosition(x+1) == spieler && validPosition(x)==y) {
+				count++;
+				if (validPosition(x+2) == spieler && validPosition(x)==y) {
+					count++
+					if (validPosition(x+3) == spieler && validPosition(x)==y) {
+						count++;
+				}
+				
+				}
+			}
+		}
+		return count; 
+		
+	}
+	
+	
 	
 }
