@@ -40,7 +40,7 @@ public class DraftLogik {
 	/**************************************************************/
 	
 	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
-	public int [][] getField (int x, int y) {
+	public int getField (int x, int y) {
 		return field[x][y];
 	}
 	
@@ -49,10 +49,6 @@ public class DraftLogik {
 		field[x][y] = value;
 	}
 	
-	//Setter fuer validMove
-	public void setValidMove (boolean move) {
-		validMove = move;
-	}
 
 	/**************************************************************/
 	/************************LOGIK*********************************/
@@ -68,13 +64,18 @@ public class DraftLogik {
 				if (field[x][y]==0) { //leere Position gefunden
 					return y; //gibt Zeile zurueck!
 				} //kein leeres Feld
-				else temp = -1;
+				else {
+					temp = -1;
+					
+				}
 			}
-		else temp = -1; //Eingabe ausserhalb des Spielbereichs
 		}
-		if (temp == -1) { //temp nur zurueckgeben, wenn noch keine Zeile returned wurde
+		else {
+			temp = -1; //Eingabe ausserhalb des Spielbereichs
+			
+		}
+	  //temp nur zurueckgeben, wenn noch keine Zeile returned wurde, war eine if, mal gucken, ob erforderlich!
 			return temp;
-		}
 	}
 	
 	
@@ -97,7 +98,8 @@ public class DraftLogik {
 	
 	/**Bewertungsfunktion - Bewertet den Pfad nach aktuellem Stand und liefert Zahlenwert!**/
 	private int pathEval (int x, int y, int spieler) {
-		
+		int evaluation = 0;
+		return evaluation;
 	}
 	
 	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/
@@ -148,7 +150,7 @@ public class DraftLogik {
 	
 	
 	/**Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck**/
-	private int inRow(int x, int y int spieler) {
+	private int inRow(int x, int y, int spieler) {
 		int count=0;
 		int temp = x;
 		for (; x<column; x++) { //von links nach rechts! Limitiert durch Anzahl Spalten!
@@ -160,7 +162,7 @@ public class DraftLogik {
 		if (count < 4) { //von rechts nach links (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
 			x = temp;
 			for (; x <= 0; x--) {
-			if getField(x,y) == spieler) {
+			if (getField(x,y) == spieler) {
 				count++;
 			}
 			else break;
