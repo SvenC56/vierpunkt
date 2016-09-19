@@ -32,19 +32,9 @@ public class connectHSQL {
 		connectHSQL connect = new connectHSQL();
 		int id = connect.getMaxId(connect, "Game");
 		System.out.println(id);
-	}
+		// String sql = "SELECT * FROM GAME";
+		// connect.printResult(connect.executeSQL(sql));
 
-	// Ausführung eines beliebigen SQL Statements
-	// Das Ergebnis wird in einem Resultstatement gespeichert
-	public ResultSet executeSQL(String sql) {
-		try {
-			Statement stmt = con.createStatement();
-			ResultSet res = stmt.executeQuery(sql);
-			return res;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	// Speichern von neuen Variablen in der Datenbank
@@ -77,18 +67,36 @@ public class connectHSQL {
 		return 0;
 	}
 
+	// Ausführung eines beliebigen SQL Statements
+	// Das Ergebnis wird in einem Resultstatement gespeichert
+	public ResultSet executeSQL(String sql) {
+		try {
+			Statement stmt = con.createStatement();
+			ResultSet res = stmt.executeQuery(sql);
+			return res;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	// Ausgabe eines beliebigen ResultSets
 	public void printResult(ResultSet result) {
 		try {
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
 				String print = "";
-				for (int i = 1; i < maxColumns; i++) {
+				for (int i = 1; i <= maxColumns; i++) {
 					print += " ";
 					print += result.getMetaData().getColumnName(i);
 					print += " = ";
 					print += result.getString(i);
-					print += ",";
+					if (i < maxColumns) {
+						print += ",";
+					} else {
+						print += ";\n";
+					}
+
 				}
 				System.out.println(print);
 			}
