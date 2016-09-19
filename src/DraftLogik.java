@@ -20,6 +20,7 @@ public class DraftLogik {
 	private int row = 5;	
 	//Array fuer Feld
 	private int [][] field = new int[column][row];
+	
 	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
 
 	/**************************************************************/
@@ -40,12 +41,12 @@ public class DraftLogik {
 	/**************************************************************/
 	
 	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
-	public int getField (int x, int y) {
+	private int getField (int x, int y) {
 		return field[x][y];
 	}
 	
 	//Setter fuer field
-	public void setField (int x, int y, int value) {
+	private void setField (int x, int y, int value) {
 		field[x][y] = value;
 	}
 	
@@ -84,10 +85,10 @@ public class DraftLogik {
 	private void setChip (int x, int spieler) {
 		int y = validPosition(x);
 		if (y != -1 && spieler == 1) {
-			field[x][y]=1;
+			setField(x, y, spieler);
 			}
 		if (y!= -1 && spieler == 2) {
-			field[x][y]=2;
+			setField(x, y, spieler);
 		}
 	}
 	
@@ -99,6 +100,8 @@ public class DraftLogik {
 	/**Bewertungsfunktion - Bewertet den Pfad nach aktuellem Stand und liefert Zahlenwert!**/
 	private int pathEval (int x, int y, int spieler) {
 		int evaluation = 0;
+		//Idee: Die Summe der count ist die Bewertung des Pfades!!
+		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
 		return evaluation;
 	}
 	
