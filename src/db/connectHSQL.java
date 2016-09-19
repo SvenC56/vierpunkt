@@ -30,14 +30,12 @@ public class connectHSQL {
 
 	public static void main(String[] args) {
 		connectHSQL connect = new connectHSQL();
-		// Test ohne Logik
-		String sql = "Select * from Kunde";
-		connect.saveStatement(sql);
-		// Test Zuende
+		int id = connect.getMaxId(connect, "Game");
+		System.out.println(id);
 	}
 
-	//Ausführung eines beliebigen SQL Statements
-	//Das Ergebnis wird in einem Resultstatement gespeichert
+	// Ausführung eines beliebigen SQL Statements
+	// Das Ergebnis wird in einem Resultstatement gespeichert
 	public ResultSet executeSQL(String sql) {
 		try {
 			Statement stmt = con.createStatement();
@@ -49,8 +47,8 @@ public class connectHSQL {
 		return null;
 	}
 
-	//Speichern von neuen Variablen in der Datenbank
-	public void saveStatement(String sql){
+	// Speichern von neuen Variablen in der Datenbank
+	public void saveStatement(String sql) {
 		try {
 			Statement stmt = con.createStatement();
 			ResultSet res = stmt.executeQuery(sql);
@@ -58,17 +56,20 @@ public class connectHSQL {
 			e.printStackTrace();
 		}
 	}
-	// Rückgabe des höchsten Indexwertes "G_Id"
-	public int getGameId(connectHSQL connect) {
+
+	// Rückgabe des höchsten Indexwertes einer Tabelle, Die Connection und die
+	// gewünschte Tabelle muss übergeben werden
+	public int getMaxId(connectHSQL connect, String tableName) {
 		try {
-			ResultSet getId = connect.executeSQL("SELECT * FROM GAME;");
-			int gameId = 0;
+			String firstLetter = String.valueOf(tableName.charAt(0));
+			ResultSet getId = connect.executeSQL("SELECT MAX(" + firstLetter + "_ID) FROM " + tableName + ";");
+			int tableMaxId = 0;
 			while (getId.next()) {
 				String print = getId.getString(1);
-				gameId = Integer.parseInt(print);
+				tableMaxId = Integer.parseInt(print);
 			}
 			getId.close();
-			return gameId;
+			return tableMaxId;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,43 +77,7 @@ public class connectHSQL {
 		return 0;
 	}
 
-	// Rückgabe des höchsten Indexwertes "M_Id"
-	public int getMatchId(connectHSQL connect) {
-		try {
-			ResultSet getId = connect.executeSQL("SELECT * FROM MATCH;");
-			int turnId = 0;
-			while (getId.next()) {
-				String print = getId.getString(1);
-				turnId = Integer.parseInt(print);
-			}
-			getId.close();
-			return turnId;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	// Rückgabe des höchsten Indexwertes "T_Id"
-	public int getTurnId(connectHSQL connect) {
-		try {
-			ResultSet getId = connect.executeSQL("SELECT * FROM TURN;");
-			int turnId = 0;
-			while (getId.next()) {
-				String print = getId.getString(1);
-				turnId = Integer.parseInt(print);
-			}
-			getId.close();
-			return turnId;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	//Ausgabe eines beliebigen ResultSets
+	// Ausgabe eines beliebigen ResultSets
 	public void printResult(ResultSet result) {
 		try {
 			while (result.next()) {
