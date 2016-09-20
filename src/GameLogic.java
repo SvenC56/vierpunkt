@@ -1,8 +1,8 @@
 /**
- * DRAFTLogik / Zum Reinkommen in die Spiellogik, Versuch: Alpha-Beta
+ * Spiellogik / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung
  **/
-public class DraftLogik {
+public class GameLogic {
 	
 	//Allgemeine Regeln / Hinweise Lauterbach
 	//Spalte: von links nach rechts (0,1,2,3,4,5,6) => 7 Maximale Breite
@@ -27,7 +27,7 @@ public class DraftLogik {
 	/*******************KONSTRUKTOR********************************/
 	/**************************************************************/
 	
-	public DraftLogik () {
+	public GameLogic () {
 		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
 		for (int x = 0; x < column ; x++) {
 			for (int y = 0; y < row; y++ ) {
