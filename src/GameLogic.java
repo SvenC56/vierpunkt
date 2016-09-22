@@ -20,6 +20,8 @@ public class GameLogic {
 	private int row = 5;	
 	//Array fuer Feld
 	private int [][] field = new int[column][row];
+	//Variable die Zuege mitzaehlt!
+	private int move = 0; // --> maximale Anzahl Zuege 69!
 	
 	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
 
@@ -29,6 +31,7 @@ public class GameLogic {
 	
 	public GameLogic () {
 		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
+		move = 0;
 		for (int x = 0; x < column ; x++) {
 			for (int y = 0; y < row; y++ ) {
 				field [x][y] = 0;
@@ -48,6 +51,7 @@ public class GameLogic {
 	//Setter fuer field
 	private void setField (int x, int y, int value) {
 		field[x][y] = value;
+		move++; 		//Zuege mitzaehlen!
 	}
 	
 
