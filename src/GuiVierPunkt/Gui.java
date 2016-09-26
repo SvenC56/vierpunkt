@@ -25,7 +25,7 @@ public class Gui extends Application {
    
     private int anzahlzeilen;                         
     private int anzahlspalten;                          
-    private final int l = 70;               // Seitenlänge der Grids - später manuelle Einstellung
+    private final int l = 70;               // Seitenlaenge der Grids - spaeter manuelle Einstellung
     private final Color rot = RED;           // Spielerfarbe 1
     private final Color gruen = GREEN;         // Spielerfarbe 2
     private SimpleObjectProperty<Color> spielerfarbe = new SimpleObjectProperty<Color>(rot);
@@ -36,12 +36,12 @@ public class Gui extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        // automatisches Öffnen im Fullscreen
+        // automatisches Oeffnen im Fullscreen
         primaryStage.setFullScreen(true);
         primaryStage.setTitle("VierPunkt");
         primaryStage.setResizable(true);
         
-        // Erzeugen der äußeren GridPane
+        // Erzeugen der aeußeren GridPane
         final GridPane grid = new GridPane();
         grid.setId("grid");
         ColumnConstraints column1 = new ColumnConstraints();
@@ -60,7 +60,7 @@ public class Gui extends Application {
         row3.setPercentHeight(10);
         grid.getRowConstraints().addAll(row1, row2, row3); // each get 50% of width
         
-        // Erzeugen der Überschrift mit einer ID für css
+        // Erzeugen der Ueberschrift mit einer ID für css
         Text scenetitle = new Text("Vier.");
         scenetitle.setId("ueberschrift");
         grid.add(scenetitle, 1, 0);
@@ -73,7 +73,7 @@ public class Gui extends Application {
         box.getChildren().add(text);
         grid.add(box, 2, 1);
         
-        // Erzeugen eines GridPanes spielfeld im übergeordneten GridPane grid
+        // Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
         GridPane spielfeld = new GridPane();
         spielfeld.setId("spielfeld");
         grid.add(spielfeld, 1, 1);
@@ -224,10 +224,10 @@ public class Gui extends Application {
                 }
             });
             
-            // Zellen werden gefüllt
+            // Zellen werden gefuellt
             StackPane stack = new StackPane();
             vorschauspielstein.setImage(image3);                         // Hintergrund grau
-            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);    // Füllen der Zelle mit Rahmen, Vorschau oder Spielstein
+            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
             }
         }
