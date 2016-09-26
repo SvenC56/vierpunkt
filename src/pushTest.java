@@ -20,8 +20,18 @@ import org.apache.commons.codec.binary.Hex;
 
 public class pushTest
 {
+	/**
+	 * App-Key der Pusher-Instanz des Clients
+	 */
 	private static String MyAppKey = "6deb1d433f80e99f5864";
+	/**
+	 * App-Secret der Pusher-Instanz des Clients
+	 */
 	private static String MyAppSecret = "2ce3f8c94dc009ca19c8";
+	/**
+	 * Channel-Name des Kommunikationskanals
+	 */
+	private static String ChannelName = "private-channel";
 
 	public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException
 	{
@@ -30,8 +40,18 @@ public class pushTest
 		options.setCluster("EU");
 		options.setAuthorizer(new Authorizer() {
 			
+			/**
+			 * Nutzt die Client API von Pusher um eine Authentifizierung zu ermoeglichen.
+			 * 
+			 * Es wird ein Hash ueber die Socket-ID des Clients und den Namen des Channels gebildet,
+			 * dieser wird zusammen mit dem gehashten App-Secret des Clients uebertragen.
+			 * 
+			 * Die Daten werden vom Server mit der Agents.json-Datei verglichen um die Authentifizierung zu ermöglichen.
+			 */
 			public String authorize(String channel, String socketID)throws AuthorizationFailureException
 			{
+				System.out.println("Der Name des Channels: " + channel);
+				System.out.println("Die ID des Sockets des Clients: " + socketID);
 				String AuthString = socketID + ":" + channel;
 				String hash = "";
 				
@@ -44,15 +64,14 @@ public class pushTest
 				String signature = "{\"auth\":\"" + MyAppKey + ":" + hash + "\"}";
 				return signature;
 			}});
-		/**
-		 * to do: authorizer objekt den options übergeben
-		 * authorize: hash wert aus app key, secrets und channel id bilden
-		 * pusher objekt als client-pusher-instanz erzeugen mit dem com.pusher..... befehl+
-		 * 
-		 */
 
 		com.pusher.client.Pusher pusher = new com.pusher.client.Pusher (MyAppKey, options);
 		
+		/**
+		 * Das Pusher Client-Objekt wird mit dem Server verbunden.
+		 * 
+		 * Die Veraenderung des Verbindungsstatus wird in der Konsole ausgegeben.
+		 */
 		pusher.connect(new ConnectionEventListener() {
 		    @Override
 		    public void onConnectionStateChange(ConnectionStateChange change) {
@@ -64,6 +83,8 @@ public class pushTest
 		    public void onError(String message, String code, Exception e) {
 		        System.out.println("Es gab ein Problem beim Verbindungsaufbau.");
 		        System.out.println(message);
+		        System.out.println("Code:" + code);
+		        System.out.println("Exception: " + e);
 		    }
 		}, ConnectionState.ALL);
 	
@@ -71,9 +92,16 @@ public class pushTest
 		while (true){}
 	}
 	
+	/**
+	 * Das Pusher-Objekt baut eine Verbindung zu dem privaten Kommunikationskanal auf.
+	 * 
+	 * In dieser Methode wird sowohl der Name des Channels, als auch der Eventtyp benötigt,
+	 * auf den reagiert werden soll.
+	 * @param pusher
+	 */
 	public static void verbindungsaufbau_Kanal(Pusher pusher){
 		// Der Pusher wartet auf dem vorgegebenen Channel
-		Channel channel = pusher.subscribePrivate("private-channel");
+		Channel channel = pusher.subscribePrivate(ChannelName);
 
 		// Auf das "MoveToAgent"-Event wird reagiert, indem die empfangenen Daten in der Konsole ausgegeben werden
 		channel.bind("MoveToAgent", new PrivateChannelEventListener() {
@@ -82,19 +110,32 @@ public class pushTest
 		    }
 
 			@Override
-			public void onSubscriptionSucceeded(String arg0)
+			public void onSubscriptionSucceeded(String channel)
 			{
 				System.out.println("Client wurde im Channel private-channel angemeldet");
 			}
-
+			
 			@Override
-			public void onAuthenticationFailure(String arg0, Exception arg1)
+			public void onAuthenticationFailure(String msg, Exception e)
 			{
 				System.out.println("Client konnte nicht im Channel private-channel angemeldet werden");
+				System.out.println("Grund: "+ msg);
+				System.out.println("Exception " + e);
 			}
 		});
+		
 	}
 	
+	/**
+	 * Die zur Authentifizierung noetigen Daten werden in dem von Pusher benoetigten Format aufbereitet.
+	 * 
+	 * Hierzu werden das App-Secret, sowie der Channel und die Socket-ID in einem definierten Vorgang gehasht.
+	 * @param MyAppSecret
+	 * @param AuthString
+	 * @return Key
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeyException
+	 */
 	public static String getHash (String MyAppSecret, String AuthString) throws NoSuchAlgorithmException, InvalidKeyException{
 		Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
 		
@@ -106,4 +147,5 @@ public class pushTest
 		
 		return new String(check);
 	}
+	
 }
