@@ -25,7 +25,6 @@
     -fx-alignment: CENTER;
     -fx-Hgap:10;
     -fx-Vgap:10;
-    -fx-padding: 25px 25px 25px 25px;
     -fx-halignment: center;
     -fx-valignment: center;
     
@@ -33,12 +32,13 @@
 }
 #cell{
     -fx-opacity:1;
-    -fx-fill: #61a2b1;
-    -fx-stroke: #61a2b1;
+    -fx-fill: #3EA9DF;
+    -fx-stroke: #3EA9DF;
+    -fx-alignment: top;
 }
 
 #ueberschrift {
-   -fx-font-size: 165px;
+   -fx-font-size: 120px;
    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
    -fx-fill: #d54d7b; 
    -fx-font-family: "fantasy";
@@ -46,24 +46,20 @@
    -fx-line-height: 160px; 
    -fx-alignment: TOP_CENTER;
    -fx-halignment: center;
+   -fx-textalign: center;
   
 }
 #spielfeld{
-   -fx-background-color: #818181;
+   -fx-background-color: #E6E8E9;
    -fx-opacity: 1;
-   -fx-padding: 10px 10px 10px 10px;
-   -fx-alignment: center;
+   
 }
 #box{
-    -fx-width:200px;
-    -fx-height: 500px;
+    -fx-width:100%;
+    -fx-height: 100%;
     -fx-alignment: center;
 }
-#ausgabe {
-  -fx-fill: FIREBRICK;
-  -fx-font-weight: bold;
-  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
-}
+
 .button {
     -fx-text-fill: white;
     -fx-font-family: "Arial Narrow";

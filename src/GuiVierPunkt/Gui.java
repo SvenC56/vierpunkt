@@ -45,38 +45,51 @@ public class Gui extends Application {
         final GridPane grid = new GridPane();
         grid.setId("grid");
         ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(25);
+        column1.setPercentWidth(15);
         ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(50);
+        column2.setMinWidth((7*l));
+        column2.setMaxWidth(7*l);
         ColumnConstraints column3 = new ColumnConstraints();
-        column1.setPercentWidth(25);
+        column1.setPercentWidth(15);
         grid.getColumnConstraints().addAll(column1, column2, column3); 
         
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(20);
         RowConstraints row2 = new RowConstraints();
-        row2.setPercentHeight(70);
+        row2.setMinHeight(7*l);
+        row2.setMaxHeight(7*l);
         RowConstraints row3 = new RowConstraints();
         row3.setPercentHeight(10);
-        grid.getRowConstraints().addAll(row1, row2, row3); // each get 50% of width
+        grid.getRowConstraints().addAll(row1, row2, row3); 
         
         // Erzeugen der Ueberschrift mit einer ID für css
         Text scenetitle = new Text("VierPunkt");
         scenetitle.setId("ueberschrift");
-        grid.add(scenetitle, 1, 0);
+        grid.add(scenetitle, 1, 0, 1, 1);
         column1.setHgrow(Priority.ALWAYS);
         
         
         Label text = new Label("Satzstatus");
-        HBox box = new HBox();
+        VBox box = new VBox();
         box.setId("box");
         box.getChildren().add(text);
+        box.setMinWidth(200);
         grid.add(box, 2, 1);
+        
+        VBox vbox = new VBox();
+        vbox.setId("vbox");
+        Rectangle platzhalter = new Rectangle(7*l,l);
+        platzhalter.setOpacity(0);
+        grid.add(vbox, 1, 1);
+        vbox.getChildren().add(platzhalter);
+        
+        
         
         // Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
         GridPane spielfeld = new GridPane();
         spielfeld.setId("spielfeld");
-        grid.add(spielfeld, 1, 1);
+        vbox.getChildren().add(spielfeld);
+        //grid.add(spielfeld, 1, 1);
         
         
         
@@ -100,7 +113,7 @@ public class Gui extends Application {
          
         createGrids(spielfeld);
         
-        Scene scene = new Scene(grid, 1250, 875);
+        Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
         scene.getStylesheets().add(Gui.class.getResource("Gui.css").toExternalForm());
 
@@ -119,11 +132,11 @@ public class Gui extends Application {
             circ.centerYProperty().set(l/2);
             Shape cell = Path.subtract(rect, circ);
             cell.setId("cell");
-            DropShadow effect = new DropShadow();
+            /*DropShadow effect = new DropShadow();
             effect.setSpread(.2);
             effect.setRadius(25);
-            effect.setColor(WHITE);
-            cell.setEffect(effect);
+            effect.setColor(BLACK);
+            cell.setEffect(effect);*/
              
             // Erzeugen der Spielsteine
             javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein-rot.png").toExternalForm());
