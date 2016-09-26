@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.*;
+//import javafx.scene.effect.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -69,26 +69,29 @@ public class Gui extends Application {
         column1.setHgrow(Priority.ALWAYS);
         
         
+        VBox boxrechts = new VBox();
+        boxrechts.setId("box");
         Label text = new Label("Satzstatus");
-        VBox box = new VBox();
-        box.setId("box");
-        box.getChildren().add(text);
-        box.setMinWidth(200);
-        grid.add(box, 2, 1);
+        boxrechts.getChildren().add(text);
+        boxrechts.setMinWidth(200);
+        grid.add(boxrechts, 2, 1);
         
-        VBox vbox = new VBox();
-        vbox.setId("vbox");
+        VBox boxmitte = new VBox();
+        boxmitte.setId("boxmitte");
         Rectangle platzhalter = new Rectangle(7*l,l);
         platzhalter.setOpacity(0);
-        grid.add(vbox, 1, 1);
-        vbox.getChildren().add(platzhalter);
+        grid.add(boxmitte, 1, 1);
+        boxmitte.getChildren().add(platzhalter);
         
-        
+        VBox boxlinks = new VBox();
+        boxlinks.setId("boxlinks");
+        grid.add(boxlinks, 0, 1);
+        boxlinks.setMinWidth(200);
         
         // Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
         GridPane spielfeld = new GridPane();
         spielfeld.setId("spielfeld");
-        vbox.getChildren().add(spielfeld);
+        boxmitte.getChildren().add(spielfeld);
         //grid.add(spielfeld, 1, 1);
         
         
