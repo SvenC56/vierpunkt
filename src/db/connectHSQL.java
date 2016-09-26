@@ -47,8 +47,8 @@ public class connectHSQL {
 		}
 	}
 
-	// Rückgabe des höchsten Indexwertes einer Tabelle, Die Connection und die
-	// gewünschte Tabelle muss übergeben werden
+	// Rueckgabe des hoechsten Indexwertes einer Tabelle, Die Connection und die
+	// gewuenschte Tabelle muss uebergeben werden
 	public int getMaxId(connectHSQL connect, String tableName) {
 		try {
 			String firstLetter = String.valueOf(tableName.charAt(0));
@@ -67,7 +67,7 @@ public class connectHSQL {
 		return 0;
 	}
 
-	// Ausführung eines beliebigen SQL Statements
+	// Ausfuehrung eines beliebigen SQL Statements
 	// Das Ergebnis wird in einem Resultstatement gespeichert
 	public ResultSet executeSQL(String sql) {
 		try {
