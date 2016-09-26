@@ -61,7 +61,7 @@ public class Gui extends Application {
         grid.getRowConstraints().addAll(row1, row2, row3); // each get 50% of width
         
         // Erzeugen der Ueberschrift mit einer ID für css
-        Text scenetitle = new Text("Vier.");
+        Text scenetitle = new Text("VierPunkt");
         scenetitle.setId("ueberschrift");
         grid.add(scenetitle, 1, 0);
         column1.setHgrow(Priority.ALWAYS);
