@@ -14,24 +14,24 @@ public class GameLogic {
 	/**************************************************************/
 	
 	//Spielfeld
-	//MAXIMALE ANZAHL SPALTEN
+	/**MAXIMALE ANZAHL SPALTEN**/
 	private int column = 6;
 	//Idee: 6 tief (+ Kopfzeile (? Umsetzung mit oder ohne Kopfzeile?))
-	//MAXIMALE ANZAHL ZEILEN
+	/**MAXIMALE ANZAHL ZEILEN**/
 	private int row = 5;	
-	//Array fuer Feld
+	/**Array fuer Spielfeld**/
 	private int [][] field = new int[column][row];
-	//Variable die Zuege mitzaehlt!
+	/**Variable die Zuege mitzaehlt!**/
 	private int move = 0; // --> maximale Anzahl Zuege 69!
 	
-	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
+	/**Allgemeine Information: x entspricht Spalte / y entspricht Zeile**/
 
 	/**************************************************************/
 	/*******************KONSTRUKTOR********************************/
 	/**************************************************************/
 	
 	public GameLogic () {
-		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
+		//Array durchlaufen und mit Nullen fuellen! Anzahl Zuege auf 0 setzen
 		move = 0;
 		for (int x = 0; x < column ; x++) {
 			for (int y = 0; y < row; y++ ) {
@@ -49,7 +49,7 @@ public class GameLogic {
 		return field[x][y];
 	}
 	
-	//Setter fuer field
+	/**Setter fuer field-Array**/
 	private void setField (int x, int y, int value) {
 		field[x][y] = value;
 		move++; 		//Zuege mitzaehlen!
