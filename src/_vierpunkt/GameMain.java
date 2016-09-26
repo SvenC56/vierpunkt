@@ -1,4 +1,5 @@
-package logic;
+package _vierpunkt;
+
 /**
  * Main-Methode zum Testen / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung

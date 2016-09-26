@@ -1,4 +1,4 @@
-package logic;
+package _vierpunkt;
 /**
  * Spiellogik / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung
