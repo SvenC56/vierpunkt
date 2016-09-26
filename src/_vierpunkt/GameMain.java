@@ -1,5 +1,8 @@
 package _vierpunkt;
 
+import GuiVierPunkt.*;
+
+
 /**
  * Main-Methode zum Testen / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung
@@ -8,19 +11,13 @@ public class GameMain {
 
 	/**Main-Methode fuer Spielablauf**/
 	public static void main(String[] args) {
-	initializeProgram();
+	
+	/**Initialisierung des Spielfeldes**/
+	Gui gui = new Gui();
 	GameLogic game = new GameLogic();
+	gui.main(args);
 	
 	
 	
 	}
-	
-	/**Initialisierung des Programms**/ 
-	private static void initializeProgram() {
-	//Hier kommen die Dinge rein, die zur Initialisierung des Programms erforderlich sind
-	
-	
-	}
-
-
 }
