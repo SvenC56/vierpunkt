@@ -46,7 +46,7 @@ public class pushTest
 			 * Es wird ein Hash ueber die Socket-ID des Clients und den Namen des Channels gebildet,
 			 * dieser wird zusammen mit dem gehashten App-Secret des Clients uebertragen.
 			 * 
-			 * Die Daten werden vom Server mit der Agents.json-Datei verglichen um die Authentifizierung zu ermöglichen.
+			 * Die Daten werden vom Server mit der Agents.json-Datei verglichen um die Authentifizierung zu ermoeglichen.
 			 */
 			public String authorize(String channel, String socketID)throws AuthorizationFailureException
 			{
@@ -76,7 +76,7 @@ public class pushTest
 		    @Override
 		    public void onConnectionStateChange(ConnectionStateChange change) {
 		        System.out.println("Der Verbindungsstatus hat sich von " + change.getPreviousState() +
-		                           " zu " + change.getCurrentState() + " geändert.");
+		                           " zu " + change.getCurrentState() + " geaendert.");
 		    }
 
 		    @Override
@@ -95,7 +95,7 @@ public class pushTest
 	/**
 	 * Das Pusher-Objekt baut eine Verbindung zu dem privaten Kommunikationskanal auf.
 	 * 
-	 * In dieser Methode wird sowohl der Name des Channels, als auch der Eventtyp benötigt,
+	 * In dieser Methode wird sowohl der Name des Channels, als auch der Eventtyp benoetigt,
 	 * auf den reagiert werden soll.
 	 * @param pusher
 	 */
@@ -142,7 +142,7 @@ public class pushTest
 		SecretKeySpec secretKey = new SecretKeySpec(MyAppSecret.getBytes(), "HmacSHA256");
 		sha256_HMAC.init(secretKey);
 		byte[] hash = sha256_HMAC.doFinal(AuthString.getBytes());
-		// wenn es nicht funktioniert, Methode zur Konvertierung in lesbare Zeichen einfügen
+		// wenn es nicht funktioniert, Methode zur Konvertierung in lesbare Zeichen einfuegen
 		String check = Hex.encodeHexString(hash);
 		
 		return new String(check);
