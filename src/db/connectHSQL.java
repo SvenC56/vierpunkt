@@ -13,14 +13,14 @@ import java.sql.Statement;
 public class connectHSQL {
 	/**
 	 * Initialisierung des Connection Objekts. Initial wird dieses Objekt mit
-	 * Null gefüllt.
+	 * Null gefuellt.
 	 **/
 	Connection con = null;
 
 	/**
-	 * Konstruktor, welcher versucht über den angegebenen Pfad eine Verbindung
+	 * Konstruktor, welcher versucht ueber den angegebenen Pfad eine Verbindung
 	 * mit der Datenbank aufzubauen. Falls das Programm keine Verbindung
-	 * aufbauen kann wird ein leeres Connection Objekt zurück gegeben. Falls es
+	 * aufbauen kann wird ein leeres Connection Objekt zurueck gegeben. Falls es
 	 * zu einem SQL Error kommt, wird eine SQL Exception ausgegeben.
 	 **/
 	public connectHSQL() {
@@ -49,7 +49,7 @@ public class connectHSQL {
 
 	/**
 	 * Speichern neuer Variablen in der Datenbank. Der Methode wird das SQL
-	 * Statement übergeben, welches dann in ein Resultset umgewandelt wird.
+	 * Statement uebergeben, welches dann in ein Resultset umgewandelt wird.
 	 * Dieses Resultset wird anschließend dann abgeschickt. Falls das SQL
 	 * Statement fehlerhaft ist, wird eine SQL Exception ausgegeben.
 	 **/
@@ -66,10 +66,10 @@ public class connectHSQL {
 	 * Rueckgabe des hoechsten Indexwertes einer Tabelle, Die Connection und die
 	 * gewuenschte Tabelle muss uebergeben werden. In der Methode wird der
 	 * String tableName aufgegliedert und der erste Buchstabe wird mit der
-	 * Endung "_ID" ergänzt. Anschließend wird ein Resultset erstellt, welches
+	 * Endung "_ID" ergaenzt. Anschließend wird ein Resultset erstellt, welches
 	 * aus dem zusammengesetzten SQL Statement besteht. Daraufhin wird das
 	 * Resultset ausgelesen und das Tabellenmaximum als Int Variable
-	 * zurückgegeben. Falls es im Statement ein SQL Error gibt, wird eine SQL
+	 * zurueckgegeben. Falls es im Statement ein SQL Error gibt, wird eine SQL
 	 * Exception geworfen.
 	 **/
 	public int getMaxId(connectHSQL connect, String tableName) {
@@ -92,7 +92,7 @@ public class connectHSQL {
 
 	/**
 	 * Ausfuehrung eines beliebigen SQL Statements. Das Ergebnis wird in einem
-	 * Resultstatement gespeichert und zurückgegeben. Falls das SQL Statement
+	 * Resultstatement gespeichert und zurueckgegeben. Falls das SQL Statement
 	 * fehlerhaft ist, wird eine SQL Exception ausgegeben.
 	 **/
 	public ResultSet executeSQL(String sql) {
@@ -107,13 +107,13 @@ public class connectHSQL {
 	}
 
 	/**
-	 * Ausgabe eines beliebigen ResultSets. Weiterführung der Methode
-	 * executeSQL(). Das zurückgegebene Resultset Objekt wird komplett
-	 * ausgegeben. Dazu werden über die Metadaten des ResultSets die Anzahl der
-	 * Spalten in einer int Variable gespeichert. Die while Schleife prüft ob
+	 * Ausgabe eines beliebigen ResultSets. Weiterfuehrung der Methode
+	 * executeSQL(). Das zurueckgegebene Resultset Objekt wird komplett
+	 * ausgegeben. Dazu werden ueber die Metadaten des ResultSets die Anzahl der
+	 * Spalten in einer int Variable gespeichert. Die while Schleife prueft ob
 	 * eine weitere Zeile vorhanden ist. Falls ja, wird eine for Schleife
 	 * durchlaufen, welche jede Spalte ausgibt. Falls das SQL Statement
-	 * fehlerhaft ist, wird eine SQL Exception zurückgegeben.
+	 * fehlerhaft ist, wird eine SQL Exception zurueckgegeben.
 	 **/
 	public void printResult(ResultSet result) {
 		try {
