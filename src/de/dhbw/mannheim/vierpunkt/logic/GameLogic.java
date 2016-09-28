@@ -1,4 +1,4 @@
-package _vierpunkt;
+package de.dhbw.mannheim.vierpunkt.logic;
 /**
  * Spiellogik / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung

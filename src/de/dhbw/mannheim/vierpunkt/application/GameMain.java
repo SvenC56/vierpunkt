@@ -1,6 +1,7 @@
-package _vierpunkt;
+package de.dhbw.mannheim.vierpunkt.application;
 
-import GuiVierPunkt.*;
+import de.dhbw.mannheim.vierpunkt.gui.Gui;
+import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 
 /**

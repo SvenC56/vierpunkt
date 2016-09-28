@@ -1,4 +1,4 @@
-package logic;
+package de.dhbw.mannheim.vierpunkt.logic;
 
 public class Leaf {
 

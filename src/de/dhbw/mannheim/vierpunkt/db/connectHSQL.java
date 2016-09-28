@@ -2,7 +2,7 @@
  * Author: Sven Cieslok
  */
 
-package db;
+package de.dhbw.mannheim.vierpunkt.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -50,7 +50,7 @@ public class connectHSQL {
 	/**
 	 * Speichern neuer Variablen in der Datenbank. Der Methode wird das SQL
 	 * Statement uebergeben, welches dann in ein Resultset umgewandelt wird.
-	 * Dieses Resultset wird anschließend dann abgeschickt. Falls das SQL
+	 * Dieses Resultset wird anschlieï¿½end dann abgeschickt. Falls das SQL
 	 * Statement fehlerhaft ist, wird eine SQL Exception ausgegeben.
 	 **/
 	public void saveStatement(String sql) {
@@ -66,7 +66,7 @@ public class connectHSQL {
 	 * Rueckgabe des hoechsten Indexwertes einer Tabelle, Die Connection und die
 	 * gewuenschte Tabelle muss uebergeben werden. In der Methode wird der
 	 * String tableName aufgegliedert und der erste Buchstabe wird mit der
-	 * Endung "_ID" ergaenzt. Anschließend wird ein Resultset erstellt, welches
+	 * Endung "_ID" ergaenzt. Anschlieï¿½end wird ein Resultset erstellt, welches
 	 * aus dem zusammengesetzten SQL Statement besteht. Daraufhin wird das
 	 * Resultset ausgelesen und das Tabellenmaximum als Int Variable
 	 * zurueckgegeben. Falls es im Statement ein SQL Error gibt, wird eine SQL
