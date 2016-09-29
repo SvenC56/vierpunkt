@@ -1,0 +1,27 @@
+4gPushServer Release Notes
+Version: 6.03 vom 13.10.2015
+
+
+
+Information der Agents nach Siegmuster
+======================================
+Der 4g Server teilt jetzt bei Verwendung der Push-Sst korrekt 
+das Satzende nach Siegmuster mit, so wie auf S. 24 im Auftrag 
+beschrieben. 
+
+Die entsprechenden Message-Strings an die Clients (s. S. 24 im
+Auftrag, übertragen auf Push-Sst) wären dann:
+ 
+An den Sieger:
+"false" + " # " + "beendet" + " # " + -1 + " # " + "Spieler O" 
+
+An den Verlierer:
+"false" + " # " + "beendet" + " # " +  3 + " # " + "Spieler O" 
+
+
+
+
+Kleinere Änderungen
+===================
+Konsolenausgaben des 4gServers geringfügig erweitert 
+und verbessert.
