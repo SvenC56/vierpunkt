@@ -63,19 +63,49 @@ public class Gui extends Application {
         grid.getRowConstraints().addAll(row1, row2, row3); 
         
         // Erzeugen der Ueberschrift mit einer ID für css
-        Text scenetitle = new Text("VierPunkt");
+        /*Text scenetitle = new Text("VierPunkt");
         scenetitle.setId("ueberschrift");
         grid.add(scenetitle, 1, 0, 1, 1);
-        column1.setHgrow(Priority.ALWAYS);
+        column1.setHgrow(Priority.ALWAYS);*/
         
-        javafx.scene.image.Image ueberschrift = new javafx.scene.image.Image(getClass().getResource("ueberechrift_vier.png").toExternalForm());
+        javafx.scene.image.Image ueberschrift = new javafx.scene.image.Image(getClass().getResource("ueberschrift.jpeg").toExternalForm());
         
         // Ansicht der Ueberschrift
         ImageView vier = new ImageView(ueberschrift);
         vier.setImage(ueberschrift);
-        grid.add(vier, 0, 0, 1, 2);
+        grid.add(vier, 1, 0, 3, 1);
         vier.setFitWidth(800);
-        vier.setPreserveRatio(true);  
+        vier.setFitHeight(150);
+        vier.setPreserveRatio(true);
+        vier.setId("ueberschrift");
+        
+        /** Uebersicht der aeußeren GridPane
+         * 	_____________________________________
+         *	|			|			|			|
+         *	|	0,0		|	1,0		|	2,0		|
+         *	|___________|___________|___________|
+         *	|			|			|			|
+         * 	|			|			|			|
+         * 	|	0,1		|	1,1		|	2,1		|
+         * 	|			|			|			|
+         * 	|___________|___________|___________|
+         * 	|			|			|			|
+         * 	|	0,2		|	1,2		|	2,2		|
+         * 	|___________|___________|___________|
+         * 
+         * 	_____________________________________
+         *	|			|			|			|
+         *	|	0,0		|	1,0		|	2,0		|
+         *	|___________|___________|___________|
+         *	|			|			|			|
+         * 	|			| boxmitte	|			|
+         * 	|  boxlinks	| spielfeld	| boxrechts	|
+         * 	|			|			|			|
+         * 	|___________|___________|___________|
+         * 	|			|			|			|
+         * 	|	0,2		|	1,2		|	2,2		|
+         * 	|___________|___________|___________|
+         **/
         
         // Erzeugen von Boxen zur besseren Anzeige der einzelnen Elemente
         VBox boxrechts = new VBox();

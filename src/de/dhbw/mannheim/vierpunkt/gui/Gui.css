@@ -38,12 +38,6 @@
 }
 
 #ueberschrift {
-   -fx-font-size: 120px;
-   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
-   -fx-fill: #d54d7b; 
-   -fx-font-family: "fantasy";
-   -fx-wheight: bold;
-   -fx-line-height: 160px; 
    -fx-alignment: TOP_CENTER;
    -fx-halignment: center;
    -fx-textalign: center;
