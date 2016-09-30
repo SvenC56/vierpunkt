@@ -68,6 +68,15 @@ public class Gui extends Application {
         grid.add(scenetitle, 1, 0, 1, 1);
         column1.setHgrow(Priority.ALWAYS);
         
+        javafx.scene.image.Image ueberschrift = new javafx.scene.image.Image(getClass().getResource("ueberechrift_vier.png").toExternalForm());
+        
+        // Ansicht der Ueberschrift
+        ImageView vier = new ImageView(ueberschrift);
+        vier.setImage(ueberschrift);
+        grid.add(vier, 0, 0, 1, 2);
+        vier.setFitWidth(800);
+        vier.setPreserveRatio(true);  
+        
         // Erzeugen von Boxen zur besseren Anzeige der einzelnen Elemente
         VBox boxrechts = new VBox();
         boxrechts.setId("box");

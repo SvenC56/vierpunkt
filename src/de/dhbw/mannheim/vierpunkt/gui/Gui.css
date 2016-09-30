@@ -4,7 +4,7 @@
 */
 
 .root {
-    -fx-background-image: url("sweets_background.png");
+    -fx-background-image: url("Sweets_transparent.png");
     -fx-background-size: contain;
 }
 
