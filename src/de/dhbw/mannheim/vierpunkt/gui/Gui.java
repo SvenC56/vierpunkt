@@ -26,8 +26,8 @@ public class Gui extends Application {
     private int anzahlzeilen;                         
     private int anzahlspalten;                          
     private final int l = 70;               // Seitenlaenge der Grids - spaeter manuelle Einstellung
-    private final Color rot = RED;           // Spielerfarbe 1
-    private final Color gruen = GREEN;         // Spielerfarbe 2
+    private final Color rot = RED;          // Spielerfarbe 1
+    private final Color gruen = GREEN;      // Spielerfarbe 2
     private SimpleObjectProperty<Color> spielerfarbe = new SimpleObjectProperty<Color>(rot);
     
     public static void main(String[] args) {
@@ -68,7 +68,7 @@ public class Gui extends Application {
         grid.add(scenetitle, 1, 0, 1, 1);
         column1.setHgrow(Priority.ALWAYS);
         
-        
+        // Erzeugen von Boxen zur besseren Anzeige der einzelnen Elemente
         VBox boxrechts = new VBox();
         boxrechts.setId("box");
         Label text = new Label("Satzstatus");
@@ -114,7 +114,7 @@ public class Gui extends Application {
                 new RowConstraints(l,l,Double.MAX_VALUE),
                 new RowConstraints(l,l,Double.MAX_VALUE));
          
-        createGrids(spielfeld);
+        createGrids(spielfeld); // Methodenaufruf
         
         Scene scene = new Scene(grid);
         primaryStage.setScene(scene);
