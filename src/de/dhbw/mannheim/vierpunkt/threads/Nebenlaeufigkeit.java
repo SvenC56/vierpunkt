@@ -1,6 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.threads;
 
-public class Nebenläufigkeit implements Runnable {
+public class Nebenlaeufigkeit implements Runnable {
 
 	public void run() {
 		Thread thread = Thread.currentThread();

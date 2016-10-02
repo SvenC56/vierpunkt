@@ -1,8 +1,8 @@
 package de.dhbw.mannheim.vierpunkt.threads;
 
-public class NebenläufigkeitTest {
+public class NebenlaeufigkeitTest {
 	public static void main(String[] args) {
-		Nebenläufigkeit counter = new Nebenläufigkeit();
+		Nebenlaeufigkeit counter = new Nebenlaeufigkeit();
 		Thread secondThread = new Thread(counter, "second");
 		secondThread.start();
 		counter.run();
