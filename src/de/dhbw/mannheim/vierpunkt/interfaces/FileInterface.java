@@ -1,60 +1,51 @@
 package de.dhbw.mannheim.vierpunkt.interfaces;
 
-
-import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.*;
 
 public class FileInterface {
-public static final int serverPort = 7;
+
 	
 public static void main (String[] args) {
-
-	// declarations
-	String hostname = "localhost";
-	PrintWriter networkOut = null;
-	BufferedReader networkIn = null;
-	Socket s = null;
-	String data = null;
-	String input = null;
 	
 	try {
-		// set up connection
-		s = new Socket(hostname, serverPort);
-		// read incoming streams
-		networkIn = new BufferedReader
-				(new InputStreamReader(s.getInputStream()));
-		// read outgoing streams
-		networkOut = new PrintWriter
-				(s.getOutputStream());
 		
-		System.out.println("Connected to server");
+		while(true){
+
+
+		// Input aus ServerFile lesen
+		String serverFile = zugEmpfangen();
 		
-		while (true) {
-			// send data to server
-			networkOut.println(data);
-			// flush outgoing stream
-			networkOut.flush();
-			// read incoming stream
-			input = networkIn.readLine();
+		// Wenn man am Zug ist: Zug spielen
+		if (serverFile.contains("true")){
+					zugSpielen(1);
+			}
+		Thread.sleep(10000);
 		}
 		
-		
-	} catch (Exception e) {
-		e.printStackTrace();
+		}catch (Exception e){}
 	}
-	finally {
-		try {
-			// close both streams and server
-			if (networkIn != null)
-				networkIn.close();
-			if (networkOut != null)
-				networkOut.close();
-			if (s != null)
-				s.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+	 /**
+	  * Die Methode liest den Inhalt der vom Server an den Spieler verschickte Datei
+	  * @return Den Inhalt der Server2Spieler.xml Datei
+	  * @throws IOException
+	  */
+	public static String zugEmpfangen() throws IOException{
+		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielero.xml")), StandardCharsets.UTF_8);
+		System.out.print(data);
+		return data;
 	}
-}
+	/**
+	 * Die Methode übergibt dem Server den Zug bzw. die Spalte in die der Spielstein gelegt werden soll als Textdatei.
+	 * @param spalte
+	 * @throws IOException
+	 */
+	public static void zugSpielen(int spalte) throws IOException{
+		FileWriter fileOut = new FileWriter("C:\\FileInterface\\spielero2server.txt");
+		fileOut.write("1"); // 1 als dummy, später dann int spalte
+		fileOut.flush();
+		fileOut.close();
+	}
 }
