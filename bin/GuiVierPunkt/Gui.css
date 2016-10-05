@@ -1,0 +1,78 @@
+/* 
+    Created on : 12.09.2016, 09:03:19
+    Author     : janaschaub
+*/
+
+.root {
+    -fx-background-image: url("sweets_background.png");
+    -fx-background-size: contain;
+}
+
+.disk{
+    -fx-background-image: url("spielstein-rot.png");
+    
+}
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-alignment: TOP_CENTER;
+}
+#grid{
+    -fx-grid-lines-visible: true;
+    -fx-alignment: CENTER;
+    -fx-Hgap:10;
+    -fx-Vgap:10;
+    -fx-padding: 25px 25px 25px 25px;
+    -fx-halignment: center;
+    -fx-valignment: center;
+    
+    
+}
+#cell{
+    -fx-opacity:1;
+    -fx-fill: #61a2b1;
+    -fx-stroke: #61a2b1;
+}
+
+#ueberschrift {
+   -fx-font-size: 165px;
+   -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+   -fx-fill: #d54d7b; 
+   -fx-font-family: "fantasy";
+   -fx-wheight: bold;
+   -fx-line-height: 160px; 
+   -fx-alignment: TOP_CENTER;
+   -fx-halignment: center;
+  
+}
+#spielfeld{
+   -fx-background-color: #818181;
+   -fx-opacity: 1;
+   -fx-padding: 10px 10px 10px 10px;
+   -fx-alignment: center;
+}
+#box{
+    -fx-width:200px;
+    -fx-height: 500px;
+    -fx-alignment: center;
+}
+#ausgabe {
+  -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
+}
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-alignment:center;
+ 
+}
+.button:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
