@@ -4,18 +4,19 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-//import javafx.scene.effect.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import static javafx.scene.paint.Color.*;
 import javafx.scene.shape.*;
-import javafx.scene.text.*;
 import javafx.stage.*;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
+import javafx.scene.control.Slider;
 
 /**
  *
@@ -62,11 +63,7 @@ public class Gui extends Application {
         row3.setPercentHeight(10);
         grid.getRowConstraints().addAll(row1, row2, row3); 
         
-        // Erzeugen der Ueberschrift mit einer ID für css
-        /*Text scenetitle = new Text("VierPunkt");
-        scenetitle.setId("ueberschrift");
-        grid.add(scenetitle, 1, 0, 1, 1);
-        column1.setHgrow(Priority.ALWAYS);*/
+        // Erzeugen der Ueberschrift 
         
         javafx.scene.image.Image ueberschrift = new javafx.scene.image.Image(getClass().getResource("ueberschrift.jpeg").toExternalForm());
         
@@ -110,8 +107,49 @@ public class Gui extends Application {
         // Erzeugen von Boxen zur besseren Anzeige der einzelnen Elemente
         VBox boxrechts = new VBox();
         boxrechts.setId("box");
-        Label text = new Label("Satzstatus");
-        boxrechts.getChildren().add(text);
+        Label satzstatus = new Label("Satzstatus:");
+        Label spielstand = new Label ("Spielstand:");
+        Label spielmodi = new Label ("Spielmodus: ");
+        Button start = new Button("Spiel starten");
+        Slider spielmodus = new Slider(0, 2, 1);
+        spielmodus.setMin(0);
+        spielmodus.setMax(2);
+        spielmodus.setValue(1);
+        spielmodus.setMinorTickCount(0);
+        spielmodus.setMajorTickUnit(1);
+        spielmodus.setSnapToTicks(true);
+        spielmodus.setShowTickMarks(true);
+        spielmodus.setShowTickLabels(true);
+        spielmodus.setOrientation(Orientation.VERTICAL);
+        
+        spielmodus.setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double n) {
+                if (n == 0) return "manuell";
+                if (n > 0 && n < 2) return "gegen den Computer";
+                if (n == 2) return "automatisch";
+
+                return "automatisch";
+            }
+
+            @Override
+            public Double fromString(String x) {
+                switch (x) {
+                    case "manuell":
+                        return 0d;
+                    case "gegen den Computer":
+                        return 1d;
+                    case "automatisch":
+                        return 2d;
+
+                    default:
+                        return 2d;
+                }
+            }
+        });
+
+        spielmodus.setPrefHeight(120);
+        boxrechts.getChildren().addAll(spielstand, satzstatus, spielmodi, spielmodus, start);
         boxrechts.setMinWidth(200);
         grid.add(boxrechts, 2, 1);
         
