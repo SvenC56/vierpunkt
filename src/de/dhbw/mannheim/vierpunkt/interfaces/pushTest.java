@@ -1,22 +1,23 @@
 package de.dhbw.mannheim.vierpunkt.interfaces;
 
 
-import com.pusher.client.connection.ConnectionEventListener;
-import com.pusher.client.connection.ConnectionState;
-import com.pusher.client.connection.ConnectionStateChange;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Hex;
+
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.PrivateChannelEventListener;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.commons.codec.binary.Hex;
+import com.pusher.client.connection.ConnectionEventListener;
+import com.pusher.client.connection.ConnectionState;
+import com.pusher.client.connection.ConnectionStateChange;
 
 
 public class pushTest
@@ -24,11 +25,11 @@ public class pushTest
 	/**
 	 * App-Key der Pusher-Instanz des Clients
 	 */
-	private static String MyAppKey = "6deb1d433f80e99f5864";
+	private static String MyAppKey = "61783ef3dd40e1b399b2";
 	/**
 	 * App-Secret der Pusher-Instanz des Clients
 	 */
-	private static String MyAppSecret = "2ce3f8c94dc009ca19c8";
+//	private static String MyAppSecret = "66b722950915220b298c";
 	/**
 	 * Channel-Name des Kommunikationskanals
 	 */
@@ -38,7 +39,7 @@ public class pushTest
 	{
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
-		options.setCluster("EU");
+		//options.setCluster("EU");
 		options.setAuthorizer(new Authorizer() {
 			
 			/**
@@ -51,18 +52,10 @@ public class pushTest
 			 */
 			public String authorize(String channel, String socketID)throws AuthorizationFailureException
 			{
-				System.out.println("Der Name des Channels: " + channel);
-				System.out.println("Die ID des Sockets des Clients: " + socketID);
-				String AuthString = socketID + ":" + channel;
-				String hash = "";
+				com.pusher.rest.Pusher pusher = new com.pusher.rest.Pusher("255967", "61783ef3dd40e1b399b2", "66b722950915220b298c");
 				
-				try	{
-					hash = getHash(MyAppSecret, AuthString);
-					} catch (InvalidKeyException | NoSuchAlgorithmException e){
-							e.printStackTrace();
-					}
-				
-				String signature = "{\"auth\":\"" + MyAppKey + ":" + hash + "\"}";
+				String signature = pusher.authenticate(socketID, channel);
+				System.out.println(signature);
 				return signature;
 			}});
 
@@ -89,7 +82,29 @@ public class pushTest
 		    }
 		}, ConnectionState.ALL);
 	
-		verbindungsaufbau_Kanal(pusher);
+		// Der Pusher wartet auf dem vorgegebenen Channel
+				Channel channel = pusher.subscribePrivate(ChannelName);
+
+				// Auf das "MoveToAgent"-Event wird reagiert, indem die empfangenen Daten in der Konsole ausgegeben werden
+				channel.bind("MoveToAgent", new PrivateChannelEventListener() {
+				    public void onEvent(String channel, String event, String data) {
+				        System.out.println("Empfangene Daten: " + data);
+				    }
+
+					@Override
+					public void onSubscriptionSucceeded(String channel)
+					{
+						System.out.println("Client wurde im Channel private-channel angemeldet");
+					}
+					
+					@Override
+					public void onAuthenticationFailure(String msg, Exception e)
+					{
+						System.out.println("Client konnte nicht im Channel private-channel angemeldet werden");
+						System.out.println("Grund: "+ msg);
+						System.out.println("Exception: " + e);
+					}
+				});
 		while (true){}
 	}
 	
