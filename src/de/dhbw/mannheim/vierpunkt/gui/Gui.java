@@ -107,9 +107,9 @@ public class Gui extends Application {
         // Erzeugen von Boxen zur besseren Anzeige der einzelnen Elemente
         VBox boxrechts = new VBox();
         boxrechts.setId("box");
-        Label satzstatus = new Label("Satzstatus:");
-        Label spielstand = new Label ("Spielstand:");
-        Label spielmodi = new Label ("Spielmodus: ");
+        Label satzstatus = new Label("Satzstatus: warten auf den Gegner");
+        Label spielstand = new Label ("Spielstand: 1 zu 1");
+        Label spielmodi = new Label ("Spielmodus:");
         Button start = new Button("Spiel starten");
         Slider spielmodus = new Slider(0, 2, 1);
         spielmodus.setMin(0);
