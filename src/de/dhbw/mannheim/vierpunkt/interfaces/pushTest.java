@@ -19,7 +19,6 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
-
 public class pushTest
 {
 	/**
