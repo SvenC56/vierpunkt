@@ -78,7 +78,7 @@ public class TestGui extends Application {
         vierpunkt.getItems().addAll(menu11, menu12, menu13, menu14);
         
         // Unterkategorien fuer "themen"
-        MenuItem menu21 = new MenuItem("Sueßigkeiten");
+        MenuItem menu21 = new MenuItem("Suessigkeiten");
         MenuItem menu22 = new MenuItem("Halloween");
         MenuItem menu23 = new MenuItem("PizzaBurger");
         MenuItem menu24 = new MenuItem("Sports");
@@ -229,9 +229,9 @@ public class TestGui extends Application {
         VBox boxlinks = new VBox();
         boxlinks.setId("boxlinks");
         boxlinks.setPrefWidth(breite/4);
-        javafx.scene.image.Image sueßigkeiten = new javafx.scene.image.Image(getClass().getResource("sueßigkeiten.png").toExternalForm());
-        ImageView cupcake = new ImageView(sueßigkeiten);
-        cupcake.setImage(sueßigkeiten);
+        javafx.scene.image.Image suessigkeiten = new javafx.scene.image.Image(getClass().getResource("suessigkeiten.png").toExternalForm());
+        ImageView cupcake = new ImageView(suessigkeiten);
+        cupcake.setImage(suessigkeiten);
         Rectangle platzhalter2 = new Rectangle(10,70);
         platzhalter2.setOpacity(0);
         boxlinks.getChildren().addAll(cupcake, platzhalter2);
