@@ -1,4 +1,4 @@
-package de.dhbw.mannheim.vierpunkt.gui;
+package de.dhbw.mannheim.vierpunkt.gui_alt;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;

@@ -1,6 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.application;
 
-import de.dhbw.mannheim.vierpunkt.gui.Gui;
+import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 
@@ -14,7 +14,7 @@ public class GameMain {
 	public static void main(String[] args) {
 	
 	/**Initialisierung des Spielfeldes**/
-	Gui gui = new Gui();
+	TestGui gui = new TestGui();
 	GameLogic game = new GameLogic();
 	gui.main(args);
 	
