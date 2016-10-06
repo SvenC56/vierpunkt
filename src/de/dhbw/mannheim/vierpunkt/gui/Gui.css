@@ -8,17 +8,37 @@
     -fx-background-size: contain;
 }
 
+#container{
+	-fx-background-image: url("ueberschrift.jpeg");
+	-fx-width: 1400px;
+	-fx-height: 150px;
+	-fx-border-color: #666666;
+}
+
+#containerklein{
+	-fx-fill: #ffffff;
+}
+
+#titel{
+	 -fx-border-color: #660066;
+}
+
 .disk{
     -fx-background-image: url("spielstein-rot.png");
     
 }
-
-.label {
-    -fx-font-size: 12px;
+.text{
+-fx-fill: #660066;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-    -fx-alignment: TOP_CENTER;
+    -fx-font-size: 15;
+}
+.label {
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+    -fx-font-size: 25;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+	
 }
 #grid{
     -fx-grid-lines-visible: true;
@@ -32,8 +52,8 @@
 }
 #cell{
     -fx-opacity:1;
-    -fx-fill: #3EA9DF;
-    -fx-stroke: #3EA9DF;
+    -fx-stroke: #660066;
+    -fx-fill: linear-gradient(to bottom right, #660066, #993366);
     -fx-alignment: top;
 }
 
@@ -56,12 +76,13 @@
 
 .button {
     -fx-text-fill: white;
+    -fx-font-size: 20px;
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#FF3366, #FF6666);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-alignment:center;
-    -fx-halignment: center;
+    -fx-alignment:bottom_center;
+    -fx-label-padding: 10px;
  
 }
 .button:hover {
