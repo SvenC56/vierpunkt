@@ -145,13 +145,13 @@ public class TestGui extends Application {
          * |	|	VBox "boxlinks"					VBox "boxmitte"					VBox "boxrechts"						|	|
          * |	|	____________________________	____________________________	____________________________________	|	|	
          * |	|	|							|	|							|	|									|	|	|
-         * |	|	|							|	|	Rectangle "platzhalter"	|	|	Label "spielstand"				|	|	|
+         * |	|	|							|	|	Rectangle "platzhalter1"|	|	Label "spielstand"				|	|	|
          * |	|	|							|	|							|	|	Text "antwortspielstand"		|	|	|
          * |	|	|							|	|	Gridpane "spielfeld"	|	|	Label "satzstatus"				|	|	|
          * |	|	|							|	|							|	|	Text "antwortsatzstatus"		|	|	|
          * |	|	|	Imageview "cupcake"		|	|							|	|	Label "spielmodi"				|	|	|
          * |	|	|							|	|							|	|	Slider "spielmodus"				|	|	|
-         * |	|	|	Rectangle "platzhalter"	|	|							|	|	Rectangle "platzhalter"			|	|	|
+         * |	|	|	Rectangle "platzhalter2"|	|							|	|	Rectangle "platzhalter0"			|	|	|
          * |	|	|							|	|							|	|	Button "start"					|	|	|
          * |	|	|___________________________|	|___________________________|	|___________________________________|	|	|
          * |	|___________________________________________________________________________________________________________|	|
@@ -159,6 +159,7 @@ public class TestGui extends Application {
          **/
         
         /*******************************************  CONTAINERBOXEN IN CONTENT  ************************************************/
+        // Erzeugen der rechten Containerbox
         VBox boxrechts = new VBox();
         boxrechts.setPrefWidth(breite/4);
         boxrechts.setSpacing(10);
@@ -207,40 +208,48 @@ public class TestGui extends Application {
 	
 	        
 	        // Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
-	        Rectangle platzhalter1 = new Rectangle(10, 40);
-	        platzhalter1.setOpacity(0);
+	        Rectangle platzhalter0 = new Rectangle(10, 40);
+	        platzhalter0.setOpacity(0);
 	        
 	        Button start = new Button("Spiel starten");
 	        
 	   
-	        
-	        boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter1, start);
+	    // Einfuegen der Elemente in die rechte Box
+	    boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
 	       
-        
+	 // Erzeugen der mittleren Containerbox
         VBox boxmitte = new VBox();
         boxmitte.setId("boxmitte");
         boxmitte.setPrefWidth(7*l);
         boxmitte.setPadding(new Insets(30, 0, 50, 0));
         boxmitte.setMinWidth(7*l);
-        Rectangle platzhalter = new Rectangle(7*l,l);
-        platzhalter.setOpacity(0);
-        boxmitte.getChildren().add(platzhalter);
         
+        	/*******  INHALTE DER MITTLEREN CONTAINERBOX   *********************/
+        	Rectangle platzhalter1 = new Rectangle(7*l,l);
+        	platzhalter1.setOpacity(0);								// Platzhalter nicht sichtbar
+        	
+        // Einfuegen der Elemente in die mittlere Box
+        boxmitte.getChildren().add(platzhalter1);
+        
+        // Erzeugen der linken Containerbox
         VBox boxlinks = new VBox();
         boxlinks.setId("boxlinks");
         boxlinks.setPrefWidth(breite/4);
-        javafx.scene.image.Image suessigkeiten = new javafx.scene.image.Image(getClass().getResource("suessigkeiten.png").toExternalForm());
-        ImageView cupcake = new ImageView(suessigkeiten);
-        cupcake.setImage(suessigkeiten);
-        Rectangle platzhalter2 = new Rectangle(10,70);
-        platzhalter2.setOpacity(0);
-        boxlinks.getChildren().addAll(cupcake, platzhalter2);
         boxlinks.setAlignment(Pos.BOTTOM_CENTER);
-        cupcake.setFitWidth(breite/4);
-        cupcake.setPreserveRatio(true);
         
+        	/*******  INHALTE DER LINKEN CONTAINERBOX   ************************/
+        	javafx.scene.image.Image suessigkeiten = new javafx.scene.image.Image(getClass().getResource("suessigkeiten.png").toExternalForm());
+        	ImageView cupcake = new ImageView(suessigkeiten);
+
+        	cupcake.setFitWidth(breite/4);				// Breite soll ein Viertel des Fensters betragen
+            cupcake.setPreserveRatio(true);				// Das Verhaeltnis soll beibehalten werden
+        	
+        	Rectangle platzhalter2 = new Rectangle(10,70);			// Platzhalter, damit das Bild nicht ganz am Boden sitzt
+        	platzhalter2.setOpacity(0);
         
-        
+        // Einfuegen der Elemente in die linke Box
+        boxlinks.getChildren().addAll(cupcake, platzhalter2);
+   
         
         /*********************************************************************************************************************
          *******************************************  GRID FUER DAS SPIELFELD  *********************************************************
