@@ -14,6 +14,7 @@ import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.PrivateChannel;
 import com.pusher.client.channel.PrivateChannelEventListener;
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
@@ -82,12 +83,16 @@ public class pushTest
 		}, ConnectionState.ALL);
 	
 		// Der Pusher wartet auf dem vorgegebenen Channel
-				Channel channel = pusher.subscribePrivate(ChannelName);
+				PrivateChannel channel = pusher.subscribePrivate(ChannelName);
 
 				// Auf das "MoveToAgent"-Event wird reagiert, indem die empfangenen Daten in der Konsole ausgegeben werden
 				channel.bind("MoveToAgent", new PrivateChannelEventListener() {
-				    public void onEvent(String channel, String event, String data) {
+				    public void onEvent(String channel1, String event, String data) {
 				        System.out.println("Empfangene Daten: " + data);
+				        
+				        if (data.contains("true")){
+				        	channel.trigger("client-event4server", "{\"move\": \"" + 1 + "\"}");
+				        }
 				    }
 
 					@Override
