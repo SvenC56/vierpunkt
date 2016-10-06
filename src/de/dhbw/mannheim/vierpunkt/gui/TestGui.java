@@ -306,7 +306,7 @@ public class TestGui extends Application {
             // Erzeugen der Spielsteine
             javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
             javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
-            javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein-grau.png").toExternalForm());
+            javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
             
             // Ansicht der Spielsteine
             ImageView spielstein = new ImageView(image1);
