@@ -54,7 +54,7 @@ public class TestGui extends Application {
         primaryStage.setResizable(true);
         
         // Layout Boxen
-        VBox root = new VBox();							// aeußerste Bos
+        VBox root = new VBox();							// aeusserste Bos
         HBox content = new HBox();
         content.setPrefWidth(breite);					// content ueber gesamte Bildschirmbreite
         content.setAlignment(Pos.TOP_CENTER);			// alle Inhalte werden mittig ausgerichtet
@@ -185,7 +185,7 @@ public class TestGui extends Application {
 	        spielmodus.setSnapToTicks(true);								// Der Punkt rutzscht zur naechsten Zahl
 	        spielmodus.setShowTickMarks(true);								// Markierungen anzeigen -
 	        spielmodus.setShowTickLabels(true);								// Beschriftungen anzeigen
-	        spielmodus.setOrientation(Orientation.VERTICAL);				// Vertikale Anordnung, standardmaeßig horizontal
+	        spielmodus.setOrientation(Orientation.VERTICAL);				// Vertikale Anordnung, standardmaessig horizontal
 	        spielmodus.setPrefHeight(120);									// bevorzugte Hoehe des Sliders
 	        spielmodus.setMinHeight(120);									// Mindesthoehe
 	        
