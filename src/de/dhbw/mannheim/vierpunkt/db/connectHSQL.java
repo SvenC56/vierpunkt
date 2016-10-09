@@ -142,7 +142,7 @@ public class connectHSQL {
 	}
 
 	/**
-	 * Speichern eines beliebigen ResultSets in einem Array. Weiterführung der
+	 * Speichern eines beliebigen ResultSets in einem Array. Weiterfuehrung der
 	 * Methode executeSQL(). Falls das SQL Statement fehlerhaft ist, wird eine
 	 * SQL Exception zurueckgegeben.
 	 **/
@@ -161,7 +161,7 @@ public class connectHSQL {
 					// System.out.println("akt. Spalten: " + i);
 					returnStatements[y][(i - 1)] = result.getString(i);
 				}
-				y++; // hochzählen des Zeilenwerts
+				y++; // hochzaehlen des Zeilenwerts
 			}
 			return returnStatements;
 		} catch (SQLException e) {
