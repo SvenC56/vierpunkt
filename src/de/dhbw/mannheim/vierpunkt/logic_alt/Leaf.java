@@ -1,4 +1,4 @@
-package de.dhbw.mannheim.vierpunkt.logic;
+package de.dhbw.mannheim.vierpunkt.logic_alt;
 
 public class Leaf {
 

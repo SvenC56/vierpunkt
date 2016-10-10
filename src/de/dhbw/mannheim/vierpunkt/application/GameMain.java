@@ -1,7 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.application;
 
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
-import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
+import de.dhbw.mannheim.vierpunkt.logic_alt.GameLogic;
 
 
 /**

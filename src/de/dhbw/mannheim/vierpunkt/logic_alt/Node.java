@@ -1,4 +1,4 @@
-package de.dhbw.mannheim.vierpunkt.logic;
+package de.dhbw.mannheim.vierpunkt.logic_alt;
 import java.util.ArrayList;
 
 public class Node {
