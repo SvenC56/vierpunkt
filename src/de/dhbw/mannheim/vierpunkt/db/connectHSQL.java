@@ -9,7 +9,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 
 public class connectHSQL {
 	/**
@@ -39,14 +38,11 @@ public class connectHSQL {
 		}
 	}
 
-	/**
-	 * Main Methode
-	 **/
-	public static void main(String[] args) {
-		connectHSQL connect = new connectHSQL();
-		String[][] test = connect.saveResult(connect.executeSQL("SELECT * FROM GAME"));
-		System.out.println(test[0][0]);
-	}
+	// /**
+	// * Main Methode
+	// **/
+	// public static void main(String[] args) {
+	// }
 
 	/**
 	 * Speichern neuer Variablen in der Datenbank. Der Methode wird das SQL
@@ -64,19 +60,18 @@ public class connectHSQL {
 	}
 
 	/**
-	 * Rueckgabe des hoechsten Indexwertes einer Tabelle, Die Connection und die
-	 * gewuenschte Tabelle muss uebergeben werden. In der Methode wird der
-	 * String tableName aufgegliedert und der erste Buchstabe wird mit der
-	 * Endung "_ID" ergaenzt. Anschlie�end wird ein Resultset erstellt,
-	 * welches aus dem zusammengesetzten SQL Statement besteht. Daraufhin wird
-	 * das Resultset ausgelesen und das Tabellenmaximum als Int Variable
-	 * zurueckgegeben. Falls es im Statement ein SQL Error gibt, wird eine SQL
-	 * Exception geworfen.
+	 * Rueckgabe des hoechsten Indexwertes einer Tabelle, Die gewuenschte
+	 * Tabelle muss uebergeben werden. In der Methode wird der String tableName
+	 * aufgegliedert und der erste Buchstabe wird mit der Endung "_ID" ergaenzt.
+	 * Anschlie�end wird ein Resultset erstellt, welches aus dem
+	 * zusammengesetzten SQL Statement besteht. Daraufhin wird das Resultset
+	 * ausgelesen und das Tabellenmaximum als Int Variable zurueckgegeben. Falls
+	 * es im Statement ein SQL Error gibt, wird eine SQL Exception geworfen.
 	 **/
-	public int getMaxId(connectHSQL connect, String tableName) {
+	public int getMaxId(String tableName) {
 		try {
 			String firstLetter = String.valueOf(tableName.charAt(0));
-			ResultSet getId = connect.executeSQL("SELECT MAX(" + firstLetter + "_ID) FROM " + tableName + ";");
+			ResultSet getId = executeSQL("SELECT MAX(" + firstLetter + "_ID) FROM " + tableName + ";");
 			int tableMaxId = 0;
 			while (getId.next()) {
 				String print = getId.getString(1);
@@ -135,6 +130,7 @@ public class connectHSQL {
 				}
 				System.out.println(print);
 			}
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -150,15 +146,10 @@ public class connectHSQL {
 		try {
 			int y = 0; // Zeilenwert
 			String[][] returnStatements = new String[result.getRow() + 1][result.getMetaData().getColumnCount()];
-			// System.out.println("Zeilenanzahl: " + result.getRow());
-			// System.out.println("Spalten: " +
-			// result.getMetaData().getColumnCount());
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
 				String print = "";
 				for (int i = 1; i <= maxColumns; i++) {
-					// System.out.println("akt Zeilenanzahl: " + y);
-					// System.out.println("akt. Spalten: " + i);
 					returnStatements[y][(i - 1)] = result.getString(i);
 				}
 				y++; // hochzaehlen des Zeilenwerts
@@ -175,14 +166,18 @@ public class connectHSQL {
 	 * Umwandlung eines bestimmten Arrays in SQL Statements. Falls das SQL
 	 * Statement fehlerhaft ist, wird eine SQL Exception zurueckgegeben.
 	 **/
-	public void handOverArray(ResultSet result, String[][] statements, String tableName) {
-		try {
-			for (int i = 1; i <= 5; i++) {
-				Statement stmt = con.createStatement();
-				ResultSet res = stmt.executeQuery("INSERT INTO " + tableName + " VALUES {" + statements[i][1] + "};");
+	public void handOverArray(String[][] statements, String tableName) {
+		String sqlValues = null;
+		for (int zeile = 0; zeile < statements.length; zeile++) {
+			sqlValues = "INSERT INTO " + "test" + " VALUES {";
+			for (int spalte = 0; spalte < statements[zeile].length; spalte++) {
+				if (spalte == statements[zeile].length - 1) {
+					sqlValues += statements[zeile][spalte] + "};";
+				} else {
+					sqlValues += statements[zeile][spalte] + ", ";
+				}
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
+		executeSQL(sqlValues);
 	}
 }

@@ -1,0 +1,69 @@
+/* 
+    Created on : 12.09.2016, 09:03:19
+    Author     : janaschaub
+*/
+
+.root {
+    -fx-background-image: url("Sweets_transparent.png");
+    -fx-background-size: contain;
+}
+
+.disk{
+    -fx-background-image: url("spielstein-rot.png");
+    
+}
+
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-alignment: TOP_CENTER;
+}
+#grid{
+    -fx-grid-lines-visible: true;
+    -fx-alignment: CENTER;
+    -fx-Hgap:10;
+    -fx-Vgap:10;
+    -fx-halignment: center;
+    -fx-valignment: center;
+    
+    
+}
+#cell{
+    -fx-opacity:1;
+    -fx-fill: #3EA9DF;
+    -fx-stroke: #3EA9DF;
+    -fx-alignment: top;
+}
+
+#ueberschrift {
+   -fx-alignment: TOP_CENTER;
+   -fx-halignment: center;
+   -fx-textalign: center;
+  
+}
+#spielfeld{
+   -fx-background-color: #E6E8E9;
+   -fx-opacity: 1;
+   
+}
+#boxmitte{
+    -fx-width:100%;
+    -fx-height: 100%;
+    -fx-alignment: center;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#FF3366, #FF6666);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-alignment:center;
+    -fx-halignment: center;
+ 
+}
+.button:hover {
+    -fx-background-color: linear-gradient(#993366, #CC6699);
+}
