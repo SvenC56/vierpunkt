@@ -9,24 +9,33 @@ public class FileInterface {
 
 	
 public static void main (String[] args) {
-	
-	try {
+
+		String serverFile ="";
+		int zugZeit = 1000;
 		
 		while(true){
 
-
 		// Input aus ServerFile lesen
-		String serverFile = zugEmpfangen();
+		try {
+		serverFile = zugEmpfangen();
+		} catch (IOException e){e.getMessage();}
+		
 		
 		// Wenn man am Zug ist: Zug spielen
 		if (serverFile.contains("true")){
-					zugSpielen(1);
+			try {
+				zugSpielen(1);
+				}catch (IOException e){e.getMessage();}
 			}
-		Thread.sleep(10000);
-		}
 		
-		}catch (Exception e){}
+		
+		try {
+		Thread.sleep(zugZeit);
+			} catch (InterruptedException e){e.getMessage();}
+		
+		}
 	}
+	
 	 /**
 	  * Die Methode liest den Inhalt der vom Server an den Spieler verschickte Datei
 	  * @return Den Inhalt der Server2Spieler.xml Datei
@@ -49,3 +58,4 @@ public static void main (String[] args) {
 		fileOut.close();
 	}
 }
+
