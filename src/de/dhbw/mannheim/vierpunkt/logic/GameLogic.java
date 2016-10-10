@@ -1,4 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.logic;
+
+import de.dhbw.mannheim.vierpunkt.db.connectHSQL;
+
 /**
  * Spiellogik / Zum Reinkommen in die Spiellogik
  * Autoren: Gruppe 4 (vier.) - Verantwortlich: Tobias Jung
@@ -16,47 +19,54 @@ public class GameLogic {
 	//Spielfeld
 	//MAXIMALE ANZAHL SPALTEN
 	private int column = 6;
+	//MAXIMALE ANZAHL ZEILEN
+	private int row = 5;
+	//Variable die Zuege mitzaehlt! //Move entspricht TURN
+	private int move = 0; // --> maximale Anzahl Zuege 69!
+	/**
+	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = spieler 1! 2 = spieler 2
+	 */
+	private int [][] field = new int[column][row];
+	private int player;
+	connectHSQL db = new connectHSQL();
+	private int gameID; // entspricht Spiel
+	private int matchID; //entspricht Runde
+
+	
+	public void setColumn(int column) {
+		this.column=column;
+	}
+	
 	public int getColumn() {
 		return column;
 	}
-
-	public void setColumn(int column) {
-		this.column = column;
+	
+	public void setRow(int row) {
+		this.row=row;
 	}
-
+	
+	public void setMove(int move) {
+		this.move=move;
+	}
+	
 	public int getRow() {
 		return row;
 	}
-
-	public void setRow(int row) {
-		this.row = row;
-	}
-
-	public int[][] getField() {
-		return field;
-	}
-
+	
+	
+	
 	public void setField(int[][] field) {
 		this.field = field;
 	}
 
-	public int getMove() {
+	public int getTurn() {
 		return move;
 	}
 
-	public void setMove(int move) {
+	public void setTurn(int move) {
 		this.move = move;
 	}
 
-
-	//Idee: 6 tief (+ Kopfzeile (? Umsetzung mit oder ohne Kopfzeile?))
-	//MAXIMALE ANZAHL ZEILEN
-	private int row = 5;	
-	//Array fuer Feld
-	private int [][] field = new int[column][row];
-	//Variable die Zuege mitzaehlt!
-	private int move = 0; // --> maximale Anzahl Zuege 69!
-	private int player;
 	
 	//Allgemeine Information: x entspricht Spalte / y entspricht Zeile
 
@@ -66,6 +76,8 @@ public class GameLogic {
 	/**************************************************************/
 	
 	public GameLogic () {
+		//DB-Objekt anlegen
+		this.db = new connectHSQL();
 		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
 		move = 0;
 		for (int x = 0; x < column ; x++) {
@@ -143,6 +155,30 @@ public class GameLogic {
 		//Idee: Die Summe der count ist die Bewertung des Pfades!!
 		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
 		return evaluation;
+	}
+	
+	/**
+	 * Bewertet die aktuelle Spielsituation und liefert die Spalte zurueck, in welche eingeworfen werden soll.
+	 * Wenn -1 uebergeben wird, dann gibt es keinen validen Pfad!
+	 * @param spieler
+	 * @return
+	 */
+	public int bestPath(int spieler) {
+		int bestColumn=-1;
+		int tmp=0;
+		int maxEval=0;
+		
+		for (int x = 0; x < column; x++) {
+			int y = validPosition(x);
+			if (y != -1) {
+				tmp = pathEval(x, y, spieler);
+				if (maxEval<=tmp){
+					maxEval = tmp;
+					bestColumn=x;
+				}
+			}
+		}
+		return bestColumn;
 	}
 	
 	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/
@@ -224,19 +260,49 @@ public class GameLogic {
 	public void setPlayer(int player) {
 		this.player = player;
 	}
-
+	/**
+	 * Ruft in der Datenbank die aktuelle GameID ab, welche einem Spiel entspricht. Gibt einen int-Wert zurueck
+	 * @return
+	 */
+	public int getGameID () {
+		gameID = db.getMaxId("Game");
+		gameID++; // + 1, da zuletzt belegte ID zurueck
+		
+		return gameID;
+	}
+	
+	/**
+	 * Ruft in der Datenbank die aktuelle Match ab, welche einer Runde entspricht. Gibt einen int-Wert zurueck
+	 * @return
+	 */
+	public int getMatchID () {
+		matchID = db.getMaxId("Match");
+		matchID++; // + 1, da zuletzt belegte ID zurueck
+		
+		return matchID;
+	}
+	
+	public void startGame() {
+		
+		
+	}
+	
+	
+	//JANAS TEIL!
+	
 	public GameLogic copy() {
-		// TODO Auto-generated method stub
 		GameLogic game2 = new GameLogic();
 		game2.setColumn(this.column);
 		game2.setRow(this.row);
 		game2.setMove(this.move);
-		for (int i = 0; i < column; i++) {
-			for (int j = 0; j < row; j++) {
-				game2.setField(i, j, this.getField(i, j));
+		
+		for (int i=0; i < column; i++) {
+			for (int j=0; j < row; j++) {
+				game2.setField(i,j, this.getField(i, j));
 			}
 		}
-		return game2;
+		
+	return game2;
 	}
 
 	

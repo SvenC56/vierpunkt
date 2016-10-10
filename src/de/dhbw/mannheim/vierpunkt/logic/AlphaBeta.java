@@ -26,6 +26,7 @@ public class AlphaBeta {
 		
 		if (depth == 0);
 /**		
+ * 		TOBI: Methode bestPath(int spieler);
  * 		Fehlt: Methode in GameLogic, die die gesamte Spielsituation auswertet
  * 		return evaluation(game); // if maximum depth is reached, game is evaluated 
  */

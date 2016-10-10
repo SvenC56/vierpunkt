@@ -30,7 +30,6 @@ import java.awt.Toolkit;
 public class TestGui extends Application {
    
 	/****** VARIABLENDEKLARATION *****/
-	
     private int anzahlzeilen;                         
     private int anzahlspalten;                          
     private final int l = 70;               // Seitenlaenge der Grids - spaeter manuelle Einstellung
