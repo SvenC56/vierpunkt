@@ -1,6 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.logic;
 
 import de.dhbw.mannheim.vierpunkt.db.connectHSQL;
+import java.util.Random; //Temporaer fuer Test
 
 /**
  * Spiellogik / Zum Reinkommen in die Spiellogik
@@ -20,13 +21,13 @@ public class GameLogic {
 	//MAXIMALE ANZAHL SPALTEN
 	private int column = 6;
 	//MAXIMALE ANZAHL ZEILEN
-	private int row = 5;
+	private int row = 7;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = spieler 1! 2 = spieler 2
 	 */
-	private int [][] field = new int[column][row];
+	private int [][] field = new int[row][column];
 	private int player;
 	connectHSQL db = new connectHSQL();
 	private int gameID; // entspricht Spiel
@@ -82,7 +83,7 @@ public class GameLogic {
 		move = 0;
 		for (int x = 0; x < column ; x++) {
 			for (int y = 0; y < row; y++ ) {
-				field [x][y] = 0;
+				field [y][x] = 0;
 			}
 		}
 	}
@@ -92,17 +93,30 @@ public class GameLogic {
 	/**************************************************************/
 	
 	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
-	private int getField (int x, int y) {
-		return field[x][y];
+	public int getField (int x, int y) {
+		return field[y][x];
 	}
 	
 	//Setter fuer field
 	private void setField (int x, int y, int value) {
-		field[x][y] = value;
+		field[y][x] = value;
 		move++; 		//Zuege mitzaehlen!
 	}
 	
-
+	/**************************************************************/
+	/*******************TEMPORAER TEST-METHODS*********************/
+	/**************************************************************/
+	public void randomGame() {
+		Random value = new Random();
+		for (int x = 0; x < column ; x++) {
+			for (int y = 0; y < row; y++ ) {
+				int zahl = value.nextInt(3);
+				field [y][x] = zahl;
+			}
+		}
+		System.err.print("Array mit Zufallszahlen zwischen 0 und 2 gefuellt!");
+	}
+	
 	/**************************************************************/
 	/************************LOGIK*********************************/
 	/**************************************************************/
@@ -114,7 +128,7 @@ public class GameLogic {
 		//Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x >= 0 && x < column) {
 			for (int y = 0; y < row; y++) {
-				if (field[x][y]==0) { //leere Position gefunden
+				if (field[y][x]==0) { //leere Position gefunden
 					return y; //gibt Zeile zurueck!
 				} //kein leeres Feld
 				else {
@@ -153,6 +167,7 @@ public class GameLogic {
 	private int pathEval (int x, int y, int spieler) {
 		int evaluation = 0;
 		//Idee: Die Summe der count ist die Bewertung des Pfades!!
+		System.err.println("Methode pathEval wurde aufgerufen!");
 		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
 		return evaluation;
 	}
@@ -167,12 +182,15 @@ public class GameLogic {
 		int bestColumn=-1;
 		int tmp=0;
 		int maxEval=0;
-		
-		for (int x = 0; x < column; x++) {
+		System.err.println("Methode bestPath wurde aufgerufen!");
+		for (int x = 0; x < row; x++) {
+			int spalte=x+1;
+			System.err.println("Pruefe Spalte:" + spalte);
 			int y = validPosition(x);
 			if (y != -1) {
 				tmp = pathEval(x, y, spieler);
 				if (maxEval<=tmp){
+					System.err.println("Bessere Spalte:" + spalte + " Wert: " + tmp);
 					maxEval = tmp;
 					bestColumn=x;
 				}
@@ -183,6 +201,7 @@ public class GameLogic {
 	
 	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/
 	private int inColumn(int x, int y, int spieler) {
+		System.err.println("Methode inColumn wurde aufgerufen!");
 		int count=0; //Zaehler der validen Chips des gleichen Spielers in Spalte
 		int temp = y;
 		for (; y <= 0 ; y--) { //von unten nach oben!
@@ -204,6 +223,7 @@ public class GameLogic {
 	}
 	/**Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
 	private int inDiagonal(int x, int y, int spieler) {
+		System.err.println("Methode inDiagonal wurde aufgerufen!");
 		int count=0;
 		int startX = x;
 		int startY = y;
@@ -230,6 +250,7 @@ public class GameLogic {
 	
 	/**Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck**/
 	private int inRow(int x, int y, int spieler) {
+		System.err.println("Methode inRow wurde aufgerufen!");
 		int count=0;
 		int temp = x;
 		for (; x<column; x++) { //von links nach rechts! Limitiert durch Anzahl Spalten!
