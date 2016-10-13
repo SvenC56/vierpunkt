@@ -200,6 +200,7 @@ public class TestGui extends Application {
 															// horizontal
 		spielmodus.setPrefHeight(120); // bevorzugte Hoehe des Sliders
 		spielmodus.setMinHeight(120); // Mindesthoehe
+		
 
 		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt
 		// und die Rueckgabewerte festlegt
@@ -236,6 +237,7 @@ public class TestGui extends Application {
 		platzhalter0.setOpacity(0);
 
 		Button start = new Button("Spiel starten");
+		
 
 		// Einfuegen der Elemente in die rechte Box
 		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi,
@@ -302,7 +304,9 @@ public class TestGui extends Application {
 				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
 				new RowConstraints(l, l, Double.MAX_VALUE));
 
-		createGrids(spielfeld); // Methodenaufruf
+		createGrids(spielfeld, spielmodus, start); // Methodenaufruf
+		
+		
 
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
@@ -314,8 +318,8 @@ public class TestGui extends Application {
 	/*********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
-    private void createGrids(final GridPane spielfeld){
-       // spielfeld.getChildren().clear();
+    private void createGrids(final GridPane spielfeld, Slider spielmodus, Button start){
+       spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
             for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
             
@@ -354,93 +358,108 @@ public class TestGui extends Application {
             vorschauspielstein.setPreserveRatio(true); 
             vorschauspielstein.setOpacity(0.5);
             
+            start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+    			@Override
+                public void handle(MouseEvent arg0) {
+    				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+    		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+    		            	
+    		            	createGrids(spielfeld, spielmodus, start);
+    		            }
+    			}}
+    		});
+            
             /*******************************************************************************************************************
              *******************************************  ANZEIGE IM SPIELFELD  ************************************************
              *******************************************************************************************************************/ 
-            // Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
-            vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    if(spielerfarbe.get()==rot){
-                        vorschauspielstein.setImage(image1);      
-                    }else{
-                        vorschauspielstein.setImage(image2);
-                    }
-                }
-            });
+           if(spielmodus.getValue() != 0){
+        	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
+               vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                       if(spielerfarbe.get()==rot){
+                           vorschauspielstein.setImage(image1);      
+                       }else{
+                           vorschauspielstein.setImage(image2);
+                       }
+                   }
+               });
+               
+               // Beim Verlassen des Vorschau-Spielsteins erscheint wieder der graue Hintergrund
+                vorschauspielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                       vorschauspielstein.setImage(image3);
+                   }
+               });
+                
+               // Lässt den Stein herunterfallen (Weg und Zeit)
+                spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+               final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             
-            // Beim Verlassen des Vorschau-Spielsteins erscheint wieder der graue Hintergrund
-             vorschauspielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    vorschauspielstein.setImage(image3);
-                }
-            });
-             
-            // Lässt den Stein herunterfallen (Weg und Zeit)
-             spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
-            final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
-         
-            // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
-            spielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
-            @Override
-                public void handle(MouseEvent arg0) {
-                    vorschauspielstein.setImage(image3);
-                    if(spielerfarbe.get()==rot){
-                        vorschauspielstein.setImage(image1);
-                    }else{
-                        vorschauspielstein.setImage(image2);
-                    }
-                }
-            });
+               // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
+               spielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
+               @Override
+                   public void handle(MouseEvent arg0) {
+                       vorschauspielstein.setImage(image3);
+                       if(spielerfarbe.get()==rot){
+                           vorschauspielstein.setImage(image1);
+                       }else{
+                           vorschauspielstein.setImage(image2);
+                       }
+                   }
+               });
+               
+               // Beim Verlassen des Spielsteins erscheint wieder der graue Hintergrund
+              spielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                        vorschauspielstein.setImage(image3);
+                   }
+               });
+              
+              // Setzen der Spielsteine
+              spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                       if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
+                           translateTransition.setToY(0);
+                           translateTransition.play();
+                           if(spielerfarbe.get()==rot){
+                               spielstein.setImage(image1);
+                               spielerfarbe.set(gruen);
+                           }else{
+                               spielstein.setImage(image2);
+                               spielerfarbe.set(rot);
+                           }
+                       } 
+                       System.out.println(spielstein.getId().charAt(10));
+                   }
+               });
+              
+               // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
+               vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                       if(spielstein.getTranslateY()!=0){
+                           translateTransition.setToY(0);
+                           translateTransition.play();
+                           if(spielerfarbe.get()==rot){
+                               spielerfarbe.set(gruen);
+                               spielstein.setImage(image1);
+                           }else{
+                               spielerfarbe.set(rot);
+                               spielstein.setImage(image2);
+                           }
+                           int spalte = (int)spielstein.getId().charAt(10) - 48;
+                           System.out.println(spalte);
+                           
+                       }
+                   }
+               });
+           }
             
-            // Beim Verlassen des Spielsteins erscheint wieder der graue Hintergrund
-           spielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                     vorschauspielstein.setImage(image3);
-                }
-            });
-           
-           // Setzen der Spielsteine
-           spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
-                        translateTransition.setToY(0);
-                        translateTransition.play();
-                        if(spielerfarbe.get()==rot){
-                            spielstein.setImage(image1);
-                            spielerfarbe.set(gruen);
-                        }else{
-                            spielstein.setImage(image2);
-                            spielerfarbe.set(rot);
-                        }
-                    } 
-                    System.out.println(spielstein.getId().charAt(10));
-                }
-            });
-           
-            // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
-            vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                    if(spielstein.getTranslateY()!=0){
-                        translateTransition.setToY(0);
-                        translateTransition.play();
-                        if(spielerfarbe.get()==rot){
-                            spielerfarbe.set(gruen);
-                            spielstein.setImage(image1);
-                        }else{
-                            spielerfarbe.set(rot);
-                            spielstein.setImage(image2);
-                        }
-                        
-                        System.out.println(spielstein.getId().charAt(10));
-                        
-                    }
-                }
-            });
+            
             
             /*******************************************************************************************************************
              *******************************************  ZELLEN FUELLEN  ******************************************************
