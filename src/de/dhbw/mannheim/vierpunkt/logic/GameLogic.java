@@ -199,19 +199,23 @@ public class GameLogic {
 		return bestColumn;
 	}
 	
-	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/
-	public int inColumn(int x, int y, int spieler) {
-		System.err.println("Methode inColumn wurde aufgerufen!");
+	/**Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck**/ //Funktioniert!
+	private int inColumn(int x, int y, int spieler) {
+		//System.err.println("Methode inColumn wurde aufgerufen!");
 		int count=0; //Zaehler der validen Chips des gleichen Spielers in Spalte
 		int temp = y;
-		for (; y <= 0 ; y--) { //von unten nach oben!
+		if (getField(x,y) == 0 || getField(x,y) == spieler) {
+			count++;
+			y--;
+		}
+		for (; y > -1; y--) { //von unten nach oben!
 			if (getField(x, y) == spieler) {
 				count++;
 			}
 			else break;
 		}
-		if (count < 4) { //von oben nach unten! (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
-			y = temp;
+		if (count < 4 && temp < row) { //von oben nach unten! (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
+			y = temp+1;
 			for (; y < row; y++) { //Limitiert durch Anzahl Zeilen!
 				if (getField(x, y) == spieler) {
 					count++;
@@ -222,7 +226,7 @@ public class GameLogic {
 		return count;	
 	}
 	/**Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-	private int inDiagonal(int x, int y, int spieler) {
+	public int inDiagonal(int x, int y, int spieler) {
 		System.err.println("Methode inDiagonal wurde aufgerufen!");
 		int count=0;
 		int startX = x;

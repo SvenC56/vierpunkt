@@ -36,7 +36,7 @@ public class GameMain {
 		for (int y = 0; y < game.getRow() ; y++) {
 			System.out.println();
 			for (int x = 0; x < game.getColumn(); x++ ) {
-				System.out.print(game.inColumn(x, y, 1));
+				System.out.print(game.inDiagonal(x, y, 1));
 				System.out.print("\t");
 			}}
 		
