@@ -32,6 +32,7 @@ public class GameMain {
 				System.out.print(game.getField(x, y));
 				System.out.print("\t");
 			}}
+		System.out.println("\n" + "**************************************************************");
 		int column=game.bestPath(2);
 		
 		System.out.println("Die Methode sagt, beste Spalte ist:" + column);
