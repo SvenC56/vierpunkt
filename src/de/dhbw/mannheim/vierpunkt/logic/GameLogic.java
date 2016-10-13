@@ -226,21 +226,52 @@ public class GameLogic {
 		return count;	
 	}
 	/**Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-	public int inDiagonal(int x, int y, int spieler) {
-		System.err.println("Methode inDiagonal wurde aufgerufen!");
+	private int inDiagonal(int x, int y, int spieler) {
+		//System.err.println("Methode inDiagonal wurde aufgerufen!");
 		int count=0;
 		int startX = x;
 		int startY = y;
-		for (; x < column || y <= 0; x++, y--) { //Idee: Zwei Bedingungen in einer for-Schleife! PRUEFEN!
+		if (getField(x,y) == 0 || getField(x,y) == spieler) {
+			count++;
+			x++;
+			y--;
+		}
+		//Prueft oben - rechts
+		for (; (x < column && y > -1); x++, y--) {
 			if (getField(x,y) == spieler) {
 				count++;
 			}
 			else break;
 		}
-		if (count < 4) {
-			x = startX;
-			y = startY;
-		for (; x <= 0 || y < row; x--, y++) {
+		//Prueft oben - links
+		if (count < 4 && (y > -1 && x > -1) ) {
+			x = startX-1;
+			y = startY-1;
+				for (; (x > -1 && y > -1); x--, y--) {
+					if (getField(x,y) == spieler) {
+						count++;
+					}
+					else break;
+				}
+		}
+		
+		if (count < 4 && (y < row && x > -1) ) {
+			x = startX-1;
+			y = startY+1;
+		//Prueft unten - links
+		for (; (x > -1 && y < row); x--, y++) {
+			
+			if (getField(x,y) == spieler) {
+				count++;
+			}
+			else break;
+		}
+		}
+		if (count < 4 && (y < row && x < column) ) {
+			x = startX+1;
+			y = startY+1;
+		//Prueft unten - rechts
+		for (; (x < column && y < row); x++, y++) {
 			
 			if (getField(x,y) == spieler) {
 				count++;
