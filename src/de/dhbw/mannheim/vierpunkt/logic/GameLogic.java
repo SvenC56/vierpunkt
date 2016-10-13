@@ -81,8 +81,8 @@ public class GameLogic {
 		this.db = new connectHSQL();
 		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
 		move = 0;
-		for (int x = 0; x < column ; x++) {
-			for (int y = 0; y < row; y++ ) {
+		for (int y = 0; y < row ; y++) {
+			for (int x = 0; x < column; x++ ) {
 				field [y][x] = 0;
 			}
 		}
@@ -108,8 +108,8 @@ public class GameLogic {
 	/**************************************************************/
 	public void randomGame() {
 		Random value = new Random();
-		for (int x = 0; x < column ; x++) {
-			for (int y = 0; y < row; y++ ) {
+		for (int y = 0; y < row ; y++) {
+			for (int x = 0; x < column; x++ ) {
 				int zahl = value.nextInt(3);
 				field [y][x] = zahl;
 			}

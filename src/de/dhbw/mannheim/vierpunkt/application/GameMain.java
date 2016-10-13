@@ -1,5 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.application;
 
+
+
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
@@ -19,21 +21,24 @@ public class GameMain {
 		/**************************************************************/
 		GameLogic game = new GameLogic();
 		
-		for (int z=0; z <= 2; z++) {
+		for (int z=2; z <= 2; z++) {
 		game.randomGame();
-		System.out.println("Bin dann mal weg!");
-		int column=game.bestPath(1);
+		System.out.println(game.getField(2, 0));
 		System.out.println("################################");
+		
+		for (int y = 0; y < game.getRow() ; y++) {
+			System.out.println();
+			for (int x = 0; x < game.getColumn(); x++ ) {
+				System.out.print(game.getField(x, y));
+				System.out.print("\t");
+			}}
+	System.out.println("Bin dann mal weg!");
+	int column=game.bestPath(1);
 		
 		System.out.println("Die Methode sagt, beste Spalte ist:" + column);
 		/*************************************************************/
-		for (int x = 0; x < game.getColumn() ; x++) {
-			System.out.println();
-			for (int y = 0; y < game.getRow(); y++ ) {
-				System.out.print(game.getField(x, y));
-				System.out.print("\t");
-			}}}
 		
+		}
 	/**Initialisierung des Spielfeldes**/
 	/**TestGui gui = new TestGui();
 	gui.main(args);**/
