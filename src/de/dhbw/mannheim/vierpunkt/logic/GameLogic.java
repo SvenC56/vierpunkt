@@ -25,7 +25,7 @@ public class GameLogic {
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
 	/**
-	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = spieler 1! 2 = spieler 2
+	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
 	 */
 	private int [][] field = new int[row][column];
 	private int player;
@@ -33,7 +33,12 @@ public class GameLogic {
 	private int gameID; // entspricht Spiel
 	private int matchID; //entspricht Runde
 
-	
+	/**
+	 * Methode rein, die Zug des Servers durchfuehrt!
+	 * Methode zum Speichern des Spielstandes!
+	 * Methode die Spalte an Pusher gibt... Naechster Zug
+	 * Methode um Gewinn zu erkennen!(count == 4 BREAK)
+	 */
 	public void setColumn(int column) {
 		this.column=column;
 	}
@@ -60,12 +65,12 @@ public class GameLogic {
 		this.field = field;
 	}
 
-	public int getTurn() {
+	private int getTurn() {
 		return move;
 	}
 
-	public void setTurn(int move) {
-		this.move = move;
+	private void setTurn() {
+		this.move = move++;
 	}
 
 	
@@ -101,7 +106,7 @@ public class GameLogic {
 	//Setter fuer field
 	private void setField (int x, int y, int value) {
 		field[y][x] = value;
-		move++; 		//Zuege mitzaehlen!
+		setTurn();		//Zuege mitzaehlen!
 	}
 	
 	/**************************************************************/
@@ -284,6 +289,31 @@ public class GameLogic {
 		}
 		}
 		return count;
+	}
+	/**
+	 * Methode fuehrt Zug vom Server durch!
+	 * @param x
+	 */
+	public void serverTurn(int x) {
+		//Prueft naechste freie Stelle in der Spalte
+		int y = validPosition(x);
+		//Spielt den Zug
+		setField(x, y, 1);
+		System.err.println("Server spielte den " + getTurn() + ". Zug!");
+	}
+	
+	/**
+	 * Methode fuehrt Zug vom Spieler durch (KI oder Manuell) 
+	 * --->Noch ohne KI
+	 */
+	public void playerTurn() {
+		//Ermittelten die beste Spalte
+		int x = bestPath(2);
+		//Gibt naechste freie Position zurueck
+		int y = validPosition(x);
+		//Spielt den Zug
+		setField(x, y, 2);
+		System.err.println("Spieler spielte den " + getTurn() + ". Zug!");
 	}
 	
 	

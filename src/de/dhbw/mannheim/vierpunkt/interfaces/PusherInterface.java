@@ -95,7 +95,6 @@ public class PusherInterface
 				channel.bind("MoveToAgent", new PrivateChannelEventListener() {
 				    public void onEvent(String channel1, String event, String data) {
 				        System.out.println("Empfangene Daten: " + data);
-				        
 				        if (data.contains("true")){
 				        	// der Move ist im Moment noch eine Zufallszahl zwischen 1 und 6
 				        	int move = (int) Math.random() * 6 + 1;
