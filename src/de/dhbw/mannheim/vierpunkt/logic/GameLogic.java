@@ -91,7 +91,7 @@ public class GameLogic {
 				field [y][x] = 0;
 			}
 		}
-		System.err.println("Konstruktor durchlaufen.");
+		//System.err.println("Konstruktor durchlaufen.");
 	}
 	
 	/**************************************************************/
@@ -120,7 +120,7 @@ public class GameLogic {
 				field [y][x] = zahl;
 			}
 		}
-		System.err.print("Array mit Zufallszahlen zwischen 0 und 2 gefuellt!");
+		//System.err.print("Array mit Zufallszahlen zwischen 0 und 2 gefuellt!");
 	}
 	
 	/**************************************************************/
@@ -175,9 +175,9 @@ public class GameLogic {
 	private int pathEval (int x, int y, int spieler) {
 		int evaluation = 0;
 		//Idee: Die Summe der count ist die Bewertung des Pfades!!
-		System.err.println("Methode pathEval wurde aufgerufen!");
+		//System.err.println("Methode pathEval wurde aufgerufen!");
 		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
-		System.err.println("Bewertung des Pfades durchgefuehrt: " + evaluation);
+		//System.err.println("Bewertung des Pfades durchgefuehrt: " + evaluation);
 		return evaluation;
 	}
 	
@@ -191,15 +191,15 @@ public class GameLogic {
 		int bestColumn=-1;
 		int tmp=0;
 		int maxEval=0;
-		System.err.println("Methode bestPath wurde aufgerufen!");
+		//System.err.println("Methode bestPath wurde aufgerufen!");
 		for (int x = 0; x < row; x++) {
 			int spalte=x+1;
-			System.err.println("Pruefe Spalte:" + spalte);
+			//System.err.println("Pruefe Spalte:" + spalte);
 			int y = validPosition(x);
 			if (y != -1) {
 				tmp = pathEval(x, y, spieler);
 				if (maxEval<=tmp){
-					System.err.println("Bessere Spalte:" + spalte + " Wert: " + tmp);
+					//System.err.println("Bessere Spalte:" + spalte + " Wert: " + tmp);
 					maxEval = tmp;
 					bestColumn=x;
 				}
@@ -299,21 +299,22 @@ public class GameLogic {
 		int y = validPosition(x);
 		//Spielt den Zug
 		setField(x, y, 1);
-		System.err.println("Server spielte den " + getTurn() + ". Zug!");
+		System.err.println("Server spielte den " + getTurn() + ". Zug in Spalte " + x);
 	}
 	
 	/**
 	 * Methode fuehrt Zug vom Spieler durch (KI oder Manuell) 
 	 * --->Noch ohne KI
 	 */
-	public void playerTurn() {
+	public int playerTurn() {
 		//Ermittelten die beste Spalte
 		int x = bestPath(2);
 		//Gibt naechste freie Position zurueck
 		int y = validPosition(x);
 		//Spielt den Zug
 		setField(x, y, 2);
-		System.err.println("Spieler spielte den " + getTurn() + ". Zug!");
+		System.err.println("Spieler spielte den " + getTurn() + ". Zug in Spalte " + x);
+		return x;
 	}
 	
 	

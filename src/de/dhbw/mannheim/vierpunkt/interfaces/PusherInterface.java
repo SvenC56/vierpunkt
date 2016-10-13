@@ -105,7 +105,7 @@ public class PusherInterface
 				        
 				        if (data.contains("true")){
 				        	// der Move ist im Moment noch eine Zufallszahl zwischen 1 und 6
-				        	int move = (int) Math.random() * 6 + 1;
+				        	int move = game.playerTurn();
 				        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 				        }
 				    }
