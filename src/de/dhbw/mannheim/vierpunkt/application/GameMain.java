@@ -20,7 +20,6 @@ public class GameMain {
 		/*******************TEMPORAER TEST-METHODS*********************/
 		/**************************************************************/
 		GameLogic game = new GameLogic();
-		System.out.println("Arraylaenge: " + game.arraylength());
 		for (int z=0; z <= 2; z++) {
 		game.randomGame();
 		System.out.println(game.getField(3, 0));

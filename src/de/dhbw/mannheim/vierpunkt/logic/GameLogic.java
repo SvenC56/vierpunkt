@@ -24,6 +24,7 @@ public class GameLogic {
 	private int row = 5;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
+	
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
 	 */
@@ -34,11 +35,10 @@ public class GameLogic {
 	private int matchID; //entspricht Runde
 
 	/**
-	 * Methode rein, die Zug des Servers durchfuehrt!
 	 * Methode zum Speichern des Spielstandes!
-	 * Methode die Spalte an Pusher gibt... Naechster Zug
 	 * Methode um Gewinn zu erkennen!(count == 4 BREAK)
 	 */
+	
 	public void setColumn(int column) {
 		this.column=column;
 	}
@@ -70,7 +70,8 @@ public class GameLogic {
 	}
 
 	private void setTurn() {
-		this.move = move++;
+		move++;
+		this.move = move;
 	}
 
 	
@@ -136,7 +137,7 @@ public class GameLogic {
 	 int validPosition (int x) {
 		int temp=0;
 		//Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
-		if (x >= 0 && x <= column) {
+		if (x > -1 && x <= column) {
 			for (int y = 0; y <= row; y++) {
 				if (field[y][x]==0) { //leere Position gefunden
 					return y; //gibt Zeile zurueck!
@@ -209,6 +210,7 @@ public class GameLogic {
 				}
 			}
 		}
+		
 		return bestColumn;
 	}
 	
