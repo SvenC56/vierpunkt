@@ -201,6 +201,8 @@ public class TestGui extends Application {
 		spielmodus.setPrefHeight(120); // bevorzugte Hoehe des Sliders
 		spielmodus.setMinHeight(120); // Mindesthoehe
 		
+		spielmodus.setValue(2);
+		
 
 		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt
 		// und die Rueckgabewerte festlegt
@@ -330,11 +332,7 @@ public class TestGui extends Application {
             circ.centerYProperty().set(l/2);
             Shape cell = Path.subtract(rect, circ);
             cell.setId("cell");
-            /*DropShadow effect = new DropShadow();
-            effect.setSpread(.2);
-            effect.setRadius(25);
-            effect.setColor(BLACK);
-            cell.setEffect(effect);*/
+            
              
             /*******************************************************************************************************************
              *******************************************  SPIELSTEINE  *********************************************************
@@ -363,7 +361,6 @@ public class TestGui extends Application {
                 public void handle(MouseEvent arg0) {
     				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
     		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
-    		            	
     		            	createGrids(spielfeld, spielmodus, start);
     		            }
     			}}
@@ -372,7 +369,9 @@ public class TestGui extends Application {
             /*******************************************************************************************************************
              *******************************************  ANZEIGE IM SPIELFELD  ************************************************
              *******************************************************************************************************************/ 
-           if(spielmodus.getValue() != 0){
+          // if(spielmodus.getValue() == 2){}
+            //if(spielmodus.getValue() == 0){
+            
         	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
                vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
                    @Override
@@ -457,9 +456,7 @@ public class TestGui extends Application {
                        }
                    }
                });
-           }
-            
-            
+           //}
             
             /*******************************************************************************************************************
              *******************************************  ZELLEN FUELLEN  ******************************************************
@@ -472,4 +469,41 @@ public class TestGui extends Application {
             }
         }
     }
-}
+    
+    private void AutoSpiel(final GridPane spielfeld, int zeile, int spalte, int spieler, Button start, Slider spielmodus, Image image1, Image image2, TranslateTransition translateTransition, ImageView spielstein, Shape cell){
+    	 
+             start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+     			@Override
+                 public void handle(MouseEvent arg0) {
+     				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+     		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+     		            	createGrids(spielfeld, spielmodus, start);
+     		            }
+     			}}
+     		});
+             
+                if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
+                    translateTransition.setToY(0);
+                    translateTransition.play();
+                    if(spieler==1){
+                        spielstein.setImage(image1);
+                        spieler=2;
+                    }else{
+                        spielstein.setImage(image2);
+                        spieler=1;
+                    }
+                } 
+                System.out.println(spielstein.getId().charAt(10));
+           
+               // Zellen werden gefuellt
+             StackPane stack = new StackPane();
+             stack.getChildren().addAll(cell, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
+                }
+         }
+    	
+               
+            
+        
+    
+
