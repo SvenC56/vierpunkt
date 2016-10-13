@@ -8,6 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
 
+import com.google.gson.Gson;
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
