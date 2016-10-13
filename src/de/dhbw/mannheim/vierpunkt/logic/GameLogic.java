@@ -86,6 +86,7 @@ public class GameLogic {
 				field [y][x] = 0;
 			}
 		}
+		System.err.println("Konstruktor durchlaufen.");
 	}
 	
 	/**************************************************************/
@@ -133,12 +134,14 @@ public class GameLogic {
 				} //kein leeres Feld
 				else {
 					temp = -1;
+					System.err.println("NO VALID POSITION!");
 					
 				}
 			}
 		}
 		else {
 			temp = -1; //Eingabe ausserhalb des Spielbereichs
+			System.err.println("Eingabe ausserhalb Spielbereich!");
 			
 		}
 	  //temp nur zurueckgeben, wenn noch keine Zeile returned wurde, war eine if, mal gucken, ob erforderlich!
@@ -169,6 +172,7 @@ public class GameLogic {
 		//Idee: Die Summe der count ist die Bewertung des Pfades!!
 		System.err.println("Methode pathEval wurde aufgerufen!");
 		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
+		System.err.println("Bewertung des Pfades durchgefuehrt: " + evaluation);
 		return evaluation;
 	}
 	

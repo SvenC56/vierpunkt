@@ -21,7 +21,7 @@ public class GameMain {
 		/**************************************************************/
 		GameLogic game = new GameLogic();
 		
-		for (int z=0; z <= 20; z++) {
+		for (int z=0; z <= 2; z++) {
 		game.randomGame();
 		System.out.println(game.getField(3, 0));
 		System.out.println("################################");
