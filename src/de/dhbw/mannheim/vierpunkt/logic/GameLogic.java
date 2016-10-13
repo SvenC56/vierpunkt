@@ -19,7 +19,7 @@ public class GameLogic {
 	
 	//Spielfeld
 	//MAXIMALE ANZAHL SPALTEN
-	private int column = 7;
+	private int column = 6;
 	//MAXIMALE ANZAHL ZEILEN
 	private int row = 5;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
@@ -27,7 +27,7 @@ public class GameLogic {
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
 	 */
-	private int [][] field = new int[row][column];
+	private int [][] field = new int[row+1][column+1];
 	private int player;
 	connectHSQL db = new connectHSQL();
 	private int gameID; // entspricht Spiel
@@ -86,8 +86,8 @@ public class GameLogic {
 		this.db = new connectHSQL();
 		//Array durchlaufen und mit Nullen fuellen + move auf false setzen, da kein Spieler am Zug ist!
 		move = 0;
-		for (int y = 0; y < row ; y++) {
-			for (int x = 0; x < column; x++ ) {
+		for (int y = 0; y <= row ; y++) {
+			for (int x = 0; x <= column; x++ ) {
 				field [y][x] = 0;
 			}
 		}
@@ -99,6 +99,10 @@ public class GameLogic {
 	/**************************************************************/
 	
 	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
+	
+	public int arraylength() {
+		return field.length;
+	}
 	public int getField (int x, int y) {
 		return field[y][x];
 	}
@@ -114,8 +118,8 @@ public class GameLogic {
 	/**************************************************************/
 	public void randomGame() {
 		Random value = new Random();
-		for (int y = 0; y < row ; y++) {
-			for (int x = 0; x < column; x++ ) {
+		for (int y = 0; y <= row ; y++) {
+			for (int x = 0; x <= column; x++ ) {
 				int zahl = value.nextInt(3);
 				field [y][x] = zahl;
 			}
@@ -132,8 +136,8 @@ public class GameLogic {
 	 int validPosition (int x) {
 		int temp=0;
 		//Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
-		if (x >= 0 && x < column) {
-			for (int y = 0; y < row; y++) {
+		if (x >= 0 && x <= column) {
+			for (int y = 0; y <= row; y++) {
 				if (field[y][x]==0) { //leere Position gefunden
 					return y; //gibt Zeile zurueck!
 				} //kein leeres Feld
@@ -192,7 +196,7 @@ public class GameLogic {
 		int tmp=0;
 		int maxEval=0;
 		//System.err.println("Methode bestPath wurde aufgerufen!");
-		for (int x = 0; x < row; x++) {
+		for (int x = 0; x <= row; x++) {
 			int spalte=x+1;
 			//System.err.println("Pruefe Spalte:" + spalte);
 			int y = validPosition(x);
@@ -223,9 +227,9 @@ public class GameLogic {
 			}
 			else break;
 		}
-		if (count < 4 && temp < row) { //von oben nach unten! (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
+		if (count < 4 && temp <= row) { //von oben nach unten! (nur, wenn Counter 4 noch nicht erreicht, da Spiel sonst gewonnen)
 			y = temp+1;
-			for (; y < row; y++) { //Limitiert durch Anzahl Zeilen!
+			for (; y <= row; y++) { //Limitiert durch Anzahl Zeilen!
 				if (getField(x, y) == spieler) {
 					count++;
 				}
@@ -246,7 +250,7 @@ public class GameLogic {
 			y--;
 		}
 		//Prueft oben - rechts
-		for (; (x < column && y > -1); x++, y--) {
+		for (; (x <= column && y > -1); x++, y--) {
 			if (getField(x,y) == spieler) {
 				count++;
 			}
@@ -264,11 +268,11 @@ public class GameLogic {
 				}
 		}
 		
-		if (count < 4 && (y < row && x > -1) ) {
+		if (count < 4 && (y <= row && x > -1) ) {
 			x = startX-1;
 			y = startY+1;
 		//Prueft unten - links
-		for (; (x > -1 && y < row); x--, y++) {
+		for (; (x > -1 && y <= row); x--, y++) {
 			
 			if (getField(x,y) == spieler) {
 				count++;
@@ -276,11 +280,11 @@ public class GameLogic {
 			else break;
 		}
 		}
-		if (count < 4 && (y < row && x < column) ) {
+		if (count < 4 && (y <= row && x <= column) ) {
 			x = startX+1;
 			y = startY+1;
 		//Prueft unten - rechts
-		for (; (x < column && y < row); x++, y++) {
+		for (; (x <= column && y <= row); x++, y++) {
 			
 			if (getField(x,y) == spieler) {
 				count++;
@@ -327,7 +331,7 @@ public class GameLogic {
 			count++;
 			x++;
 		}
-		for (; x<column; x++) { //von links nach rechts! Limitiert durch Anzahl Spalten!
+		for (; x <= column; x++) { //von links nach rechts! Limitiert durch Anzahl Spalten!
 			if (getField(x,y) == spieler) {
 				count++;
 			}

@@ -20,15 +20,15 @@ public class GameMain {
 		/*******************TEMPORAER TEST-METHODS*********************/
 		/**************************************************************/
 		GameLogic game = new GameLogic();
-		
+		System.out.println("Arraylaenge: " + game.arraylength());
 		for (int z=0; z <= 2; z++) {
 		game.randomGame();
 		System.out.println(game.getField(3, 0));
-		System.out.println("################################");
+		System.out.println("###############################");
 		
-		for (int y = 0; y < game.getRow() ; y++) {
+		for (int y = 0; y <= game.getRow() ; y++) {
 			System.out.println();
-			for (int x = 0; x < game.getColumn(); x++ ) {
+			for (int x = 0; x <= game.getColumn(); x++ ) {
 				System.out.print(game.getField(x, y));
 				System.out.print("\t");
 			}}

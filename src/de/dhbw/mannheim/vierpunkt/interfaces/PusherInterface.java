@@ -108,6 +108,8 @@ public class PusherInterface
 				        	int move = game.playerTurn();
 				        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 				        }
+				        
+				        
 				    }
 
 					@Override
