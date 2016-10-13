@@ -23,7 +23,7 @@ public class GameMain {
 		
 		for (int z=2; z <= 2; z++) {
 		game.randomGame();
-		System.out.println(game.getField(2, 0));
+		System.out.println(game.getField(3, 0));
 		System.out.println("################################");
 		
 		for (int y = 0; y < game.getRow() ; y++) {
@@ -32,10 +32,18 @@ public class GameMain {
 				System.out.print(game.getField(x, y));
 				System.out.print("\t");
 			}}
-	System.out.println("Bin dann mal weg!");
-	int column=game.bestPath(1);
+		System.out.println("##########EVALUATION##################");
+		for (int y = 0; y < game.getRow() ; y++) {
+			System.out.println();
+			for (int x = 0; x < game.getColumn(); x++ ) {
+				System.out.print(game.inColumn(x, y, 1));
+				System.out.print("\t");
+			}}
 		
-		System.out.println("Die Methode sagt, beste Spalte ist:" + column);
+	//System.out.println("Bin dann mal weg!");
+	//int column=game.bestPath(1);
+		
+		//System.out.println("Die Methode sagt, beste Spalte ist:" + column);
 		/*************************************************************/
 		
 		}
