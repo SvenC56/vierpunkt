@@ -19,9 +19,9 @@ public class GameLogic {
 	
 	//Spielfeld
 	//MAXIMALE ANZAHL SPALTEN
-	private int column = 6;
+	private int column = 7;
 	//MAXIMALE ANZAHL ZEILEN
-	private int row = 7;
+	private int row = 5;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
 	/**
