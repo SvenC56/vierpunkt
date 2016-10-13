@@ -20,6 +20,8 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
+import de.dhbw.mannheim.vierpunkt.logic.*;
+
 public class PusherInterface
 {
 	/**
@@ -96,6 +98,10 @@ public class PusherInterface
 				channel.bind("MoveToAgent", new PrivateChannelEventListener() {
 				    public void onEvent(String channel1, String event, String data) {
 				        System.out.println("Empfangene Daten: " + data);
+				        int zug = getGegnerzug(data);
+				        GameLogic game = new GameLogic();
+				        game.serverTurn(zug);
+				        
 				        
 				        if (data.contains("true")){
 				        	// der Move ist im Moment noch eine Zufallszahl zwischen 1 und 6
@@ -177,10 +183,10 @@ public class PusherInterface
 		return new String(check);
 	}
 	
-	public static String getGegnerzug (String data){
+	public static int getGegnerzug (String data){
 
 		int posZug = ordinalIndexOf(data, "#", 1);
-		String zug = String.valueOf(data.charAt(posZug + 2));
+		int zug = Integer.parseInt(String.valueOf(data.charAt(posZug + 2)));
 		return zug;
 	}
 	
