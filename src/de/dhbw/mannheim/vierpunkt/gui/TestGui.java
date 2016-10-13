@@ -343,6 +343,7 @@ public class TestGui extends Application {
             // Ansicht der Spielsteine
             ImageView spielstein = new ImageView(image1);
             spielstein.setImage(image1);
+            spielstein.setId("spielstein" + anzahlspalten);
             spielstein.setFitWidth(l-10);
             spielstein.setPreserveRatio(true);  
             
@@ -416,7 +417,7 @@ public class TestGui extends Application {
                             spielerfarbe.set(rot);
                         }
                     } 
-                    
+                    System.out.println(spielstein.getId().charAt(10));
                 }
             });
            
@@ -435,20 +436,11 @@ public class TestGui extends Application {
                             spielstein.setImage(image2);
                         }
                         
-                        //System.out.println(GridPane.getColumnIndex(vorschauspielstein));
+                        System.out.println(spielstein.getId().charAt(10));
                         
                     }
                 }
             });
-            
-          /*  vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent arg0) {
-                        System.out.println(GridPane.getColumnIndex(vorschauspielstein));
-                }
-            });*/
-            
-            
             
             /*******************************************************************************************************************
              *******************************************  ZELLEN FUELLEN  ******************************************************
@@ -458,14 +450,6 @@ public class TestGui extends Application {
             vorschauspielstein.setImage(image3);                         // Hintergrund grau
             stack.getChildren().addAll(cell, vorschauspielstein, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-            
-            /*spielfeld.setOnMouseClicked( e -> {
-                Node source = (Node)e.getSource();
-                Integer colIndex = GridPane.getColumnIndex(source);
-                Integer rowIndex = GridPane.getRowIndex(source);
-                System.out.printf("Mouse entered cell [%d, %d]%n", colIndex.intValue(), rowIndex.intValue());
-                e.consume();
-            });*/
             }
         }
     }
