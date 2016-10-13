@@ -95,6 +95,7 @@ public class PusherInterface
 				channel.bind("MoveToAgent", new PrivateChannelEventListener() {
 				    public void onEvent(String channel1, String event, String data) {
 				        System.out.println("Empfangene Daten: " + data);
+				        
 				        if (data.contains("true")){
 				        	// der Move ist im Moment noch eine Zufallszahl zwischen 1 und 6
 				        	int move = (int) Math.random() * 6 + 1;
@@ -175,6 +176,38 @@ public class PusherInterface
 		return new String(check);
 	}
 	
+	public static String getGegnerzug (String data){
+
+		int posZug = ordinalIndexOf(data, "#", 1);
+		String zug = String.valueOf(data.charAt(posZug + 2));
+		return zug;
+	}
+	
+	public static int ordinalIndexOf(String str, String s, int n) {
+	    int pos = str.indexOf(s, 0);
+	    while (n-- > 0 && pos != -1)
+	        pos = str.indexOf(s, pos+1);
+	    return pos;
+	}
+	
+	public static ServerEvent entpacken(String data){
+		Gson gson = new Gson();
+		ServerEvent se = gson.fromJson(data, ServerEvent.class);
+		return se;
+	}
+	
+}
+
+class ServerEvent {
+	public static boolean freigabe = true;
+	public static String status = "Satz spielen";
+	public static int spalte = 0;
+	public static String sieger = null;
+	
+	public static int getGegnerzug(){
+		return spalte;
+	}
+
 }
 
 
