@@ -34,8 +34,8 @@ public class TestGui extends Application {
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
-   // public javafx.scene.image.Image pumpkin = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
-   // public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
+    public javafx.scene.image.Image pumpkin = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
+    public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
     
     public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
 
