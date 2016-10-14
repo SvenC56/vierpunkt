@@ -51,9 +51,8 @@
     
 }
 #cell{
-    -fx-opacity:1;
-    -fx-stroke: #660066;
-    -fx-fill: linear-gradient(to bottom right, #660066, #993366);
+ 
+    
     -fx-alignment: top;
 }
 

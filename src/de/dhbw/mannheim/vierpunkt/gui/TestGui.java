@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.*;
@@ -34,7 +35,7 @@ public class TestGui extends Application {
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
-    public javafx.scene.image.Image pumpkin = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
+    public javafx.scene.image.Image kuerbis = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
     public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
     public javafx.scene.image.Image pizza = new javafx.scene.image.Image(getClass().getResource("pizza.png").toExternalForm());
     public javafx.scene.image.Image burger = new javafx.scene.image.Image(getClass().getResource("burger.png").toExternalForm());
@@ -43,8 +44,14 @@ public class TestGui extends Application {
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     
+    public Color color = Color.rgb(133, 3, 118);
     
-    public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
+    
+    public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
 
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
 
@@ -96,10 +103,26 @@ public class TestGui extends Application {
 		MenuItem menu24 = new MenuItem("Sports");
 		themen.getItems().addAll(menu21, menu22, menu23, menu24);
 		
-		menu22.setOnAction(new EventHandler<ActionEvent>(){
+		menu21.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				setImage1(pumpkin);
-				setImage2(fledermaus);
+				setImage1(orange);
+				setImage2(gruen);
+			}
+		});
+		
+		
+		
+		menu23.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e){
+				setImage1(pizza);
+				setImage2(burger);
+			}
+		});
+		
+		menu24.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e){
+				setImage1(basketball);
+				setImage2(baseball);
 			}
 		});
 
@@ -329,7 +352,18 @@ public class TestGui extends Application {
 				createGrids(spielfeld, spielmodus, start);
 				}
 		});
-
+		
+		menu22.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e){
+				setColor(Color.BLACK);
+				
+				//-fx-fill: linear-gradient(to bottom right, #660066, #993366);
+				setImage1(kuerbis);
+				setImage2(fledermaus);
+				createGrids(spielfeld, spielmodus, start);
+			}
+		});
+		
 		createGrids(spielfeld, spielmodus, start); // Methodenaufruf
 		
 		
@@ -344,7 +378,7 @@ public class TestGui extends Application {
 	/*********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
-    private void createGrids(final GridPane spielfeld, Slider spielmodus, Button start){
+    public void createGrids(final GridPane spielfeld, Slider spielmodus, Button start){
        spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
             for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
@@ -356,6 +390,8 @@ public class TestGui extends Application {
             circ.centerYProperty().set(l/2);
             Shape cell = Path.subtract(rect, circ);
             cell.setId("cell");
+            cell.setFill(color);
+            cell.setStroke(color.darker());
             
              
             /*******************************************************************************************************************
