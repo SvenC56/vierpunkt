@@ -1,28 +1,23 @@
 package de.dhbw.mannheim.vierpunkt.gui;
-
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.*;
-import static javafx.scene.paint.Color.*;
 import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
-
 import java.awt.Toolkit;
-
 /**
  *
  * @author janaschaub
@@ -32,20 +27,11 @@ public class TestGui extends Application {
 	/****** VARIABLENDEKLARATION *****/
 	private int anzahlzeilen;
 	private int anzahlspalten;
-	private final int l = 70; // Seitenlaenge der Grids - spaeter manuelle
-								// Einstellung
-	private final Color rot = RED; // Spielerfarbe 1
-	private final Color gruen = GREEN; // Spielerfarbe 2
-	private SimpleObjectProperty<Color> spielerfarbe = new SimpleObjectProperty<Color>(rot);
-	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite
-																				// des
-																				// Fensters
-																				// in
-																				// Pixeln
-
-	public static void main(String[] args) {
-		launch(args);
-	}
+	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
+	public int spieler = 1; 		// Spieler 1
+	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
+	
+	public static void main(String[] args) { launch(args);}
 
 	/*********************************************************************************************************************
 	 ******************************************* START METHODE *********************************************************
@@ -54,16 +40,15 @@ public class TestGui extends Application {
 	public void start(Stage primaryStage) {
 
 		// Grundlegende Eigenschaften der Stage
-		primaryStage.setFullScreen(true); // automatisches Oeffnen im Fullscreen
+		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
 
 		// Layout Boxen
-		VBox root = new VBox(); // aeusserste Bos
+		VBox root = new VBox(); 				// aeusserste Box
 		HBox content = new HBox();
-		content.setPrefWidth(breite); // content ueber gesamte Bildschirmbreite
-		content.setAlignment(Pos.TOP_CENTER); // alle Inhalte werden mittig
-												// ausgerichtet
+		content.setPrefWidth(breite); 			// content ueber gesamte Bildschirmbreite
+		content.setAlignment(Pos.TOP_CENTER); 	// alle Inhalte werden mittig ausgerichtet
 
 		/********************************************** MENUBAR ******************************************************/
 		// MenuBar Hauptkategorien
@@ -82,6 +67,10 @@ public class TestGui extends Application {
 		MenuItem menu13 = new MenuItem("Spiel beenden");
 		MenuItem menu14 = new MenuItem("Impressum");
 		vierpunkt.getItems().addAll(menu11, menu12, menu13, menu14);
+		
+		menu13.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) { Platform.exit();}
+		});
 
 		// Unterkategorien fuer "themen"
 		MenuItem menu21 = new MenuItem("Suessigkeiten");
@@ -359,11 +348,9 @@ public class TestGui extends Application {
             start.setOnMouseClicked(new EventHandler<MouseEvent>() {
     			@Override
                 public void handle(MouseEvent arg0) {
-    				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-    		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
-    		            	createGrids(spielfeld, spielmodus, start);
-    		            }
-    			}}
+					spieler = 1;
+	            	createGrids(spielfeld, spielmodus, start);
+	            }
     		});
             
             /*******************************************************************************************************************
@@ -376,11 +363,8 @@ public class TestGui extends Application {
                vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
                    @Override
                    public void handle(MouseEvent arg0) {
-                       if(spielerfarbe.get()==rot){
-                           vorschauspielstein.setImage(image1);      
-                       }else{
-                           vorschauspielstein.setImage(image2);
-                       }
+                       if(spieler==1){vorschauspielstein.setImage(image1);      
+                       }else{vorschauspielstein.setImage(image2);}
                    }
                });
                
@@ -401,11 +385,8 @@ public class TestGui extends Application {
                @Override
                    public void handle(MouseEvent arg0) {
                        vorschauspielstein.setImage(image3);
-                       if(spielerfarbe.get()==rot){
-                           vorschauspielstein.setImage(image1);
-                       }else{
-                           vorschauspielstein.setImage(image2);
-                       }
+                       if(spieler==1){ vorschauspielstein.setImage(image1);
+                       }else{vorschauspielstein.setImage(image2); }
                    }
                });
                
@@ -424,12 +405,12 @@ public class TestGui extends Application {
                        if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
                            translateTransition.setToY(0);
                            translateTransition.play();
-                           if(spielerfarbe.get()==rot){
+                           if(spieler==1){
                                spielstein.setImage(image1);
-                               spielerfarbe.set(gruen);
+                               spieler=2;
                            }else{
                                spielstein.setImage(image2);
-                               spielerfarbe.set(rot);
+                               spieler=1;
                            }
                        } 
                        System.out.println(spielstein.getId().charAt(10));
@@ -443,11 +424,11 @@ public class TestGui extends Application {
                        if(spielstein.getTranslateY()!=0){
                            translateTransition.setToY(0);
                            translateTransition.play();
-                           if(spielerfarbe.get()==rot){
-                               spielerfarbe.set(gruen);
+                           if(spieler==1){
+                               spieler=2;
                                spielstein.setImage(image1);
                            }else{
-                               spielerfarbe.set(rot);
+                               spieler=1;
                                spielstein.setImage(image2);
                            }
                            int spalte = (int)spielstein.getId().charAt(10) - 48;
