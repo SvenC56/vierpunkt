@@ -43,6 +43,13 @@ public class TestGui extends Application {
     public javafx.scene.image.Image baseball = new javafx.scene.image.Image(getClass().getResource("baseball.png").toExternalForm());
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
+    public javafx.scene.image.Image hexe = new javafx.scene.image.Image(getClass().getResource("hexe.png").toExternalForm());
+    public javafx.scene.image.Image pokal = new javafx.scene.image.Image(getClass().getResource("pokal.png").toExternalForm());
+    public javafx.scene.image.Image teller = new javafx.scene.image.Image(getClass().getResource("teller.png").toExternalForm());
+    public javafx.scene.image.Image food = new javafx.scene.image.Image(getClass().getResource("hintergrund_food.png").toExternalForm());
+    public javafx.scene.image.Image halloween = new javafx.scene.image.Image(getClass().getResource("hintergrund_halloween.png").toExternalForm());
+    public javafx.scene.image.Image sport = new javafx.scene.image.Image(getClass().getResource("hintergrund_sport.png").toExternalForm());
+    public javafx.scene.image.Image sweets = new javafx.scene.image.Image(getClass().getResource("Sweets_transpartent.png").toExternalForm());
     
     public Color color = Color.rgb(133, 3, 118);
     
@@ -71,6 +78,8 @@ public class TestGui extends Application {
 		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
+		
+		
 
 		// Layout Boxen
 		VBox root = new VBox(); 				// aeusserste Box
@@ -372,6 +381,8 @@ public class TestGui extends Application {
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 
+		root.setStyle("-fx-background-image: url('" + halloween + "');");
+		
 		primaryStage.show();
 	}
 
