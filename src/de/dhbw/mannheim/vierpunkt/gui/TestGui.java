@@ -30,6 +30,20 @@ public class TestGui extends Application {
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
+	// Erzeugen der Spielsteine
+    public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
+    public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
+    public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
+   // public javafx.scene.image.Image pumpkin = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
+   // public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
+    
+    public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
+
+	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
+
+	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
+
+	
 	
 	public static void main(String[] args) { launch(args);}
 
@@ -68,16 +82,19 @@ public class TestGui extends Application {
 		MenuItem menu14 = new MenuItem("Impressum");
 		vierpunkt.getItems().addAll(menu11, menu12, menu13, menu14);
 		
-		menu13.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) { Platform.exit();}
-		});
-
 		// Unterkategorien fuer "themen"
 		MenuItem menu21 = new MenuItem("Suessigkeiten");
 		MenuItem menu22 = new MenuItem("Halloween");
 		MenuItem menu23 = new MenuItem("PizzaBurger");
 		MenuItem menu24 = new MenuItem("Sports");
 		themen.getItems().addAll(menu21, menu22, menu23, menu24);
+		
+		menu22.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e){
+				setImage1(pumpkin);
+				setImage2(fledermaus);
+			}
+		});
 
 		// Unterkategorien fuer "hilfe"
 		MenuItem menu31 = new MenuItem("zu Google");
@@ -294,6 +311,17 @@ public class TestGui extends Application {
 				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
 				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
 				new RowConstraints(l, l, Double.MAX_VALUE));
+		
+		menu13.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) { Platform.exit();}
+		});
+		
+		menu11.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e) {
+				spieler = 1;
+				createGrids(spielfeld, spielmodus, start);
+				}
+		});
 
 		createGrids(spielfeld, spielmodus, start); // Methodenaufruf
 		
@@ -326,10 +354,6 @@ public class TestGui extends Application {
             /*******************************************************************************************************************
              *******************************************  SPIELSTEINE  *********************************************************
              *******************************************************************************************************************/            
-            // Erzeugen der Spielsteine
-            javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
-            javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
-            javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
             
             // Ansicht der Spielsteine
             ImageView spielstein = new ImageView(image1);
