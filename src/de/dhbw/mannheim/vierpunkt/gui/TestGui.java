@@ -36,7 +36,6 @@ public class TestGui extends Application {
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
-    public javafx.scene.image.Image backgroundvariable = new javafx.scene.image.Image(getClass().getResource("Sweets_transparent.png").toExternalForm());
 	public javafx.scene.image.Image kuerbis = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
     public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
     public javafx.scene.image.Image pizza = new javafx.scene.image.Image(getClass().getResource("pizza.png").toExternalForm());
@@ -48,17 +47,9 @@ public class TestGui extends Application {
     public javafx.scene.image.Image hexe = new javafx.scene.image.Image(getClass().getResource("hexe.png").toExternalForm());
     public javafx.scene.image.Image pokal = new javafx.scene.image.Image(getClass().getResource("pokal.png").toExternalForm());
     public javafx.scene.image.Image teller = new javafx.scene.image.Image(getClass().getResource("teller.png").toExternalForm());
-    public javafx.scene.image.Image food = new javafx.scene.image.Image(getClass().getResource("hintergrund_food.png").toExternalForm());
-    public javafx.scene.image.Image halloween = new javafx.scene.image.Image(getClass().getResource("hintergrund_halloween.png").toExternalForm());
-    public javafx.scene.image.Image sport = new javafx.scene.image.Image(getClass().getResource("hintergrund_sport.png").toExternalForm());
-    public javafx.scene.image.Image sweets = new javafx.scene.image.Image(getClass().getResource("Sweets_transparent.png").toExternalForm());
     
-   // public javafx.scene.image.Image test = new javafx.scene.image.Image("hintergrund_halloween.png", breite, Toolkit.getDefaultToolkit().getScreenSize().height, true,true);
     
     public Color color = Color.rgb(133, 3, 118);
-    
-    public void setBackgroundvariable(javafx.scene.image.Image backgroundvariable) {
-		this.backgroundvariable = backgroundvariable;}
     
     public void setColor(Color color) {	this.color = color;}
 
@@ -67,13 +58,7 @@ public class TestGui extends Application {
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
 
 	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
-	
-	public BackgroundImage backgroundImage = new BackgroundImage(backgroundvariable, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-	public Background background = new Background(backgroundImage);
-	
-	
 
-	
 	
 	public static void main(String[] args) { launch(args);}
 
@@ -88,11 +73,10 @@ public class TestGui extends Application {
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
 		
-		
 
 		// Layout Boxen
 		VBox root = new VBox(); 				// aeusserste Box
-		root.setBackground(background);
+		root.setId("root_sweets");
 		HBox content = new HBox();
 		content.setPrefWidth(breite); 			// content ueber gesamte Bildschirmbreite
 		content.setAlignment(Pos.TOP_CENTER); 	// alle Inhalte werden mittig ausgerichtet
@@ -129,19 +113,12 @@ public class TestGui extends Application {
 
 		/******************************************* UEBERSCHRIFT *********************************************************/
 
-		// Bild der Ueberschrift einfuegen
-		javafx.scene.image.Image vier_gestreift = new javafx.scene.image.Image(
-				getClass().getResource("ueberschrift.jpg").toExternalForm());
 
 		// Ansicht der Ueberschrift
-		ImageView ueberschrift = new ImageView(vier_gestreift);
-		ueberschrift.setId("ueberschrift");
-		ueberschrift.setImage(vier_gestreift);
-		ueberschrift.setFitWidth(breite / 2); // Ueberschrift soll die Haelfte
-												// des Bildschirms breit sein
-		ueberschrift.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des
-														// Verhaeltnisses
-														// (Quotient: 3.33)
+		ImageView ueberschrift = new ImageView();
+		ueberschrift.setId("ueberschrift_sweets");
+		ueberschrift.setFitWidth(breite / 2); // Ueberschrift soll die Haelfte des Bildschirms breit sein
+		ueberschrift.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
 		ueberschrift.setPreserveRatio(true);
 
 		// Container, in dem die Ueberschrift platziert wird
@@ -150,10 +127,10 @@ public class TestGui extends Application {
 
 		// Rechtecke als Platzhalter, um die Ueberschrift mittig zu platzieren
 		Rectangle containerlinks = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerlinks.setId("containerklein");
+		containerlinks.setId("container_weiss");
 
 		Rectangle containerrechts = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerrechts.setId("containerklein");
+		containerrechts.setId("container_weiss");
 
 		// Platzhalter und Ueberschrift in den Container einfuegen
 		titelbox.getChildren().addAll(containerlinks, ueberschrift, containerrechts);
@@ -165,35 +142,6 @@ public class TestGui extends Application {
 
 		/******************************************* LAYOUT-UEBERSICHT ******************************************************/
 
-		/**
-		 * VBox "root"
-		 * ____________________________________________________________________________________________________________________
-		 * | | | MenuBar "menuBar" | |
-		 * ____________________________________________________________________________________________________________
-		 * | | | | | | | Menu "vierpunkt" Menu "themen" Menu "hilfe" | | |
-		 * |___________________________________________________________________________________________________________|
-		 * | | | | HBox "titelbox" | |
-		 * ____________________________________________________________________________________________________________
-		 * | | | | | | | Rectangle "containerlinks" Imageview "ueberschrift"
-		 * Rectangle "containerrechts" | | |
-		 * |___________________________________________________________________________________________________________|
-		 * | | | | HBox "content" | |
-		 * ____________________________________________________________________________________________________________
-		 * | | | | | | | VBox "boxlinks" VBox "boxmitte" VBox "boxrechts" | | |
-		 * | ____________________________ ____________________________
-		 * ____________________________________ | | | | | | | | | | | | | | | |
-		 * | Rectangle "platzhalter1"| | Label "spielstand" | | | | | | | | | |
-		 * Text "antwortspielstand" | | | | | | | | Gridpane "spielfeld" | |
-		 * Label "satzstatus" | | | | | | | | | | Text "antwortsatzstatus" | | |
-		 * | | | Imageview "cupcake" | | | | Label "spielmodi" | | | | | | | | |
-		 * | Slider "spielmodus" | | | | | | Rectangle "platzhalter2"| | | |
-		 * Rectangle "platzhalter0" | | | | | | | | | | Button "start" | | | | |
-		 * |___________________________| |___________________________|
-		 * |___________________________________| | | |
-		 * |___________________________________________________________________________________________________________|
-		 * |
-		 * _____________________________________________________________________________________________________________________|
-		 **/
 
 		/*******************************************
 		 * CONTAINERBOXEN IN CONTENT
@@ -298,13 +246,11 @@ public class TestGui extends Application {
 		boxlinks.setAlignment(Pos.BOTTOM_CENTER);
 
 		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
-		javafx.scene.image.Image suessigkeiten = new javafx.scene.image.Image(
-				getClass().getResource("suessigkeiten.png").toExternalForm());
-		ImageView cupcake = new ImageView(suessigkeiten);
-
-		cupcake.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters
-											// betragen
-		cupcake.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten
+		
+		ImageView bild = new ImageView();
+		bild.setId("bild_sweets");
+		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
+		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten
 										// werden
 
 		Rectangle platzhalter2 = new Rectangle(10, 70); // Platzhalter, damit
@@ -313,7 +259,7 @@ public class TestGui extends Application {
 		platzhalter2.setOpacity(0);
 
 		// Einfuegen der Elemente in die linke Box
-		boxlinks.getChildren().addAll(cupcake, platzhalter2);
+		boxlinks.getChildren().addAll(bild, platzhalter2);
 
 		/*********************************************************************************************************************
 		 ******************************************* GRID FUER DAS SPIELFELD
@@ -354,11 +300,11 @@ public class TestGui extends Application {
 				setColor(Color.PURPLE);
 				setImage1(orange);
 				setImage2(gruen);
-				setBackgroundvariable(sweets);
-				
-				backgroundImage = new BackgroundImage(backgroundvariable, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-				background = new Background(backgroundImage);
-				root.setBackground(background);
+				root.setId("root_sweets");
+				containerrechts.setId("container_weiss");
+				containerlinks.setId("container_weiss");
+				ueberschrift.setId("ueberschrift_sweets");
+				bild.setId("bild_sweets");
 				createGrids(spielfeld, spielmodus, start);
 			}
 		});
@@ -368,12 +314,11 @@ public class TestGui extends Application {
 				setColor(Color.BLACK);
 				setImage1(kuerbis);
 				setImage2(fledermaus);
-				
-				//root.setStyle("-fx-background-image: url('hintergrund_halloween.png'); -fx-background-position: center; -fx-background-size: contain;");
-				setBackgroundvariable(halloween);
-				backgroundImage = new BackgroundImage(backgroundvariable, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-				background = new Background(backgroundImage);
-				root.setBackground(background);
+				root.setId("root_halloween");
+				containerrechts.setId("container_schwarz");
+				containerlinks.setId("container_schwarz");
+				ueberschrift.setId("ueberschrift_halloween");
+				bild.setId("bild_halloween");
 				createGrids(spielfeld, spielmodus, start);
 			}
 		});
@@ -383,10 +328,11 @@ public class TestGui extends Application {
 				setColor(Color.BLACK);
 				setImage1(pizza);
 				setImage2(burger);
-				setBackgroundvariable(food);
-				backgroundImage = new BackgroundImage(backgroundvariable, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-				background = new Background(backgroundImage);
-				root.setBackground(background);
+				root.setId("root_food");
+				containerrechts.setId("container_weiss");
+				containerlinks.setId("container_weiss");
+				ueberschrift.setId("ueberschrift_food");
+				bild.setId("bild_food");
 				createGrids(spielfeld, spielmodus, start);
 			}
 		});
@@ -396,10 +342,11 @@ public class TestGui extends Application {
 				setColor(Color.CADETBLUE);
 				setImage1(basketball);
 				setImage2(baseball);
-				setBackgroundvariable(sport);
-				backgroundImage = new BackgroundImage(backgroundvariable, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-				background = new Background(backgroundImage);
-				root.setBackground(background);
+				root.setId("root_sport");
+				containerrechts.setId("container_weiss");
+				containerlinks.setId("container_weiss");
+				ueberschrift.setId("ueberschrift_sport");
+				bild.setId("bild_sport");
 				createGrids(spielfeld, spielmodus, start);
 			}
 		});
