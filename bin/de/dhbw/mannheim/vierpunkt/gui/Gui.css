@@ -3,10 +3,7 @@
     Author     : janaschaub
 */
 
-.root {
-    -fx-background-image: url("Sweets_transparent.png");
-    -fx-background-size: contain;
-}
+
 
 #container{
 	-fx-background-image: url("ueberschrift.jpeg");
