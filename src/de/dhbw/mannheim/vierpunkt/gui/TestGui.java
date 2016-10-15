@@ -44,22 +44,16 @@ public class TestGui extends Application {
     public javafx.scene.image.Image baseball = new javafx.scene.image.Image(getClass().getResource("baseball.png").toExternalForm());
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
-    public javafx.scene.image.Image hexe = new javafx.scene.image.Image(getClass().getResource("hexe.png").toExternalForm());
-    public javafx.scene.image.Image pokal = new javafx.scene.image.Image(getClass().getResource("pokal.png").toExternalForm());
-    public javafx.scene.image.Image teller = new javafx.scene.image.Image(getClass().getResource("teller.png").toExternalForm());
     
-    
+    // Variable fuer die Farbe des Spielfelds
     public Color color = Color.rgb(133, 3, 118);
     
+    // Setter Methoden
     public void setColor(Color color) {	this.color = color;}
-
 	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
-
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
-
 	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
 
-	
 	public static void main(String[] args) { launch(args);}
 
 	/*********************************************************************************************************************
@@ -72,7 +66,6 @@ public class TestGui extends Application {
 		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
-		
 
 		// Layout Boxen
 		VBox root = new VBox(); 				// aeusserste Box
@@ -113,7 +106,6 @@ public class TestGui extends Application {
 
 		/******************************************* UEBERSCHRIFT *********************************************************/
 
-
 		// Ansicht der Ueberschrift
 		ImageView ueberschrift = new ImageView();
 		ueberschrift.setId("ueberschrift_sweets");
@@ -128,7 +120,6 @@ public class TestGui extends Application {
 		// Rechtecke als Platzhalter, um die Ueberschrift mittig zu platzieren
 		Rectangle containerlinks = new Rectangle(breite / 4, (breite / 2) / 3.33);
 		containerlinks.setId("container_weiss");
-
 		Rectangle containerrechts = new Rectangle(breite / 4, (breite / 2) / 3.33);
 		containerrechts.setId("container_weiss");
 
@@ -143,9 +134,7 @@ public class TestGui extends Application {
 		/******************************************* LAYOUT-UEBERSICHT ******************************************************/
 
 
-		/*******************************************
-		 * CONTAINERBOXEN IN CONTENT
-		 ************************************************/
+		/******************************************** CONTAINERBOXEN IN CONTENT ************************************************/
 		// Erzeugen der rechten Containerbox
 		VBox boxrechts = new VBox();
 		boxrechts.setPrefWidth(breite / 4);
@@ -166,64 +155,46 @@ public class TestGui extends Application {
 		spielmodi.setPadding(new Insets(20, 0, 0, 0));
 
 		// Slider, um einfach den Spielmodus einstellen zu koennen
-		Slider spielmodus = new Slider(0, 2, 1); // Slider geht von 0 bis 2 in
-													// 1er Abstaenden
+		Slider spielmodus = new Slider(0, 2, 1); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		spielmodus.setMinorTickCount(0);
-		spielmodus.setMajorTickUnit(1); // Man kann nur auf den Zahlen 0, 1, 2
-										// landen, nicht dazwischen
-		spielmodus.setSnapToTicks(true); // Der Punkt rutzscht zur naechsten
-											// Zahl
-		spielmodus.setShowTickMarks(true); // Markierungen anzeigen -
-		spielmodus.setShowTickLabels(true); // Beschriftungen anzeigen
-		spielmodus.setOrientation(Orientation.VERTICAL); // Vertikale Anordnung,
-															// standardmaessig
-															// horizontal
-		spielmodus.setPrefHeight(120); // bevorzugte Hoehe des Sliders
-		spielmodus.setMinHeight(120); // Mindesthoehe
-		
-		spielmodus.setValue(2);
+		spielmodus.setMajorTickUnit(1); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
+		spielmodus.setSnapToTicks(true); 					// Der Punkt rutzscht zur naechsten Zahl
+		spielmodus.setShowTickMarks(true); 					// Markierungen anzeigen -
+		spielmodus.setShowTickLabels(true); 				// Beschriftungen anzeigen
+		spielmodus.setOrientation(Orientation.VERTICAL); 	// Vertikale Anordnung,standardmaessig horizontal
+		spielmodus.setPrefHeight(120); 						// bevorzugte Hoehe des Sliders
+		spielmodus.setMinHeight(120); 						// Mindesthoehe
+		spielmodus.setValue(2);								// Default Value = 2
 		
 
-		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt
-		// und die Rueckgabewerte festlegt
+		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt und die Rueckgabewerte festlegt
 		spielmodus.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n == 0)
-					return "manuell";
-				if (n > 0 && n < 2)
-					return "gegen den Computer";
-				if (n == 2)
-					return "automatisch";
+				if (n == 0)return "manuell";
+				if (n > 0 && n < 2)return "gegen den Computer";
+				if (n == 2)return "automatisch";
 				return "automatisch";
 			}
-
 			@Override
 			public Double fromString(String x) {
 				switch (x) {
-				case "manuell":
-					return 0d;
-				case "gegen den Computer":
-					return 1d;
-				case "automatisch":
-					return 2d;
-				default:
-					return 2d;
+				case "manuell":return 0d;
+				case "gegen den Computer":return 1d;
+				case "automatisch":return 2d;
+				default:return 2d;
 				}
 			}
 		});
 
-		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet
-		// wird
+		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
 		Rectangle platzhalter0 = new Rectangle(10, 40);
 		platzhalter0.setOpacity(0);
 
 		Button start = new Button("Spiel starten");
-		
 
 		// Einfuegen der Elemente in die rechte Box
-		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi,
-				spielmodus, platzhalter0, start);
+		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
 
 		// Erzeugen der mittleren Containerbox
 		VBox boxmitte = new VBox();
@@ -235,9 +206,29 @@ public class TestGui extends Application {
 		/******* INHALTE DER MITTLEREN CONTAINERBOX *********************/
 		Rectangle platzhalter1 = new Rectangle(7 * l, l);
 		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		/*********************************************************************************************************************
+		 ******************************************* GRID FUER DAS SPIELFELD *********************************************************
+		 ********************************************************************************************************************/
+		
+		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
+		GridPane spielfeld = new GridPane();
+		spielfeld.setId("spielfeld");
+		
+		// Erzeugen der Spalten (7)
+		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
+		// Erzeugen der Zeilen (6)
+		spielfeld.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE));
+				
 
 		// Einfuegen der Elemente in die mittlere Box
-		boxmitte.getChildren().add(platzhalter1);
+		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
 
 		// Erzeugen der linken Containerbox
 		VBox boxlinks = new VBox();
@@ -250,39 +241,20 @@ public class TestGui extends Application {
 		ImageView bild = new ImageView();
 		bild.setId("bild_sweets");
 		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
-		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten
-										// werden
-
-		Rectangle platzhalter2 = new Rectangle(10, 70); // Platzhalter, damit
-														// das Bild nicht ganz
-														// am Boden sitzt
+		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
+		
+		Rectangle platzhalter2 = new Rectangle(10, 70); // Platzhalter, damit das Bild nicht ganz am Boden sitzt
 		platzhalter2.setOpacity(0);
 
 		// Einfuegen der Elemente in die linke Box
 		boxlinks.getChildren().addAll(bild, platzhalter2);
 
-		/*********************************************************************************************************************
-		 ******************************************* GRID FUER DAS SPIELFELD
-		 * *********************************************************
-		 ********************************************************************************************************************/
-
-		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
-		GridPane spielfeld = new GridPane();
-		spielfeld.setId("spielfeld");
-		boxmitte.getChildren().add(spielfeld);
-
+		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);
 
-		// Erzeugen der Spalten (7)
-		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
-		// Erzeugen der Zeilen (6)
-		spielfeld.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE));
+		/*********************************************************************************************************************
+		 ******************************************* EVENTHANDLER FUER DAS MENU *********************************************************
+		 ********************************************************************************************************************/
 		
 		menu13.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) { Platform.exit();}
@@ -325,7 +297,7 @@ public class TestGui extends Application {
 		
 		menu23.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				setColor(Color.BLACK);
+				setColor(Color.DARKGREEN);
 				setImage1(pizza);
 				setImage2(burger);
 				root.setId("root_food");
@@ -351,17 +323,13 @@ public class TestGui extends Application {
 			}
 		});
 		
-		
-		
-		createGrids(spielfeld, spielmodus, start); // Methodenaufruf
-		
-		
+		/******* METHODENAUFRUF ************************/
+		createGrids(spielfeld, spielmodus, start); 
 
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 
-		
 		primaryStage.show();
 	}
 
@@ -384,7 +352,6 @@ public class TestGui extends Application {
             cell.setFill(color);
             cell.setStroke(color.darker());
             
-             
             /*******************************************************************************************************************
              *******************************************  SPIELSTEINE  *********************************************************
              *******************************************************************************************************************/            
@@ -414,7 +381,7 @@ public class TestGui extends Application {
             /*******************************************************************************************************************
              *******************************************  ANZEIGE IM SPIELFELD  ************************************************
              *******************************************************************************************************************/ 
-          // if(spielmodus.getValue() == 2){}
+            // if(spielmodus.getValue() == 2){}
             //if(spielmodus.getValue() == 0){
             
         	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
@@ -435,7 +402,7 @@ public class TestGui extends Application {
                });
                 
                // Lässt den Stein herunterfallen (Weg und Zeit)
-                spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+               spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
                final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             
                // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
@@ -491,7 +458,6 @@ public class TestGui extends Application {
                            }
                            int spalte = (int)spielstein.getId().charAt(10) - 48;
                            System.out.println(spalte);
-                           
                        }
                    }
                });
@@ -502,8 +468,8 @@ public class TestGui extends Application {
              *******************************************************************************************************************/
             // Zellen werden gefuellt
             StackPane stack = new StackPane();
-            vorschauspielstein.setImage(image3);                         // Hintergrund grau
-            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+            vorschauspielstein.setImage(image3);                         		// Hintergrund grau
+            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
             }
         }
@@ -511,35 +477,37 @@ public class TestGui extends Application {
     
     private void AutoSpiel(final GridPane spielfeld, int zeile, int spalte, int spieler, Button start, Slider spielmodus, Image image1, Image image2, TranslateTransition translateTransition, ImageView spielstein, Shape cell){
     	 
-             start.setOnMouseClicked(new EventHandler<MouseEvent>() {
-     			@Override
-                 public void handle(MouseEvent arg0) {
-     				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-     		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
-     		            	createGrids(spielfeld, spielmodus, start);
-     		            }
-     			}}
-     		});
-             
-                if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
-                    translateTransition.setToY(0);
-                    translateTransition.play();
-                    if(spieler==1){
-                        spielstein.setImage(image1);
-                        spieler=2;
-                    }else{
-                        spielstein.setImage(image2);
-                        spieler=1;
-                    }
-                } 
-                System.out.println(spielstein.getId().charAt(10));
-           
-               // Zellen werden gefuellt
-             StackPane stack = new StackPane();
-             stack.getChildren().addAll(cell, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
-             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-                }
-         }
+    	start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+ 			@Override
+             public void handle(MouseEvent arg0) {
+ 				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+ 		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+ 		            	createGrids(spielfeld, spielmodus, start);
+ 		            }
+ 				}
+ 			}
+ 		});
+         
+        if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
+            translateTransition.setToY(0);
+            translateTransition.play();
+            if(spieler==1){
+                spielstein.setImage(image1);
+                spieler=2;
+            }else{
+                spielstein.setImage(image2);
+                spieler=1;
+            }
+        } 
+            
+         System.out.println(spielstein.getId().charAt(10));
+       
+	     // Zellen werden gefuellt
+	     StackPane stack = new StackPane();
+	     stack.getChildren().addAll(cell, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+	     spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
+     }
+}
     	
                
             

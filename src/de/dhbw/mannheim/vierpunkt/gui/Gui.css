@@ -25,62 +25,44 @@
 
 #ueberschrift_sweets{
 	-fx-image: url("ueberschrift.jpg");
-	-fx-border-color: #666666;
+	-fx-border-color:  #ffffff;
 }
 
 #ueberschrift_halloween{
 	-fx-image: url("vier_halloween.png");
-	-fx-border-color: #666666;
+	-fx-border-color: #000000;
 }
 
 #ueberschrift_sport{
 	-fx-image: url("vier_sport.png");
-	-fx-border-color: #666666;
+	-fx-border-color:  #ffffff;
 }
 
 #ueberschrift_food{
 	-fx-image: url("vier_food.png");
-	-fx-border-color: #666666;
+	-fx-border-color: #ffffff;
 }
 
-#container_weiss{
-	-fx-fill: #ffffff;
-}
+#container_weiss{-fx-fill: #ffffff;}
 
-#container_schwarz{
-	-fx-fill: #000000;
-}
+#container_schwarz{-fx-fill: #000000;}
 
-#bild_sweets{
-	-fx-image: url("suessigkeiten.png");
-}
+#bild_sweets{-fx-image: url("suessigkeiten.png");}
 
-#bild_halloween{
-	-fx-image: url("hexe.png");
-}
+#bild_halloween{-fx-image: url("hexe.png");}
 
-#bild_sport{
-	-fx-image: url("pokal.png");
-}
+#bild_sport{-fx-image: url("pokal.png");}
 
-#bild_food{
-	-fx-image: url("teller.png");
-}
+#bild_food{-fx-image: url("teller.png");}
 
+#titel{-fx-border-color: #660066;}
 
-#titel{
-	 -fx-border-color: #660066;
-}
-
-.disk{
-    -fx-background-image: url("spielstein-rot.png");
-    
-}
 .text{
 -fx-fill: #660066;
     -fx-font-weight: bold;
     -fx-font-size: 15;
 }
+
 .label {
     -fx-fill: #660066;
     -fx-font-weight: bold;
@@ -89,33 +71,26 @@
     -fx-text-alignment: center;
 	
 }
+
 #grid{
-    -fx-grid-lines-visible: true;
     -fx-alignment: CENTER;
     -fx-Hgap:10;
     -fx-Vgap:10;
     -fx-halignment: center;
-    -fx-valignment: center;
-    
-    
-}
-#cell{
- 
-    
-    -fx-alignment: top;
+    -fx-valignment: center; 
 }
 
 #ueberschrift {
    -fx-alignment: TOP_CENTER;
    -fx-halignment: center;
    -fx-textalign: center;
-  
 }
+
 #spielfeld{
    -fx-background-color: #E6E8E9;
    -fx-opacity: 1;
-   
 }
+
 #boxmitte{
     -fx-width:100%;
     -fx-height: 100%;
@@ -131,8 +106,8 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-alignment:bottom_center;
     -fx-label-padding: 10px;
- 
 }
+
 .button:hover {
     -fx-background-color: linear-gradient(#993366, #CC6699);
 }
