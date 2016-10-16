@@ -383,6 +383,36 @@ public class GameLogic {
 		return matchID;
 	}
 	
+	/**
+	 * Methoden zur uebergabe an die DB. 
+	 * BETA VERSION
+	 */
+	public void setGameDB(int G_ID, String OPPONENT, String WINNER, int POINTS) {
+		String[][] statements = null;
+		statements[0][0] = Integer.toString(G_ID);
+		statements[0][1] = OPPONENT;
+		statements[0][2] = WINNER;
+		statements[0][3] = Integer.toString(POINTS);
+		db.handOverArray(statements, "GAME");
+	}
+
+	public void setMatchDB(int M_ID, int G_ID) {
+		String[][] statements = null;
+		statements[0][0] = Integer.toString(M_ID);
+		statements[0][1] = Integer.toString(G_ID);
+		db.handOverArray(statements, "MATCH");
+	}
+
+	public void setTurnDB(int T_ID, int M_ID, String PERSON, int POS_Y) {
+		String[][] statements = null;
+		statements[0][0] = Integer.toString(T_ID);
+		statements[0][1] = Integer.toString(M_ID);
+		statements[0][2] = PERSON;
+		statements[0][3] = Integer.toString(POS_Y);
+		db.handOverArray(statements, "TURN");
+	}
+
+	
 	public void startGame() {
 		
 		
