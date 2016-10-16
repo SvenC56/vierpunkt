@@ -364,26 +364,13 @@ public class TestGui extends Application {
 			createGrids_automatisch();
 		}
 		
+		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 
 		primaryStage.show();
 		
-		Scanner scan = new Scanner(System.in);
-    	int spalte=0;
-    	int zeile=0;
-    	boolean spielen = true;
-        while(spielen){
-        	spalte = scan.nextInt();
-        	zeile = scan.nextInt();
-        	if(spalte <7 && spalte >=0 && zeile < 6 && zeile >=0){
-        		setSpielstein(spalte, zeile);
-        	}else{
-        		System.out.println("falsche Eingabe");
-        		spielen = false;
-        	}
-        }
 	}
 
 	/*********************************************************************************************************************
@@ -534,8 +521,8 @@ public class TestGui extends Application {
             }
         }
     }
-    public void setSpielstein(int spalte, int zeile){
-    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(spalte, zeile, spielfeld))));
+    public void setSpielstein(int zeile, int spalte){
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))));
     }
     
     public void spielsteinAnzeigen(ImageView spielstein){
