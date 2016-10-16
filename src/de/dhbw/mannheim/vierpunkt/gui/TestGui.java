@@ -23,7 +23,6 @@ import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
-import java.util.Scanner;
 /**
  *
  * @author janaschaub
@@ -193,7 +192,6 @@ public class TestGui extends Application {
 			}
 		});
 		
-		
 		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
@@ -206,9 +204,6 @@ public class TestGui extends Application {
 		    	}
 		    }
 		});
-		
-		
-		
 		
 		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
 		Rectangle platzhalter0 = new Rectangle(10, 40);
@@ -364,7 +359,6 @@ public class TestGui extends Application {
 			createGrids_automatisch();
 		}
 		
-		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
@@ -418,14 +412,8 @@ public class TestGui extends Application {
             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
             }
          }
-        
-        
-        
-        
     }
-	
-	
-	
+
 	public void createGrids(){
     	spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
@@ -522,7 +510,7 @@ public class TestGui extends Application {
         }
     }
     public void setSpielstein(int zeile, int spalte){
-    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))));
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte))));
     }
     
     public void spielsteinAnzeigen(ImageView spielstein){
@@ -541,7 +529,7 @@ public class TestGui extends Application {
         }System.out.println((int)spielstein.getId().charAt(10)-48);
     }
     
-    public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
+    public StackPane getNodeByRowColumnIndex (final int row, final int column) {
         for (Node node : spielfeld.getChildren()) {
             if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 return (StackPane) node;
@@ -551,43 +539,8 @@ public class TestGui extends Application {
     
     public ImageView getImageView (StackPane stack) {
         ObservableList<Node> list = stack.getChildren();
-        
-        System.out.println(list.get(2));
         return (ImageView)list.get(2);
     }
-    
-    private void AutoSpiel(int zeile, int spalte, int spieler, Button start, Slider spielmodus, Image image1, Image image2, TranslateTransition translateTransition, ImageView spielstein, Shape cell){
-    	 
-    	start.setOnMouseClicked(new EventHandler<MouseEvent>() {
- 			@Override
-             public void handle(MouseEvent arg0) {
- 				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
- 		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
- 		            	createGrids();
- 		            }
- 				}
- 			}
- 		});
-         
-        if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
-            translateTransition.setToY(0);
-            translateTransition.play();
-            if(spieler==1){
-                spielstein.setImage(image1);
-                spieler=2;
-            }else{
-                spielstein.setImage(image2);
-                spieler=1;
-            }
-        } 
-            
-         System.out.println(spielstein.getId().charAt(10));
-       
-	     // Zellen werden gefuellt
-	     StackPane stack = new StackPane();
-	     stack.getChildren().addAll(cell, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
-	     spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-     }
 }
     	
                
