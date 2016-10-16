@@ -2,11 +2,15 @@ package de.dhbw.mannheim.vierpunkt.gui;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
@@ -19,6 +23,7 @@ import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
+import java.util.Scanner;
 /**
  *
  * @author janaschaub
@@ -47,6 +52,7 @@ public class TestGui extends Application {
     
     // Variable fuer die Farbe des Spielfelds
     public Color color = Color.rgb(133, 3, 118);
+    public GridPane spielfeld = new GridPane();
     
     // Setter Methoden
     public void setColor(Color color) {	this.color = color;}
@@ -186,12 +192,36 @@ public class TestGui extends Application {
 				}
 			}
 		});
-
+		
+		
+		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+		    	if(newValue.intValue() == 2){
+		    		createGrids_automatisch();
+		    	}
+		    	if(newValue.intValue() == 0){
+		    		createGrids();
+		    	}
+		    }
+		});
+		
+		
+		
+		
 		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
 		Rectangle platzhalter0 = new Rectangle(10, 40);
 		platzhalter0.setOpacity(0);
 
 		Button start = new Button("Spiel starten");
+		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				spieler = 1;
+            	createGrids();
+            }
+		});
 
 		// Einfuegen der Elemente in die rechte Box
 		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
@@ -212,8 +242,8 @@ public class TestGui extends Application {
 		 ********************************************************************************************************************/
 		
 		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
-		GridPane spielfeld = new GridPane();
 		spielfeld.setId("spielfeld");
+		
 		
 		// Erzeugen der Spalten (7)
 		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
@@ -263,7 +293,7 @@ public class TestGui extends Application {
 		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				spieler = 1;
-				createGrids(spielfeld, spielmodus, start);
+				createGrids();
 				}
 		});
 		
@@ -277,7 +307,7 @@ public class TestGui extends Application {
 				containerlinks.setId("container_weiss");
 				ueberschrift.setId("ueberschrift_sweets");
 				bild.setId("bild_sweets");
-				createGrids(spielfeld, spielmodus, start);
+				createGrids();
 			}
 		});
 		
@@ -291,7 +321,7 @@ public class TestGui extends Application {
 				containerlinks.setId("container_schwarz");
 				ueberschrift.setId("ueberschrift_halloween");
 				bild.setId("bild_halloween");
-				createGrids(spielfeld, spielmodus, start);
+				createGrids();
 			}
 		});
 		
@@ -305,7 +335,7 @@ public class TestGui extends Application {
 				containerlinks.setId("container_weiss");
 				ueberschrift.setId("ueberschrift_food");
 				bild.setId("bild_food");
-				createGrids(spielfeld, spielmodus, start);
+				createGrids();
 			}
 		});
 		
@@ -319,25 +349,47 @@ public class TestGui extends Application {
 				containerlinks.setId("container_weiss");
 				ueberschrift.setId("ueberschrift_sport");
 				bild.setId("bild_sport");
-				createGrids(spielfeld, spielmodus, start);
+				createGrids();
 			}
 		});
 		
 		/******* METHODENAUFRUF ************************/
-		createGrids(spielfeld, spielmodus, start); 
-
+		// manuell
+		if(spielmodus.getValue() == 0 ){
+			createGrids();
+		}
+		
+		// automatisch
+		if(spielmodus.getValue() == 2){
+			createGrids_automatisch();
+		}
+		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 
 		primaryStage.show();
+		
+		Scanner scan = new Scanner(System.in);
+    	int spalte=0;
+    	int zeile=0;
+    	boolean spielen = true;
+        while(spielen){
+        	spalte = scan.nextInt();
+        	zeile = scan.nextInt();
+        	if(spalte <7 && spalte >=0 && zeile < 6 && zeile >=0){
+        		setSpielstein(spalte, zeile);
+        	}else{
+        		System.out.println("falsche Eingabe");
+        		spielen = false;
+        	}
+        }
 	}
 
 	/*********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
-    public void createGrids(final GridPane spielfeld, Slider spielmodus, Button start){
-    	
+    public void createGrids_automatisch(){
     	spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
             for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
@@ -370,19 +422,59 @@ public class TestGui extends Application {
             vorschauspielstein.setPreserveRatio(true); 
             vorschauspielstein.setOpacity(0.5);
             
-            start.setOnMouseClicked(new EventHandler<MouseEvent>() {
-    			@Override
-                public void handle(MouseEvent arg0) {
-					spieler = 1;
-	            	createGrids(spielfeld, spielmodus, start);
-	            }
-    		});
+            spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+            
+            // Zellen werden gefuellt
+            StackPane stack = new StackPane();
+            vorschauspielstein.setImage(image3);                         		// Hintergrund grau
+            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+            spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
+            }
+         }
+        
+        
+        
+        
+    }
+	
+	
+	
+	public void createGrids(){
+    	spielfeld.getChildren().clear();
+        for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+            
+            // Darstellung des Rahmens/ der Zellen    
+            Rectangle rect = new Rectangle(l,l);
+            Circle circ = new Circle((l/2)-5);
+            circ.centerXProperty().set(l/2);
+            circ.centerYProperty().set(l/2);
+            Shape cell = Path.subtract(rect, circ);
+            cell.setId("cell");
+            cell.setFill(color);
+            cell.setStroke(color.darker());
+            
+            /*******************************************************************************************************************
+             *******************************************  SPIELSTEINE  *********************************************************
+             *******************************************************************************************************************/            
+            
+            // Ansicht der Spielsteine
+            ImageView spielstein = new ImageView(image1);
+            spielstein.setImage(image1);
+            spielstein.setId("spielstein" + anzahlspalten);
+            spielstein.setFitWidth(l-10);
+            spielstein.setPreserveRatio(true);  
+            
+            // Vorschau der Spielsteine
+            ImageView vorschauspielstein = new ImageView(image3);
+            vorschauspielstein.setImage(image1);
+            vorschauspielstein.setFitWidth(l-10);
+            vorschauspielstein.setPreserveRatio(true); 
+            vorschauspielstein.setOpacity(0.5);
             
             /*******************************************************************************************************************
              *******************************************  ANZEIGE IM SPIELFELD  ************************************************
              *******************************************************************************************************************/ 
-            // if(spielmodus.getValue() == 2){}
-            //if(spielmodus.getValue() == 0){
             
         	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
                vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -401,9 +493,7 @@ public class TestGui extends Application {
                    }
                });
                 
-               // Lässt den Stein herunterfallen (Weg und Zeit)
                spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
-               final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             
                // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
                spielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -425,44 +515,14 @@ public class TestGui extends Application {
               
               // Setzen der Spielsteine
               spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                       if(spielstein.getTranslateY()!=0){              //Runterfallen der Steine
-                           translateTransition.setToY(0);
-                           translateTransition.play();
-                           if(spieler==1){
-                               spielstein.setImage(image1);
-                               spieler=2;
-                           }else{
-                               spielstein.setImage(image2);
-                               spieler=1;
-                           }
-                       } 
-                       System.out.println(spielstein.getId().charAt(10));
-                   }
+                   @Override public void handle(MouseEvent arg0) { spielsteinAnzeigen(spielstein);}
                });
               
                // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
                vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                       if(spielstein.getTranslateY()!=0){
-                           translateTransition.setToY(0);
-                           translateTransition.play();
-                           if(spieler==1){
-                               spieler=2;
-                               spielstein.setImage(image1);
-                           }else{
-                               spieler=1;
-                               spielstein.setImage(image2);
-                           }
-                           int spalte = (int)spielstein.getId().charAt(10) - 48;
-                           System.out.println(spalte);
-                       }
-                   }
+                   @Override public void handle(MouseEvent arg0) {spielsteinAnzeigen(spielstein);}
                });
-           //}
-            
+           
             /*******************************************************************************************************************
              *******************************************  ZELLEN FUELLEN  ******************************************************
              *******************************************************************************************************************/
@@ -474,15 +534,49 @@ public class TestGui extends Application {
             }
         }
     }
+    public void setSpielstein(int spalte, int zeile){
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(spalte, zeile, spielfeld))));
+    }
     
-    private void AutoSpiel(final GridPane spielfeld, int zeile, int spalte, int spieler, Button start, Slider spielmodus, Image image1, Image image2, TranslateTransition translateTransition, ImageView spielstein, Shape cell){
+    public void spielsteinAnzeigen(ImageView spielstein){
+    	if(spielstein.getTranslateY()!=0){ 
+    		spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+            final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
+            translateTransition.setToY(0);				//Runterfallen der Steine
+            translateTransition.play();
+            if(spieler==1){
+                spielstein.setImage(image1);
+                spieler=2;
+            }else{
+                spielstein.setImage(image2);
+                spieler=1;
+            }
+        }System.out.println((int)spielstein.getId().charAt(10)-48);
+    }
+    
+    public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
+        for (Node node : spielfeld.getChildren()) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                return (StackPane) node;
+            }
+        } return null;
+    }
+    
+    public ImageView getImageView (StackPane stack) {
+        ObservableList<Node> list = stack.getChildren();
+        
+        System.out.println(list.get(2));
+        return (ImageView)list.get(2);
+    }
+    
+    private void AutoSpiel(int zeile, int spalte, int spieler, Button start, Slider spielmodus, Image image1, Image image2, TranslateTransition translateTransition, ImageView spielstein, Shape cell){
     	 
     	start.setOnMouseClicked(new EventHandler<MouseEvent>() {
  			@Override
              public void handle(MouseEvent arg0) {
  				for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
  		            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
- 		            	createGrids(spielfeld, spielmodus, start);
+ 		            	createGrids();
  		            }
  				}
  			}
