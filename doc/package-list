@@ -1,6 +1,8 @@
 de.dhbw.mannheim.vierpunkt.application
 de.dhbw.mannheim.vierpunkt.db
 de.dhbw.mannheim.vierpunkt.gui
+de.dhbw.mannheim.vierpunkt.gui_alt
 de.dhbw.mannheim.vierpunkt.interfaces
 de.dhbw.mannheim.vierpunkt.logic
+de.dhbw.mannheim.vierpunkt.logic_alt
 de.dhbw.mannheim.vierpunkt.threads
