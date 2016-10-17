@@ -86,7 +86,7 @@ public class PusherInterface extends Application
 	
 	
 	
-	/* Code für GUI*/
+	/* Code fï¿½r GUI*/
 	TestGui gui;
 	String[] args;
 	
@@ -128,7 +128,7 @@ public class PusherInterface extends Application
 	public void start(Stage primaryStage) throws Exception 
 	{
         /**
-         * CurRow gibt den Füllstand der aktuellen Spalte an	
+         * CurRow gibt den Fï¿½llstand der aktuellen Spalte an	
          */
 		int[] CurRow = new int[7];
 		for (int i = 0; i < CurRow.length; i++){
@@ -191,10 +191,10 @@ public class PusherInterface extends Application
 				    	// Zug des Gegners aus Nachricht von Server erhalten
 				        System.out.println("Empfangene Daten: " + data);
 				        int zug = getGegnerzug(data);				        
-				        System.out.println("Pusher empfängt Spalte: "+ zug);
+				        System.out.println("Pusher empfï¿½ngt Spalte: "+ zug);
 				        
 				        // Zug des Gegners wird
-				        game.serverTurn(zug);
+				        game.setChip(zug, 1);
 				        
 				        // Spielstein wird in der GUI eingeworfen
 				        setSpielstein(CurRow[zug], zug);
