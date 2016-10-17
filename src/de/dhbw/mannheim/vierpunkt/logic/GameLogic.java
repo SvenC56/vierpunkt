@@ -24,6 +24,8 @@ public class GameLogic {
 	private int row = 5;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
+	private int lastX = -1;
+	private int lastY = -1;
 	
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
@@ -99,6 +101,18 @@ public class GameLogic {
 	private void setField (int x, int y, int value) {
 		field[y][x] = value;
 		setTurn();		//Zuege mitzaehlen!
+		saveTurn(x, y);
+	}
+	
+	/**
+	 * 
+	 * Speichert den durchgefuehrten Zug
+	 * @param x
+	 * @param y
+	 */
+	private void saveTurn(int x, int y) {
+	lastX = x;
+	lastY = y;
 	}
 	
 	/**************************************************************/
@@ -175,7 +189,7 @@ public class GameLogic {
 	
 	/**
 	 * Bewertet die aktuelle Spielsituation und liefert die Spalte zurueck, in welche eingeworfen werden soll.
-	 * Wenn -1 uebergeben wird, dann gibt es keinen validen Pfad!
+	 * Wenn -1 uebergeben wird, dann gibt es keinen validen Pfad! Bewertet die Situation des letzten Zuges und prueft somit, ob Gegner in besserer Gewinnsituation ist!
 	 * @param spieler
 	 * @return
 	 */
@@ -183,19 +197,22 @@ public class GameLogic {
 		int bestColumn=-1;
 		int tmp=0;
 		int maxEval=0;
-		//System.err.println("Methode bestPath wurde aufgerufen!");
+		int oponent=0;;
+		if (spieler == 2 && move > 0){
+		oponent = pathEval(lastX, lastY, 1);
+			}
 		for (int x = 0; x <= row; x++) {
-			int spalte=x+1;
-			//System.err.println("Pruefe Spalte:" + spalte);
 			int y = validPosition(x);
-			if (y != -1) {
+			if (y != -1) { 
 				tmp = pathEval(x, y, spieler);
 				if (maxEval<=tmp){
-					//System.err.println("Bessere Spalte:" + spalte + " Wert: " + tmp);
 					maxEval = tmp;
 					bestColumn=x;
 				}
 			}
+		}
+		if (maxEval < oponent) {
+			bestColumn = lastX;
 		}
 		
 		return bestColumn;
