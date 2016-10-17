@@ -182,18 +182,21 @@ public class connectHSQL {
 	}
 
 	/**
+	 * uebermittlung eines Matches in die DB
 	 **/
 	public void handOverGame(int G_ID, String OPPONENT, String WINNER, int POINTS){
 		executeSQL("INSERT INTO GAME VALUES{ " + G_ID + ", " + OPPONENT + ", " + WINNER + ", " + POINTS + "}");
 	}
 
 	/**
+	 * uebermittlung eines Runde in die DB
 	 **/
 	public void handOverMatch(int M_ID, int G_ID) {
 		executeSQL("INSERT INTO MATCH VALUES{ " + M_ID + ", " + G_ID + "}");
 	}
 
 	/**
+	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void handOverTurn(int T_ID, int M_ID, String PERSON, int POS_Y) {
 		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", " + PERSON + ", " + POS_Y + "}");
