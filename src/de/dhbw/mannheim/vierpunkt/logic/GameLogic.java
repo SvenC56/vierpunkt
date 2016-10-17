@@ -420,9 +420,9 @@ public class GameLogic {
 	/*
 	 * Erzeugung der Thread Objekte zur Speicherung von Daten in der Datenbank.
 	 */
-	sendMatch gameDB = new gameDB(gameID, OPPONENT, WINNER, POINTS);
-	sendMatch matchDB = new sendMatch(matchID, gameID);
-	sendMatch turnDB = new turnDB(turnID, matchID, PERSON, POS_Y);
+	//sendMatch gameDB = new gameDB(gameID, OPPONENT, WINNER, POINTS);
+	//sendMatch matchDB = new sendMatch(matchID, gameID);
+	//sendMatch turnDB = new turnDB(turnID, matchID, PERSON, POS_Y);
 	
 	public void startGame() {
 		
