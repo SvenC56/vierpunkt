@@ -100,7 +100,7 @@ public class PusherInterface
 				        System.out.println("Empfangene Daten: " + data);
 				        int zug = getGegnerzug(data);
 				        GameLogic game = new GameLogic();
-				        game.serverTurn(zug);
+				        game.setChip(zug,1);
 				        
 				        
 				        if (data.contains("true")){

@@ -49,13 +49,6 @@ public class GameLogic {
 	public int getRow() {
 		return row;
 	}
-<<<<<<< HEAD
-=======
-	
-	public void setField(int[][] field) {
-		this.field = field;
-	}
->>>>>>> branch 'master' of https://github.com/SvenC56/vierpunkt.git
 
 	private int getTurn() {
 		return move;
@@ -125,6 +118,21 @@ public class GameLogic {
 	private void saveTurn(int x, int y) {
 	lastX = x;
 	lastY = y;
+	}
+	/**
+	 * Setzt den Chip eines Spielers
+	 * @param x
+	 */
+	public void setChip(int x, int spieler) {
+		int y = validPosition(x);
+		
+		if (spieler == 2) { //wenn Spieler spielt
+		setField(x, y, 2);	
+		}
+		else if (spieler == 1){ // wenn Server / Gegner spielt
+			setField(x, y, 1);	
+		}
+		
 	}
 	
 	/**************************************************************/
@@ -299,17 +307,6 @@ public class GameLogic {
 		}
 		return count;
 	}
-	/**
-	 * Methode fuehrt Zug vom Server durch!
-	 * @param x
-	 */
-	public void serverTurn(int x) {
-		//Prueft naechste freie Stelle in der Spalte
-		int y = validPosition(x);
-		//Spielt den Zug
-		setField(x, y, 1);
-		System.err.println("Server spielte den " + getTurn() + ". Zug in Spalte " + x);
-	}
 	
 	/**
 	 * Methode fuehrt Zug vom Spieler durch (KI oder Manuell) 
@@ -426,10 +423,6 @@ public class GameLogic {
 	
 	public GameLogic copy() {
 		GameLogic game2 = new GameLogic();
-		game2.setColumn(this.column);
-		game2.setRow(this.row);
-		game2.setMove(this.move);
-		
 		for (int i=0; i < column; i++) {
 			for (int j=0; j < row; j++) {
 				game2.setField(i,j, this.getField(i, j));
