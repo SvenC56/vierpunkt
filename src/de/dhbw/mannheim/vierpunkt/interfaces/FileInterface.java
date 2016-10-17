@@ -7,11 +7,12 @@ import java.io.*;
 
 public class FileInterface {
 
+	public static String serverFile ="";
+	public static int zugZeit = 1000;
 	
 public static void main (String[] args) {
 
-		String serverFile ="";
-		int zugZeit = 1000;
+		
 		
 		while(true){
 
@@ -28,7 +29,7 @@ public static void main (String[] args) {
 				}catch (IOException e){e.getMessage();}
 			}
 		
-		
+			
 		try {
 		Thread.sleep(zugZeit);
 			} catch (InterruptedException e){e.getMessage();}
@@ -42,7 +43,7 @@ public static void main (String[] args) {
 	  * @throws IOException
 	  */
 	public static String zugEmpfangen() throws IOException{
-		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielero.xml")), StandardCharsets.UTF_8);
+		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
 		System.out.print(data);
 		return data;
 	}
@@ -52,8 +53,10 @@ public static void main (String[] args) {
 	 * @throws IOException
 	 */
 	public static void zugSpielen(int spalte) throws IOException{
-		FileWriter fileOut = new FileWriter("C:\\FileInterface\\spielero2server.txt");
-		fileOut.write("1"); // 1 als dummy, später dann int spalte
+		FileWriter fileOut = new FileWriter("C:\\FileInterface\\spielerx2server.txt");
+		int move = (int) (Math.random()*6); // Zug wird zufällig festgelegt
+		System.out.println("Der Zug " + move + " wird gespielt.");
+		fileOut.write(String.valueOf(move)); // 
 		fileOut.flush();
 		fileOut.close();
 	}
