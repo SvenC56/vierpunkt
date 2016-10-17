@@ -1,16 +1,14 @@
 package de.dhbw.mannheim.vierpunkt.interfaces;
 
 import java.awt.Toolkit;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
@@ -62,7 +60,7 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import de.dhbw.mannheim.vierpunkt.gui.*;
 
-public class PusherInterface extends Application 
+public class PusherInterface_Application extends Application 
 {
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -87,7 +85,9 @@ public class PusherInterface extends Application
 	
 	
 	
-	/* Code fï¿½r GUI*/
+	/* Initialisierung GUI*/
+	
+	
 	TestGui gui;
 	String[] args;
 	
@@ -192,7 +192,7 @@ public class PusherInterface extends Application
 				    	// Zug des Gegners aus Nachricht von Server erhalten
 				        System.out.println("Empfangene Daten: " + data);
 				        int zug = getGegnerzug(data);
-				        System.out.println("Pusher empfaengt Spalte: "+ zug);
+				        System.err.println("Gegner spielte in Spalte: "+ zug);
 				        
 				        if (zug != -1){
 				        // Zug des Gegners wird in Logik übertragen
@@ -704,7 +704,7 @@ public class PusherInterface extends Application
 		                spielstein.setImage(image2);
 		                spieler=1;
 		            }
-		        }System.out.println((int)spielstein.getId().charAt(10)-48);
+		        }//System.out.println((int)spielstein.getId().charAt(10)-48);
 		    }
 		    
 		    public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
@@ -718,7 +718,7 @@ public class PusherInterface extends Application
 		    public ImageView getImageView (StackPane stack) {
 		        ObservableList<Node> list = stack.getChildren();
 		        
-		        System.out.println(list.get(2));
+		        //System.out.println(list.get(2));
 		        return (ImageView)list.get(2);
 		    }
 		    
