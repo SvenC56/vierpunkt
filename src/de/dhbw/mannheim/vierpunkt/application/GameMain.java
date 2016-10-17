@@ -15,7 +15,6 @@ public class GameMain {
 
 	/**Main-Methode fuer Spielablauf**/
 	public static void main(String[] args) {
-	
 		/**************************************************************/
 		/*******************TEMPORAER TEST-METHODS*********************/
 		/**************************************************************/
