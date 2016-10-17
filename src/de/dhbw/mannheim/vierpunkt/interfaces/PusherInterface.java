@@ -10,6 +10,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Hex;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
@@ -128,7 +129,7 @@ public class PusherInterface extends Application
 	public void start(Stage primaryStage) throws Exception 
 	{
         /**
-         * CurRow gibt den Fï¿½llstand der aktuellen Spalte an	
+         * CurRow gibt den Fuellstand der aktuellen Spalte an	
          */
 		int[] CurRow = new int[7];
 		for (int i = 0; i < CurRow.length; i++){
@@ -190,30 +191,31 @@ public class PusherInterface extends Application
 				    public void onEvent(String channel1, String event, String data) {
 				    	// Zug des Gegners aus Nachricht von Server erhalten
 				        System.out.println("Empfangene Daten: " + data);
-				        int zug = getGegnerzug(data);				        
-				        System.out.println("Pusher empfï¿½ngt Spalte: "+ zug);
+				        int zug = getGegnerzug(data);
+				        System.out.println("Pusher empfaengt Spalte: "+ zug);
 				        
-				        // Zug des Gegners wird
+				        if (zug != -1){
+				        // Zug des Gegners wird in Logik übertragen
 				        game.setChip(zug, 1);
-				        
 				        // Spielstein wird in der GUI eingeworfen
 				        setSpielstein(CurRow[zug], zug);
 				        CurRow[zug]--;
-				        
-				       
-
-				        
-				        
+				        }
 				        
 				        if (data.contains("true")){
 				        	// der Move wird von der Logik berechnet
 				        	int move = game.playerTurn();
+				        	// der von der Logik berechnete Move wird an den Pusher übertragen
 				        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
+				        	// der Spielstein wird in der GUI eingeworfen
 				        	setSpielstein(CurRow[move], move);
 				        	CurRow[move]--;
 				        }
 				        
-				        
+				        if (data.contains("false")){
+				        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
+				        }
+				       			        
 				    }
 
 					@Override
@@ -788,15 +790,22 @@ public class PusherInterface extends Application
 		});
 		
 	}
-
+	
+	/**
+	 * Aus dem von Pusher empfangenen Event-String wird der Zug des Gegners als Integer erfasst.
+	 * @param data
+	 * @return
+	 */
 	public static int getGegnerzug (String data){
-		
 		int zug;
 		int stelle = ordinalIndexOf(data, "#", 1);
 		
 		try{
 		zug = Integer.parseInt(String.valueOf(data.charAt(stelle+2)));
-		} catch (Exception e) {zug = -1;}
+		} catch (Exception e) {
+			// Wenn an dieser Stelle keine Zahl steht, ist entweder noch kein Stein gesetzt oder das Spiel vorbei
+			zug = -1;
+			}
 		
 		return zug;
 		}
@@ -809,28 +818,11 @@ public class PusherInterface extends Application
 	    return pos;
 	}
 	
-	public static ServerEvent entpacken(String data){
-		Gson gson = new Gson();
-		ServerEvent se = gson.fromJson(data, ServerEvent.class);
-		return se;
-	}
-	
 	public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException {
 		launch(args);
 	}
 }
 
-class ServerEvent {
-	public static boolean freigabe = true;
-	public static String status = "Satz spielen";
-	public static int spalte = 0;
-	public static String sieger = null;
-	
-	public static int getGegnerzugfromJSON(){
-		return spalte;
-	}
-
-}
 
 /*
 /**

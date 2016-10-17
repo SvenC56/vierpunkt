@@ -15,7 +15,36 @@ public class GameMain {
 
 	/**Main-Methode fuer Spielablauf**/
 	public static void main(String[] args) {
+<<<<<<< HEAD
 	PusherInterface pusher = new PusherInterface();
+=======
+		/**************************************************************/
+		/*******************TEMPORAER TEST-METHODS*********************/
+		/**************************************************************/
+		GameLogic game = new GameLogic();
+		for (int z=0; z <= 2; z++) {
+		game.randomGame();
+		System.out.println(game.getField(3, 0));
+		System.out.println("###############################");
+		
+		for (int y = 0; y <= game.getRow() ; y++) {
+			System.out.println();
+			for (int x = 0; x <= game.getColumn(); x++ ) {
+				System.out.print(game.getField(x, y));
+				System.out.print("\t");
+			}}
+		System.out.println("\n" + "**************************************************************");
+		int column=game.bestPath(2);
+		
+		System.out.println("Die Methode sagt, beste Spalte ist:" + column);
+		/*************************************************************/
+		
+		}
+	/**Initialisierung des Spielfeldes**/
+	/**TestGui gui = new TestGui();
+	gui.main(args);**/
+		
+>>>>>>> branch 'master' of https://github.com/SvenC56/vierpunkt.git
 	
 	}
 }
