@@ -41,25 +41,21 @@ public class GameLogic {
 	 * Methode um Gewinn zu erkennen!(count == 4 BREAK)
 	 */
 	
-	public void setColumn(int column) {
-		this.column=column;
-	}
 	
 	public int getColumn() {
 		return column;
 	}
 	
-	public void setRow(int row) {
-		this.row=row;
-	}
-	
-	public void setMove(int move) {
-		this.move=move;
-	}
-	
 	public int getRow() {
 		return row;
 	}
+<<<<<<< HEAD
+=======
+	
+	public void setField(int[][] field) {
+		this.field = field;
+	}
+>>>>>>> branch 'master' of https://github.com/SvenC56/vierpunkt.git
 
 	private int getTurn() {
 		return move;
