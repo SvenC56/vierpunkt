@@ -24,9 +24,9 @@ public class GameLogic {
 	private int row = 5;
 	//Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
-	private int lastX = -1;
-	private int lastY = -1;
-	
+	private int lastX = -1; //Variable speichert X vorheriger Zug
+	private int lastY = -1; //Variable speichert Y vorheriger Zug
+	private int winnerIs = 0;
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
 	 */
@@ -83,6 +83,21 @@ public class GameLogic {
 	/**************************************************************/
 	/*******************ZUGRIFFSMETHODEN***************************/
 	/**************************************************************/
+	
+	/**
+	 * Methode gibt zurueck wo der Spieler gewonnen hat
+	 */
+	private void theWinner () {
+		switch (winnerIs) {
+		case 11: System.out.println("Server gewinnt in Spalte!");
+		case 12: System.out.println("Spieler gewinnt in Spalte!");
+		case 101: System.out.println("Server gewinnt in Reihe!");
+		case 201: System.out.println("Spieler gewinnt in Reihe!");
+		case 1001: System.out.println("Server gewinnt Diagonal!");
+		case 1002: System.out.println("Spieler gewinnt Diagonal!");
+		}
+	}
+	
 	
 	/**Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array zurueck!**/
 	
@@ -165,7 +180,6 @@ public class GameLogic {
 				} //kein leeres Feld
 				else {
 					temp = -1;
-					System.err.println("NO VALID POSITION!");
 					
 				}
 			}
@@ -193,6 +207,7 @@ public class GameLogic {
 		//System.err.println("Bewertung des Pfades durchgefuehrt: " + evaluation);
 		return evaluation;
 	}
+	
 	
 	/**
 	 * Bewertet die aktuelle Spielsituation und liefert die Spalte zurueck, in welche eingeworfen werden soll.
@@ -248,6 +263,9 @@ public class GameLogic {
 				}
 				else break;
 			}
+		}
+		if (count == 4) {
+			winnerIs = spieler+10;
 		}
 		return count;	
 	}
@@ -305,6 +323,10 @@ public class GameLogic {
 			else break;
 		}
 		}
+		if (count == 4) {
+			winnerIs = spieler+1000;
+		}
+		
 		return count;
 	}
 	
@@ -349,6 +371,10 @@ public class GameLogic {
 			
 			}	
 		}
+		if (count == 4) {
+			winnerIs = spieler+100;
+		}
+		
 		return count;	
 	}
 
