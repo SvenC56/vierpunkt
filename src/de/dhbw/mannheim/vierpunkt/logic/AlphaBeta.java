@@ -24,12 +24,6 @@ public class AlphaBeta {
 		else 
 			minimax_curr = beta; // search for optimum beta value
 
-/**		
- * 		TOBI: Methode bestPath(int spieler);
- * 		Fehlt: Methode in GameLogic, die die gesamte Spielsituation auswertet
- * 		return evaluation(game); // if maximum depth is reached, game is evaluated 
- */
-
 			// calculate all possible moves
 			for (int i = 0; i < game.getColumn(); i++) {
 				game_tmp = game.copy(); // copy current game situation
