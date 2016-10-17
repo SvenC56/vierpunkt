@@ -64,7 +64,7 @@ public class AlphaBeta {
 		for (int i = 0; i < game.getColumn(); i++)
 			if (game.validPosition(i) != -1) {
 				game_tmp = game.copy();
-				game_tmp.setChip(i);
+				game_tmp.setChip(i, 2);
 				values[i] = getMiniMaxValue(game_tmp, depth, NEG_INFINITY, POS_INFINITY);
 			}
 				int move = -1;

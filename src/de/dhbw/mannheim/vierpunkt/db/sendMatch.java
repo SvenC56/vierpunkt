@@ -1,6 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.db;
 
-public class sendMatch extends Thread {
+public class sendMatch implements Runnable {
 	int M_ID;
 	int G_ID;
 
