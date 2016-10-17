@@ -39,27 +39,14 @@ public class GameLogic {
 	 * Methode um Gewinn zu erkennen!(count == 4 BREAK)
 	 */
 	
-	public void setColumn(int column) {
-		this.column=column;
-	}
 	
 	public int getColumn() {
 		return column;
 	}
 	
-	public void setRow(int row) {
-		this.row=row;
-	}
-	
-	public void setMove(int move) {
-		this.move=move;
-	}
-	
 	public int getRow() {
 		return row;
 	}
-	
-	
 	
 	public void setField(int[][] field) {
 		this.field = field;
@@ -423,12 +410,9 @@ public class GameLogic {
 	
 	public GameLogic copy() {
 		GameLogic game2 = new GameLogic();
-		game2.setColumn(this.column);
-		game2.setRow(this.row);
-		game2.setMove(this.move);
 		
-		for (int i=0; i < column; i++) {
-			for (int j=0; j < row; j++) {
+		for (int i=0; i <= column; i++) {
+			for (int j=0; j <= row; j++) {
 				game2.setField(i,j, this.getField(i, j));
 			}
 		}
