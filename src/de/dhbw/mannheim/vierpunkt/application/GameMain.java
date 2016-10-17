@@ -15,7 +15,6 @@ public class GameMain {
 
 	/**Main-Methode fuer Spielablauf**/
 	public static void main(String[] args) {
-	PusherInterface_Application pusher = new PusherInterface_Application();
-	
+	PusherInterface_Application.launch(args);
 	}
 }
