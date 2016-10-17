@@ -3,6 +3,7 @@ package de.dhbw.mannheim.vierpunkt.logic;
 import de.dhbw.mannheim.vierpunkt.db.connectHSQL;
 import de.dhbw.mannheim.vierpunkt.db.sendGame;
 import de.dhbw.mannheim.vierpunkt.db.sendMatch;
+import de.dhbw.mannheim.vierpunkt.db.sendTurn;
 
 import java.util.Random; //Temporaer fuer Test
 
@@ -51,13 +52,10 @@ public class GameLogic {
 	
 	public int getRow() {
 		return row;
-<<<<<<< HEAD
 	}
 	
 	public void setField(int[][] field) {
 		this.field = field;
-=======
->>>>>>> origin/master
 	}
 
 	private int getTurn() {
