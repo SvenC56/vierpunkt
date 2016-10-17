@@ -49,7 +49,7 @@ public class AlphaBeta {
 	
 	}	
 	
-	private static int calcMove(GameLogic game) {
+	private static int calcMove(GameLogic game) { // method to be evoked by game main
 		
 		int [] values = new int[game.getColumn()];
 		GameLogic game_tmp;
