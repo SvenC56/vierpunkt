@@ -1,6 +1,9 @@
 package de.dhbw.mannheim.vierpunkt.logic;
 
 import de.dhbw.mannheim.vierpunkt.db.connectHSQL;
+import de.dhbw.mannheim.vierpunkt.db.sendGame;
+import de.dhbw.mannheim.vierpunkt.db.sendMatch;
+
 import java.util.Random; //Temporaer fuer Test
 
 /**
@@ -49,13 +52,10 @@ public class GameLogic {
 	public int getRow() {
 		return row;
 	}
-<<<<<<< HEAD
-=======
 	
 	public void setField(int[][] field) {
 		this.field = field;
 	}
->>>>>>> branch 'master' of https://github.com/SvenC56/vierpunkt.git
 
 	private int getTurn() {
 		return move;
@@ -385,6 +385,13 @@ public class GameLogic {
 		
 		return matchID;
 	}
+	
+	/*
+	 * Erzeugung der Thread Objekte zur Speicherung von Daten in der Datenbank.
+	 */
+	sendMatch gameDB = new gameDB(gameID, OPPONENT, WINNER, POINTS);
+	sendMatch matchDB = new sendMatch(matchID, gameID);
+	sendMatch turnDB = new turnDB(turnID, matchID, PERSON, POS_Y);
 	
 	public void startGame() {
 		
