@@ -60,8 +60,6 @@ public class GameLogic {
 	public int getRow() {
 		return row;
 	}
-	
-
 
 	private int getTurn() {
 		return move;
@@ -111,6 +109,15 @@ public class GameLogic {
 		field[y][x] = value;
 		setTurn();		//Zuege mitzaehlen!
 		saveTurn(x, y);
+	}
+	/**
+	 * Setter fuer Demofeld der KI
+	 * @param x
+	 * @param y
+	 * @param value
+	 */
+	private void setDemoField (int x, int y, int value) {
+		field[y][x] = value;
 	}
 	
 	/**
@@ -166,19 +173,6 @@ public class GameLogic {
 		}
 	  //temp nur zurueckgeben, wenn noch keine Zeile returned wurde, war eine if, mal gucken, ob erforderlich!
 			return temp;
-	}
-	
-	
-	/**Chip einwerfen
-	Ueberlegung: Informationen werden in Array geschrieben! Spieler 1 == 1 --> Spieler 2 == 2**/
-	void setChip (int x) {
-		int y = validPosition(x);
-		if (y != -1 && player == 1) {
-			setField(x, y, player);
-			}
-		if (y!= -1 && player == 2) {
-			setField(x, y, player);
-		}
 	}
 	
 	
