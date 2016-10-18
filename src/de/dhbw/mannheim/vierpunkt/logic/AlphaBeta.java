@@ -6,7 +6,7 @@ public class AlphaBeta {
 	private static final int NEG_INFINITY = (int) Double.NEGATIVE_INFINITY;
 	static int depth = 6;
 
-	public static int getMiniMaxValue(GameLogic game, int alpha, int beta) {
+	public static int getMiniMaxValue(GameLogic game, int depth, int alpha, int beta) {
 		
 		//Declarations
 		GameLogic game_tmp;
@@ -29,7 +29,7 @@ public class AlphaBeta {
 			for (int i = 0; i <= game.getColumn(); i++) {
 				game_tmp = game.copy(); // copy current game situation
 				if (game_tmp.validPosition(i) != -1) {
-						minimax_tmp = getMiniMaxValue(game_tmp, alpha, beta);
+						minimax_tmp = getMiniMaxValue(game_tmp, depth-1, alpha, beta);
 						if (player == 1) { // our agent is playing
 							minimax_curr = java.lang.Math.max(minimax_tmp, minimax_curr);
 							alpha = minimax_curr;
