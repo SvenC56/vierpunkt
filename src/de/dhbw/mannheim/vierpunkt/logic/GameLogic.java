@@ -35,7 +35,6 @@ public class GameLogic {
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 = AGENT (SPIELER)
 	 */
 	private int [][] field = new int[row+1][column+1];
-	private int player;
 	connectHSQL db = new connectHSQL();
 	private int gameID; // entspricht Spiel
 	private int matchID; //entspricht Runde
@@ -386,15 +385,6 @@ public class GameLogic {
 		return count;	
 	}
 
-	public int getPlayer() {
-		// TODO Auto-generated method stub
-		return player;
-	}
-
-
-	public void setPlayer(int player) {
-		this.player = player;
-	}
 	/**
 	 * Ruft in der Datenbank die aktuelle GameID ab, welche einem Spiel entspricht. Gibt einen int-Wert zurueck
 	 * @return
@@ -441,6 +431,16 @@ public class GameLogic {
 		}
 		
 	return game2;
+	}
+	
+	public int getPlayer() { // liefert den aktuellen Spieler zurück; 1 für unsren Agenten, 2 für den Gegner
+		return 1;
+	}
+	
+
+	public int evaluate() { // bewertet die gesamte Spielsituation
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	
