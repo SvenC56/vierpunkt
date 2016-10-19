@@ -3,6 +3,9 @@ package de.dhbw.mannheim.vierpunkt.interfaces;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
+import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
+
 import java.io.*;
 
 public class FileInterface {
@@ -12,7 +15,10 @@ public class FileInterface {
 	
 public static void main (String[] args) {
 
-		
+		GameLogic game = new GameLogic();
+		int zug;
+		int stelle;
+		char charAtStelle;
 		
 		while(true){
 
@@ -20,20 +26,29 @@ public static void main (String[] args) {
 		try {
 		serverFile = zugEmpfangen();
 		} catch (IOException e){e.getMessage();}
-		
+
+		if(!serverFile.isEmpty()){		
+			stelle = ordinalIndexOf(serverFile, ">", 6) + 1;
+			charAtStelle = serverFile.charAt(stelle);
+			if (charAtStelle != '-'){
+				zug = Integer.parseInt(String.valueOf(charAtStelle));
+				game.setChip(zug, 1);
+			} else {
+				// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
+			}
+		}		
 		
 		// Wenn man am Zug ist: Zug spielen
 		if (serverFile.contains("true")){
 			try {
-				zugSpielen(1);
+				zug = game.playerTurn();
+				zugSpielen(zug);
 				}catch (IOException e){e.getMessage();}
-			}
+		}
 		
-			
 		try {
 		Thread.sleep(zugZeit);
 			} catch (InterruptedException e){e.getMessage();}
-		
 		}
 	}
 	
@@ -59,6 +74,15 @@ public static void main (String[] args) {
 		fileOut.write(String.valueOf(move)); // 
 		fileOut.flush();
 		fileOut.close();
+	
+	}
+	
+	public static int ordinalIndexOf(String str, String s, int n) {
+	    int pos = str.indexOf(s, 0);
+	    while (n-- > 0 && pos != -1)
+	        pos = str.indexOf(s, pos+1);
+	    return pos;
 	}
 }
+
 
