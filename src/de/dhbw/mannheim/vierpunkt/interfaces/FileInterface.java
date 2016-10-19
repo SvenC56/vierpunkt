@@ -19,6 +19,7 @@ public static void main (String[] args) {
 		int zug;
 		int stelle;
 		char charAtStelle;
+		boolean onetime = false;
 		
 		while(true){
 
@@ -26,13 +27,18 @@ public static void main (String[] args) {
 		try {
 		serverFile = zugEmpfangen();
 		} catch (IOException e){e.getMessage();}
-
-		if(!serverFile.isEmpty()){		
+		
+		// Wenn die Datei vom Server überschrieben wurde:
+		if(!serverFile.isEmpty() && onetime == false){		
+			// Zug des Gegners wird erfasst
 			stelle = ordinalIndexOf(serverFile, ">", 6) + 1;
 			charAtStelle = serverFile.charAt(stelle);
 			if (charAtStelle != '-'){
 				zug = Integer.parseInt(String.valueOf(charAtStelle));
+				// Zug des Gegners wird in eigenes Logikarray eingetragen
 				game.setChip(zug, 1);
+				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
+				onetime = true;
 			} else {
 				// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
 			}
@@ -59,7 +65,7 @@ public static void main (String[] args) {
 	  */
 	public static String zugEmpfangen() throws IOException{
 		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
-		System.out.print(data);
+		//System.out.print(data);
 		return data;
 	}
 	/**
@@ -82,6 +88,16 @@ public static void main (String[] args) {
 	    while (n-- > 0 && pos != -1)
 	        pos = str.indexOf(s, pos+1);
 	    return pos;
+	}
+
+	public static int getZugZeit()
+	{
+		return zugZeit;
+	}
+
+	public static void setZugZeit(int zugZeit)
+	{
+		FileInterface.zugZeit = zugZeit;
 	}
 }
 

@@ -136,7 +136,8 @@ public class PusherInterface_Application extends Application
 			CurRow[i]=5;
 		}
 		
-		 GameLogic game = new GameLogic();
+		GameLogic game = new GameLogic();
+		FileInterface fileinterface = new FileInterface();
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -534,9 +535,12 @@ public class PusherInterface_Application extends Application
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
-
-				primaryStage.show();
 				
+
+				fileinterface.main(args);
+				
+				primaryStage.show();
+							
 			}
 
 			/*********************************************************************************************************************
