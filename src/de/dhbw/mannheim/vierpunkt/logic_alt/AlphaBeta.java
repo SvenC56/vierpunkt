@@ -16,10 +16,10 @@ public class AlphaBeta {
 	
 	int rootMax = POSINF;
 	int rootMin = NEGINF;
-	Node node;
+	//Node node;
 	int value;
 	
-	ArrayList<Node> internals = new ArrayList<Node>();
+	//ArrayList<Node> internals = new ArrayList<Node>();
 	//internals.add(new Node());
 	
 	// check first node
