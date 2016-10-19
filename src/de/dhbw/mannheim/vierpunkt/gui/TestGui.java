@@ -23,6 +23,9 @@ import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 /**
  *
  * @author janaschaub
@@ -36,7 +39,7 @@ public class TestGui extends Application {
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
 	
-	// Erzeugen der Spielsteine
+	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
@@ -66,7 +69,7 @@ public class TestGui extends Application {
 	 ********************************************************************************************************************/
 	@Override
 	public void start(Stage primaryStage) {
-
+		
 		// Grundlegende Eigenschaften der Stage
 		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
@@ -105,7 +108,7 @@ public class TestGui extends Application {
 		themen.getItems().addAll(menu21, menu22, menu23, menu24);
 
 		// Unterkategorien fuer "hilfe"
-		MenuItem menu31 = new MenuItem("zu Google");
+		MenuItem menu31 = new MenuItem("letztes Spiel nachvollziehen");
 		MenuItem menu32 = new MenuItem("Spielanleitung");
 		hilfe.getItems().addAll(menu31, menu32);
 
@@ -137,7 +140,15 @@ public class TestGui extends Application {
 		root.getChildren().addAll(menuBar, titelbox, content);
 
 		/******************************************* LAYOUT-UEBERSICHT ******************************************************/
-
+		VBox boxrechts2 = new VBox();
+		boxrechts2.setPrefWidth(breite / 4);
+		boxrechts2.setSpacing(10);
+		boxrechts2.setPadding(new Insets(50, 0, 0, 50));
+		
+		Label sieger = new Label("Sieger:");
+		Text antwortsieger = new Text("Spieler 1");
+		boxrechts2.getChildren().addAll(sieger, antwortsieger);
+		
 
 		/******************************************** CONTAINERBOXEN IN CONTENT ************************************************/
 		// Erzeugen der rechten Containerbox
@@ -259,9 +270,52 @@ public class TestGui extends Application {
 		VBox boxlinks = new VBox();
 		boxlinks.setId("boxlinks");
 		boxlinks.setPrefWidth(breite / 4);
-		boxlinks.setAlignment(Pos.BOTTOM_CENTER);
+		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
 
 		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
+		
+		Label schnittstelle = new Label("Schnittstelle");
+		CheckBox file = new CheckBox("File");
+		CheckBox pusher = new CheckBox("Pusher");
+		pusher.setSelected(true);
+		pusher.setOnMouseClicked(new EventHandler<MouseEvent>(){
+                   @Override
+                   public void handle(MouseEvent arg0) {
+                       if(file.isSelected()){
+                    	   file.setSelected(false);   
+                    	   pusher.setSelected(true);
+                       }else{pusher.setSelected(true);}
+                   }
+               });
+		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(pusher.isSelected()){
+             	   pusher.setSelected(false);   
+             	   file.setSelected(true);
+                }else{file.setSelected(true);}
+            }
+        });
+		
+		Slider zeit = new Slider(0.5, 5, 0.1); 			// Slider geht von 0 bis 2 in 1er Abstaenden
+		zeit.setMinorTickCount(0);
+		zeit.setMajorTickUnit(0.1); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
+		zeit.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
+		zeit.setShowTickMarks(true); 					// Markierungen anzeigen -
+		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
+		
+		zeit.setValue(2);								// Default Value = 2
+		
+		Label zugzeit = new Label("Zugzeit");
+		zeit.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+		    	 NumberFormat numberFormat = new DecimalFormat("0.0");
+		    	    numberFormat.setRoundingMode(RoundingMode.DOWN);
+		    	zugzeit.setText("Zugzeit:   " + numberFormat.format(newValue));
+		    }
+		});
 		
 		ImageView bild = new ImageView();
 		bild.setId("bild_sweets");
@@ -272,7 +326,7 @@ public class TestGui extends Application {
 		platzhalter2.setOpacity(0);
 
 		// Einfuegen der Elemente in die linke Box
-		boxlinks.getChildren().addAll(bild, platzhalter2);
+		boxlinks.getChildren().addAll(schnittstelle, file, pusher, zugzeit, zeit, bild, platzhalter2);
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);
@@ -359,11 +413,30 @@ public class TestGui extends Application {
 			createGrids_automatisch();
 		}
 		
+		
+		Stage newStage = new Stage();
+		
+		Button login = new Button("Spiel starten");
+		FlowPane pane=new FlowPane();
+		pane.getChildren().add(login);
+		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
-
-		primaryStage.show();
+		Scene scene2 = new Scene(pane, 200, 100);
+		
+	    newStage.setScene(scene2);
+	    newStage.initModality(Modality.APPLICATION_MODAL);
+	    newStage.setTitle("Login");
+	    newStage.setFullScreen(false);
+		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
+					@Override
+		            public void handle(MouseEvent arg0) {
+						newStage.close();
+						primaryStage.show();
+		            }
+				});
+		newStage.show();
 		
 	}
 
@@ -515,7 +588,7 @@ public class TestGui extends Application {
     
     public void spielsteinAnzeigen(ImageView spielstein){
     	if(spielstein.getTranslateY()!=0){ 
-    		spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+    		//spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
             final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             translateTransition.setToY(0);				//Runterfallen der Steine
             translateTransition.play();
