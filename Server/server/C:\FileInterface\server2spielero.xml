@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<content>
+	<freigabe>true</freigabe>
+	<satzstatus>Satz spielen</satzstatus>
+	<gegnerzug>6</gegnerzug>
+	<sieger>offen</sieger>
+</content>
