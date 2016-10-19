@@ -39,9 +39,21 @@ public class TestGui extends Application {
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
 	
+	private String names1;
+	private String names2;
+	private String schnittstelle = "pusher";
+	private int zugzeit = 2000;
+	
 	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
-    public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
+    public javafx.scene.image.Image getImage1() {
+		return image1;
+	}
+	public javafx.scene.image.Image getImage2() {
+		return image2;
+	}
+
+	public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
 	public javafx.scene.image.Image kuerbis = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
     public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
@@ -56,11 +68,15 @@ public class TestGui extends Application {
     public Color color = Color.rgb(133, 3, 118);
     public GridPane spielfeld = new GridPane();
     
-    // Setter Methoden
+    // Getter und Setter Methoden
     public void setColor(Color color) {	this.color = color;}
 	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
 	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
+	public double getZugzeit() {return zugzeit;}
+	public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
+	public String getSchnittstelle() {return schnittstelle;}
+	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
 
 	public static void main(String[] args) { launch(args);}
 
@@ -274,6 +290,32 @@ public class TestGui extends Application {
 
 		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
 		
+		Label spieler1 = new Label("Name Spieler 1: ");
+		TextField spielername1 = new TextField();
+		Label spieler2 = new Label("Name Spieler 2: ");
+		TextField spielername2 = new TextField();
+	
+		Label spielerfarben = new Label("Spieler");
+		HBox box3 = new HBox();
+		
+		
+	
+		ImageView i1 = new ImageView(getImage1());
+		i1.setFitWidth(l-20);
+		i1.setFitHeight(l-20);
+		Label s1 = new Label(spielername1.getText());
+		
+		ImageView i2 = new ImageView(getImage2());
+		i2.setFitWidth(l-20);
+		i2.setFitHeight(l-20);
+		Label s2 = new Label(spielername2.getText());
+		Rectangle p = new Rectangle(20,20);
+		p.setOpacity(0);
+		Rectangle p1 = new Rectangle(20,20);
+		p1.setOpacity(0);
+		box3.getChildren().addAll(s1, i1, s2, i2);
+		
+		
 		Label schnittstelle = new Label("Schnittstelle");
 		CheckBox file = new CheckBox("File");
 		CheckBox pusher = new CheckBox("Pusher");
@@ -285,6 +327,7 @@ public class TestGui extends Application {
                     	   file.setSelected(false);   
                     	   pusher.setSelected(true);
                        }else{pusher.setSelected(true);}
+                       setSchnittstelle("pusher");
                    }
                });
 		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -294,28 +337,29 @@ public class TestGui extends Application {
              	   pusher.setSelected(false);   
              	   file.setSelected(true);
                 }else{file.setSelected(true);}
+                setSchnittstelle("file");
             }
         });
 		
-		Slider zeit = new Slider(0.5, 5, 0.1); 			// Slider geht von 0 bis 2 in 1er Abstaenden
+		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
-		zeit.setMajorTickUnit(0.1); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
+		zeit.setMajorTickUnit(100); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
 		zeit.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
 		zeit.setShowTickMarks(true); 					// Markierungen anzeigen -
 		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
 		
-		zeit.setValue(2);								// Default Value = 2
+		zeit.setValue(2000);								// Default Value = 2
 		
-		Label zugzeit = new Label("Zugzeit");
+		Label zeitlabel = new Label("Zugzeit");
 		zeit.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
 		            Number oldValue, Number newValue) {
-		    	 NumberFormat numberFormat = new DecimalFormat("0.0");
-		    	    numberFormat.setRoundingMode(RoundingMode.DOWN);
-		    	zugzeit.setText("Zugzeit:   " + numberFormat.format(newValue));
+		    	zeitlabel.setText("Zugzeit:   " + newValue + " ms");
+		    	setZugzeit(newValue.intValue());
 		    }
 		});
+		
 		
 		ImageView bild = new ImageView();
 		bild.setId("bild_sweets");
@@ -326,7 +370,7 @@ public class TestGui extends Application {
 		platzhalter2.setOpacity(0);
 
 		// Einfuegen der Elemente in die linke Box
-		boxlinks.getChildren().addAll(schnittstelle, file, pusher, zugzeit, zeit, bild, platzhalter2);
+		boxlinks.getChildren().addAll(spielerfarben, box3, p, schnittstelle, file, pusher, p1, zeitlabel, zeit, bild, platzhalter2);
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);
@@ -418,12 +462,21 @@ public class TestGui extends Application {
 		
 		Button login = new Button("Spiel starten");
 		FlowPane pane=new FlowPane();
-		pane.getChildren().add(login);
+		pane.setPadding(new Insets(10, 10, 10, 10));
+		pane.setVgap(4);
+		pane.setHgap(4);
+		
+
+		
+		
+		pane.getChildren().addAll(spieler1, spielername1, spieler2, spielername2, login);
+		
+		
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
-		Scene scene2 = new Scene(pane, 200, 100);
+		Scene scene2 = new Scene(pane, 200, 200);
 		
 	    newStage.setScene(scene2);
 	    newStage.initModality(Modality.APPLICATION_MODAL);
@@ -433,6 +486,8 @@ public class TestGui extends Application {
 					@Override
 		            public void handle(MouseEvent arg0) {
 						newStage.close();
+						s1.setText(spielername1.getText());
+						s2.setText(spielername2.getText());
 						primaryStage.show();
 		            }
 				});
