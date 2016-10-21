@@ -14,6 +14,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -395,6 +398,8 @@ public class TestGui extends Application {
 				setColor(Color.PURPLE);
 				setImage1(orange);
 				setImage2(gruen);
+				i1.setImage(orange);
+				i2.setImage(gruen);
 				root.setId("root_sweets");
 				containerrechts.setId("container_weiss");
 				containerlinks.setId("container_weiss");
@@ -409,6 +414,8 @@ public class TestGui extends Application {
 				setColor(Color.BLACK);
 				setImage1(kuerbis);
 				setImage2(fledermaus);
+				i1.setImage(kuerbis);
+				i2.setImage(fledermaus);
 				root.setId("root_halloween");
 				containerrechts.setId("container_schwarz");
 				containerlinks.setId("container_schwarz");
@@ -423,6 +430,8 @@ public class TestGui extends Application {
 				setColor(Color.DARKGREEN);
 				setImage1(pizza);
 				setImage2(burger);
+				i1.setImage(pizza);
+				i2.setImage(burger);
 				root.setId("root_food");
 				containerrechts.setId("container_weiss");
 				containerlinks.setId("container_weiss");
@@ -437,6 +446,8 @@ public class TestGui extends Application {
 				setColor(Color.CADETBLUE);
 				setImage1(basketball);
 				setImage2(baseball);
+				i1.setImage(basketball);
+				i2.setImage(baseball);
 				root.setId("root_sport");
 				containerrechts.setId("container_weiss");
 				containerlinks.setId("container_weiss");
@@ -459,18 +470,43 @@ public class TestGui extends Application {
 		
 		
 		Stage newStage = new Stage();
-		
 		Button login = new Button("Spiel starten");
 		FlowPane pane=new FlowPane();
 		pane.setPadding(new Insets(10, 10, 10, 10));
 		pane.setVgap(4);
 		pane.setHgap(4);
 		
+		
+		Stage gewinnermeldung = new Stage();
+		FlowPane panegewinner = new FlowPane();
+		Label gewinnernachricht = new Label();
+		panegewinner.setPadding(new Insets(10, 10, 10, 10));
+		panegewinner.getChildren().addAll(gewinnernachricht);
+		
+		Scene meldung = new Scene(panegewinner);
+		gewinnermeldung.setScene(meldung);
 
 		
 		
 		pane.getChildren().addAll(spieler1, spielername1, spieler2, spielername2, login);
 		
+		SplitPane alteSpiele = new SplitPane();
+		alteSpiele.setOrientation(Orientation.VERTICAL);
+		Label spieleLabel = new Label("Bisherige Spiele:");
+		ScrollPane listeSpiele = new ScrollPane();
+		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
+		listeSpiele.setContent(beispieltext);
+		alteSpiele.getItems().addAll(spieleLabel, listeSpiele);
+		
+		menu31.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e) {
+				Scene datenbank = new Scene(alteSpiele);
+				alteSpiele.setId("bisherigeSpiele");
+				primaryStage.setScene(datenbank);
+				primaryStage.setFullScreen(true);
+				
+				}
+		});
 		
 		
 		Scene scene = new Scene(root);
@@ -482,22 +518,49 @@ public class TestGui extends Application {
 	    newStage.initModality(Modality.APPLICATION_MODAL);
 	    newStage.setTitle("Login");
 	    newStage.setFullScreen(false);
+	    
+	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	         public void handle(KeyEvent evt)
+	         {
+	              if (evt.getCode() == KeyCode.ENTER)
+	            	newStage.close();
+					s1.setText(spielername1.getText());
+					s2.setText(spielername2.getText());
+					primaryStage.show();
+	         }
+	    });
+	    
 		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
-					@Override
-		            public void handle(MouseEvent arg0) {
-						newStage.close();
-						s1.setText(spielername1.getText());
-						s2.setText(spielername2.getText());
-						primaryStage.show();
-		            }
-				});
+			@Override
+            public void handle(MouseEvent arg0) {
+				newStage.close();
+				s1.setText(spielername1.getText());
+				s2.setText(spielername2.getText());
+				primaryStage.show();
+            }
+		});
 		newStage.show();
 		
 	}
 
+	
 	/*********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
+    public void gewinnermethode(Stage gewinnermeldung, Label gewinnernachricht, int spieler){
+		if(spieler == 1){
+			gewinnernachricht.setText("Spieler " + spieler + "hat gewonnen!");
+		}else {
+			if(spieler == 2){
+				gewinnernachricht.setText("Spieler " + spieler + "hat gewonnen!");
+			}else{
+				gewinnernachricht.setText("Das spiel ist unentschieden ausgegangen.");
+			}}
+		gewinnermeldung.show();
+		
+	}
+    
     public void createGrids_automatisch(){
     	spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
@@ -526,7 +589,6 @@ public class TestGui extends Application {
             
             // Vorschau der Spielsteine
             ImageView vorschauspielstein = new ImageView(image3);
-            vorschauspielstein.setImage(image1);
             vorschauspielstein.setFitWidth(l-10);
             vorschauspielstein.setPreserveRatio(true); 
             vorschauspielstein.setOpacity(0.5);
@@ -535,7 +597,6 @@ public class TestGui extends Application {
             
             // Zellen werden gefuellt
             StackPane stack = new StackPane();
-            vorschauspielstein.setImage(image3);                         		// Hintergrund grau
             stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
             spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
             }
@@ -649,12 +710,14 @@ public class TestGui extends Application {
             translateTransition.play();
             if(spieler==1){
                 spielstein.setImage(image1);
+                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
                 spieler=2;
             }else{
                 spielstein.setImage(image2);
+                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
                 spieler=1;
             }
-        }System.out.println((int)spielstein.getId().charAt(10)-48);
+        }
     }
     
     public StackPane getNodeByRowColumnIndex (final int row, final int column) {

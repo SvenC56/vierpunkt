@@ -23,6 +23,11 @@
 	-fx-background-size: stretch;
 }
 
+#bisherigeSpiele{
+	-fx-background-image: url("Sweets_transparent.png");
+	-fx-background-size: contain;
+}
+
 #ueberschrift_sweets{
 	-fx-image: url("ueberschrift.jpg");
 	-fx-border-color:  #ffffff;
