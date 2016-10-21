@@ -8,12 +8,14 @@ import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 import java.io.*;
 
-public class FileInterface {
+public class FileInterface implements Runnable{
 
-	public static String serverFile ="";
-	public static int zugZeit = 1000;
+	public String serverFile ="";
+	public int zugZeit = 1000;
 	
-public static void main (String[] args) {
+	@Override
+	public void run()
+	{
 
 		GameLogic game = new GameLogic();
 		int zug;
@@ -58,16 +60,6 @@ public static void main (String[] args) {
 		}
 	}
 	
-	 /**
-	  * Die Methode liest den Inhalt der vom Server an den Spieler verschickte Datei
-	  * @return Den Inhalt der Server2Spieler.xml Datei
-	  * @throws IOException
-	  */
-	public static String zugEmpfangen() throws IOException{
-		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
-		//System.out.print(data);
-		return data;
-	}
 	/**
 	 * Die Methode übergibt dem Server den Zug bzw. die Spalte in die der Spielstein gelegt werden soll als Textdatei.
 	 * @param spalte
@@ -83,21 +75,47 @@ public static void main (String[] args) {
 	
 	}
 	
-	public static int ordinalIndexOf(String str, String s, int n) {
-	    int pos = str.indexOf(s, 0);
-	    while (n-- > 0 && pos != -1)
-	        pos = str.indexOf(s, pos+1);
-	    return pos;
+	/**
+	 * Im String @originalString wird das @n_tesVorkommen des @zuSuchenderString gesucht und als @position wiedergegeben 
+	 * @param originalString
+	 * @param zuSuchenderString
+	 * @param n_tesVorkommen
+	 * @return position
+	 */
+	public static int ordinalIndexOf(String originalString, String zuSuchenderString, int n_tesVorkommen) {
+	    int position = originalString.indexOf(zuSuchenderString, 0);
+	    while (n_tesVorkommen-- > 0 && position != -1)
+	        position = originalString.indexOf(zuSuchenderString, position+1);
+	    return position;
 	}
 
-	public static int getZugZeit()
+	/**
+	 * Getter für Zugzeit
+	 * @return Zugzeit
+	 */
+	public int getZugZeit()
 	{
 		return zugZeit;
 	}
 
-	public static void setZugZeit(int zugZeit)
+	/**
+	 * Setter für Zugzeit
+	 */
+	public void setZugZeit(int zugZeit)
 	{
-		FileInterface.zugZeit = zugZeit;
+		this.zugZeit = zugZeit;
+	}
+
+	
+	 /**
+	  * Die Methode liest den Inhalt der vom Server an den Spieler verschickte Datei
+	  * @return Den Inhalt der Server2Spieler.xml Datei
+	  * @throws IOException
+	  */
+	public String zugEmpfangen() throws IOException{
+		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
+		//System.out.print(data);
+		return data;
 	}
 }
 
