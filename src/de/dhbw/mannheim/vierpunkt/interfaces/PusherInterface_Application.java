@@ -1,7 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.interfaces;
 
 import java.awt.Toolkit;
-
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
@@ -27,6 +27,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -135,6 +136,7 @@ public class PusherInterface_Application extends Application
 		for (int i = 0; i < CurRow.length; i++){
 			CurRow[i]=5;
 		}
+		
 		
 		GameLogic game = new GameLogic();
 		FileInterface fileinterface = new FileInterface();
@@ -531,13 +533,53 @@ public class PusherInterface_Application extends Application
 					createGrids_automatisch();
 				}
 				
-				
-				Scene scene = new Scene(root);
-				primaryStage.setScene(scene);
-				scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
-				
+				Platform.runLater(new Runnable(){
+					@Override
+					public void run(){
+						GameLogic game = new GameLogic();
+						int zug;
+						int stelle;
+						char charAtStelle;
+						boolean onetime = false;
+						
+						while(true){
 
-				fileinterface.main(args);
+						// Input aus ServerFile lesen
+						try {
+						fileinterface.serverFile = fileinterface.zugEmpfangen();
+						} catch (IOException e){e.getMessage();}
+						
+						// Wenn die Datei vom Server überschrieben wurde:
+						if(!fileinterface.serverFile.isEmpty() && onetime == false){		
+							// Zug des Gegners wird erfasst
+							stelle = ordinalIndexOf(fileinterface.serverFile, ">", 6) + 1;
+							charAtStelle = fileinterface.serverFile.charAt(stelle);
+							if (charAtStelle != '-'){
+								zug = Integer.parseInt(String.valueOf(charAtStelle));
+								// Zug des Gegners wird in eigenes Logikarray eingetragen
+								game.setChip(zug, 1);
+								// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
+								onetime = true;
+							} else {
+								// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
+							}
+						}		
+						
+						// Wenn man am Zug ist: Zug spielen
+						if (fileinterface.serverFile.contains("true")){
+							try {
+								zug = game.playerTurn();
+								fileinterface.zugSpielen(zug);
+								}catch (IOException e){e.getMessage();}
+						}
+						
+						try {
+						Thread.sleep(fileinterface.zugZeit);
+							} catch (InterruptedException e){e.getMessage();}
+						}
+					}
+				});
+				
 				
 				primaryStage.show();
 							
@@ -756,9 +798,10 @@ public class PusherInterface_Application extends Application
 			     // Zellen werden gefuellt
 			     StackPane stack = new StackPane();
 			     stack.getChildren().addAll(cell, spielstein);    // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
-			     spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-		     
-		while (true){}
+			     spielfeld.add(stack, anzahlspalten, anzahlzeilen);  
+			     
+			     
+			   
 	}
 	
 	/**
@@ -820,6 +863,10 @@ public class PusherInterface_Application extends Application
 	    while (n-- > 0 && pos != -1)
 	        pos = str.indexOf(s, pos+1);
 	    return pos;
+	    
+	
+	    
+	    
 	}
 	
 	public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException {
