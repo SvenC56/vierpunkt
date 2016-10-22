@@ -3,62 +3,89 @@ package de.dhbw.mannheim.vierpunkt.interfaces;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 import java.io.*;
 
-public class FileInterface implements Runnable{
+public class FileInterface implements Runnable {
 
-	public String serverFile ="";
-	public int zugZeit = 1000;
+	public static String serverString ="";
+	public static int zugZeit = 1000;
+	public static GameLogic game = new GameLogic();
+	public static int zug;
+	public static int stelle;
+	public static char charAtStelle;
+//	public static boolean onetime = false;
+	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
 	@Override
 	public void run()
-	{
-
-		GameLogic game = new GameLogic();
-		int zug;
-		int stelle;
-		char charAtStelle;
-		boolean onetime = false;
+	{	
+		try
+		{
+			Thread.sleep(10000);
+		} catch (InterruptedException e1)
+		{
+			e1.printStackTrace();
+		}
 		
-		while(true){
-
+		
+		while (true)
+		{
+	
 		// Input aus ServerFile lesen
 		try {
-		serverFile = zugEmpfangen();
+		serverString = zugEmpfangen();
 		} catch (IOException e){e.getMessage();}
 		
 		// Wenn die Datei vom Server überschrieben wurde:
-		if(!serverFile.isEmpty() && onetime == false){		
+		if(!serverString.isEmpty()){	
+			
 			// Zug des Gegners wird erfasst
-			stelle = ordinalIndexOf(serverFile, ">", 6) + 1;
-			charAtStelle = serverFile.charAt(stelle);
+			stelle = ordinalIndexOf(serverString, ">", 6) + 1;
+			charAtStelle = serverString.charAt(stelle);
 			if (charAtStelle != '-'){
 				zug = Integer.parseInt(String.valueOf(charAtStelle));
+				
 				// Zug des Gegners wird in eigenes Logikarray eingetragen
-				game.setChip(zug, 1);
+				//game.setChip(zug, 1);
+				
+				// Zug des Gegners wird in GUI dargestellt
+				fireZugEvent(zug);
+				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
-				onetime = true;
+//				onetime = true;
+				
 			} else {
 				// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
 			}
 		}		
 		
 		// Wenn man am Zug ist: Zug spielen
-		if (serverFile.contains("true")){
+		if (serverString.contains("true")){
 			try {
-				zug = game.playerTurn();
+				// Eigener Zug wird durch Logik bestimmt
+				//zug = game.playerTurn();
+				zug = (int)(Math.random()*7);
+				
+				// Eigener Zug wird dem Server übergeben
 				zugSpielen(zug);
+				try {
+		Thread.sleep(zugZeit);
+		
+		// Für diese Runde wurde ein Zug gespielt
+//		onetime = false;
+		
+			} catch (InterruptedException e){e.getMessage();}
+			
 				}catch (IOException e){e.getMessage();}
 		}
-		
-		try {
-		Thread.sleep(zugZeit);
-			} catch (InterruptedException e){e.getMessage();}
-		}
 	}
+}
+	
 	
 	/**
 	 * Die Methode übergibt dem Server den Zug bzw. die Spalte in die der Spielstein gelegt werden soll als Textdatei.
@@ -103,7 +130,7 @@ public class FileInterface implements Runnable{
 	 */
 	public void setZugZeit(int zugZeit)
 	{
-		this.zugZeit = zugZeit;
+		FileInterface.zugZeit = zugZeit;
 	}
 
 	
@@ -112,11 +139,22 @@ public class FileInterface implements Runnable{
 	  * @return Den Inhalt der Server2Spieler.xml Datei
 	  * @throws IOException
 	  */
-	public String zugEmpfangen() throws IOException{
+	public static String zugEmpfangen() throws IOException{
 		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
 		//System.out.print(data);
 		return data;
 	}
+	
+	public void addListener(ZugListener toAdd){
+		listeners.add(toAdd);
+	}
+	
+	public static void fireZugEvent(int zug){
+		for (ZugListener zl : listeners){
+			zl.zugGespielt(zug);
+		}
+	}
+
 }
 
 

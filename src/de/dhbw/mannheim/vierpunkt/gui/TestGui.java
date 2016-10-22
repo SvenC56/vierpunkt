@@ -29,11 +29,14 @@ import java.awt.Toolkit;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+
+import de.dhbw.mannheim.vierpunkt.interfaces.FileInterface;
+import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
 /**
  *
  * @author janaschaub
  */
-public class TestGui extends Application {
+public class TestGui extends Application implements ZugListener {
 
 	/****** VARIABLENDEKLARATION *****/
 	private int anzahlzeilen;
@@ -81,7 +84,26 @@ public class TestGui extends Application {
 	public String getSchnittstelle() {return schnittstelle;}
 	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
 
-	public static void main(String[] args) { launch(args);}
+	public static void main(String[] args) {
+		
+		FileInterface filli = new FileInterface();
+		TestGui test = new TestGui();
+	
+		Thread t1 = new Thread() {
+			@Override
+			public void run(){
+			filli.run();
+			}
+		};
+		
+		t1.start();
+		filli.addListener(test);
+		
+		test.launch(args);
+
+
+		//launch(args);
+	}
 
 	/*********************************************************************************************************************
 	 ******************************************* START METHODE *********************************************************
@@ -245,6 +267,7 @@ public class TestGui extends Application {
             public void handle(MouseEvent arg0) {
 				spieler = 1;
             	createGrids();
+            	
             }
 		});
 
@@ -732,6 +755,13 @@ public class TestGui extends Application {
         ObservableList<Node> list = stack.getChildren();
         return (ImageView)list.get(2);
     }
+    
+    
+	@Override
+	public void zugGespielt(int zug)
+	{
+		setSpielstein(1, zug);
+	}
 }
     	
                

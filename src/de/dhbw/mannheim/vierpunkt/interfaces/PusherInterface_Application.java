@@ -87,9 +87,6 @@ public class PusherInterface_Application extends Application
 	
 	
 	/* Initialisierung GUI*/
-	
-	
-	TestGui gui;
 	String[] args;
 	
 	/****** VARIABLENDEKLARATION *****/
@@ -135,11 +132,10 @@ public class PusherInterface_Application extends Application
 		int[] CurRow = new int[7];
 		for (int i = 0; i < CurRow.length; i++){
 			CurRow[i]=5;
-		}
-		
+		}		
 		
 		GameLogic game = new GameLogic();
-		FileInterface fileinterface = new FileInterface();
+
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -533,52 +529,6 @@ public class PusherInterface_Application extends Application
 					createGrids_automatisch();
 				}
 				
-				Platform.runLater(new Runnable(){
-					@Override
-					public void run(){
-						GameLogic game = new GameLogic();
-						int zug;
-						int stelle;
-						char charAtStelle;
-						boolean onetime = false;
-						
-						while(true){
-
-						// Input aus ServerFile lesen
-						try {
-						fileinterface.serverFile = fileinterface.zugEmpfangen();
-						} catch (IOException e){e.getMessage();}
-						
-						// Wenn die Datei vom Server überschrieben wurde:
-						if(!fileinterface.serverFile.isEmpty() && onetime == false){		
-							// Zug des Gegners wird erfasst
-							stelle = ordinalIndexOf(fileinterface.serverFile, ">", 6) + 1;
-							charAtStelle = fileinterface.serverFile.charAt(stelle);
-							if (charAtStelle != '-'){
-								zug = Integer.parseInt(String.valueOf(charAtStelle));
-								// Zug des Gegners wird in eigenes Logikarray eingetragen
-								game.setChip(zug, 1);
-								// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
-								onetime = true;
-							} else {
-								// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
-							}
-						}		
-						
-						// Wenn man am Zug ist: Zug spielen
-						if (fileinterface.serverFile.contains("true")){
-							try {
-								zug = game.playerTurn();
-								fileinterface.zugSpielen(zug);
-								}catch (IOException e){e.getMessage();}
-						}
-						
-						try {
-						Thread.sleep(fileinterface.zugZeit);
-							} catch (InterruptedException e){e.getMessage();}
-						}
-					}
-				});
 				
 				
 				primaryStage.show();
