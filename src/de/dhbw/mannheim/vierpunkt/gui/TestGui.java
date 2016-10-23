@@ -39,6 +39,9 @@ import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
 public class TestGui extends Application implements ZugListener {
 
 	/****** VARIABLENDEKLARATION *****/
+	
+	static int[] CurRow = new int[7];
+	
 	private int anzahlzeilen;
 	private int anzahlspalten;
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
@@ -110,6 +113,10 @@ public class TestGui extends Application implements ZugListener {
 	 ********************************************************************************************************************/
 	@Override
 	public void start(Stage primaryStage) {
+		
+		for (int i = 0; i < CurRow.length; i++){
+			CurRow[i]=5;
+		}
 		
 		// Grundlegende Eigenschaften der Stage
 		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
@@ -760,7 +767,8 @@ public class TestGui extends Application implements ZugListener {
 	@Override
 	public void zugGespielt(int zug)
 	{
-		setSpielstein(1, zug);
+		setSpielstein(CurRow[zug], zug);
+        CurRow[zug]--;
 	}
 }
     	
