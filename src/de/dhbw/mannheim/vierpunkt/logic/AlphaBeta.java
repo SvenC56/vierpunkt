@@ -56,7 +56,7 @@ public class AlphaBeta {
 		for (int i = 0; i <= game.getColumn(); i++) 
 			if (game.validPosition(i) != -1) { //position is valid
 				game_tmp = game.getDemoGame(); // copy current game situation to simulate moves without actually changing the play field
-				game_tmp.setChip(i, 1); // simulate that our agent is placing coins in column i
+				game_tmp.setChip(i); // simulate that our agent is placing coins in column i
 				values[i] = getAlphaBeta(game_tmp, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 			}
 		
