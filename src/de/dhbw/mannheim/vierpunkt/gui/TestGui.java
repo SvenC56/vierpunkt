@@ -1,6 +1,5 @@
 package de.dhbw.mannheim.vierpunkt.gui;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -26,23 +24,7 @@ import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-
-import com.pusher.client.AuthorizationFailureException;
-import com.pusher.client.Authorizer;
-import com.pusher.client.Pusher;
-import com.pusher.client.PusherOptions;
-import com.pusher.client.channel.PrivateChannel;
-import com.pusher.client.channel.PrivateChannelEventListener;
-import com.pusher.client.connection.ConnectionEventListener;
-import com.pusher.client.connection.ConnectionState;
-import com.pusher.client.connection.ConnectionStateChange;
-
-import de.dhbw.mannheim.vierpunkt.interfaces.FileInterface;
 import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
-import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 /**
  *
  * @author janaschaub
@@ -52,25 +34,7 @@ public class TestGui implements ZugListener {
 	/****** VARIABLENDEKLARATION *****/
 	
 
-	/**
-	 * App-ID der Pusher Instanz des Clients
-	 */
-	private static String MyAppID = "255967";
 	
-	/**
-	 * App-Key der Pusher-Instanz des Clients
-	 */
-	private static String MyAppKey = "61783ef3dd40e1b399b2";
-	
-	/**
-	 * App-Secret der Pusher-Instanz des Clients
-	 */
-	private static String MyAppSecret = "66b722950915220b298c";
-	
-	/**
-	 * Channel-Name des Kommunikationskanals
-	 */
-	private static String ChannelName = "private-channel";
 	
 	/**
 	 * Gibt den aktuellen Fuellstand aller Spalten an
@@ -84,8 +48,16 @@ public class TestGui implements ZugListener {
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
 	
-	private String names1;
-	private String names2;
+	private String names1 = "spieler1";
+	private String names2 = "spieler2";
+	public String getNames1() {
+		return names1;
+	}
+	public String getNames2() {
+		return names2;
+	}
+
+	
 	private String schnittstelle = "pusher";
 	private int zugzeit = 2000;
 	
@@ -142,7 +114,7 @@ public class TestGui implements ZugListener {
 
 		// Layout Boxen
 		VBox root = new VBox(); 				// aeusserste Box
-		root.setId("root_sweets");
+		root.setId("root");
 		HBox content = new HBox();
 		content.setPrefWidth(breite); 			// content ueber gesamte Bildschirmbreite
 		content.setAlignment(Pos.TOP_CENTER); 	// alle Inhalte werden mittig ausgerichtet
@@ -181,7 +153,7 @@ public class TestGui implements ZugListener {
 
 		// Ansicht der Ueberschrift
 		ImageView ueberschrift = new ImageView();
-		ueberschrift.setId("ueberschrift_sweets");
+		ueberschrift.setId("ueberschrift");
 		ueberschrift.setFitWidth(breite / 2); // Ueberschrift soll die Haelfte des Bildschirms breit sein
 		ueberschrift.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
 		ueberschrift.setPreserveRatio(true);
@@ -192,9 +164,9 @@ public class TestGui implements ZugListener {
 
 		// Rechtecke als Platzhalter, um die Ueberschrift mittig zu platzieren
 		Rectangle containerlinks = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerlinks.setId("container_weiss");
+		containerlinks.setId("container");
 		Rectangle containerrechts = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerrechts.setId("container_weiss");
+		containerrechts.setId("container");
 
 		// Platzhalter und Ueberschrift in den Container einfuegen
 		titelbox.getChildren().addAll(containerlinks, ueberschrift, containerrechts);
@@ -337,6 +309,8 @@ public class TestGui implements ZugListener {
 		TextField spielername1 = new TextField();
 		Label spieler2 = new Label("Name Spieler 2: ");
 		TextField spielername2 = new TextField();
+		names1 = spielername1.getText();
+		names1 = spielername2.getText();
 	
 		Label spielerfarben = new Label("Spieler");
 		HBox box3 = new HBox();
@@ -346,12 +320,12 @@ public class TestGui implements ZugListener {
 		ImageView i1 = new ImageView(getImage1());
 		i1.setFitWidth(l-20);
 		i1.setFitHeight(l-20);
-		Label s1 = new Label(spielername1.getText());
+		Label s1 = new Label(names1);
 		
 		ImageView i2 = new ImageView(getImage2());
 		i2.setFitWidth(l-20);
 		i2.setFitHeight(l-20);
-		Label s2 = new Label(spielername2.getText());
+		Label s2 = new Label(names2);
 		Rectangle p = new Rectangle(20,20);
 		p.setOpacity(0);
 		Rectangle p1 = new Rectangle(20,20);
@@ -405,7 +379,7 @@ public class TestGui implements ZugListener {
 		
 		
 		ImageView bild = new ImageView();
-		bild.setId("bild_sweets");
+		bild.setId("bild");
 		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
 		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
 		
@@ -551,7 +525,7 @@ public class TestGui implements ZugListener {
 		
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		scene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 		Scene scene2 = new Scene(pane, 200, 200);
 		
 	    newStage.setScene(scene2);
@@ -802,6 +776,3 @@ public class TestGui implements ZugListener {
 
                
             
-        
-    
-
