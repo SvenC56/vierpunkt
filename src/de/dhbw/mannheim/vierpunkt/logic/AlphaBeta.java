@@ -19,7 +19,7 @@ public class AlphaBeta {
 			minimax_curr = beta; // minimize output for opponent
 		}
 		
-		if (depth == 0)
+		if (depth <= 0)
 			return game.evaluate(); // evaluate game situation by counting the coins in row/ in diagonal/ in column
 		else {
 			// calculate all possible moves
@@ -31,14 +31,14 @@ public class AlphaBeta {
 							minimax_curr = Math.max(minimax_tmp, minimax_curr); // is the new value of minimax higher than the old one?
 							alpha = minimax_curr; // highest value becomes alpha
 							if (alpha >= beta) {
-								return beta;
+								return beta; // beta equals lower boundary
 							}
 						}
 						else { // opponent playing
 							minimax_curr = Math.min(minimax_tmp, minimax_curr); // is the new value of minimax lower than the old one?
 							beta = minimax_curr; // lowest value becomes beta
 							if (beta <= alpha)
-								return alpha;
+								return alpha; // alpha equals upper boundary
 						}			
 			}
 		}				
