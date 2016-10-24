@@ -148,7 +148,6 @@ public class connectHSQL {
 			String[][] returnStatements = new String[result.getRow() + 1][result.getMetaData().getColumnCount()];
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
-				String print = "";
 				for (int i = 1; i <= maxColumns; i++) {
 					returnStatements[y][(i - 1)] = result.getString(i);
 				}
@@ -180,18 +179,20 @@ public class connectHSQL {
 		}
 		executeSQL(sqlValues);
 	}
+
 	/**
 	 * Rueckgabe aller Daten aus der DB
 	 */
 	public String[][] getAll() {
 		return saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN;"));
 	}
-	
+
 	/**
 	 * uebermittlung eines Matches in die DB
 	 **/
-	public void handOverGame(int G_ID, String Player1, String Player2, String WINNER, String POINTS){
-		executeSQL("INSERT INTO GAME VALUES{ " + G_ID + ", '" + Player1 + "', '" + Player2 + "', '" + WINNER + "', '" + POINTS + "'};");
+	public void handOverGame(int G_ID, String Player1, String Player2, String WINNER, String POINTS) {
+		executeSQL("INSERT INTO GAME VALUES{ " + G_ID + ", '" + Player1 + "', '" + Player2 + "', '" + WINNER + "', '"
+				+ POINTS + "'};");
 	}
 
 	/**
@@ -205,6 +206,7 @@ public class connectHSQL {
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void handOverTurn(int T_ID, int M_ID, String PERSON, int POS_Y, int POS_X) {
-		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X + "};");
+		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X
+				+ "};");
 	}
 }
