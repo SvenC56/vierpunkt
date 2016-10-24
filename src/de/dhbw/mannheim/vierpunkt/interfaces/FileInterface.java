@@ -25,11 +25,20 @@ public class FileInterface implements Runnable {
 	public static char spielerKennung = 'X';
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	
-	public FileInterface(char SpielerKennung, String kontaktPfad){
-		this.spielerKennung = SpielerKennung;
+	// Leerer Konstruktor: Standardwerte werden verwendet
+	public FileInterface()
+	{
+		
+	}
+	
+	// Dem Konstruktor werden die Spielerkennung und der Kontaktpfad uebergeben
+	public FileInterface(char spielerKennung, String kontaktPfad){
+		this.spielerKennung = spielerKennung;
 		this.kontaktPfad = kontaktPfad;
 	}
 	
+
+
 	@Override
 	public void run()
 	{	
@@ -42,7 +51,7 @@ public class FileInterface implements Runnable {
 		serverString = zugEmpfangen();
 		} catch (IOException e){e.getMessage();}
 		
-		// Wenn die Datei vom Server überschrieben wurde:
+		// Wenn die Datei vom Server ueberschrieben wurde:
 		if(!serverString.isEmpty() && zugSchongespielt == false){	
 			
 			// Zug des Gegners wird erfasst
@@ -81,7 +90,7 @@ public class FileInterface implements Runnable {
 				//zug = game.playerTurn();
 				zug2 = (int)(Math.random()*7);
 				
-				// Eigener Zug wird dem Server übergeben
+				// Eigener Zug wird dem Server uebergeben
 				zugSpielen(zug2);
 				
 				// Eigener Zug wird in GUI dargestellt
@@ -90,7 +99,7 @@ public class FileInterface implements Runnable {
 				try {
 								
 						Thread.sleep(zugZeit);
-						// Für diese Runde wurde ein Zug gespielt
+						// Fuer diese Runde wurde ein Zug gespielt
 						zugSchongespielt = false;	
 						
 						
@@ -103,7 +112,7 @@ public class FileInterface implements Runnable {
 	
 	
 	/**
-	 * Die Methode übergibt dem Server den Zug bzw. die Spalte in die der Spielstein gelegt werden soll als Textdatei.
+	 * Die Methode uebergibt dem Server den Zug bzw. die Spalte in die der Spielstein gelegt werden soll als Textdatei.
 	 * @param spalte
 	 * @throws IOException
 	 */
@@ -131,7 +140,7 @@ public class FileInterface implements Runnable {
 	}
 
 	/**
-	 * Getter für Zugzeit
+	 * Getter fuer Zugzeit
 	 * @return Zugzeit
 	 */
 	public int getZugZeit()
@@ -140,7 +149,7 @@ public class FileInterface implements Runnable {
 	}
 
 	/**
-	 * Setter für Zugzeit
+	 * Setter fuer Zugzeit
 	 */
 	public void setZugZeit(int zugZeit)
 	{
