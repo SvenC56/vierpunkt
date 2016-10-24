@@ -22,6 +22,14 @@ public class FileInterface implements Runnable {
 	public static boolean zugSchongespielt = false;
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
+	public static char spielerKennung = 'X';
+	public static String kontaktPfad = "C:\\FileInterface\\";
+	
+	public FileInterface(char SpielerKennung, String kontaktPfad){
+		this.spielerKennung = SpielerKennung;
+		this.kontaktPfad = kontaktPfad;
+	}
+	
 	@Override
 	public void run()
 	{	
@@ -100,7 +108,7 @@ public class FileInterface implements Runnable {
 	 * @throws IOException
 	 */
 	public static void zugSpielen(int spalte) throws IOException{
-		FileWriter fileOut = new FileWriter("C:\\FileInterface\\spielerx2server.txt");
+		FileWriter fileOut = new FileWriter( kontaktPfad + "spieler" + spielerKennung + "2server.txt");
 		System.out.println("Der Zug " + spalte + " wird gespielt.");
 		fileOut.write(String.valueOf(spalte)); // 
 		fileOut.flush();
@@ -146,7 +154,7 @@ public class FileInterface implements Runnable {
 	  * @throws IOException
 	  */
 	public static String zugEmpfangen() throws IOException{
-		String data = new String(Files.readAllBytes(Paths.get("C:\\FileInterface\\server2spielerx.xml")), StandardCharsets.UTF_8);
+		String data = new String(Files.readAllBytes(Paths.get(kontaktPfad + "server2spieler" + spielerKennung +".xml")), StandardCharsets.UTF_8);
 		//System.out.print(data);
 		return data;
 	}

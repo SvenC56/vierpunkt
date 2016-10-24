@@ -6,39 +6,56 @@ import javafx.stage.Stage;
 
 public class MainApplication extends Application
 {
-	static TestGui test = new TestGui();
+	static TestGui gui = new TestGui();
+	static FileInterface filey = new FileInterface();
+	static PusherInterface_Object pushy = new PusherInterface_Object();
+	
 	public static void main(String[] args)
 	{
-		FileInterface filey = new FileInterface();
-		
-		Thread fileThread = new Thread(){
-			@Override
-			public void run(){
-				filey.run();	
-			}
-		};
-		filey.addListener(test);
-		fileThread.start();
-		
-		PusherInterface_Object pushy = new PusherInterface_Object();
-		
-		Thread pusherThread = new Thread(){
-			@Override
-			public void run(){
-				pushy.run();
-			}
-		};
-		pushy.addListener(test);
-		pusherThread.start();
-		
+		// Zwei Süße Interfaces senden Events an die GUI
+		filey.addListener(gui);
+		pushy.addListener(gui);
 		
 		launch(args);
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception
-	{ 
-		test.start(primaryStage);
+	{ 		
+		// Thread fuer das User Interface
+		Thread GuiThread = new Thread(){
+			@Override
+			public void run(){
+				gui.start(primaryStage);
+			}
+		};
+		GuiThread.start();
+		
+		// wenn pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
+		if(gui.getSchnittstelle().equals("pusher"))
+		{
+			Thread pusherThread = new Thread(){
+				@Override
+				public void run(){
+					pushy.run();
+				}
+			};
+		pusherThread.start();
+		}
+		
+		// wenn datei als Schnittstelle ausgewaehlt wurde wird der file Thread gestartet
+		else {
+
+			Thread fileThread = new Thread(){
+				@Override
+				public void run(){
+					filey.run();	
+				}
+			};
+			fileThread.start();
+		
+		}
+		
 		
 	}
 
