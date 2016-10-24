@@ -51,13 +51,18 @@ public class GameLogic {
 	 * Wenn wir Daten vom Server bekommen (gegner)
 	 */
 	
-	public void playTurn(int x, int player){
+	public int playTurn(int x, int player){
 		setCurrentPlayer(player);
 		//Maximierung, da eigener Spieler
 		if (getCurrentPlayer() == 2) {
 		x = ki.calcMove(this);
-		}
 		setChip(x);
+		return x;
+		}
+		else {
+		setChip(x);
+		return -1;
+		}
 	}
 	
 	
