@@ -18,21 +18,13 @@ public class FileInterface implements Runnable {
 	public static int zug;
 	public static int stelle;
 	public static char charAtStelle;
-//	public static boolean onetime = false;
+	public static boolean zugSchongespielt = false;
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
 	@Override
 	public void run()
 	{	
-		try
-		{
-			Thread.sleep(10000);
-		} catch (InterruptedException e1)
-		{
-			e1.printStackTrace();
-		}
-		
-		
+
 		while (true)
 		{
 	
@@ -42,7 +34,7 @@ public class FileInterface implements Runnable {
 		} catch (IOException e){e.getMessage();}
 		
 		// Wenn die Datei vom Server überschrieben wurde:
-		if(!serverString.isEmpty()){	
+		if(!serverString.isEmpty() && zugSchongespielt == false){	
 			
 			// Zug des Gegners wird erfasst
 			stelle = ordinalIndexOf(serverString, ">", 6) + 1;
@@ -57,7 +49,7 @@ public class FileInterface implements Runnable {
 				fireZugEvent(zug);
 				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
-//				onetime = true;
+				zugSchongespielt = true;
 				
 			} else {
 				// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
@@ -73,12 +65,17 @@ public class FileInterface implements Runnable {
 				
 				// Eigener Zug wird dem Server übergeben
 				zugSpielen(zug);
+				
+				// Eigener Zug wird in GUI dargestellt
+				fireZugEvent(zug);
+				
 				try {
-		Thread.sleep(zugZeit);
-		
-		// Für diese Runde wurde ein Zug gespielt
-//		onetime = false;
-		
+						zugSchongespielt = false;			
+						Thread.sleep(zugZeit);
+						
+						// Für diese Runde wurde ein Zug gespielt
+						
+						
 			} catch (InterruptedException e){e.getMessage();}
 			
 				}catch (IOException e){e.getMessage();}

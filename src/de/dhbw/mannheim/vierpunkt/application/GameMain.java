@@ -3,7 +3,6 @@ package de.dhbw.mannheim.vierpunkt.application;
 
 
 import de.dhbw.mannheim.vierpunkt.interfaces.*;
-import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 import javafx.application.Application;
 
 
@@ -16,6 +15,6 @@ public class GameMain {
 
 	/**Main-Methode fuer Spielablauf**/
 	public static void main(String[] args) {
-	Application.launch(PusherInterface_Application.class);
+	Application.launch(MainApplication.class);
 	}
 }

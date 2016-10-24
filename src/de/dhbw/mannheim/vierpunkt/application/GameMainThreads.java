@@ -12,7 +12,7 @@ public class GameMainThreads implements Runnable {
 
 	@Override
 	public void run() {
-		Application.launch(PusherInterface_Application.class);
+		Application.launch(MainApplication.class);
 	}
 
 }
