@@ -31,6 +31,7 @@ public class AlphaBeta {
 							minimax_curr = Math.max(minimax_tmp, minimax_curr); // is the new value of minimax higher than the old one?
 							alpha = minimax_curr; // highest value becomes alpha
 							if (alpha >= beta) {
+								System.out.println("beta:" + beta);
 								return beta; // beta equals lower boundary
 							}
 						}
@@ -38,11 +39,12 @@ public class AlphaBeta {
 							minimax_curr = Math.min(minimax_tmp, minimax_curr); // is the new value of minimax lower than the old one?
 							beta = minimax_curr; // lowest value becomes beta
 							if (beta <= alpha)
+								System.out.println("alpha" + alpha);
 								return alpha; // alpha equals upper boundary
 						}			
 			}
 		}				
-		
+		System.out.println("minimax_curr" + minimax_curr);
 		return minimax_curr;
 		}
 	}
@@ -68,6 +70,7 @@ public class AlphaBeta {
 						move = j; // currently the best move
 					}
 				}
+				System.out.println("move:" + move);
 				return move; // best possible move after all columns have been evaluated
 			
 	}
