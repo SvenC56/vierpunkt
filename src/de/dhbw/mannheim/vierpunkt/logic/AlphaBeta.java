@@ -4,16 +4,15 @@ public class AlphaBeta {
 	
 	static int depth = 6;
 
-	public static int getMiniMaxValue(GameLogic game, int depth, int alpha, int beta) {
+	public int getAlphaBeta(GameLogic game, int depth, int alpha, int beta) {
 		
 		//Declarations
 		GameLogic game_tmp;
 		int minimax_tmp;	// temporary minimax value
 		int minimax_curr;	// current minimax value
-		int player = game.getPlayer(); // Anmerkung: Wert muss aus GameLogic übergeben werden! (1 oder 2)
 		
 		// Initialization
-		if (player == 1){ // true if our agent is playing (-> to be verified in GameLogic!)
+		if (game.getCurrentPlayer() == 2){ // true if our agent is playing
 			minimax_curr = alpha; // maximize output for our agent
 		}
 		else { // true if opponent is playing
@@ -27,8 +26,8 @@ public class AlphaBeta {
 			for (int i = 0; i <= game.getColumn(); i++) { // try out all columns
 				game_tmp = game.getDemoGame(); // copy current game situation to simulate possible moves without actually changing the play field
 				if (game_tmp.validPosition(i) != -1) { // position is valid
-						minimax_tmp = getMiniMaxValue(game_tmp, depth-1, alpha, beta);
-						if (player == 1) { // our agent is playing
+						minimax_tmp = getAlphaBeta(game_tmp, depth-1, alpha, beta);
+						if (game.getCurrentPlayer() == 2) { // our agent is playing
 							minimax_curr = Math.max(minimax_tmp, minimax_curr); // is the new value of minimax higher than the old one?
 							alpha = minimax_curr; // highest value becomes alpha
 							if (alpha >= beta) {
@@ -49,7 +48,7 @@ public class AlphaBeta {
 	}
 		
 	
-	private static int calcMove(GameLogic game) { // method to be evoked by game main to find the best possible move for our agent
+	private int calcMove(GameLogic game) { // method to be evoked by game main to find the best possible move for our agent
 		
 		int [] values = new int[game.getColumn()+1];
 		GameLogic game_tmp;
@@ -58,7 +57,7 @@ public class AlphaBeta {
 			if (game.validPosition(i) != -1) { //position is valid
 				game_tmp = game.getDemoGame(); // copy current game situation to simulate moves without actually changing the play field
 				game_tmp.setChip(i, 1); // simulate that our agent is placing coins in column i
-				values[i] = getMiniMaxValue(game_tmp, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
+				values[i] = getAlphaBeta(game_tmp, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 			}
 		
 				int move = (int) Double.NEGATIVE_INFINITY;
