@@ -1,9 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.logic;
 
-import de.dhbw.mannheim.vierpunkt.db.connectHSQL;
-import de.dhbw.mannheim.vierpunkt.db.sendGame;
-import de.dhbw.mannheim.vierpunkt.db.sendMatch;
-import de.dhbw.mannheim.vierpunkt.db.sendTurn;
+import de.dhbw.mannheim.vierpunkt.db.*;
+import de.dhbw.mannheim.vierpunkt.gui.*;
 
 import java.util.Random; //Temporaer fuer Test
 
@@ -36,13 +34,34 @@ public class GameLogic {
 	private int[][] field = new int[row + 1][column + 1];
 	connectHSQL db = new connectHSQL();
 	AlphaBeta ki = new AlphaBeta();
+	TestGui gui = new TestGui();
 	private int gameID = 0; // entspricht Spiel
 	private int matchID= 0; // entspricht Runde
-	private int turnId = 0; //DB Turn
+	private int turnId = 0; // entspricht Zug
+	private int satz = 0;
 	private String player1 = null;
 	private String player2 = null;
 	private int currentPlayer = 0; //Der aktuelle Spieler
 
+	// Allgemeine Information: x entspricht Spalte / y entspricht Zeile
+
+	/**************************************************************/
+	/******************* KONSTRUKTOR *******************************/
+	/**************************************************************/
+
+		public GameLogic() {
+			// Array durchlaufen und mit Nullen fuellen + move auf false setzen, da
+			// kein Spieler am Zug ist!
+			move = 0;
+			for (int y = 0; y <= row; y++) {
+				for (int x = 0; x <= column; x++) {
+					field[y][x] = 0;
+				}
+			}
+			// System.err.println("Konstruktor durchlaufen.");
+		}
+	
+	
 	/**
 	 * Methode zum Speichern des Spielstandes! Methode um Gewinn zu
 	 * erkennen!(count == 4 BREAK)
@@ -50,27 +69,32 @@ public class GameLogic {
 	 * eine funktion die das match, game saved!
 	 * Wenn wir Daten vom Server bekommen (gegner)
 	 */
-	
-	public int playTurn(int x, int player){
-		setCurrentPlayer(player);
-		//Maximierung, da eigener Spieler
-		if (getCurrentPlayer() == 2) {
-		x = ki.calcMove(this);
-		setChip(x);
-		return x;
-		}
-		else {
-		setChip(x);
-		return -1;
-		}
+		
+	private int getCurrentPlayer() {
+		return currentPlayer;
 	}
-	
+
+	private int getColumn() {
+		return column;
+	}
+
+	private int getRow() {
+		return row;
+	}
+
+	private void setTurn() {
+		this.move = move++;
+	}
+
+	/**************************************************************/
+	/******************* ZUGRIFFSMETHODEN ***************************/
+	/**************************************************************/
 	
 	/**
 	 * Setzt den aktuellen Spieler
 	 * @param value
 	 */
-	public void setCurrentPlayer(int value) {
+	private void setCurrentPlayer(int value) {
 		if (value == 1) {
 			currentPlayer = 1;		
 		}
@@ -79,87 +103,10 @@ public class GameLogic {
 		}
 	}
 	
-	public int getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public int getColumn() {
-		return column;
-	}
-
-	public int getRow() {
-		return row;
-	}
-
-	private void setTurn() {
-		this.move = move++;
-	}
-	
-	public String getCurrentPlayerName() {
-		if (getCurrentPlayer() == 1) {
-			return player1;
-		}
-		else if (getCurrentPlayer() == 2) {
-			return player2;
-		}
-		else{
-			return null;
-		}
-	}
-
-	// Allgemeine Information: x entspricht Spalte / y entspricht Zeile
-
-	/**************************************************************/
-	/******************* KONSTRUKTOR ********************************/
-	/**************************************************************/
-
-	public GameLogic() {
-		// DB-Objekt anlegen
-		this.db = new connectHSQL();
-		// Array durchlaufen und mit Nullen fuellen + move auf false setzen, da
-		// kein Spieler am Zug ist!
-		move = 0;
-		for (int y = 0; y <= row; y++) {
-			for (int x = 0; x <= column; x++) {
-				field[y][x] = 0;
-			}
-		}
-		// System.err.println("Konstruktor durchlaufen.");
-	}
-
-	/**************************************************************/
-	/******************* ZUGRIFFSMETHODEN ***************************/
-	/**************************************************************/
-
-	/**
-	 * Methode gibt zurueck wo der Spieler gewonnen hat
-	 */
-	private void theWinner() {
-		switch (winnerIs) {
-		case 11:
-			System.out.println("Server gewinnt in Spalte!");
-		case 12:
-			System.out.println("Spieler gewinnt in Spalte!");
-		case 101:
-			System.out.println("Server gewinnt in Reihe!");
-		case 201:
-			System.out.println("Spieler gewinnt in Reihe!");
-		case 1001:
-			System.out.println("Server gewinnt Diagonal!");
-		case 1002:
-			System.out.println("Spieler gewinnt Diagonal!");
-		}
-	}
-
 	/**
 	 * Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array
 	 * zurueck!
 	 **/
-
-	public int arraylength() {
-		return field.length;
-	}
-
 	public int getField(int x, int y) {
 		return field[y][x];
 	}
@@ -183,27 +130,17 @@ public class GameLogic {
 	}
 
 	/**
-	 * 
 	 * Speichert den durchgefuehrten Zug
-	 * 
 	 * @param x
 	 * @param y
 	 */
 	private void saveTurn(int x, int y) {
 		sendTurn turnDBThread = new sendTurn(turnId,matchID,getCurrentPlayerName(), x, y);
 		turnDBThread.run();
-		turnId++;
+		turnId++; //ist das Move?
 	}
 
-	/**
-	 * Setzt den Chip eines Spielers
-	 * 
-	 * @param x
-	 */
-	public void setChip(int x) {
-		int y = validPosition(x);
-		setField(x, y);
-		}
+	
 
 
 	/**************************************************************/
@@ -225,6 +162,74 @@ public class GameLogic {
 	/************************ LOGIK *********************************/
 	/**************************************************************/
 
+	/**
+	 * Spielt den Zug --> Verbindung zum Interface, liefert Spalte zurueck
+	 */
+	public int playTurn(int x, int player){
+		setCurrentPlayer(player);
+		//Maximierung, da eigener Spieler
+		if (getCurrentPlayer() == 2) {
+		x = ki.calcMove(this);
+		setChip(x);
+		checkWinner();
+		return x;
+		}
+		else {
+		setChip(x);
+		checkWinner();
+		return -1;
+		}
+	}
+	
+	
+	/**
+	 * Setzt den Chip eines Spielers
+	 * 
+	 * @param x
+	 */
+	public void setChip(int x) {
+		int y = validPosition(x);
+		setField(x, y);
+		}
+	
+	/**
+	 * Prueft, ob ein Spieler gewonnen hat! Gibt einen int zurueck
+	 * @return
+	 * 1 --> Spieler 1 oder Server
+	 * 2 --> Spieler 2 oder Agent
+	 * 3 --> UNENTSCHIEDEN
+	 * 0 --> noch kein Gewinner
+	 */
+	private int checkWinner() {
+		//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
+		if (this.move >= 4) {
+		//wenn negativ unendlich, dann hat der Gegner (Server) gewonnen
+		if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
+			return 1;
+		}
+		//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
+		else if (this.evaluate() == (int)Double.POSITIVE_INFINITY) {
+			return 2;
+		}
+		
+		else {
+			int counter=0;
+			for (int x=0; x <= column; x++ ) {
+				if (validPosition(x) == -1) {
+				counter++;	
+				}
+			}
+			//wenn Counter =7, dann steht es unentschieden
+			if (counter == 7) {
+				return 3;
+			}
+			//andernfalls kann kein Gewinner festgestellt werden
+			return 0;
+		}
+		}
+		return 0;
+	}
+	
 	/**
 	 * Prueft, ob Chip eingeworfen werden kann gibt -1(keine valide Position)
 	 * oder Zeile zurueck!
@@ -251,7 +256,26 @@ public class GameLogic {
 		// if, mal gucken, ob erforderlich!
 		return temp;
 	}
-
+	
+	private String getCurrentPlayerName() {
+		if (getCurrentPlayer() == 1) {
+			return player1;
+		}
+		else if (getCurrentPlayer() == 2) {
+			return player2;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	/**************************************************************/
+	/*****************  ***************************/
+	/**************************************************************/
+	
+	
+	
+	
 	/**************************************************************/
 	/************************ BEWERTUNG *****************************/
 	/**************************************************************/
@@ -492,8 +516,8 @@ public class GameLogic {
 
 		return matchID;
 	}
-	// JANAS TEIL!
-
+	
+	
 	public GameLogic getDemoGame() {
 		GameLogic game2 = new GameLogic();
 		for (int i = 0; i <= column; i++) {
@@ -504,21 +528,12 @@ public class GameLogic {
 
 		return game2;
 	}
-
-	public int getPlayer() { // liefert den aktuellen Spieler zurück; 1 für
-								// unsren Agenten, 2 für den Gegner
-		return 1;
-	}
+	
 	/**
 	 * Mthode startet / initialisiert das Spiel und auch die DB
 	 */
 	public void startGame() {
-		gameID = getNewGameID();
-		String player1= null;//Von Gui String mit Gegner und diesen Speichern
-		String player2= null;
-		String winner = null;
-		String points = null;
-		sendGame dbGame = new sendGame(gameID, player1, player2, winner, points);
+		sendGame dbGame = new sendGame(getNewGameID(), gui.getNames1(), gui.getNames2(), null, null);
 		dbGame.run();
 	}
 	
