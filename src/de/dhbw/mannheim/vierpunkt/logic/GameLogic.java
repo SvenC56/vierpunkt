@@ -498,7 +498,7 @@ public class GameLogic {
 		GameLogic game2 = new GameLogic();
 		for (int i = 0; i <= column; i++) {
 			for (int j = 0; j <= row; j++) {
-				game2.setField(i, j);
+				game2.setDemoField(i, j, this.getField(i, j));
 			}
 		}
 
