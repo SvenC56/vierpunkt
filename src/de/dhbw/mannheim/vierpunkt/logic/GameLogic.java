@@ -447,7 +447,7 @@ public class GameLogic {
 	}
 	// JANAS TEIL!
 
-	public GameLogic copy() {
+	public GameLogic getDemoGame() {
 		GameLogic game2 = new GameLogic();
 		for (int i = 0; i <= column; i++) {
 			for (int j = 0; j <= row; j++) {

@@ -25,7 +25,7 @@ public class AlphaBeta {
 		else {
 			// calculate all possible moves
 			for (int i = 0; i <= game.getColumn(); i++) { // try out all columns
-				game_tmp = game.copy(); // copy current game situation to simulate possible moves without actually changing the play field
+				game_tmp = game.getDemoGame(); // copy current game situation to simulate possible moves without actually changing the play field
 				if (game_tmp.validPosition(i) != -1) { // position is valid
 						minimax_tmp = getMiniMaxValue(game_tmp, depth-1, alpha, beta);
 						if (player == 1) { // our agent is playing
