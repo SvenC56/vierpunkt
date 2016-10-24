@@ -37,13 +37,18 @@ public class GameLogic {
 	 */
 	private int[][] field = new int[row + 1][column + 1];
 	connectHSQL db = new connectHSQL();
-	private int gameID; // entspricht Spiel
-	private int matchID; // entspricht Runde
-	private int turnId = 1; //DB Turn
+	private int gameID = 0; // entspricht Spiel
+	private int matchID= 0; // entspricht Runde
+	private int turnId = 0; //DB Turn
+	private String player = null;
+	private String opponent = null;
 
 	/**
 	 * Methode zum Speichern des Spielstandes! Methode um Gewinn zu
 	 * erkennen!(count == 4 BREAK)
+	 * 
+	 * eine funktion die das match, game saved!
+	 * Wenn wir Daten vom Server bekommen (gegner)
 	 */
 
 	public int getColumn() {
@@ -128,7 +133,7 @@ public class GameLogic {
 	private void setField(int x, int y, int value) {
 		field[y][x] = value;
 		setTurn(); // Zuege mitzaehlen!
-		saveTurn(x, y);
+		saveTurn(x, y, value);
 	}
 
 	/**
@@ -149,7 +154,7 @@ public class GameLogic {
 	 * @param x
 	 * @param y
 	 */
-	private void saveTurn(int x, int y) {
+	private void saveTurn(int x, int y, int player) {
 		lastX = x;
 		lastY = y;
 		//DB Funktion!
@@ -426,9 +431,15 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	public int getGameID() {
+	public int getNewGameID() {
 		gameID = db.getMaxId("Game");
 		gameID++; // + 1, da zuletzt belegte ID zurueck
+
+		return gameID;
+	}
+	
+	public int getGameID() {
+		gameID = db.getMaxId("Game");
 
 		return gameID;
 	}
@@ -439,9 +450,15 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	public int getMatchID() {
+	public int getNewMatchID() {
 		matchID = db.getMaxId("Match");
 		matchID++; // + 1, da zuletzt belegte ID zurueck
+
+		return matchID;
+	}
+	
+	public int getMatchID() {
+		matchID = db.getMaxId("Match");
 
 		return matchID;
 	}
@@ -461,6 +478,23 @@ public class GameLogic {
 	public int getPlayer() { // liefert den aktuellen Spieler zurück; 1 für
 								// unsren Agenten, 2 für den Gegner
 		return 1;
+	}
+	/**
+	 * Mthode startet / initialisiert das Spiel und auch die DB
+	 */
+	public void startGame() {
+		gameID = getNewGameID();
+		String opponent= null;//Von Gui String mit Gegner und diesen Speichern
+		String winner = null;
+		int points = 0;
+		sendGame dbGame = new sendGame(gameID, opponent, winner, points);
+		dbGame.run();
+	}
+	
+	public void startMatch() {
+		matchID = getNewMatchID();
+		sendMatch dbMatch = new sendMatch(matchID, getGameID());
+		dbMatch.run();
 	}
 
 	public int evaluate() { // bewertet die gesamte Spielsituation

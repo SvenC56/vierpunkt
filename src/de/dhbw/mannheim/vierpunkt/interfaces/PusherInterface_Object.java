@@ -47,7 +47,7 @@ public class PusherInterface_Object
 
 	public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException {
 		
-		// CurRow wird für die Befüllung vorbereitet
+		// CurRow wird fï¿½r die Befï¿½llung vorbereitet
 		for (int i = 0; i < CurRow.length; i++){
 			CurRow[i]=5;
 		}		
@@ -126,7 +126,7 @@ public class PusherInterface_Object
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
 		        
 		        if (zug != -1){
-		        // Zug des Gegners wird in Logik übertragen
+		        // Zug des Gegners wird in Logik uebertragen
 		        game.setChip(zug, 1);
 		        // Spielstein wird in der GUI eingeworfen
 		        //setSpielstein(CurRow[zug], zug);
@@ -136,7 +136,7 @@ public class PusherInterface_Object
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
 		        	int move = game.playerTurn();
-		        	// der von der Logik berechnete Move wird an den Pusher übertragen
+		        	// der von der Logik berechnete Move wird an den Pusher ï¿½bertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
 		        	// setSpielstein(CurRow[move], move);
