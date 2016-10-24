@@ -1,8 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.application;
 
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
-import de.dhbw.mannheim.vierpunkt.interfaces.FileInterface;
-import de.dhbw.mannheim.vierpunkt.interfaces.PusherInterface;
+import de.dhbw.mannheim.vierpunkt.interfaces.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -14,7 +13,7 @@ public class MainApplication extends Application
 	
 	public static void main(String[] args)
 	{
-		// Zwei Süße Interfaces senden Events an die GUI
+		// Zwei Suesse Interfaces senden Events an die GUI
 		filey.addListener(gui);
 		pushy.addListener(gui);
 		
