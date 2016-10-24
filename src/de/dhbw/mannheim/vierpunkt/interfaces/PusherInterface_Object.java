@@ -2,6 +2,9 @@ package de.dhbw.mannheim.vierpunkt.interfaces;
 
 import javafx.concurrent.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
@@ -17,7 +20,7 @@ import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 
-public class PusherInterface_Object
+public class PusherInterface_Object implements Runnable
 {
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -40,17 +43,12 @@ public class PusherInterface_Object
 	private static String ChannelName = "private-channel";
 	
 	/**
-	 * Gibt den aktuellen Fuellstand aller Spalten an
+	 * Ein Array mit Listenern die auf das ZugEvent hören
 	 */
-	private static int[] CurRow = new int[7];
+	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 
-
-	public static void main(String[] args) throws InterruptedException, InstantiationException, IllegalAccessException {
+	public void run(){
 		
-		// CurRow wird fuer die Befuellung vorbereitet
-		for (int i = 0; i < CurRow.length; i++){
-			CurRow[i]=5;
-		}		
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -129,18 +127,17 @@ public class PusherInterface_Object
 		        // Zug des Gegners wird in Logik uebertragen
 		        game.playTurn(zug, 1);
 		        // Spielstein wird in der GUI eingeworfen
-		        //setSpielstein(CurRow[zug], zug);
-		        CurRow[zug]--;
+		        fireZugEvent(zug);
+
 		        }
 		        
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
 		        	int move = game.playTurn(-1, 2);
-		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
+		        	// der von der Logik berechnete Move wird an den Pusher übertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
-		        	// setSpielstein(CurRow[move], move);
-		        	CurRow[move]--;
+		        	fireZugEvent(move);
 		        }
 		        
 		        if (data.contains("false")){
@@ -164,7 +161,6 @@ public class PusherInterface_Object
 			}
 		});
 		
-		while(true){}
 		
 	}
 	
@@ -194,4 +190,17 @@ public class PusherInterface_Object
 	        pos = str.indexOf(s, pos+1);
 	    return pos;
 	}
+	
+
+	public void addListener(ZugListener toAdd){
+		listeners.add(toAdd);
+	}
+	
+	
+	public static void fireZugEvent(int zug){
+		for (ZugListener zl : listeners){
+			zl.zugGespielt(zug);
+		}
+	}
+
 }

@@ -11,15 +11,27 @@ public class MainApplication extends Application
 	{
 		FileInterface filey = new FileInterface();
 		
-		Thread t1 = new Thread(){
+		Thread fileThread = new Thread(){
 			@Override
 			public void run(){
 				filey.run();	
 			}
 		};
 		filey.addListener(test);
-		t1.start();
-
+		fileThread.start();
+		
+		PusherInterface_Object pushy = new PusherInterface_Object();
+		
+		Thread pusherThread = new Thread(){
+			@Override
+			public void run(){
+				pushy.run();
+			}
+		};
+		pushy.addListener(test);
+		pusherThread.start();
+		
+		
 		launch(args);
 	}
 
@@ -27,6 +39,7 @@ public class MainApplication extends Application
 	public void start(Stage primaryStage) throws Exception
 	{ 
 		test.start(primaryStage);
+		
 	}
 
 }
