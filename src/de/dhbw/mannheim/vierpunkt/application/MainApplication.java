@@ -1,6 +1,8 @@
-package de.dhbw.mannheim.vierpunkt.interfaces;
+package de.dhbw.mannheim.vierpunkt.application;
 
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
+import de.dhbw.mannheim.vierpunkt.interfaces.FileInterface;
+import de.dhbw.mannheim.vierpunkt.interfaces.PusherInterface;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
