@@ -53,6 +53,14 @@ public class FileInterface implements Runnable {
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
 				zugSchongespielt = true;
 				
+				try
+				{
+					Thread.sleep(zugZeit);
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				
 			} else {
 				// TO-DO: Unterscheiden zwischen Spielanfang und Spielende
 			}
