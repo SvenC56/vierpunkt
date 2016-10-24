@@ -1,2 +1,4 @@
 *.class
 bin/pushTest.class
+/.\VierGewinntDB.log
+/.\VierGewinntDB.properties
