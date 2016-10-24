@@ -5,9 +5,9 @@ public class sendGame implements Runnable {
 	String Player1;
 	String Player2;
 	String WINNER;
-	int POINTS;
+	String POINTS;
 
-	public sendGame(int G_ID, String Player1, String Player2, String WINNER, int POINTS) {
+	public sendGame(int G_ID, String Player1, String Player2, String WINNER, String POINTS) {
 		this.G_ID = G_ID;
 		this.Player1 = Player1;
 		this.Player2 = Player2;
