@@ -62,7 +62,7 @@ public class TestGui implements ZugListener {
 	private int zugzeit = 2000;
 	
 	//Erzeugen der Spielsteine
-    public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
+    public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
     public javafx.scene.image.Image getImage1() {
 		return image1;
 	}
@@ -70,7 +70,7 @@ public class TestGui implements ZugListener {
 		return image2;
 	}
 
-	public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
+	public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
 	public javafx.scene.image.Image kuerbis = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
     public javafx.scene.image.Image fledermaus = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm()); 
@@ -82,7 +82,7 @@ public class TestGui implements ZugListener {
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     
     // Variable fuer die Farbe des Spielfelds
-    public Color color = Color.rgb(133, 3, 118);
+    public Color color = Color.rgb(0, 0, 0);
     public GridPane spielfeld = new GridPane();
     
     // Getter und Setter Methoden
@@ -396,6 +396,8 @@ public class TestGui implements ZugListener {
 		 ******************************************* EVENTHANDLER FUER DAS MENU *********************************************************
 		 ********************************************************************************************************************/
 		
+		Scene scene = new Scene(root);
+		
 		menu13.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) { Platform.exit();}
 		});
@@ -414,11 +416,8 @@ public class TestGui implements ZugListener {
 				setImage2(gruen);
 				i1.setImage(orange);
 				i2.setImage(gruen);
-				root.setId("root_sweets");
-				containerrechts.setId("container_weiss");
-				containerlinks.setId("container_weiss");
-				ueberschrift.setId("ueberschrift_sweets");
-				bild.setId("bild_sweets");
+				scene.getStylesheets().clear();
+				scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());
 				createGrids();
 			}
 		});
@@ -430,43 +429,36 @@ public class TestGui implements ZugListener {
 				setImage2(fledermaus);
 				i1.setImage(kuerbis);
 				i2.setImage(fledermaus);
-				root.setId("root_halloween");
-				containerrechts.setId("container_schwarz");
-				containerlinks.setId("container_schwarz");
-				ueberschrift.setId("ueberschrift_halloween");
-				bild.setId("bild_halloween");
+				scene.getStylesheets().clear();
+				scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 				createGrids();
 			}
 		});
 		
 		menu23.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				scene.getStylesheets().clear();
+				scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
 				setColor(Color.DARKGREEN);
 				setImage1(pizza);
 				setImage2(burger);
 				i1.setImage(pizza);
 				i2.setImage(burger);
-				root.setId("root_food");
-				containerrechts.setId("container_weiss");
-				containerlinks.setId("container_weiss");
-				ueberschrift.setId("ueberschrift_food");
-				bild.setId("bild_food");
+				
 				createGrids();
 			}
 		});
 		
 		menu24.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				scene.getStylesheets().clear();
+				scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
 				setColor(Color.CADETBLUE);
 				setImage1(basketball);
 				setImage2(baseball);
 				i1.setImage(basketball);
 				i2.setImage(baseball);
-				root.setId("root_sport");
-				containerrechts.setId("container_weiss");
-				containerlinks.setId("container_weiss");
-				ueberschrift.setId("ueberschrift_sport");
-				bild.setId("bild_sport");
+				
 				createGrids();
 			}
 		});
@@ -523,7 +515,7 @@ public class TestGui implements ZugListener {
 		});
 		
 		
-		Scene scene = new Scene(root);
+		
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 		Scene scene2 = new Scene(pane, 200, 200);

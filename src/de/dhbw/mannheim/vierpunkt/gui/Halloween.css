@@ -20,7 +20,7 @@
 #bild{-fx-image: url("hexe.png");}
 
 .text{
--fx-fill: #FFFFFF;
+-fx-fill: #FF6600;
     -fx-font-weight: bold;
     -fx-font-size: 15;
 }
