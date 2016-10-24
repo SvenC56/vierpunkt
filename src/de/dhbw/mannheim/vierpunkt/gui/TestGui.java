@@ -332,14 +332,7 @@ public class TestGui implements ZugListener {
 		platzhalter0.setOpacity(0);
 
 		Button start = new Button("Spiel starten");
-		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-            public void handle(MouseEvent arg0) {
-				spieler = 1;
-            	createGrids();
-            	
-            }
-		});
+		
 
 		// Einfuegen der Elemente in die rechte Box
 		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
@@ -633,6 +626,22 @@ public class TestGui implements ZugListener {
 				primaryStage.show();
             }
 		});
+		
+		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				if(spielmodus.getValue()==2){
+					spieler = 1;
+	            	createGrids_automatisch();
+				}else{
+					spieler = 1;
+					createGrids();}
+				
+            	
+            }
+		});
+		
+		
 		newStage.show();
 		
 	}
@@ -859,7 +868,7 @@ public void verbindungsaufbau_Kanal(Pusher pusher){
 	        System.err.println("Gegner spielte in Spalte: "+ zug);
 	        
 	        if (zug != -1){
-	        // Zug des Gegners wird in Logik übertragen
+	        // Zug des Gegners wird in Logik ï¿½bertragen
 	        game.setChip(zug, 1);
 	        // Spielstein wird in der GUI eingeworfen
 	        setSpielstein(plaetzeFreiInReihe[zug], zug);
@@ -869,7 +878,7 @@ public void verbindungsaufbau_Kanal(Pusher pusher){
 	        if (data.contains("true")){
 	        	// der Move wird von der Logik berechnet
 	        	int move = game.playerTurn();
-	        	// der von der Logik berechnete Move wird an den Pusher übertragen
+	        	// der von der Logik berechnete Move wird an den Pusher ï¿½bertragen
 	        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 	        	// der Spielstein wird in der GUI eingeworfen
 	        	setSpielstein(plaetzeFreiInReihe[move], move);
