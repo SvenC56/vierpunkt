@@ -3,34 +3,15 @@
     Author     : janaschaub
 */
 
-#root_sweets{
-	-fx-background-image: url("Sweets_transparent.png");
-	-fx-background-size: contain;
-}
-
 #root_halloween{
 	-fx-background-image: url("hintergrund_halloween.png");
 	-fx-background-size: stretch;
 }
 
-#root_sport{
-	-fx-background-image: url("hintergrund_sport.png");
-	-fx-background-size: stretch;
-}
-
-#root_food{
-	-fx-background-image: url("hintergrund_food.png");
-	-fx-background-size: stretch;
-}
 
 #bisherigeSpiele{
 	-fx-background-image: url("Sweets_transparent.png");
 	-fx-background-size: contain;
-}
-
-#ueberschrift_sweets{
-	-fx-image: url("ueberschrift.jpg");
-	-fx-border-color:  #ffffff;
 }
 
 #ueberschrift_halloween{
