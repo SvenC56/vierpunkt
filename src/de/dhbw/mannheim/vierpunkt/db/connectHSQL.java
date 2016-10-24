@@ -180,7 +180,13 @@ public class connectHSQL {
 		}
 		executeSQL(sqlValues);
 	}
-
+	/**
+	 * Rueckgabe aller Daten aus der DB
+	 */
+	public String[][] getAll() {
+		return saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN;"));
+	}
+	
 	/**
 	 * uebermittlung eines Matches in die DB
 	 **/
