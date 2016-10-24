@@ -43,7 +43,9 @@ public class FileInterface implements Runnable {
 	@Override
 	public void run()
 	{	
-
+		// Testausgabe fuer Konstruktor
+		System.out.println("Die eingestellte Zugzeit betraegt: " + zugZeit);
+		
 		while (true)
 		{
 	
