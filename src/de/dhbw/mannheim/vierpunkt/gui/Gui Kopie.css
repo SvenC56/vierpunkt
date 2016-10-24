@@ -1,0 +1,118 @@
+/* 
+    Created on : 12.09.2016, 09:03:19
+    Author     : janaschaub
+*/
+
+#root_sweets{
+	-fx-background-image: url("Sweets_transparent.png");
+	-fx-background-size: contain;
+}
+
+#root_halloween{
+	-fx-background-image: url("hintergrund_halloween.png");
+	-fx-background-size: stretch;
+}
+
+#root_sport{
+	-fx-background-image: url("hintergrund_sport.png");
+	-fx-background-size: stretch;
+}
+
+#root_food{
+	-fx-background-image: url("hintergrund_food.png");
+	-fx-background-size: stretch;
+}
+
+#bisherigeSpiele{
+	-fx-background-image: url("Sweets_transparent.png");
+	-fx-background-size: contain;
+}
+
+#ueberschrift_sweets{
+	-fx-image: url("ueberschrift.jpg");
+	-fx-border-color:  #ffffff;
+}
+
+#ueberschrift_halloween{
+	-fx-image: url("vier_halloween.png");
+	-fx-border-color: #000000;
+}
+
+#ueberschrift_sport{
+	-fx-image: url("vier_sport.png");
+	-fx-border-color:  #ffffff;
+}
+
+#ueberschrift_food{
+	-fx-image: url("vier_food.png");
+	-fx-border-color: #ffffff;
+}
+
+#container_weiss{-fx-fill: #ffffff;}
+
+#container_schwarz{-fx-fill: #000000;}
+
+#bild_sweets{-fx-image: url("suessigkeiten.png");}
+
+#bild_halloween{-fx-image: url("hexe.png");}
+
+#bild_sport{-fx-image: url("pokal.png");}
+
+#bild_food{-fx-image: url("teller.png");}
+
+#titel{-fx-border-color: #660066;}
+
+.text{
+-fx-fill: #660066;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+}
+
+.label {
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+    -fx-font-size: 25;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+	
+}
+
+#grid{
+    -fx-alignment: CENTER;
+    -fx-Hgap:10;
+    -fx-Vgap:10;
+    -fx-halignment: center;
+    -fx-valignment: center; 
+}
+
+#ueberschrift {
+   -fx-alignment: TOP_CENTER;
+   -fx-halignment: center;
+   -fx-textalign: center;
+}
+
+#spielfeld{
+   -fx-background-color: #E6E8E9;
+   -fx-opacity: 1;
+}
+
+#boxmitte{
+    -fx-width:100%;
+    -fx-height: 100%;
+    -fx-alignment: center;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#FF3366, #FF6666);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-alignment:bottom_center;
+    -fx-label-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#993366, #CC6699);
+}

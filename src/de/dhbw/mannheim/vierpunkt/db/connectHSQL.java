@@ -198,7 +198,7 @@ public class connectHSQL {
 	/**
 	 * uebermittlung eines Zugs in die DB
 	 **/
-	public void handOverTurn(int T_ID, int M_ID, String PERSON, int POS_Y) {
-		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + "};");
+	public void handOverTurn(int T_ID, int M_ID, String PERSON, int POS_Y, int POS_X) {
+		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X + "};");
 	}
 }
