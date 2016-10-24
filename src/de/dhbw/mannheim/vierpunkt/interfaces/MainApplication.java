@@ -8,7 +8,7 @@ public class MainApplication extends Application
 {
 	static TestGui gui = new TestGui();
 	static FileInterface filey = new FileInterface();
-	static PusherInterface_Object pushy = new PusherInterface_Object();
+	static PusherInterface pushy = new PusherInterface();
 	
 	public static void main(String[] args)
 	{

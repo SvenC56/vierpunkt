@@ -13,7 +13,6 @@ import java.io.*;
 public class FileInterface implements Runnable {
 
 	public static String serverString ="";
-	public static int zugZeit = 1000;
 	public static GameLogic game = new GameLogic();
 	public static int zug1;
 	public static int zug2;
@@ -24,6 +23,7 @@ public class FileInterface implements Runnable {
 	
 	public static char spielerKennung = 'X';
 	public static String kontaktPfad = "C:\\FileInterface\\";
+	public static int zugZeit = 1000;
 	
 	// Leerer Konstruktor: Standardwerte werden verwendet
 	public FileInterface()
@@ -32,9 +32,10 @@ public class FileInterface implements Runnable {
 	}
 	
 	// Dem Konstruktor werden die Spielerkennung und der Kontaktpfad uebergeben
-	public FileInterface(char spielerKennung, String kontaktPfad){
+	public FileInterface(char spielerKennung, String kontaktPfad, int zugZeit){
 		this.spielerKennung = spielerKennung;
 		this.kontaktPfad = kontaktPfad;
+		this.zugZeit = zugZeit;
 	}
 	
 

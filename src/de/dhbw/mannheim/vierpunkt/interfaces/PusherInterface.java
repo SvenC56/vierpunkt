@@ -20,7 +20,7 @@ import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.logic.GameLogic;
 
 
-public class PusherInterface_Object implements Runnable
+public class PusherInterface implements Runnable
 {
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -46,6 +46,9 @@ public class PusherInterface_Object implements Runnable
 	 * Ein Array mit Listenern die auf das ZugEvent hören
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
+	
+	// Konstruktoren
+	
 
 	public void run(){
 		
