@@ -28,8 +28,6 @@ public class GameLogic {
 	private int row = 5;
 	// Variable die Zuege mitzaehlt! //Move entspricht TURN
 	private int move = 0; // --> maximale Anzahl Zuege 69!
-	private int lastX = -1; // Variable speichert X vorheriger Zug
-	private int lastY = -1; // Variable speichert Y vorheriger Zug
 	private int winnerIs = 0;
 	/**
 	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 =
@@ -37,11 +35,13 @@ public class GameLogic {
 	 */
 	private int[][] field = new int[row + 1][column + 1];
 	connectHSQL db = new connectHSQL();
+	AlphaBeta ki = new AlphaBeta();
 	private int gameID = 0; // entspricht Spiel
 	private int matchID= 0; // entspricht Runde
 	private int turnId = 0; //DB Turn
-	private String player = null;
-	private String opponent = null;
+	private String player1 = null;
+	private String player2 = null;
+	private int currentPlayer = 0; //Der aktuelle Spieler
 
 	/**
 	 * Methode zum Speichern des Spielstandes! Methode um Gewinn zu
@@ -50,6 +50,33 @@ public class GameLogic {
 	 * eine funktion die das match, game saved!
 	 * Wenn wir Daten vom Server bekommen (gegner)
 	 */
+	
+	public void playTurn(int x, int player){
+		setCurrentPlayer(player);
+		//Maximierung, da eigener Spieler
+		if (getCurrentPlayer() == 2) {
+		x = ki.calcMove(this);
+		}
+		setChip(x);
+	}
+	
+	
+	/**
+	 * Setzt den aktuellen Spieler
+	 * @param value
+	 */
+	public void setCurrentPlayer(int value) {
+		if (value == 1) {
+			currentPlayer = 1;		
+		}
+		if (value == 2) {
+			currentPlayer = 2;
+		}
+	}
+	
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
 
 	public int getColumn() {
 		return column;
@@ -59,17 +86,20 @@ public class GameLogic {
 		return row;
 	}
 
-	public void setField(int[][] field) {
-		this.field = field;
-	}
-
-	private int getTurn() {
-		return move;
-	}
-
 	private void setTurn() {
-		move++;
-		this.move = move;
+		this.move = move++;
+	}
+	
+	public String getCurrentPlayerName() {
+		if (getCurrentPlayer() == 1) {
+			return player1;
+		}
+		else if (getCurrentPlayer() == 2) {
+			return player2;
+		}
+		else{
+			return null;
+		}
 	}
 
 	// Allgemeine Information: x entspricht Spalte / y entspricht Zeile
@@ -130,10 +160,10 @@ public class GameLogic {
 	}
 
 	// Setter fuer field
-	private void setField(int x, int y, int value) {
-		field[y][x] = value;
-		setTurn(); // Zuege mitzaehlen!
-		saveTurn(x, y, value);
+	private void setField(int x, int y) {
+		field[y][x] = getCurrentPlayer();
+		setTurn();
+		saveTurn(x, y);
 	}
 
 	/**
@@ -154,11 +184,8 @@ public class GameLogic {
 	 * @param x
 	 * @param y
 	 */
-	private void saveTurn(int x, int y, int player) {
-		lastX = x;
-		lastY = y;
-		//DB Funktion!
-		sendTurn turnDBThread = new sendTurn(turnId,matchID,"Test",y);
+	private void saveTurn(int x, int y) {
+		sendTurn turnDBThread = new sendTurn(turnId,matchID,getCurrentPlayerName(), x, y);
 		turnDBThread.run();
 		turnId++;
 	}
@@ -168,16 +195,11 @@ public class GameLogic {
 	 * 
 	 * @param x
 	 */
-	public void setChip(int x, int spieler) {
+	public void setChip(int x) {
 		int y = validPosition(x);
-
-		if (spieler == 2) { // wenn Spieler spielt
-			setField(x, y, 2);
-		} else if (spieler == 1) { // wenn Server / Gegner spielt
-			setField(x, y, 1);
+		setField(x, y);
 		}
 
-	}
 
 	/**************************************************************/
 	/******************* TEMPORAER TEST-METHODS *********************/
@@ -232,7 +254,7 @@ public class GameLogic {
 	/**
 	 * Bewertungsfunktion - Bewertet den Pfad nach aktuellem Stand und liefert
 	 * Zahlenwert!
-	 **/
+	 *
 	private int pathEval(int x, int y, int spieler) {
 		int evaluation = 0;
 		// Idee: Die Summe der count ist die Bewertung des Pfades!!
@@ -242,7 +264,8 @@ public class GameLogic {
 		// evaluation);
 		return evaluation;
 	}
-
+	**/
+	
 	/**
 	 * Bewertet die aktuelle Spielsituation und liefert die Spalte zurueck, in
 	 * welche eingeworfen werden soll. Wenn -1 uebergeben wird, dann gibt es
@@ -251,7 +274,7 @@ public class GameLogic {
 	 * 
 	 * @param spieler
 	 * @return
-	 */
+	 
 	public int bestPath(int spieler) {
 		int bestColumn = -1;
 		int tmp = 0;
@@ -277,19 +300,20 @@ public class GameLogic {
 
 		return bestColumn;
 	}
+*/
 
 	/** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/ // Funktioniert!
-	private int inColumn(int x, int y, int spieler) {
+	private int inColumn(int x, int y) {
 		// System.err.println("Methode inColumn wurde aufgerufen!");
 		int count = 0; // Zaehler der validen Chips des gleichen Spielers in
 						// Spalte
 		int temp = y;
-		if (getField(x, y) == 0 || getField(x, y) == spieler) {
+		if (getField(x, y) == 0 || getField(x, y) == getCurrentPlayer()) {
 			count++;
 			y--;
 		}
 		for (; y > -1; y--) { // von unten nach oben!
-			if (getField(x, y) == spieler) {
+			if (getField(x, y) == getCurrentPlayer()) {
 				count++;
 			} else
 				break;
@@ -299,32 +323,32 @@ public class GameLogic {
 										// Spiel sonst gewonnen)
 			y = temp + 1;
 			for (; y <= row; y++) { // Limitiert durch Anzahl Zeilen!
-				if (getField(x, y) == spieler) {
+				if (getField(x, y) == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
 			}
 		}
 		if (count == 4) {
-			winnerIs = spieler + 10;
+			winnerIs = getCurrentPlayer() + 10;
 		}
 		return count;
 	}
 
 	/** Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-	private int inDiagonal(int x, int y, int spieler) {
+	private int inDiagonal(int x, int y) {
 		// System.err.println("Methode inDiagonal wurde aufgerufen!");
 		int count = 0;
 		int startX = x;
 		int startY = y;
-		if (getField(x, y) == 0 || getField(x, y) == spieler) {
+		if (getField(x, y) == 0 || getField(x, y) == getCurrentPlayer()) {
 			count++;
 			x++;
 			y--;
 		}
 		// Prueft oben - rechts
 		for (; (x <= column && y > -1); x++, y--) {
-			if (getField(x, y) == spieler) {
+			if (getField(x, y) == getCurrentPlayer()) {
 				count++;
 			} else
 				break;
@@ -334,7 +358,7 @@ public class GameLogic {
 			x = startX - 1;
 			y = startY - 1;
 			for (; (x > -1 && y > -1); x--, y--) {
-				if (getField(x, y) == spieler) {
+				if (getField(x, y) == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -347,7 +371,7 @@ public class GameLogic {
 			// Prueft unten - links
 			for (; (x > -1 && y <= row); x--, y++) {
 
-				if (getField(x, y) == spieler) {
+				if (getField(x, y) == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -359,14 +383,14 @@ public class GameLogic {
 			// Prueft unten - rechts
 			for (; (x <= column && y <= row); x++, y++) {
 
-				if (getField(x, y) == spieler) {
+				if (getField(x, y) == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
 			}
 		}
 		if (count == 4) {
-			winnerIs = spieler + 1000;
+			winnerIs = getCurrentPlayer() + 1000;
 		}
 
 		return count;
@@ -374,7 +398,7 @@ public class GameLogic {
 
 	/**
 	 * Methode fuehrt Zug vom Spieler durch (KI oder Manuell) --->Noch ohne KI
-	 */
+	 
 	public int playerTurn() {
 		// Ermittelten die beste Spalte
 		int x = bestPath(2);
@@ -385,19 +409,20 @@ public class GameLogic {
 		System.err.println("Spieler spielte den " + getTurn() + ". Zug in Spalte " + x);
 		return x;
 	}
+	*/
 
 	/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/ // Funktioniert!
-	private int inRow(int x, int y, int spieler) {
+	private int inRow(int x, int y) {
 		// System.err.println("Methode inRow wurde aufgerufen!");
 		int count = 0;
 		int temp = x;
-		if (getField(x, y) == 0 || getField(x, y) == spieler) {
+		if (getField(x, y) == 0 || getField(x, y) == getCurrentPlayer()) {
 			count++;
 			x++;
 		}
 		for (; x <= column; x++) { // von links nach rechts! Limitiert durch
 									// Anzahl Spalten!
-			if (getField(x, y) == spieler) {
+			if (getField(x, y) == getCurrentPlayer()) {
 				count++;
 			} else
 				break;
@@ -407,7 +432,7 @@ public class GameLogic {
 										// gewonnen)
 			x = temp - 1;
 			for (; x > -1; x--) {
-				if (getField(x, y) == spieler) {
+				if (getField(x, y) == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -415,7 +440,7 @@ public class GameLogic {
 			}
 		}
 		if (count == 4) {
-			winnerIs = spieler + 100;
+			winnerIs = getCurrentPlayer() + 100;
 		}
 
 		return count;
@@ -468,7 +493,7 @@ public class GameLogic {
 		GameLogic game2 = new GameLogic();
 		for (int i = 0; i <= column; i++) {
 			for (int j = 0; j <= row; j++) {
-				game2.setField(i, j, this.getField(i, j));
+				game2.setField(i, j);
 			}
 		}
 
@@ -484,10 +509,11 @@ public class GameLogic {
 	 */
 	public void startGame() {
 		gameID = getNewGameID();
-		String opponent= null;//Von Gui String mit Gegner und diesen Speichern
+		String player1= null;//Von Gui String mit Gegner und diesen Speichern
+		String player2= null;
 		String winner = null;
 		int points = 0;
-		sendGame dbGame = new sendGame(gameID, opponent, winner, points);
+		sendGame dbGame = new sendGame(gameID, player1, player2, winner, points);
 		dbGame.run();
 	}
 	
