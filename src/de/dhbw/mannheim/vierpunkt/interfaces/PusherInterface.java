@@ -43,19 +43,30 @@ public class PusherInterface implements Runnable
 	private static String ChannelName = "private-channel";
 	
 	/**
-	 * Ein Array mit Listenern die auf das ZugEvent hören
+	 * Ein Array mit Listenern die auf das ZugEvent hoeren
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
-	// Konstruktoren
+	/**
+	 * Die Zeit, die dem Agenten fuer seinen Zug bleibt
+	 */
+	public static int zugZeit = 1000;
 	
+	// Konstruktoren
+	public PusherInterface(){
+		
+	}
+	
+	public PusherInterface(int zugZeit){
+		this.zugZeit = zugZeit;
+	}
 
 	public void run(){
 		
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
-		//options.setCluster("EU");
+
 		options.setAuthorizer(new Authorizer() {
 			
 			/**
@@ -137,7 +148,7 @@ public class PusherInterface implements Runnable
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
 		        	int move = game.playTurn(-1, 2);
-		        	// der von der Logik berechnete Move wird an den Pusher übertragen
+		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
 		        	fireZugEvent(move);
