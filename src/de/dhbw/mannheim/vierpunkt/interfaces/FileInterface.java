@@ -15,7 +15,8 @@ public class FileInterface implements Runnable {
 	public static String serverString ="";
 	public static int zugZeit = 1000;
 	public static GameLogic game = new GameLogic();
-	public static int zug;
+	public static int zug1;
+	public static int zug2;
 	public static int stelle;
 	public static char charAtStelle;
 	public static boolean zugSchongespielt = false;
@@ -40,13 +41,14 @@ public class FileInterface implements Runnable {
 			stelle = ordinalIndexOf(serverString, ">", 6) + 1;
 			charAtStelle = serverString.charAt(stelle);
 			if (charAtStelle != '-'){
-				zug = Integer.parseInt(String.valueOf(charAtStelle));
+				zug1 = Integer.parseInt(String.valueOf(charAtStelle));
 				
 				// Zug des Gegners wird in eigenes Logikarray eingetragen
 				//game.setChip(zug, 1);
 				
 				// Zug des Gegners wird in GUI dargestellt
-				fireZugEvent(zug);
+				System.out.println("Der Gegner spielt den Zug " + zug1 + ".");
+				fireZugEvent(zug1);
 				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
 				zugSchongespielt = true;
@@ -61,19 +63,19 @@ public class FileInterface implements Runnable {
 			try {
 				// Eigener Zug wird durch Logik bestimmt
 				//zug = game.playerTurn();
-				zug = (int)(Math.random()*7);
+				zug2 = (int)(Math.random()*7);
 				
 				// Eigener Zug wird dem Server übergeben
-				zugSpielen(zug);
+				zugSpielen(zug2);
 				
 				// Eigener Zug wird in GUI dargestellt
-				fireZugEvent(zug);
+				fireZugEvent(zug2);
 				
 				try {
-						zugSchongespielt = false;			
+								
 						Thread.sleep(zugZeit);
-						
 						// Für diese Runde wurde ein Zug gespielt
+						zugSchongespielt = false;	
 						
 						
 			} catch (InterruptedException e){e.getMessage();}
@@ -91,9 +93,8 @@ public class FileInterface implements Runnable {
 	 */
 	public static void zugSpielen(int spalte) throws IOException{
 		FileWriter fileOut = new FileWriter("C:\\FileInterface\\spielerx2server.txt");
-		int move = (int) (Math.random()*6); // Zug wird zufällig festgelegt
-		System.out.println("Der Zug " + move + " wird gespielt.");
-		fileOut.write(String.valueOf(move)); // 
+		System.out.println("Der Zug " + spalte + " wird gespielt.");
+		fileOut.write(String.valueOf(spalte)); // 
 		fileOut.flush();
 		fileOut.close();
 	

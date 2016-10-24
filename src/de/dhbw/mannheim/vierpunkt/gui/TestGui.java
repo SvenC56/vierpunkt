@@ -75,7 +75,7 @@ public class TestGui implements ZugListener {
 	/**
 	 * Gibt den aktuellen Fuellstand aller Spalten an
 	 */	
-	static int[] CurRow = new int[7];
+	static int[] plaetzeFreiInReihe = new int[7];
 	public static Stage primaryStage = new Stage();
 	
 	private int anzahlzeilen;
@@ -130,8 +130,8 @@ public class TestGui implements ZugListener {
 	
 	public void start(Stage primaryStage) {
 		
-		for (int i = 0; i < CurRow.length; i++){
-			CurRow[i]=5;
+		for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+			plaetzeFreiInReihe[i]=5;
 		}
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
@@ -830,8 +830,8 @@ public class TestGui implements ZugListener {
 	@Override
 	public void zugGespielt(int zug)
 	{
-		setSpielstein(CurRow[zug], zug);
-        CurRow[zug]--;
+		setSpielstein(plaetzeFreiInReihe[zug], zug);
+        plaetzeFreiInReihe[zug]--;
 	}
 
     	
@@ -862,8 +862,8 @@ public void verbindungsaufbau_Kanal(Pusher pusher){
 	        // Zug des Gegners wird in Logik übertragen
 	        game.setChip(zug, 1);
 	        // Spielstein wird in der GUI eingeworfen
-	        setSpielstein(CurRow[zug], zug);
-	        CurRow[zug]--;
+	        setSpielstein(plaetzeFreiInReihe[zug], zug);
+	        plaetzeFreiInReihe[zug]--;
 	        }
 	        
 	        if (data.contains("true")){
@@ -872,8 +872,8 @@ public void verbindungsaufbau_Kanal(Pusher pusher){
 	        	// der von der Logik berechnete Move wird an den Pusher übertragen
 	        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 	        	// der Spielstein wird in der GUI eingeworfen
-	        	setSpielstein(CurRow[move], move);
-	        	CurRow[move]--;
+	        	setSpielstein(plaetzeFreiInReihe[move], move);
+	        	plaetzeFreiInReihe[move]--;
 	        }
 	        
 	        if (data.contains("false")){
