@@ -48,7 +48,7 @@ public class AlphaBeta {
 	}
 		
 	
-	private int calcMove(GameLogic game) { // method to be evoked by game main to find the best possible move for our agent
+	public int calcMove(GameLogic game) { // method to be evoked by game main to find the best possible move for our agent
 		
 		int [] values = new int[game.getColumn()+1];
 		GameLogic game_tmp;
