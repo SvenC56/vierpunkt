@@ -184,8 +184,8 @@ public class connectHSQL {
 	/**
 	 * uebermittlung eines Matches in die DB
 	 **/
-	public void handOverGame(int G_ID, String OPPONENT, String WINNER, int POINTS){
-		executeSQL("INSERT INTO GAME VALUES{ " + G_ID + ", " + OPPONENT + ", " + WINNER + ", " + POINTS + "}");
+	public void handOverGame(int G_ID, String Player1, String Player2, String WINNER, int POINTS){
+		executeSQL("INSERT INTO GAME VALUES{ " + G_ID + ", " + Player1 + ", " + Player2 + ", " + WINNER + ", " + POINTS + "}");
 	}
 
 	/**
