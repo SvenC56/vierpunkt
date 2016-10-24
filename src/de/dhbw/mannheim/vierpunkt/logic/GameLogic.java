@@ -517,7 +517,7 @@ public class GameLogic {
 		String player1= null;//Von Gui String mit Gegner und diesen Speichern
 		String player2= null;
 		String winner = null;
-		int points = 0;
+		String points = null;
 		sendGame dbGame = new sendGame(gameID, player1, player2, winner, points);
 		dbGame.run();
 	}
