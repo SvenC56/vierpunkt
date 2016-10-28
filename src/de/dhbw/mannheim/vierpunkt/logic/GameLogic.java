@@ -77,8 +77,7 @@ public class GameLogic {
 		/**************************************************************/
 		
 	/**
-	 * Methode zum Speichern des Spielstandes! Methode um Gewinn zu
-	 * erkennen!(count == 4 BREAK)
+	 * 
 	 * 
 	 * eine funktion die das match, game saved!
 	 * Wenn wir Daten vom Server bekommen (gegner)
