@@ -23,14 +23,10 @@ public class MainApplication extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{ 		
-		// Thread fuer das User Interface
-		Thread GuiThread = new Thread(){
-			@Override
-			public void run(){
-				gui.start(primaryStage);
-			}
-		};
-		GuiThread.start();
+		
+		
+		
+	
 		
 		// wenn pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
 		if(gui.getSchnittstelle().equals("pusher"))
@@ -56,6 +52,8 @@ public class MainApplication extends Application
 			fileThread.start();
 		
 		}
+		
+		gui.start(primaryStage);
 		
 		
 	}
