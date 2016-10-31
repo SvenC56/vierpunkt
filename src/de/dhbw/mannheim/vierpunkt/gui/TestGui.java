@@ -354,6 +354,9 @@ public class TestGui implements ZugListener {
                        setSchnittstelle("pusher");
                    }
                });
+		
+		DirectoryChooser chooser = new DirectoryChooser();
+	  
 		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent arg0) {
@@ -362,21 +365,23 @@ public class TestGui implements ZugListener {
              	   file.setSelected(true);
                 }else{file.setSelected(true);}
                 setSchnittstelle("file");
+                
+                File dir = chooser.showDialog(null);
+        	    if (dir == null) {
+        	        System.out.println("Kein Ordner ausgewählt");;
+        	    }else{
+        	    	fileString = dir.getPath();
+        	    	System.out.println(fileString);
+        	    	System.out.println(dir.getAbsolutePath());
+        	    	System.out.println(dir.getAbsoluteFile());
+        	    }
             }
         });
 		
+
 		
-		/*
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose File");
-		File selectedFile = fileChooser.showOpenDialog(primaryStage);
-		 if (selectedFile != null) {
-		    System.out.println("kein File ausgewählt");
-		 }else{
-			 fileString = selectedFile.getPath();
-			 System.out.println(fileString);
-		 }
-		 */
+		
+		 
 
 		
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
