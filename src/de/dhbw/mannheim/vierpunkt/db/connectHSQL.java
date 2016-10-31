@@ -209,4 +209,13 @@ public class connectHSQL {
 		executeSQL("INSERT INTO TURN VALUES{ " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X
 				+ "};");
 	}
-}
+	
+	/**
+	 * Übermittlung des Highscores in das Game
+	 */
+	public String[][] getHighscoreFull(){
+		String[][] highscore = null;
+		highscore = saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN"));
+		return highscore;
+	}
+	}
