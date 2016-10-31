@@ -181,17 +181,10 @@ public class connectHSQL {
 	}
 
 	/**
-	 * Rueckgabe aller Daten aus der DB
-	 */
-	public String[][] getAll() {
-		return saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN;"));
-	}
-
-	/**
 	 * uebermittlung eines Matches in die DB
 	 **/
 	public void handOverGame(int G_ID, String Player1, String Player2, String WINNER, String POINTS) {
-		executeSQL("INSERT INTO GAME VALUES( " + G_ID + ", '" + Player1 + "', '" + Player2 + "', '" + WINNER + "', '"
+		executeSQL("INSERT INTO GAME VALUES(" + G_ID + ",'" + Player1 + "','" + Player2 + "','" + WINNER + "','"
 				+ POINTS + "');");
 	}
 
@@ -199,7 +192,7 @@ public class connectHSQL {
 	 * uebermittlung eines Runde in die DB
 	 **/
 	public void handOverMatch(int M_ID, int G_ID) {
-		executeSQL("INSERT INTO MATCH VALUES( " + M_ID + ", " + G_ID + ");");
+		executeSQL("INSERT INTO MATCH VALUES(" + M_ID + "," + G_ID + ");");
 	}
 
 	/**
@@ -231,18 +224,18 @@ public class connectHSQL {
 	/**
 	 * Übermittlung des Match Highscores in das Game
 	 */
-	public String[][] getHighscoreMatch(int G_ID){
+	public String[][] getHighscoreMatch(int G_ID) {
 		String[][] highscore = null;
 		highscore = saveResult(executeSQL("SELECT * FROM MATCH WHERE G_ID = " + G_ID));
 		return highscore;
 	}
-	
+
 	/**
 	 * Übermittlung des Match Highscores in das Game
 	 */
-	public String[][] getHighscoreTurn(int M_ID){
+	public String[][] getHighscoreTurn(int G_ID, int M_ID) {
 		String[][] highscore = null;
-		highscore = saveResult(executeSQL("SELECT * FROM TURN WHERE M_ID = " + M_ID));
+		highscore = saveResult(executeSQL("SELECT * FROM TURN NATURAL JOIN MATCH WHERE G_ID =" + G_ID + " and M_ID=" + M_ID+ ";"));
 		return highscore;
 	}
 }
