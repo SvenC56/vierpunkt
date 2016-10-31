@@ -24,6 +24,8 @@ import javafx.stage.*;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
+import java.io.File;
+
 import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
 /**
  *
@@ -358,6 +360,20 @@ public class TestGui implements ZugListener {
             }
         });
 		
+		/*String fileString = new String();
+		
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Choose File");
+		File selectedFile = fileChooser.showOpenDialog(primaryStage);
+		 if (selectedFile != null) {
+		    System.out.println("kein File ausgewählt");
+		 }else{
+			 fileString = selectedFile.getPath();
+			 System.out.println(fileString);
+		 }
+		 */
+
+		
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
 		zeit.setMajorTickUnit(100); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
@@ -404,6 +420,8 @@ public class TestGui implements ZugListener {
 		
 		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
+				primaryStage.setScene(scene);
+				primaryStage.setFullScreen(true);
 				spieler = 1;
 				createGrids();
 				}
@@ -411,6 +429,8 @@ public class TestGui implements ZugListener {
 		
 		menu21.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				primaryStage.setScene(scene);
+				primaryStage.setFullScreen(true);
 				setColor(Color.PURPLE);
 				setImage1(orange);
 				setImage2(gruen);
@@ -437,6 +457,8 @@ public class TestGui implements ZugListener {
 		
 		menu23.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				primaryStage.setScene(scene);
+				primaryStage.setFullScreen(true);
 				scene.getStylesheets().clear();
 				scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
 				setColor(Color.DARKGREEN);
@@ -451,6 +473,8 @@ public class TestGui implements ZugListener {
 		
 		menu24.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				primaryStage.setScene(scene);
+				primaryStage.setFullScreen(true);
 				scene.getStylesheets().clear();
 				scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
 				setColor(Color.CADETBLUE);
@@ -475,7 +499,7 @@ public class TestGui implements ZugListener {
 		}
 		
 		
-		Stage newStage = new Stage();
+		Stage loginStage = new Stage();
 		Button login = new Button("Spiel starten");
 		FlowPane pane=new FlowPane();
 		pane.setPadding(new Insets(10, 10, 10, 10));
@@ -502,35 +526,55 @@ public class TestGui implements ZugListener {
 		ScrollPane listeSpiele = new ScrollPane();
 		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
 		listeSpiele.setContent(beispieltext);
-		alteSpiele.getItems().addAll(spieleLabel, listeSpiele);
+		Button back = new Button("zurueck");
 		
-		menu31.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent e) {
-				Scene datenbank = new Scene(alteSpiele);
+		
+		alteSpiele.getItems().addAll(menuBar, spieleLabel, listeSpiele, back);
+		
+		
+		
+		
+		Scene datenbank = new Scene(alteSpiele);
 				alteSpiele.setId("bisherigeSpiele");
-				primaryStage.setScene(datenbank);
-				primaryStage.setFullScreen(true);
-				
-				}
-		});
-		
-		
 		
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 		Scene scene2 = new Scene(pane, 200, 200);
 		
-	    newStage.setScene(scene2);
-	    newStage.initModality(Modality.APPLICATION_MODAL);
-	    newStage.setTitle("Login");
-	    newStage.setFullScreen(false);
+	    loginStage.setScene(scene2);
+	    loginStage.initModality(Modality.APPLICATION_MODAL);
+	    loginStage.setTitle("Login");
+	    loginStage.setFullScreen(false);
+	    
+	    Stage gamesStage = new Stage();
+	    gamesStage.setScene(datenbank);
+	    
+	    back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+            public void handle(MouseEvent arg0) {
+				
+				gamesStage.close();
+				primaryStage.toFront();
+				
+				
+            }
+		});
+	    
+	    menu31.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e) {
+				//menu31.getScene().setRoot(alteSpiele);
+				
+				gamesStage.showAndWait();
+				gamesStage.setFullScreen(true);
+				}
+		});
 	    
 	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	         public void handle(KeyEvent evt)
 	         {
 	              if (evt.getCode() == KeyCode.ENTER)
-	            	newStage.close();
+	            	loginStage.close();
 					s1.setText(spielername1.getText());
 					s2.setText(spielername2.getText());
 					primaryStage.show();
@@ -540,7 +584,7 @@ public class TestGui implements ZugListener {
 		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
             public void handle(MouseEvent arg0) {
-				newStage.close();
+				loginStage.close();
 				s1.setText(spielername1.getText());
 				s2.setText(spielername2.getText());
 				primaryStage.show();
@@ -556,13 +600,11 @@ public class TestGui implements ZugListener {
 				}else{
 					spieler = 1;
 					createGrids();}
-				
-            	
             }
 		});
 		
 		
-		newStage.show();
+		loginStage.show();
 		
 	}
 
