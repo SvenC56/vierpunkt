@@ -14,6 +14,7 @@ public class ConnectClass {
 	private TestGui gui = new TestGui();
 	private DBConnector db = new DBConnector();
 	private Game game;
+	private Match match;
 	
 	
 	
@@ -29,10 +30,10 @@ public class ConnectClass {
 	/**
 	 * Methode startet einen Satz (Match)
 	 */
-	public Match startMatch() {
+	public void startMatch() {
 		int matchID = db.createMatch(game.getGameID());
-		Match match = new Match(game.getGameID(), matchID);	
-		return match;
+		match = new Match(game.getGameID(), matchID);	
+		
 	}
 	
 	
