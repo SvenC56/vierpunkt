@@ -1,7 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.db;
 
 
-import de.dhbw.mannheim.vierpunkt.logic.AlphaBeta;
 
 public class DBConnector {
 	
@@ -63,13 +62,25 @@ public class DBConnector {
 		turnDBThread.run();
 	}
 	
+	
+	public void saveGame(int gameID, String playerName1, String playerName2, String winner, String score) {
+		sendGame g1 = new sendGame(gameID, playerName1, playerName2, winner, score);
+		g1.run();
+	}
+	
+	
+	public void saveMatch(int gameID, int matchID) {
+		sendMatch m1 = new sendMatch(gameID, matchID);
+		m1.run();
+	}
+	
 	public int createGame(String player1, String player2) {
 		int gameID = this.getNewMatchID();
 		sendGame dbGame = new sendGame(gameID, player1, player2, null, null);
 		dbGame.run();
 		return gameID;
 	}
-	//Wo sind in der DB die Matches dem Game zugeordnet??
+	
 	
 	public int createMatch(int gameID) {
 		int matchID = this.getNewMatchID();
@@ -77,6 +88,9 @@ public class DBConnector {
 		dbMatch.run();
 		return matchID;
 	}
+	
+	
+	
 	
 	//Methode, die Anhand der GameID, die entsprechende MatchID zurueckgibt!
 	
