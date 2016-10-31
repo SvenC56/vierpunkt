@@ -366,23 +366,16 @@ public class TestGui implements ZugListener {
                 }else{file.setSelected(true);}
                 setSchnittstelle("file");
                 
-                File dir = chooser.showDialog(null);
+                File dir = chooser.showDialog(primaryStage);
         	    if (dir == null) {
         	        System.out.println("Kein Ordner ausgewählt");;
         	    }else{
         	    	fileString = dir.getPath();
         	    	System.out.println(fileString);
-        	    	System.out.println(dir.getAbsolutePath());
-        	    	System.out.println(dir.getAbsoluteFile());
         	    }
             }
         });
 		
-
-		
-		
-		 
-
 		
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
