@@ -30,6 +30,7 @@ import java.util.List;
 
 import de.dhbw.mannheim.vierpunkt.interfaces.ParamListener;
 import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
+import de.dhbw.mannheim.vierpunkt.objects.NameListener;
 /**
  *
  * @author janaschaub
@@ -45,6 +46,7 @@ public class TestGui implements ZugListener {
 	 * Gibt den aktuellen Fuellstand aller Spalten an
 	 */	
 	static int[] plaetzeFreiInReihe = new int[7];
+	private static List<NameListener> NameListeners = new ArrayList<NameListener>();
 	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
 	String fileString = new String();
 	public static Stage primaryStage = new Stage();
@@ -807,6 +809,16 @@ public class TestGui implements ZugListener {
 	{
 		setSpielstein(plaetzeFreiInReihe[zug], zug);
         plaetzeFreiInReihe[zug]--;
+	}
+	
+	public void addNameListener(NameListener toAdd) {
+		NameListeners.add(toAdd);
+	}
+	
+	public static void fireNames (String name1, String name2) {
+		for (NameListener name: NameListeners) {
+			name.startGame(name1, name2);
+		}
 	}
 	
 	public void addListener(ParamListener toAdd){

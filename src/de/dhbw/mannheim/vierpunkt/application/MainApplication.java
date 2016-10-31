@@ -8,8 +8,7 @@ import de.dhbw.mannheim.vierpunkt.objects.ConnectClass;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener
-{
+public class MainApplication extends Application implements ParamListener {
 	static TestGui gui = new TestGui();
 	static FileInterface filey = new FileInterface();
 	static PusherInterface pushy = new PusherInterface();
@@ -17,14 +16,10 @@ public class MainApplication extends Application implements ParamListener
 	
 	public static void main(String[] args) throws InterruptedException
 	{
-		// Zwei suesse Interfaces senden Events an die GUI
+		// Drei suesse Interfaces senden Events an die GUI
 		filey.addListener(gui);
 		pushy.addListener(gui);
-		connectClass.startGame();
-		Thread.sleep(3000);
-		connectClass.startMatch();
-		Thread.sleep(3000);
-		
+		gui.addNameListener(connectClass);
 		launch(args);
 	}
 
