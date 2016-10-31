@@ -5,7 +5,7 @@ import de.dhbw.mannheim.vierpunkt.interfaces.*;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application
+public class MainApplication extends Application implements ParamListener
 {
 	static TestGui gui = new TestGui();
 	static FileInterface filey = new FileInterface();
@@ -13,7 +13,7 @@ public class MainApplication extends Application
 	
 	public static void main(String[] args)
 	{
-		// Zwei Suesse Interfaces senden Events an die GUI
+		// Zwei suesse Interfaces senden Events an die GUI
 		filey.addListener(gui);
 		pushy.addListener(gui);
 		
@@ -25,7 +25,7 @@ public class MainApplication extends Application
 	{ 		
 		
 		
-		
+		System.out.println("gewaehlte Schnittstelle: " + gui.getSchnittstelle());
 	
 		
 		// wenn pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
@@ -55,6 +55,13 @@ public class MainApplication extends Application
 		
 		gui.start(primaryStage);
 		
+		
+	}
+
+	@Override
+	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
+			String Kontaktpfad)
+	{
 		
 	}
 

@@ -21,7 +21,7 @@ public class FileInterface implements Runnable {
 	public static boolean zugSchongespielt = false;
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
-	public static char spielerKennung = 'X';
+	public static char spielerKennung = 'x';
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	public static int zugZeit = 1000;
 	
@@ -167,7 +167,7 @@ public class FileInterface implements Runnable {
 	  */
 	public static String zugEmpfangen() throws IOException{
 		String data = new String(Files.readAllBytes(Paths.get(kontaktPfad + "server2spieler" + spielerKennung +".xml")), StandardCharsets.UTF_8);
-		//System.out.print(data);
+		System.out.print(data);
 		return data;
 	}
 	

@@ -139,7 +139,10 @@ public class PusherInterface implements Runnable
 		        
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
-		        game.playTurn(zug, 1);
+		        // game.playTurn(zug, 1);
+		        	
+		        	
+		        	
 		        // Spielstein wird in der GUI eingeworfen
 		        fireZugEvent(zug);
 
@@ -147,7 +150,9 @@ public class PusherInterface implements Runnable
 		        
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
-		        	int move = game.playTurn(-1, 2);
+		        	//int move = game.playTurn(-1, 2);
+		        	
+		        	int move = (int) (Math.random()*7);
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
