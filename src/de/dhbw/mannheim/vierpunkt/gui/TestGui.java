@@ -25,7 +25,10 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import java.awt.Toolkit;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import de.dhbw.mannheim.vierpunkt.interfaces.ParamListener;
 import de.dhbw.mannheim.vierpunkt.interfaces.ZugListener;
 /**
  *
@@ -42,6 +45,8 @@ public class TestGui implements ZugListener {
 	 * Gibt den aktuellen Fuellstand aller Spalten an
 	 */	
 	static int[] plaetzeFreiInReihe = new int[7];
+	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
+	String fileString = new String();
 	public static Stage primaryStage = new Stage();
 	
 	private int anzahlzeilen;
@@ -92,7 +97,7 @@ public class TestGui implements ZugListener {
 	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
 	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
-	public double getZugzeit() {return zugzeit;}
+	public int getZugzeit() {return zugzeit;}
 	public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
 	public String getSchnittstelle() {return schnittstelle;}
 	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
@@ -360,8 +365,8 @@ public class TestGui implements ZugListener {
             }
         });
 		
-		/*String fileString = new String();
 		
+		/*
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose File");
 		File selectedFile = fileChooser.showOpenDialog(primaryStage);
@@ -600,6 +605,7 @@ public class TestGui implements ZugListener {
 				}else{
 					spieler = 1;
 					createGrids();}
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
             }
 		});
 		
@@ -804,7 +810,21 @@ public class TestGui implements ZugListener {
 		setSpielstein(plaetzeFreiInReihe[zug], zug);
         plaetzeFreiInReihe[zug]--;
 	}
-
+	
+	public void addListener(ParamListener toAdd){
+		listeners.add(toAdd);
+	}
+	
+	
+	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad){
+		for (ParamListener pl : listeners){
+			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad);
+		}
+	}
+	
+	public String getFileString(){
+		return fileString;
+	}
  
 }
 
