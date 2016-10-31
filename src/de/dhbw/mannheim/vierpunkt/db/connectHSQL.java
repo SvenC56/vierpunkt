@@ -75,6 +75,29 @@ public class connectHSQL {
 			int tableMaxId = 0;
 			while (getId.next()) {
 				String print = getId.getString(1);
+				if (print == null) {
+					return 0;
+				}
+				tableMaxId = Integer.parseInt(print);
+			}
+			getId.close();
+			return tableMaxId;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int getMaxMatchId(int G_ID) {
+		try {
+			ResultSet getId = executeSQL("SELECT MAX(M_ID) FROM MATCH WHERE G_ID=" + G_ID + ";");
+			int tableMaxId = 0;
+			while (getId.next()) {
+				String print = getId.getString(1);
+				if (print == null) {
+					return 0;
+				}
 				tableMaxId = Integer.parseInt(print);
 			}
 			getId.close();
@@ -184,6 +207,8 @@ public class connectHSQL {
 	 * uebermittlung eines Matches in die DB
 	 **/
 	public void handOverGame(int G_ID, String Player1, String Player2, String WINNER, String POINTS) {
+		System.out.println("INSERT INTO GAME VALUES(" + G_ID + ",'" + Player1 + "','" + Player2 + "','" + WINNER + "','"
+				+ POINTS + "');");
 		executeSQL("INSERT INTO GAME VALUES(" + G_ID + ",'" + Player1 + "','" + Player2 + "','" + WINNER + "','"
 				+ POINTS + "');");
 	}
@@ -192,6 +217,7 @@ public class connectHSQL {
 	 * uebermittlung eines Runde in die DB
 	 **/
 	public void handOverMatch(int M_ID, int G_ID) {
+		System.out.println("INSERT INTO MATCH VALUES(" + M_ID + "," + G_ID + ");");
 		executeSQL("INSERT INTO MATCH VALUES(" + M_ID + "," + G_ID + ");");
 	}
 
@@ -199,6 +225,8 @@ public class connectHSQL {
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void handOverTurn(int T_ID, int M_ID, String PERSON, int POS_Y, int POS_X) {
+		System.out.println("INSERT INTO TURN VALUES( " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", "
+				+ POS_X + ");");
 		executeSQL("INSERT INTO TURN VALUES( " + T_ID + ", " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X
 				+ ");");
 	}
@@ -235,7 +263,9 @@ public class connectHSQL {
 	 */
 	public String[][] getHighscoreTurn(int G_ID, int M_ID) {
 		String[][] highscore = null;
-		highscore = saveResult(executeSQL("SELECT * FROM TURN NATURAL JOIN MATCH WHERE G_ID =" + G_ID + " and M_ID=" + M_ID+ ";"));
+		highscore = saveResult(
+				executeSQL("SELECT * FROM TURN NATURAL JOIN MATCH WHERE G_ID =" + G_ID + " and M_ID=" + M_ID + ";"));
 		return highscore;
 	}
+
 }

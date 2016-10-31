@@ -18,13 +18,11 @@ public class ConnectClass {
 	
 	
 	
-	public Game startGame() {
+	public void startGame() {
 		String name1 = gui.getNames1();
 		String name2 = gui.getNames2();
-		int gameID = db.createGame(name1, name2);
-		game = new Game(gameID, name1, name2);
-
-		return game;
+		int gameID = db.createGame("Sven", "Tobias");
+		game = new Game(gameID, "Sven", "Tobias");
 	}
 	
 	/**
@@ -38,7 +36,7 @@ public class ConnectClass {
 	
 	
 	
-	public int startTurn (Match match, int x, Player player) {
+	public int startTurn (int x, Player player) {
 		Turn turn = new Turn();
 		if (player.getIsServer()) {
 			int y = turn.validPosition(x);

@@ -39,12 +39,7 @@ public class DBConnector {
 	 * 
 	 * @return
 	 */
-	public int getNewMatchID() {
-		int matchID = db.getMaxId("Match");
-		matchID++; // + 1, da zuletzt belegte ID zurueck
 
-		return matchID;
-	}
 	
 	public int getMatchID() {
 		int matchID = db.getMaxId("Match");
@@ -75,15 +70,21 @@ public class DBConnector {
 	}
 	
 	public int createGame(String player1, String player2) {
-		int gameID = this.getNewMatchID();
+		int gameID = this.getNewGameID();
 		sendGame dbGame = new sendGame(gameID, player1, player2, null, null);
 		dbGame.run();
 		return gameID;
 	}
 	
 	
+	public int getNewMatchID(int gameID) {
+		int matchID = db.getMaxMatchId(gameID);
+		matchID++;
+		return matchID;
+	}
+	
 	public int createMatch(int gameID) {
-		int matchID = this.getNewMatchID();
+		int matchID = this.getNewMatchID(gameID);
 		sendMatch dbMatch = new sendMatch(matchID, gameID);
 		dbMatch.run();
 		return matchID;
