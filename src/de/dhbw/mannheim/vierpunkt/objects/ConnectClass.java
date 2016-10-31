@@ -4,25 +4,23 @@ import de.dhbw.mannheim.vierpunkt.db.DBConnector;
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.objects.AlphaBeta;
 
-public class ConnectClass {
+public class ConnectClass implements NameListener {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
 	
 	private AlphaBeta ki = new AlphaBeta();
-	private TestGui gui = new TestGui();
 	private DBConnector db = new DBConnector();
 	private Game game;
 	private Match match;
+
 	
 	
 	
-	public void startGame() {
-		String name1 = gui.getNames1();
-		String name2 = gui.getNames2();
-		int gameID = db.createGame("Sven", "Tobias");
-		game = new Game(gameID, "Sven", "Tobias");
+	public void startGame(String name1, String name2) {
+		int gameID = db.createGame(name1, name2);
+		game = new Game(gameID, name1, name2);
 	}
 	
 	/**
@@ -69,6 +67,6 @@ public class ConnectClass {
 			}
 		}
 		return x;
-		}	
+		}
 
 }
