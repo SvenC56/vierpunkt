@@ -1,5 +1,7 @@
 package de.dhbw.mannheim.vierpunkt.application;
 
+import java.nio.file.Files;
+
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.interfaces.*;
 import javafx.application.Application;
@@ -29,7 +31,18 @@ public class MainApplication extends Application implements ParamListener
 	
 		
 		// wenn pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
-		if(gui.getSchnittstelle().equals("pusher"))
+		
+		
+		gui.start(primaryStage);
+		
+		
+	}
+
+	@Override
+	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
+			String Kontaktpfad)
+	{
+		if(Schnittstelle.equals("pusher"))
 		{
 			Thread pusherThread = new Thread(){
 				@Override
@@ -46,23 +59,14 @@ public class MainApplication extends Application implements ParamListener
 			Thread fileThread = new Thread(){
 				@Override
 				public void run(){
+					filey.setZugZeit(Zugzeit);
+					filey.setKontaktPfad(Kontaktpfad);
 					filey.run();	
 				}
 			};
 			fileThread.start();
 		
 		}
-		
-		gui.start(primaryStage);
-		
-		
-	}
-
-	@Override
-	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
-			String Kontaktpfad)
-	{
-		
 	}
 
 }

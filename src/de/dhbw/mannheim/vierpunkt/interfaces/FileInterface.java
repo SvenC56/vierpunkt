@@ -25,6 +25,16 @@ public class FileInterface implements Runnable {
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	public static int zugZeit = 1000;
 	
+	
+	public static String getKontaktPfad()	{
+		return kontaktPfad;
+	}
+
+	public static void setKontaktPfad(String kontaktPfad)
+	{
+		FileInterface.kontaktPfad = kontaktPfad;
+	}
+
 	// Leerer Konstruktor: Standardwerte werden verwendet
 	public FileInterface()
 	{
