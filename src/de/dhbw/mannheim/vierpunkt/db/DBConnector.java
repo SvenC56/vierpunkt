@@ -13,18 +13,6 @@ public class DBConnector {
 	 * 
 	 * @return
 	 */
-	public int getNewGameID() {
-		int gameID = db.getMaxId("Game");
-		gameID++; // + 1, da zuletzt belegte ID zurueck
-
-		return gameID;
-	}
-	
-	public int getMaxGameID() {
-		int gameID = db.getMaxId("Game");
-
-		return gameID;
-	}
 	
 	public int getGameID() {
 		int gameID = db.getMaxId("Game");
@@ -53,13 +41,13 @@ public class DBConnector {
 	 * @param y
 	 */
 	public void saveTurn(int turnID, int matchID, String playername, int x, int y) {
-		sendTurn turnDBThread = new sendTurn(turnID,matchID,playername, x, y);
+		sendTurn turnDBThread = new sendTurn(matchID,playername, x, y);
 		turnDBThread.run();
 	}
 	
 	
 	public void saveGame(int gameID, String playerName1, String playerName2, String winner, String score) {
-		sendGame g1 = new sendGame(gameID, playerName1, playerName2, winner, score);
+		sendGame g1 = new sendGame(playerName1, playerName2, winner, score);
 		g1.run();
 	}
 	
@@ -69,21 +57,14 @@ public class DBConnector {
 		m1.run();
 	}
 	
-	public int createGame(String player1, String player2) {
-		int gameID = this.getNewGameID();
-		sendGame dbGame = new sendGame(gameID, player1, player2, null, null);
+	public void createGame(String player1, String player2) {
+		sendGame dbGame = new sendGame(player1, player2, null, null);
 		dbGame.run();
-		return gameID;
 	}
 	
-	
-	public int getNewMatchID(int gameID) {
-		int matchID = db.getMaxMatchId(gameID);
-		matchID++;
-		return matchID;
-	}
 	
 	public int createMatch(int gameID) {
+		// MATCH ID MUSS IMMER ZWISCHEN 1-3 VON DER LOGIK BERRECHNET WERDEN
 		int matchID = this.getNewMatchID(gameID);
 		sendMatch dbMatch = new sendMatch(matchID, gameID);
 		dbMatch.run();

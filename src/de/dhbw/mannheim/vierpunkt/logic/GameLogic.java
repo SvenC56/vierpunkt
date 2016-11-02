@@ -440,9 +440,8 @@ public class GameLogic {
 	 * @param y
 	 */
 	private void saveTurn(int x, int y) {
-		sendTurn turnDBThread = new sendTurn(turnId,matchID,getCurrentPlayerName(), x, y);
+		sendTurn turnDBThread = new sendTurn(matchID,getCurrentPlayerName(), x, y);
 		turnDBThread.run();
-		this.turnId++; //ist das Move?
 	}
 
 	
@@ -452,12 +451,6 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	private int getNewGameID() {
-		this.gameID = db.getMaxId("Game");
-		this.gameID++; // + 1, da zuletzt belegte ID zurueck
-
-		return this.gameID;
-	}
 	
 	private int getGameID() {
 		this.gameID = db.getMaxId("Game");
@@ -471,12 +464,6 @@ public class GameLogic {
 	 * 
 	 * @return
 	 */
-	private int getNewMatchID() {
-		this.matchID = db.getMaxId("Match");
-		this.matchID++; // + 1, da zuletzt belegte ID zurueck
-
-		return this.matchID;
-	}
 	
 	private int getMatchID() {
 		this.matchID = db.getMaxId("Match");
@@ -488,12 +475,11 @@ public class GameLogic {
 	 * Mthode startet / initialisiert das Spiel und auch die DB
 	 */
 	private void startGame() {
-		sendGame dbGame = new sendGame(getNewGameID(), gui.getNames1(), gui.getNames2(), null, null);
+		sendGame dbGame = new sendGame(gui.getNames1(), gui.getNames2(), null, null);
 		dbGame.run();
 	}
 	
 	private void startMatch() {
-		this.matchID = getNewMatchID();
 		sendMatch dbMatch = new sendMatch(matchID, getGameID());
 		dbMatch.run();
 	}

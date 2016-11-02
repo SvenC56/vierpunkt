@@ -19,6 +19,7 @@ public class ConnectClass implements NameListener {
 	
 	
 	public void startGame(String name1, String name2) {
+		// WAS?!
 		int gameID = db.createGame(name1, name2);
 		game = new Game(gameID, name1, name2);
 	}
