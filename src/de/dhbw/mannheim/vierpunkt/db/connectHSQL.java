@@ -207,6 +207,8 @@ public class connectHSQL {
 	 * uebermittlung eines Matches in die DB
 	 **/
 	public void handOverGame(String Player1, String Player2, String WINNER, String POINTS) {
+		System.out.println("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES(" + Player1 + "','" + Player2
+				+ "','" + WINNER + "','" + POINTS + "');");
 		executeSQL("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES(" + Player1 + "','" + Player2 + "','"
 				+ WINNER + "','" + POINTS + "');");
 	}
@@ -215,6 +217,7 @@ public class connectHSQL {
 	 * uebermittlung eines Runde in die DB
 	 **/
 	public void handOverMatch(int M_ID, int G_ID) {
+		System.out.println("INSERT INTO MATCH (M_ID,G_ID) VALUES(" + M_ID + "," + G_ID + ");");
 		executeSQL("INSERT INTO MATCH (M_ID,G_ID) VALUES(" + M_ID + "," + G_ID + ");");
 	}
 
@@ -222,7 +225,10 @@ public class connectHSQL {
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void handOverTurn(int M_ID, String PERSON, int POS_Y, int POS_X) {
-		executeSQL("INSERT INTO TURN (M_ID, PERSONS, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y + ", " + POS_X + ");");
+		System.out.println("INSERT INTO TURN (M_ID, PERSONS, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
+				+ POS_Y + ", " + POS_X + ");");
+		executeSQL("INSERT INTO TURN (M_ID, PERSONS, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
+				+ ", " + POS_X + ");");
 	}
 
 	/**
