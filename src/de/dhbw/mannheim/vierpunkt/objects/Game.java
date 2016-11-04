@@ -1,18 +1,23 @@
 package de.dhbw.mannheim.vierpunkt.objects;
+
+import de.dhbw.mannheim.vierpunkt.db.DBConnector;
+
 /**
  * Drei Runden (Matches) ergeben ein Spiel (Game)
  * @author tobias
  *
  */
-public class Game {
+public class Game implements NameListener {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private Player player[] = new Player[1];
+	private static final int PLAYER = 1;
+	private Player player[] = new Player[PLAYER];
 	private Player winner = null;
 	private Match[] match;
 	private Match currentMatch;
+	private DBConnector db = new DBConnector();
 	//maximale Anzahl Matches = 3
 	private static final int MATCHES = 2;
 	
@@ -21,13 +26,8 @@ public class Game {
 	/**************************************************************/
 	
 	
-	public Game(String playerName1, String playerName2) {
-			this.player[0] = new Player(playerName1);
-			this.player[1] = new Player(playerName2);
-		this.winner = null;
-		for (int i = 0; i <= MATCHES; i++) {
-			match[i] = null;
-		}
+	public Game() {
+			
 	}
 	
 
@@ -77,20 +77,31 @@ public class Game {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-	 Match getNewMatch() {
-		 for (int i = 0; i <= MATCHES; i++) {
-			 if (this.match[i] == null) {
-				 this.setCurrentMatch(match[i]);
-				 return this.match[i];
-			 }
-		 }
-		 
-		 return null;
-	 }
-
-
-
-
+	public void startGame(String name1, String name2, int isServer) {
+		
+		this.player[0] = new Player(name1);
+		this.player[1] = new Player(name2);
+		if (isServer == 1) {
+			this.player[0].setIsServer(true);
+		}
+		else {
+			this.player[1].setIsServer(true);
+		}
+		this.winner = null;
+		for (int i = 0; i <= MATCHES; i++) {
+			match[i] = null;
+		}
+		db.createGame(name1, name2);
+		}
 
 	
+	public void startMatch() {
+
+		 for (int i = 0; i <= MATCHES; i++) {
+			 if (this.match[i] == null) {
+				this.match[i] = new Match();
+				db.createMatch(db.getGameID(), match[i].getMatchID());
+			 }
+	}
+	}
 }

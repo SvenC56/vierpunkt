@@ -16,8 +16,7 @@ public class Match {
 	private Player matchWinner;
 	private boolean even = false;	//Unentschieden
 	private Player currentPlayer;
-	private Turn currentTurn;
-;
+	private AlphaBeta ki = new AlphaBeta();
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -43,6 +42,7 @@ public class Match {
 	public Match() {
 		this.matchID = matchID;
 		this.matchID++;
+		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {
 				this.field[y][x] = null;
@@ -141,17 +141,17 @@ public class Match {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+		public int startTurn (Player player, int x) {
+		if (!player.getIsServer()){
+			x = ki.calcMove(this);
+		}
+		int y = this.validPosition(x);
+		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
+		return x;
+		}
+
 		
-	Turn setNewTurn() {
-			for (int i=0; i <= TURNS; i++) {
-				if (this.turn[i] == null) {
-					this.turnNumber=i;
-					return this.turn[i];
-				}
-			}
-			return null;
-		}	
-		
+
 	/**
 	 * Erstellt eine Kopie des derzeitigen Spiels zur Analyse in der KI 
 	 * @return
@@ -413,17 +413,6 @@ public class Match {
 			}
 			return count;
 		}
-
-		public Turn getCurrentTurn() {
-			return currentTurn;
-		}
-
-		public void setCurrentTurn(Turn currentTurn) {
-			this.currentTurn = currentTurn;
-		}
-
-		
-	
 		
 
 }
