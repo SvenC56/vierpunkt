@@ -34,8 +34,16 @@ public class ConnectClass implements NameListener {
 	
 	
 	
-	public int startTurn (int x, Player player) {
+	public int startTurn (int x) {
 		Match match = game.getCurrentMatch();
+		Player player = match.getCurrentPlayer();
+		if (x == -1 && match.getTurnNumber() == 0) {
+			game.getPlayer(0).setIsServer(true);
+		}
+		else if (x != -1 && match.getTurnNumber() == 0) {
+			game.getPlayer(1).setIsServer(true);
+		}
+		
 		Turn turn = match.setNewTurn();
 		if (!player.getIsServer()) {
 			x = ki.calcMove(match);

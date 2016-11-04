@@ -17,6 +17,7 @@ public class Match {
 	private boolean even = false;	//Unentschieden
 	private Player currentPlayer;
 	private Turn currentTurn;
+;
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -133,6 +134,8 @@ public class Match {
 		void setTurns(Turn turns[]) {
 			this.turn = turns;
 		}
+		
+
 			
 	
 	/**************************************************************/
@@ -198,13 +201,13 @@ public class Match {
 				}
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
-				if (game.getPlayer1() == this.currentPlayer) {
-					this.setMatchWinner(game.getPlayer1());
-					game.getPlayer1().setWins();
+				if (game.getPlayer(0) == this.currentPlayer) {
+					this.setMatchWinner(game.getPlayer(0));
+					game.getPlayer(0).setWins();
 					}
-				else if (game.getPlayer1() != this.currentPlayer){
-					this.setMatchWinner(game.getPlayer2());
-					game.getPlayer2().setWins();
+				else if (game.getPlayer(0) != this.currentPlayer){
+					this.setMatchWinner(game.getPlayer(1));
+					game.getPlayer(1).setWins();
 				}
 				else {
 					int counter=0;
@@ -419,6 +422,7 @@ public class Match {
 			this.currentTurn = currentTurn;
 		}
 
+		
 	
 		
 

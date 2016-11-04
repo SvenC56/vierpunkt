@@ -9,8 +9,7 @@ public class Game {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private Player player1;
-	private Player player2;
+	private Player player[] = new Player[1];
 	private Player winner = null;
 	private Match[] match;
 	private Match currentMatch;
@@ -21,15 +20,11 @@ public class Game {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Game(){
-		
-	}
-	
 	
 	public Game(String playerName1, String playerName2) {
+			this.player[0] = new Player(playerName1);
+			this.player[1] = new Player(playerName2);
 		this.winner = null;
-		this.player1 =  new Player(playerName1);
-		this.player2 = new Player (playerName2);
 		for (int i = 0; i <= MATCHES; i++) {
 			match[i] = null;
 		}
@@ -40,27 +35,6 @@ public class Game {
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
-	 Player getPlayer1() {
-		return player1;
-	}
-
-
-
-	 void setPlayer1(Player player1) {
-		this.player1 = player1;
-	}
-
-
-	 Player getPlayer2() {
-		return player2;
-	}
-
-
-
-	 void setPlayer2(Player player2) {
-		this.player2 = player2;
-	}
-
 
 
 	 Player getWinner() {
@@ -90,6 +64,13 @@ public class Game {
 			this.currentMatch = currentMatch;
 		}
 		
+		void setPlayer (int i, Player player) {
+			this.player[i] = player;
+		}
+		
+		Player getPlayer(int i) {
+			return this.player[i];
+		}
 
 	
 	
@@ -106,7 +87,9 @@ public class Game {
 		 
 		 return null;
 	 }
-	 
+
+
+
 
 
 	
