@@ -14,8 +14,8 @@ public class Match {
 	private int matchID = 0;
 	private int turnNumber = 0;
 	private Player matchWinner;
-	private boolean even = false;	//Unentschieden
 	private Player currentPlayer;
+	private boolean even = false;	//Unentschieden
 	private AlphaBeta ki = new AlphaBeta();
 	
 	//Anzahl Spalten des Spielfeldes
@@ -94,14 +94,6 @@ public class Match {
 	 void setTurnNumber() {
 		this.turnNumber++;
 		}
-	 
-	 Player getCurrentPlayer() {
-		 return this.currentPlayer;
-	 }
-	 
-	  void setCurrentPlayer(Player player) {
-		  this.currentPlayer=player;
-		  }
 
 	 Player getMatchWinner() {
 		return matchWinner;
@@ -135,19 +127,27 @@ public class Match {
 			this.turn = turns;
 		}
 		
+		 Player getCurrentPlayer() {
+			return currentPlayer;
+		}
+
+		 void setCurrentPlayer(Player currentPlayer) {
+			this.currentPlayer = currentPlayer;
+		}
+		
 
 			
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-		public int startTurn (Player player, int x) {
+		public Turn startTurn (Player player, int x) {
 		if (!player.getIsServer()){
 			x = ki.calcMove(this);
 		}
 		int y = this.validPosition(x);
 		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
-		return x;
+		return this.turn[turnNumber];
 		}
 
 		
@@ -189,23 +189,32 @@ public class Match {
 		return temp;
 	}
 	
+	 Player winnerIs() {
+		 if (this.matchWinner != null) {
+			 return this.matchWinner;
+		 }
+		 else if (this.matchWinner != null && this.even) {
+			 return null; 		//Kein Gewinner, unentschieden!
+		 }
+		 return null;
+	 }
 
 	 void checkWinner(Game game) {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 			if (this.getTurnNumber() >= 4) {
 				
 				//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
-				if (this.evaluate() == (int)Double.POSITIVE_INFINITY && !this.currentPlayer.getIsServer()) {
-				this.setMatchWinner(this.currentPlayer);
-				this.currentPlayer.setWins();
+				if (this.evaluate() == (int)Double.POSITIVE_INFINITY && !currentPlayer.getIsServer()) {
+				this.setMatchWinner(currentPlayer);
+				currentPlayer.setWins();
 				}
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
-				if (game.getPlayer(0) == this.currentPlayer) {
+				if (game.getPlayer(0) == currentPlayer) {
 					this.setMatchWinner(game.getPlayer(0));
 					game.getPlayer(0).setWins();
 					}
-				else if (game.getPlayer(0) != this.currentPlayer){
+				else if (game.getPlayer(0) != currentPlayer){
 					this.setMatchWinner(game.getPlayer(1));
 					game.getPlayer(1).setWins();
 				}
@@ -262,7 +271,7 @@ public class Match {
 						}
 					}		
 						
-					if (this.getCurrentPlayer().getIsServer()) { // Gegner spielt	
+					if (currentPlayer.getIsServer()) { // Gegner spielt	
 						// in column
 						if (this.inColumn(x, y) == 4) { // der Gegner hat 4 in einer Spalte --> Gegner hat gewonnen
 							return (int) Double.NEGATIVE_INFINITY;
@@ -413,6 +422,7 @@ public class Match {
 			}
 			return count;
 		}
-		
+
+	
 
 }
