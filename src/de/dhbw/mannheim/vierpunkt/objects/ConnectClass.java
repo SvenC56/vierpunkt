@@ -23,7 +23,7 @@ public class ConnectClass implements NameListener {
 	}
 	
 	/**
-	 * Methode startet einen Satz (Match)
+	 * Methode startet eine Runde (Match)
 	 */
 	public void startMatch() {
 		int gameID = db.getGameID();
