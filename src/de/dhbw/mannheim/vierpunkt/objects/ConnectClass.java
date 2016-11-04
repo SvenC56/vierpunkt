@@ -13,15 +13,14 @@ public class ConnectClass implements NameListener {
 	private AlphaBeta ki = new AlphaBeta();
 	private DBConnector db = new DBConnector();
 	private Game game;
-	private Match match;
 
 	
 	
 	
 	public void startGame(String name1, String name2) {
 		// WAS?!
-		int gameID = db.createGame(name1, name2);
-		game = new Game(gameID, name1, name2);
+		db.createGame(name1, name2);
+		game = new Game(name1, name2);
 	}
 	
 	/**

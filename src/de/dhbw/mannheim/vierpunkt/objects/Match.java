@@ -23,8 +23,13 @@ public class Match extends Game{
 	//Anzahl Zeilen des Spielfeldes
 	private static final int ROW = 5;
 	
+	//Maximal 69 Zuege pro Match moeglich
+	private static final int TURNS = 68;
+	
 	//Das Spielfeld
-	private Player[][] field = new Player[ROW + 1][COLUMN + 1];
+	private playField[][] field = new playField[ROW + 1][COLUMN + 1]; //doing
+	
+	private Turn turns[] = new Turn[TURNS];
 	
 
 	
@@ -44,6 +49,9 @@ public class Match extends Game{
 			for (int x = 0; x <= COLUMN; x++) {
 				this.field[y][x] = null;
 			}
+		}
+		for (int i = 0; i <= TURNS; i++) {
+			this.turns = null;
 		}
 		
 	}
@@ -99,13 +107,13 @@ public class Match extends Game{
 	 * Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array
 	 * zurueck!
 	 **/
-	 Player getField(int x, int y) {
+	 playField getField(int x, int y) {
 		return this.field[y][x];
 		}
 
 	// Setter fuer field
 	 void setField(int x, int y, Player player) {
-		this.field[y][x] = player;
+		field[y][x].setOwnedBy(player);
 		}
 	
 	/**************************************************************/
@@ -120,7 +128,7 @@ public class Match extends Game{
 		Match match2 = new Match(this.getGameID(), this.matchID);
 		for (int i = 0; i <= COLUMN; i++) {
 			for (int j = 0; j <= ROW; j++) {
-				match2.setField(i, j, this.getField(i, j));
+				match2.setField(i, j, this.getField(i, j).getOwnedBy());
 			}
 		}
 		return match2;
@@ -261,12 +269,12 @@ public class Match extends Game{
 			int count = 0; // Zaehler der validen Chips des gleichen Spielers in
 							// Spalte
 			int temp = y;
-			if (this.getField(x, y) == null || this.getField(x, y) == this.getCurrentPlayer()) {
+			if (this.getField(x, y).getOwnedBy() == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 				count++;
 				y--;
 			}
 			for (; y > -1; y--) { // von unten nach oben!
-				if (this.getField(x, y) == getCurrentPlayer()) {
+				if (this.getField(x, y).getOwnedBy() == getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -276,7 +284,7 @@ public class Match extends Game{
 											// Spiel sonst gewonnen)
 				y = temp + 1;
 				for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
-					if (this.getField(x, y) == this.getCurrentPlayer()) {
+					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -292,14 +300,14 @@ public class Match extends Game{
 			int count = 0;
 			int startX = x;
 			int startY = y;
-			if (this.getField(x, y) == null || this.getField(x, y) == this.getCurrentPlayer()) {
+			if (this.getField(x, y).getOwnedBy() == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 				count++;
 				x++;
 				y--;
 			}
 			// Prueft oben - rechts
 			for (; (x <= COLUMN && y > -1); x++, y--) {
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
+				if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -309,7 +317,7 @@ public class Match extends Game{
 				x = startX - 1;
 				y = startY - 1;
 				for (; (x > -1 && y > -1); x--, y--) {
-					if (this.getField(x, y) == this.getCurrentPlayer()) {
+					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -322,7 +330,7 @@ public class Match extends Game{
 				// Prueft unten - links
 				for (; (x > -1 && y <= ROW); x--, y++) {
 
-					if (this.getField(x, y) == this.getCurrentPlayer()) {
+					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -334,7 +342,7 @@ public class Match extends Game{
 				// Prueft unten - rechts
 				for (; (x <= COLUMN && y <= ROW); x++, y++) {
 
-					if (this.getField(x, y) == this.getCurrentPlayer()) {
+					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -348,13 +356,13 @@ public class Match extends Game{
 			// System.err.println("Methode inRow wurde aufgerufen!");
 			int count = 0;
 			int temp = x;
-			if (this.getField(x, y) == null || this.getField(x, y) == this.getCurrentPlayer()) {
+			if (this.getField(x, y) == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 				count++;
 				x++;
 			}
 			for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
 										// Anzahl Spalten!
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
+				if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -364,7 +372,7 @@ public class Match extends Game{
 											// gewonnen)
 				x = temp - 1;
 				for (; x > -1; x--) {
-					if (this.getField(x, y) == this.getCurrentPlayer()) {
+					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;

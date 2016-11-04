@@ -1,6 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.objects;
 
-public class Player extends Game {
+public class Player {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
@@ -15,7 +15,6 @@ public class Player extends Game {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	public Player (String name) {
-		super();
 		this.name = name;
 		wins = 0;
 	}

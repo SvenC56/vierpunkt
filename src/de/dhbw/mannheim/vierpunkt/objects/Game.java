@@ -11,8 +11,8 @@ public class Game {
 	/**************************************************************/
 	private Player player1;
 	private Player player2;
-	private int gameID = 0;
 	private Player winner = null;
+	private Match match;
 	
 	/**************************************************************/
 	/******************* KONSTRUKTOR *******************************/
@@ -23,8 +23,7 @@ public class Game {
 	}
 	
 	
-	public Game(int gameID, String playerName1, String playerName2) {
-		this.gameID = gameID;
+	public Game(String playerName1, String playerName2) {
 		this.winner = null;
 		this.player1 =  new Player(playerName1);
 		this.player2 = new Player (playerName2);
@@ -35,10 +34,6 @@ public class Game {
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
-	
-	 int getGameID() {
-		return this.gameID;
-	}
 
 	 Player getPlayer1() {
 		return player1;
