@@ -1,12 +1,12 @@
 package de.dhbw.mannheim.vierpunkt.objects;
 import de.dhbw.mannheim.vierpunkt.logic.AlphaBeta;
 
-public class Turn extends Match {
+public class Turn {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private int TurnID = 0;
+	private int turnID;
 	private Player player;
 	private int x;
 	private int y;
@@ -19,8 +19,11 @@ public class Turn extends Match {
 
 		
 	
-	public Turn() {
-		this.TurnID = this.getTurnNumber();
+	public Turn(int turnID, Player player, int x, int y) {
+	this.turnID = turnID;
+	this.player = player;
+	this.x= x;
+	this.y = y;
 		
 	}
 	
@@ -28,9 +31,6 @@ public class Turn extends Match {
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
 	
-	public int getID() {
-		return this.TurnID;
-	}
 	
 	public Player getPlayer() {
 		return this.player;
@@ -50,6 +50,14 @@ public class Turn extends Match {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public int getTurnID() {
+		return turnID;
+	}
+
+	public void setTurnID(int turnID) {
+		this.turnID = turnID;
 	}
 	
 	

@@ -13,6 +13,7 @@ public class Game {
 	private Player player2;
 	private Player winner = null;
 	private Match[] match;
+	private Match currentMatch;
 	//maximale Anzahl Matches = 3
 	private static final int MATCHES = 2;
 	
@@ -39,7 +40,6 @@ public class Game {
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
-
 	 Player getPlayer1() {
 		return player1;
 	}
@@ -72,14 +72,51 @@ public class Game {
 	 void setWinner(Player winner) {
 		this.winner = winner;
 	}
+	 
+	 Match getMatch(int i) {
+		 return this.match[i];
+	 }
+	 
+	 void setMatch(int i, Match match) {
+		 this.match[i] = match;
+	 }
+
+	  Match getCurrentMatch() {
+			return currentMatch;
+		}
 
 
+		 void setCurrentMatch(Match currentMatch) {
+			this.currentMatch = currentMatch;
+		}
+		
 
 	
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-	
+	 Match getNewMatch() {
+		 for (int i = 0; i <= MATCHES; i++) {
+			 if (this.match[i] == null) {
+				 this.setCurrentMatch(match[i]);
+				 return this.match[i];
+			 }
+		 }
+		 
+		 return null;
+	 }
+	 
+	 int getMatchID() {
+		 for (int i = 0; i <= MATCHES; i++) {
+			 if (this.match[i] != null) {
+				 return i;
+			 }
+		 }
+		 
+		 return -1;
+	 }
+
+
 	
 }

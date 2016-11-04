@@ -1,7 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.objects;
 
 import de.dhbw.mannheim.vierpunkt.db.DBConnector;
-import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.objects.AlphaBeta;
 
 public class ConnectClass implements NameListener {
@@ -27,46 +26,31 @@ public class ConnectClass implements NameListener {
 	 * Methode startet einen Satz (Match)
 	 */
 	public void startMatch() {
-		int matchID = db.createMatch(game.getGameID());
-		match = new Match(game.getGameID(), matchID);	
-		
+		int gameID = db.getGameID();
+		Match match = game.getNewMatch();
+		db.createMatch(gameID, game.getMatchID());
+		match = new Match(game.getCurrentMatch().getMatchID());	
 	}
 	
 	
 	
 	public int startTurn (int x, Player player) {
-		Turn turn = new Turn();
-		if (player.getIsServer()) {
-			int y = turn.validPosition(x);
-			turn.setX(x);;
-			turn.setY(y);
-			turn.setField(x, y, player);
-			db.saveTurn(turn.getID(), match.getMatchID(), player.getName(), x, y);
-			match.setTurnNumber();
-			match.checkWinner();
-			if (match.getEven() || match.getMatchWinner() != null) {
-				System.out.println("Gewinner ist " + match.getMatchWinner().getName());
-				if (match.getEven()) {
-					System.out.println("UNENTSCHIEDEN!");
-				}
-			}
-		}
-		else {
+		Match match = game.getCurrentMatch();
+		Turn turn = match.setNewTurn();
+		if (!player.getIsServer()) {
 			x = ki.calcMove(match);
-			int y = turn.validPosition(x);
-			turn.setX(x);
-			turn.setY(y);
-			db.saveTurn(turn.getID(), match.getMatchID(), player.getName(), x, y);
-			match.setTurnNumber();
-			match.checkWinner();
-			if (match.getEven() || match.getMatchWinner() != null) {
-				System.out.println("Gewinner ist " + match.getMatchWinner().getName());
-				if (match.getEven()) {
-					System.out.println("UNENTSCHIEDEN!");
-				}
-			}
 		}
+		
+		int y = match.validPosition(x);
+		turn = new Turn(match.getTurnNumber(), player, x, y);
+		db.saveTurn(turn.getTurnID(), match.getMatchID(), player.getName(), x, y);
+		match.checkWinner(game);
+		if (match.getEven() || match.getMatchWinner() != null) {
+			System.out.println("Gewinner ist " + match.getMatchWinner().getName());
+			if (match.getEven()) {
+				System.out.println("UNENTSCHIEDEN!");
+			}}
 		return x;
-		}
+	}
 
 }

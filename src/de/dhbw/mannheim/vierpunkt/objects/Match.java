@@ -6,7 +6,7 @@ package de.dhbw.mannheim.vierpunkt.objects;
  *
  */
 
-public class Match extends Game{
+public class Match {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
@@ -16,6 +16,7 @@ public class Match extends Game{
 	private Player matchWinner;
 	private boolean even = false;	//Unentschieden
 	private Player currentPlayer;
+	private Turn currentTurn;
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -29,7 +30,7 @@ public class Match extends Game{
 	//Das Spielfeld
 	private PlaySlot[][] field = new PlaySlot[ROW + 1][COLUMN + 1]; //doing
 	
-	private Turn turns[] = new Turn[TURNS];
+	private Turn turn[] = new Turn[TURNS];
 	
 
 	
@@ -38,11 +39,15 @@ public class Match extends Game{
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Match() {
+	public Match(int matchID) {
+		this.matchID = matchID;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {
 				this.field[y][x] = null;
 			}
+		}
+		for (int i = 0; i <= TURNS; i ++) {
+			turn[i] = null;
 		}
 		
 	}
@@ -106,17 +111,36 @@ public class Match extends Game{
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
 		}
+	 
+		Turn[] getTurns() {
+			return turn;
+		}
+
+		void setTurns(Turn turns[]) {
+			this.turn = turns;
+		}
+			
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
 	
+	Turn setNewTurn() {
+			for (int i=0; i <= TURNS; i++) {
+				if (this.turn[i] == null) {
+					this.turnNumber=i;
+					return this.turn[i];
+				}
+			}
+			return null;
+		}	
+		
 	/**
 	 * Erstellt eine Kopie des derzeitigen Spiels zur Analyse in der KI 
 	 * @return
 	 */
 	 Match getDemoMatch() {
-		Match match2 = new Match(this.getGameID(), this.matchID);
+		Match match2 = new Match(this.matchID);
 		for (int i = 0; i <= COLUMN; i++) {
 			for (int j = 0; j <= ROW; j++) {
 				match2.setField(i, j, this.getField(i, j).getOwnedBy());
@@ -149,7 +173,7 @@ public class Match extends Game{
 	}
 	
 
-	 void checkWinner() {
+	 void checkWinner(Game game) {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 			if (this.getTurnNumber() >= 4) {
 				
@@ -160,13 +184,13 @@ public class Match extends Game{
 				}
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
-				if (this.getPlayer1() == this.currentPlayer) {
-					this.setMatchWinner(this.getPlayer1());
-					this.getPlayer1().setWins();
+				if (game.getPlayer1() == this.currentPlayer) {
+					this.setMatchWinner(game.getPlayer1());
+					game.getPlayer1().setWins();
 					}
-				else if (this.getPlayer1() != this.currentPlayer){
-					this.setMatchWinner(this.getPlayer2());
-					this.getPlayer2().setWins();
+				else if (game.getPlayer1() != this.currentPlayer){
+					this.setMatchWinner(game.getPlayer2());
+					game.getPlayer2().setWins();
 				}
 				else {
 					int counter=0;
@@ -372,7 +396,16 @@ public class Match extends Game{
 			}
 			return count;
 		}
-			
+
+		public Turn getCurrentTurn() {
+			return currentTurn;
+		}
+
+		public void setCurrentTurn(Turn currentTurn) {
+			this.currentTurn = currentTurn;
+		}
+
+	
 		
 
 }

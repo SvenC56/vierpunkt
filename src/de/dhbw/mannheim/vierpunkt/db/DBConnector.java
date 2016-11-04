@@ -63,12 +63,9 @@ public class DBConnector {
 	}
 	
 	
-	public int createMatch(int gameID) {
-		// MATCH ID MUSS IMMER ZWISCHEN 1-3 VON DER LOGIK BERRECHNET WERDEN
-		int matchID = this.getNewMatchID(gameID);
+	public void createMatch(int gameID, int matchID) {
 		sendMatch dbMatch = new sendMatch(matchID, gameID);
 		dbMatch.run();
-		return matchID;
 	}
 	
 	
