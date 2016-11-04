@@ -107,15 +107,6 @@ public class Game {
 		 return null;
 	 }
 	 
-	 int getMatchID() {
-		 for (int i = 0; i <= MATCHES; i++) {
-			 if (this.match[i] != null) {
-				 return i;
-			 }
-		 }
-		 
-		 return -1;
-	 }
 
 
 	

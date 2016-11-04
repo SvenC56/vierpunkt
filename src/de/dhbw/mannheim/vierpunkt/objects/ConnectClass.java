@@ -28,8 +28,8 @@ public class ConnectClass implements NameListener {
 	public void startMatch() {
 		int gameID = db.getGameID();
 		Match match = game.getNewMatch();
-		db.createMatch(gameID, game.getMatchID());
-		match = new Match(game.getCurrentMatch().getMatchID());	
+		match = new Match();	
+		db.createMatch(gameID, match.getMatchID());
 	}
 	
 	

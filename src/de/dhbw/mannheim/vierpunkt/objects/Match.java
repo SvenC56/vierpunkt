@@ -39,6 +39,20 @@ public class Match {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
+	public Match() {
+		this.matchID = matchID;
+		this.matchID++;
+		for (int y = 0; y <= ROW; y++) {
+			for (int x = 0; x <= COLUMN; x++) {
+				this.field[y][x] = null;
+			}
+		}
+		for (int i = 0; i <= TURNS; i ++) {
+			turn[i] = null;
+		}
+		
+	}
+	
 	public Match(int matchID) {
 		this.matchID = matchID;
 		for (int y = 0; y <= ROW; y++) {
@@ -124,7 +138,7 @@ public class Match {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-	
+		
 	Turn setNewTurn() {
 			for (int i=0; i <= TURNS; i++) {
 				if (this.turn[i] == null) {
