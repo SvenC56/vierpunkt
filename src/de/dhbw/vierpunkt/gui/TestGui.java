@@ -51,6 +51,17 @@ public class TestGui implements ZugListener {
 	String fileString = new String();
 	public static Stage primaryStage = new Stage();
 	
+	private char xodero = 'x';
+	public char getXodero() {
+		return xodero;
+	}
+	public void setXodero(char xodero) {
+		this.xodero = xodero;
+	}
+
+	private String appId;
+	private String appKey;
+	private String appSecret;
 	private int anzahlzeilen;
 	private int anzahlspalten;
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
@@ -338,6 +349,7 @@ public class TestGui implements ZugListener {
 		box3.getChildren().addAll(s1, i1, s2, i2);
 		
 		
+		
 		Label schnittstelle = new Label("Schnittstelle");
 		CheckBox file = new CheckBox("File");
 		CheckBox pusher1 = new CheckBox("Pusher");
@@ -350,6 +362,8 @@ public class TestGui implements ZugListener {
                     	   pusher1.setSelected(true);
                        }else{pusher1.setSelected(true);}
                        setSchnittstelle("pusher");
+                       
+                                   
                    }
                });
 		
@@ -400,11 +414,86 @@ public class TestGui implements ZugListener {
 		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
 		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
 		
-		Rectangle platzhalter2 = new Rectangle(10, 70); // Platzhalter, damit das Bild nicht ganz am Boden sitzt
+		ToggleGroup group = new ToggleGroup();
+		ToggleButton tb1 = new ToggleButton("X");
+		tb1.setToggleGroup(group);
+		tb1.setSelected(true);
+		tb1.getStyleClass().add("togglebutton");
+		ToggleButton tb2 = new ToggleButton("O");
+		tb2.setToggleGroup(group);
+		tb2.getStyleClass().add("togglebutton");
+		
+		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov,
+		        Toggle toggle, Toggle new_toggle) {
+		            if (new_toggle == null)
+		                setXodero('o');
+		              
+		            else
+		            	setXodero('x');
+		         }
+		});
+		Rectangle platzhalter2 = new Rectangle(l, 2*l);
 		platzhalter2.setOpacity(0);
+		
+		
+		Button einstellungen = new Button("Einstellungen");
+		einstellungen.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent arg0){
+				final Stage dialog = new Stage();
+                dialog.initModality(Modality.APPLICATION_MODAL);
+                dialog.initOwner(primaryStage);
+                VBox dialogVbox = new VBox(20);
+                Button ok = new Button("ok");
+                
+                Label cred1 = new Label("App ID:");
+                TextField app1 = new TextField ();
+                
+                HBox hb1 = new HBox();
+                hb1.getChildren().addAll(cred1, app1);
+                hb1.setSpacing(10);
+                Label cred2 = new Label("App Key: ");
+                TextField app2 = new TextField ();
+                
+                HBox hb2 = new HBox();
+                hb2.getChildren().addAll(cred2, app2);
+                hb2.setSpacing(10);
+                Label cred3 = new Label("App Secret: ");
+                TextField app3 = new TextField ();
+               
+                HBox hb3 = new HBox();
+                hb3.getChildren().addAll(cred3, app3);
+                hb3.setSpacing(10);
+                
+                ok.setOnMouseClicked(new EventHandler<MouseEvent>(){
+             	   @Override
+                    public void handle(MouseEvent arg0) {
+             		   appId = app1.getText();
+             		   appKey = app2.getText();
+             		   appSecret = app3.getText();
+             		   System.out.println(appId + " " + appKey + " " + appSecret);
+             		   dialog.close();
+                       
+                }});
+                
+                Text u1 = new Text("Einstellungen");
+                u1.setStyle("-fx-fill:#FF6600;");
+            
+                dialogVbox.getChildren().addAll(u1, hb1, hb2, hb3, schnittstelle, file, pusher1, p1, zeitlabel, zeit, tb1, tb2, ok);
+                Scene dialogScene = new Scene(dialogVbox, 500, 800);
+                dialogScene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+                dialog.setScene(dialogScene);
+                dialog.show();
+            
+				
+			}
+		});
+		
+		
 
 		// Einfuegen der Elemente in die linke Box
-		boxlinks.getChildren().addAll(spielerfarben, box3, p, schnittstelle, file, pusher1, p1, zeitlabel, zeit, bild, platzhalter2);
+		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);

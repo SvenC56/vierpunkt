@@ -4,20 +4,14 @@
 */
 
 .root{
-	-fx-background-image: url("hintergrund_halloween.png");
-	-fx-background-size: stretch;
+	-fx-background-color: black;
 }
 
-.text{
--fx-fill: #FF6600;
-    -fx-font-weight: bold;
-    -fx-font-size: 15;
-}
 
 .label {
-    -fx-fill: #FF6600;
+    -fx-text-fill: #FF6600;
     -fx-font-weight: bold;
-    -fx-font-size: 30px;
+    -fx-font-size: 15px Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	
@@ -25,8 +19,7 @@
 
 .button {
     -fx-text-fill:#660000;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Narrow";
+    -fx-font-size: 14px Tahoma;
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#FF6600,#660000);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );

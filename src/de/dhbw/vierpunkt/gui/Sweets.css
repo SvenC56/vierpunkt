@@ -17,11 +17,7 @@
 #bild{-fx-image: url("suessigkeiten.png");}
 
 
-.text{
--fx-fill: #660066;
-    -fx-font-weight: bold;
-    -fx-font-size: 15;
-}
+
 
 .slider .axis {
    -fx-tick-label-fill: #660066; 
@@ -34,9 +30,9 @@
 }
 
 .label {
-    -fx-fill: #660066;
+    -fx-text-fill: #660066;
     -fx-font-weight: bold;
-    -fx-font-size: 25 Tahoma;
+    -fx-font-size: 20 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	
@@ -67,10 +63,19 @@
     -fx-alignment: center;
 }
 
+.togglebutton{
+    -fx-base: #FF66FF;  
+    -fx-text-fill:#FF66FF; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990099;
+     -fx-text-fill: white;
+}
+
 .button {
     -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Narrow";
+    -fx-font-size: 20px Tahoma;
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#FF3366, #FF6666);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );

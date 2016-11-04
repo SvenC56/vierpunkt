@@ -17,11 +17,6 @@
 
 #bild{-fx-image: url("hexe.png");}
 
-.text{
--fx-fill: #FF6600;
-    -fx-font-weight: bold;
-    -fx-font-size: 15;
-}
 
 #text{
     -fx-font: 15px Tahoma;
@@ -35,18 +30,30 @@
 }
 
 .label {
-    -fx-fill: #FF6600;
+    -fx-text-fill: #FF6600;
     -fx-font-weight: bold;
-    -fx-font-size: 25 Tahoma;
+    -fx-font-size: 20 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	
 }
 
+.togglebutton{
+    -fx-base: #ea041f;  
+    -fx-text-fill:#ea041f; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990000;
+     -fx-text-fill: white;
+}
+
+
+
+
 .button {
-    -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Narrow";
+    -fx-text-fill: #660000;
+    -fx-font-size: 20px Tahoma;
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#ea041f, #FF6600);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );

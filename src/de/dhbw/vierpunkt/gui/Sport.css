@@ -18,11 +18,6 @@
 #bild{-fx-image: url("pokal.png");}
 
 
-.text{
--fx-fill: #000000;
-    -fx-font-weight: bold;
-    -fx-font-size: 15;
-}
 
 .slider .axis {
    -fx-tick-label-fill: #000000; 
@@ -35,9 +30,9 @@
 }
 
 .label {
-    -fx-fill: #000000;
+    -fx-text-fill: #000000;
     -fx-font-weight: bold;
-    -fx-font-size: 25 Tahoma;
+    -fx-font-size: 20 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 }
@@ -67,17 +62,26 @@
     -fx-alignment: center;
 }
 
+.togglebutton{
+    -fx-base: #FFFFFF;  
+    -fx-text-fill:#FFFFFF; 
+}
+
+.togglebutton:selected{
+     -fx-base: #003300;
+     -fx-text-fill: white;
+}
+
 .button {
     -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-font-family: "Arial Narrow";
+    -fx-font-size: 20px Tahoma;
     -fx-font-weight: bold;
-    -fx-background-color: linear-gradient(#FF3366, #FF6666);
+    -fx-background-color: linear-gradient(#00CCCC, #00CC66);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-alignment:bottom_center;
     -fx-label-padding: 10px;
 }
 
 .button:hover {
-    -fx-background-color: linear-gradient(#993366, #CC6699);
+    -fx-background-color: linear-gradient(#00CC66, #00CCCC);
 }
