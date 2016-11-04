@@ -11,14 +11,12 @@
 
 #ueberschrift{
 	-fx-image: url("vier_sport.png");
-	-fx-border-color:  #ffffff;
 }
 
 #container{-fx-fill: #ffffff;}
 
 #bild{-fx-image: url("pokal.png");}
 
-#titel{-fx-border-color: #660066;}
 
 .text{
 -fx-fill: #000000;
@@ -26,13 +24,22 @@
     -fx-font-size: 15;
 }
 
+.slider .axis {
+   -fx-tick-label-fill: #000000; 
+}
+
+#text{
+    -fx-font: 15px Tahoma;
+    -fx-fill: black;
+    -fx-font-weight: bold;
+}
+
 .label {
     -fx-fill: #000000;
     -fx-font-weight: bold;
-    -fx-font-size: 25;
+    -fx-font-size: 25 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
-	
 }
 
 #grid{

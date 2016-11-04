@@ -10,14 +10,12 @@
 
 #ueberschrift{
 	-fx-image: url("vier_food.png");
-	-fx-border-color: #ffffff;
 }
 
 #container{-fx-fill: #ffffff;}
 
 #bild{-fx-image: url("teller.png");}
 
-#titel{-fx-border-color: #660066;}
 
 .text{
 -fx-fill: #00CC33;
@@ -25,10 +23,20 @@
     -fx-font-size: 15;
 }
 
-.label {
-    -fx-fill: #00CC33;
+.slider .axis {
+   -fx-tick-label-fill: #006600; 
+}
+
+#text{
+    -fx-font: 15px Tahoma;
+    -fx-fill: #003300;
     -fx-font-weight: bold;
-    -fx-font-size: 25;
+}
+
+.label {
+    -fx-fill: #003300;
+    -fx-font-weight: bold;
+    -fx-font-size: 25 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	

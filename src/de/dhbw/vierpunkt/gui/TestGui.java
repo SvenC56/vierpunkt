@@ -132,19 +132,18 @@ public class TestGui implements ZugListener {
 		// MenuBar Hauptkategorien
 		final Menu vierpunkt = new Menu("VierPunkt");
 		final Menu themen = new Menu("Themen");
-		final Menu hilfe = new Menu("Hilfe");
+		
 
 		// Menubar, Hauptkategorien setzen
 		MenuBar menuBar = new MenuBar();
 		menuBar.setId("menu");
-		menuBar.getMenus().addAll(vierpunkt, themen, hilfe);
+		menuBar.getMenus().addAll(vierpunkt, themen);
 
 		// Unterkategorien fuer "vierpunkt"
 		MenuItem menu11 = new MenuItem("neues Spiel");
-		MenuItem menu12 = new MenuItem("Spielanleitung");
+		MenuItem menu31 = new MenuItem("bereits gespielte Spiele");
 		MenuItem menu13 = new MenuItem("Spiel beenden");
-		MenuItem menu14 = new MenuItem("Impressum");
-		vierpunkt.getItems().addAll(menu11, menu12, menu13, menu14);
+		vierpunkt.getItems().addAll(menu11, menu31, menu13);
 		
 		// Unterkategorien fuer "themen"
 		MenuItem menu21 = new MenuItem("Suessigkeiten");
@@ -152,11 +151,6 @@ public class TestGui implements ZugListener {
 		MenuItem menu23 = new MenuItem("Food");
 		MenuItem menu24 = new MenuItem("Sports");
 		themen.getItems().addAll(menu21, menu22, menu23, menu24);
-
-		// Unterkategorien fuer "hilfe"
-		MenuItem menu31 = new MenuItem("letztes Spiel nachvollziehen");
-		MenuItem menu32 = new MenuItem("Spielanleitung");
-		hilfe.getItems().addAll(menu31, menu32);
 
 		/******************************************* UEBERSCHRIFT *********************************************************/
 
@@ -207,10 +201,12 @@ public class TestGui implements ZugListener {
 
 		Label spielstand = new Label("Spielstand: ");
 		Text antwortspielstand = new Text("1 : 1");
+		antwortspielstand.setId("text");
 		spielstand.setPadding(new Insets(20, 0, 0, 0));
 
 		Label satzstatus = new Label("Satzstatus:");
 		Text antwortsatzstatus = new Text("warten auf den Gegner");
+		antwortsatzstatus.setId("text");
 		satzstatus.setPadding(new Insets(20, 0, 0, 0));
 
 		Label spielmodi = new Label("Spielmodus:");
@@ -547,6 +543,7 @@ public class TestGui implements ZugListener {
 		Scene scene2 = new Scene(pane, 200, 200);
 		
 	    loginStage.setScene(scene2);
+	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 	    loginStage.initModality(Modality.APPLICATION_MODAL);
 	    loginStage.setTitle("Login");
 	    loginStage.setFullScreen(false);

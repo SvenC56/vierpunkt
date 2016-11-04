@@ -10,14 +10,12 @@
 
 #ueberschrift{
 	-fx-image: url("ueberschrift.jpg");
-	-fx-border-color:  #ffffff;
 }
 
-#container{-fx-fill: #ffffff;}
+#container{-fx-fill: #FFFFFF;}
 
 #bild{-fx-image: url("suessigkeiten.png");}
 
-#titel{-fx-border-color: #660066;}
 
 .text{
 -fx-fill: #660066;
@@ -25,10 +23,20 @@
     -fx-font-size: 15;
 }
 
+.slider .axis {
+   -fx-tick-label-fill: #660066; 
+}
+
+#text{
+    -fx-font: 15px Tahoma;
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+}
+
 .label {
     -fx-fill: #660066;
     -fx-font-weight: bold;
-    -fx-font-size: 25;
+    -fx-font-size: 25 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	

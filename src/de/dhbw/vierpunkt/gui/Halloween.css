@@ -10,10 +10,8 @@
 
 #ueberschrift{
 	-fx-image: url("vier_halloween.png");
-	-fx-border-color: #000000;
 }
 
-#titel{-fx-border-color: #660066;}
 
 #container{-fx-fill: #000000;}
 
@@ -25,10 +23,21 @@
     -fx-font-size: 15;
 }
 
+#text{
+    -fx-font: 15px Tahoma;
+    -fx-fill: black;
+    -fx-font-weight: bold;
+}
+
+.slider .axis {
+   -fx-tick-label-fill: #FF6600; 
+   -fx-tick-label-size: 25px;
+}
+
 .label {
     -fx-fill: #FF6600;
     -fx-font-weight: bold;
-    -fx-font-size: 25;
+    -fx-font-size: 25 Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
 	
