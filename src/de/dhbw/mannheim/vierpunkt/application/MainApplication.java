@@ -4,7 +4,7 @@ import java.nio.file.Files;
 
 import de.dhbw.mannheim.vierpunkt.gui.TestGui;
 import de.dhbw.mannheim.vierpunkt.interfaces.*;
-import de.dhbw.mannheim.vierpunkt.objects.ConnectClass;
+import de.dhbw.mannheim.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -12,14 +12,14 @@ public class MainApplication extends Application implements ParamListener {
 	static TestGui gui = new TestGui();
 	static FileInterface filey = new FileInterface();
 	static PusherInterface pushy = new PusherInterface();
-	static ConnectClass connectClass = new ConnectClass();
+	static Game game = new Game();
 	
 	public static void main(String[] args) throws InterruptedException
 	{
 		// Drei suesse Interfaces senden Events an die GUI
 		filey.addListener(gui);
 		pushy.addListener(gui);
-		gui.addNameListener(connectClass);
+		gui.addNameListener(game);
 		launch(args);
 	}
 
