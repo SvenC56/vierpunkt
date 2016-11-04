@@ -12,7 +12,9 @@ public class Game {
 	private Player player1;
 	private Player player2;
 	private Player winner = null;
-	private Match match;
+	private Match[] match;
+	//maximale Anzahl Matches = 3
+	private static final int MATCHES = 2;
 	
 	/**************************************************************/
 	/******************* KONSTRUKTOR *******************************/
@@ -27,6 +29,9 @@ public class Game {
 		this.winner = null;
 		this.player1 =  new Player(playerName1);
 		this.player2 = new Player (playerName2);
+		for (int i = 0; i <= MATCHES; i++) {
+			match[i] = null;
+		}
 	}
 	
 

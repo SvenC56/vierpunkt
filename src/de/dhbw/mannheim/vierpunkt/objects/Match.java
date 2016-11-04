@@ -27,7 +27,7 @@ public class Match extends Game{
 	private static final int TURNS = 68;
 	
 	//Das Spielfeld
-	private playField[][] field = new playField[ROW + 1][COLUMN + 1]; //doing
+	private PlaySlot[][] field = new PlaySlot[ROW + 1][COLUMN + 1]; //doing
 	
 	private Turn turns[] = new Turn[TURNS];
 	
@@ -39,19 +39,10 @@ public class Match extends Game{
 	/**************************************************************/
 	
 	public Match() {
-		
-	}
-	
-	public Match(int gameID, int matchID) {
-		super();
-		this.matchID = matchID;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {
 				this.field[y][x] = null;
 			}
-		}
-		for (int i = 0; i <= TURNS; i++) {
-			this.turns = null;
 		}
 		
 	}
@@ -107,7 +98,7 @@ public class Match extends Game{
 	 * Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array
 	 * zurueck!
 	 **/
-	 playField getField(int x, int y) {
+	 PlaySlot getField(int x, int y) {
 		return this.field[y][x];
 		}
 

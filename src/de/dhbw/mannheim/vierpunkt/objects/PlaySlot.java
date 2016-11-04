@@ -1,6 +1,6 @@
 package de.dhbw.mannheim.vierpunkt.objects;
 
-public class playField {
+public class PlaySlot {
 
 	private Player ownedBy;
 
