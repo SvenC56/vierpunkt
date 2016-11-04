@@ -7,6 +7,25 @@
 	-fx-background-color: black;
 }
 
+#text{
+	-fx-font: 30px Tahoma;
+    -fx-fill: #FF6600;
+    -fx-font-weight: bold;
+}
+
+.checkBox{
+	-fx-text-fill:#FF6600;
+}
+
+.togglebutton{
+    -fx-base: #FF9900;  
+    -fx-text-fill:#FF9900; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990000;
+     -fx-text-fill: white;
+}
 
 .label {
     -fx-text-fill: #FF6600;
@@ -14,7 +33,6 @@
     -fx-font-size: 15px Tahoma;
     -fx-alignment: center;
     -fx-text-alignment: center;
-	
 }
 
 .button {
@@ -23,7 +41,7 @@
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#FF6600,#660000);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-alignment:bottom_center;
+    -fx-alignment:center;
     -fx-label-padding: 10px;
 }
 

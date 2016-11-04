@@ -38,15 +38,7 @@
 	
 }
 
-.togglebutton{
-    -fx-base: #ea041f;  
-    -fx-text-fill:#ea041f; 
-}
 
-.togglebutton:selected{
-     -fx-base: #990000;
-     -fx-text-fill: white;
-}
 
 
 

@@ -48,48 +48,33 @@ public class TestGui implements ZugListener {
 	static int[] plaetzeFreiInReihe = new int[7];
 	private static List<NameListener> NameListeners = new ArrayList<NameListener>();
 	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
-	String fileString = new String();
+	
 	public static Stage primaryStage = new Stage();
 	
+	// Einstellungen
+	private String schnittstelle = "pusher";
+	private int zugzeit = 2000;
 	private char xodero = 'x';
-	public char getXodero() {
-		return xodero;
-	}
-	public void setXodero(char xodero) {
-		this.xodero = xodero;
-	}
-
+	private String fileString = new String();
+	
+	// Pusher Credentials
 	private String appId;
 	private String appKey;
 	private String appSecret;
+	
+	// Grid
 	private int anzahlzeilen;
 	private int anzahlspalten;
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
 	
+	// Spielernamen
 	private String names1 = "spieler1";
 	private String names2 = "spieler2";
-	public String getNames1() {
-		return names1;
-	}
-	public String getNames2() {
-		return names2;
-	}
-
-	
-	private String schnittstelle = "pusher";
-	private int zugzeit = 2000;
 	
 	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
-    public javafx.scene.image.Image getImage1() {
-		return image1;
-	}
-	public javafx.scene.image.Image getImage2() {
-		return image2;
-	}
-
 	public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
 	public javafx.scene.image.Image kuerbis = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm()); 
@@ -114,6 +99,12 @@ public class TestGui implements ZugListener {
 	public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
 	public String getSchnittstelle() {return schnittstelle;}
 	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
+	public String getNames1() {return names1;}
+	public String getNames2() {return names2;}
+	public char getXodero() {return xodero;}
+	public void setXodero(char xodero) {this.xodero = xodero;}
+	public javafx.scene.image.Image getImage1() {return image1;}
+	public javafx.scene.image.Image getImage2() {return image2;}
 	
 
 	/*********************************************************************************************************************
@@ -125,7 +116,6 @@ public class TestGui implements ZugListener {
 		for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 			plaetzeFreiInReihe[i]=5;
 		}
-		
 		
 		// Grundlegende Eigenschaften der Stage
 		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
@@ -143,7 +133,6 @@ public class TestGui implements ZugListener {
 		// MenuBar Hauptkategorien
 		final Menu vierpunkt = new Menu("VierPunkt");
 		final Menu themen = new Menu("Themen");
-		
 
 		// Menubar, Hauptkategorien setzen
 		MenuBar menuBar = new MenuBar();
@@ -190,7 +179,7 @@ public class TestGui implements ZugListener {
 		// Hauptcontainer erhaelt den Inhalt
 		root.getChildren().addAll(menuBar, titelbox, content);
 
-		/******************************************* LAYOUT-UEBERSICHT ******************************************************/
+		/******************************************* Sieger Popup ******************************************************/
 		VBox boxrechts2 = new VBox();
 		boxrechts2.setPrefWidth(breite / 4);
 		boxrechts2.setSpacing(10);
@@ -235,7 +224,6 @@ public class TestGui implements ZugListener {
 		spielmodus.setMinHeight(120); 						// Mindesthoehe
 		spielmodus.setValue(2);								// Default Value = 2
 		
-
 		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt und die Rueckgabewerte festlegt
 		spielmodus.setLabelFormatter(new StringConverter<Double>() {
 			@Override
@@ -274,8 +262,7 @@ public class TestGui implements ZugListener {
 		platzhalter0.setOpacity(0);
 
 		Button start = new Button("Spiel starten");
-		
-
+	
 		// Einfuegen der Elemente in die rechte Box
 		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
 
@@ -312,90 +299,76 @@ public class TestGui implements ZugListener {
 
 		// Einfuegen der Elemente in die mittlere Box
 		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
-
+		
+		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
 		// Erzeugen der linken Containerbox
 		VBox boxlinks = new VBox();
 		boxlinks.setId("boxlinks");
 		boxlinks.setPrefWidth(breite / 4);
 		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
-
-		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
 		
+		// login Felder
 		Label spieler1 = new Label("Name Spieler 1: ");
 		TextField spielername1 = new TextField();
+		names1 = spielername1.getText();
 		Label spieler2 = new Label("Name Spieler 2: ");
 		TextField spielername2 = new TextField();
-		names1 = spielername1.getText();
 		names1 = spielername2.getText();
 	
+		// Ueberschrift Spieler
 		Label spielerfarben = new Label("Spieler");
-		HBox box3 = new HBox();
-		
-		
-	
+		// Name mit Spielstein Spieler 1
 		ImageView i1 = new ImageView(getImage1());
-		i1.setFitWidth(l-20);
-		i1.setFitHeight(l-20);
+		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
 		Label s1 = new Label(names1);
-		
+		// Name mit Spielstein Spieler 2
 		ImageView i2 = new ImageView(getImage2());
-		i2.setFitWidth(l-20);
-		i2.setFitHeight(l-20);
+		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
 		Label s2 = new Label(names2);
+		// Platzhalter
 		Rectangle p = new Rectangle(20,20);
 		p.setOpacity(0);
 		Rectangle p1 = new Rectangle(20,20);
 		p1.setOpacity(0);
+		// zur Box Hinzufuegen
+		HBox box3 = new HBox();
 		box3.getChildren().addAll(s1, i1, s2, i2);
 		
+		ImageView bild = new ImageView();
+		bild.setId("bild");
+		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
+		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
 		
 		
+		Rectangle platzhalter2 = new Rectangle(l, 2*l);
+		platzhalter2.setOpacity(0);
+		
+		/*************************************************************************************************************
+		 *************************************************************************************************************
+		 ***************************************       Einstellungen       *******************************************
+		 *************************************************************************************************************
+		 *************************************************************************************************************/
+		// Schnittstelle
 		Label schnittstelle = new Label("Schnittstelle");
 		CheckBox file = new CheckBox("File");
+		Text keinOrdner = new Text("ACHTUNG! Es wurde keine Ordner ausgewaehlt!");
+		keinOrdner.setStyle("-fx-fill: red;");
+		keinOrdner.setOpacity(0);
+		HBox hb = new HBox();
+		hb.getChildren().addAll(file, keinOrdner);
+		
 		CheckBox pusher1 = new CheckBox("Pusher");
-		pusher1.setSelected(true);
-		pusher1.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                       if(file.isSelected()){
-                    	   file.setSelected(false);   
-                    	   pusher1.setSelected(true);
-                       }else{pusher1.setSelected(true);}
-                       setSchnittstelle("pusher");
-                       
-                                   
-                   }
-               });
 		
-		DirectoryChooser chooser = new DirectoryChooser();
-	  
-		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent arg0) {
-                if(pusher1.isSelected()){
-             	   pusher1.setSelected(false);   
-             	   file.setSelected(true);
-                }else{file.setSelected(true);}
-                setSchnittstelle("file");
-                
-                File dir = chooser.showDialog(primaryStage);
-        	    if (dir == null) {
-        	        System.out.println("Kein Ordner ausgewählt");;
-        	    }else{
-        	    	fileString = dir.getPath();
-        	    	System.out.println(fileString);
-        	    }
-            }
-        });
+		file.getStyleClass().add("checkBox");
+		pusher1.getStyleClass().add("checkBox");
 		
-		
+		// Zeit
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
 		zeit.setMajorTickUnit(100); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
 		zeit.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
 		zeit.setShowTickMarks(true); 					// Markierungen anzeigen -
 		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
-		
 		zeit.setValue(2000);								// Default Value = 2
 		
 		Label zeitlabel = new Label("Zugzeit");
@@ -408,12 +381,78 @@ public class TestGui implements ZugListener {
 		    }
 		});
 		
-		
-		ImageView bild = new ImageView();
-		bild.setId("bild");
-		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
-		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
-		
+		// Ueberschrift
+        Text u1 = new Text("Einstellungen");
+        u1.setId("text");
+        
+        // Pusher Credentials
+        Label cred1 = new Label("App ID:");
+        TextField app1 = new TextField ();
+        
+        HBox hb1 = new HBox();
+        hb1.getChildren().addAll(cred1, app1);
+        hb1.setSpacing(10);
+        Label cred2 = new Label("App Key: ");
+        TextField app2 = new TextField ();
+        
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(cred2, app2);
+        hb2.setSpacing(10);
+        Label cred3 = new Label("App Secret: ");
+        TextField app3 = new TextField ();
+       
+        HBox hb3 = new HBox();
+        hb3.getChildren().addAll(cred3, app3);
+        hb3.setSpacing(10);
+        
+        hb1.setOpacity(0);
+        hb2.setOpacity(0);
+        hb3.setOpacity(0);
+        
+    	pusher1.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(file.isSelected()){
+             	   file.setSelected(false); 
+             	   keinOrdner.setOpacity(0);
+             	   pusher1.setSelected(true);
+                }else{pusher1.setSelected(true);}
+                setSchnittstelle("pusher");
+                hb1.setOpacity(1);
+                hb2.setOpacity(1);
+                hb3.setOpacity(1);
+            }
+    	});
+	
+		DirectoryChooser chooser = new DirectoryChooser();
+	
+		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	     @Override
+	     public void handle(MouseEvent arg0) {
+	         if(pusher1.isSelected()){
+	      	   pusher1.setSelected(false);   
+	      	   file.setSelected(true);
+	         }else{file.setSelected(true);}
+	         setSchnittstelle("file");
+	         hb1.setOpacity(0);
+	         hb2.setOpacity(0);
+	         hb3.setOpacity(0);
+	         
+	         
+	         
+	         File dir = chooser.showDialog(primaryStage);
+	 	    if (dir == null) {
+	 	        System.out.println("Kein Ordner ausgewählt");
+	 	        keinOrdner.setOpacity(1);
+	 	    }else{
+	 	    	fileString = dir.getPath();
+	 	    	System.out.println(fileString);
+	 	    	keinOrdner.setOpacity(0);
+	 	    }
+	     }
+		});
+			
+		// X oder O
 		ToggleGroup group = new ToggleGroup();
 		ToggleButton tb1 = new ToggleButton("X");
 		tb1.setToggleGroup(group);
@@ -422,50 +461,37 @@ public class TestGui implements ZugListener {
 		ToggleButton tb2 = new ToggleButton("O");
 		tb2.setToggleGroup(group);
 		tb2.getStyleClass().add("togglebutton");
+		HBox hb4 = new HBox();
+        hb4.getChildren().addAll(tb1, tb2);
+        hb4.setSpacing(10);
+       
 		
 		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
 		        Toggle toggle, Toggle new_toggle) {
 		            if (new_toggle == null)
 		                setXodero('o');
-		              
 		            else
 		            	setXodero('x');
 		         }
 		});
-		Rectangle platzhalter2 = new Rectangle(l, 2*l);
-		platzhalter2.setOpacity(0);
-		
 		
 		Button einstellungen = new Button("Einstellungen");
 		einstellungen.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0){
+				// neue Stage
 				final Stage dialog = new Stage();
+				dialog.setTitle("Einstellungen");
                 dialog.initModality(Modality.APPLICATION_MODAL);
                 dialog.initOwner(primaryStage);
                 VBox dialogVbox = new VBox(20);
+                dialogVbox.setPadding(new Insets(10, 10, 10, 10));                
+                
+                // Button zum Popup schließen
                 Button ok = new Button("ok");
                 
-                Label cred1 = new Label("App ID:");
-                TextField app1 = new TextField ();
-                
-                HBox hb1 = new HBox();
-                hb1.getChildren().addAll(cred1, app1);
-                hb1.setSpacing(10);
-                Label cred2 = new Label("App Key: ");
-                TextField app2 = new TextField ();
-                
-                HBox hb2 = new HBox();
-                hb2.getChildren().addAll(cred2, app2);
-                hb2.setSpacing(10);
-                Label cred3 = new Label("App Secret: ");
-                TextField app3 = new TextField ();
-               
-                HBox hb3 = new HBox();
-                hb3.getChildren().addAll(cred3, app3);
-                hb3.setSpacing(10);
-                
+                // Button Action Event
                 ok.setOnMouseClicked(new EventHandler<MouseEvent>(){
              	   @Override
                     public void handle(MouseEvent arg0) {
@@ -474,23 +500,17 @@ public class TestGui implements ZugListener {
              		   appSecret = app3.getText();
              		   System.out.println(appId + " " + appKey + " " + appSecret);
              		   dialog.close();
-                       
                 }});
                 
-                Text u1 = new Text("Einstellungen");
-                u1.setStyle("-fx-fill:#FF6600;");
-            
-                dialogVbox.getChildren().addAll(u1, hb1, hb2, hb3, schnittstelle, file, pusher1, p1, zeitlabel, zeit, tb1, tb2, ok);
+                // Einfuegen in die VBox
+                dialogVbox.getChildren().addAll(u1, hb4, schnittstelle, hb, pusher1, hb1, hb2, hb3, p1, zeitlabel, zeit, ok);
                 Scene dialogScene = new Scene(dialogVbox, 500, 800);
                 dialogScene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
                 dialog.setScene(dialogScene);
-                dialog.show();
-            
-				
+                dialog.show();	
 			}
 		});
-		
-		
+
 
 		// Einfuegen der Elemente in die linke Box
 		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
@@ -498,9 +518,11 @@ public class TestGui implements ZugListener {
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);
 
-		/*********************************************************************************************************************
-		 ******************************************* EVENTHANDLER FUER DAS MENU *********************************************************
-		 ********************************************************************************************************************/
+		/*************************************************************************************************************
+		 *************************************************************************************************************
+		 ******************************************* EVENTHANDLER FUER DAS MENU **************************************
+		 *************************************************************************************************************
+		 *************************************************************************************************************/
 		
 		Scene scene = new Scene(root);
 		
@@ -577,7 +599,11 @@ public class TestGui implements ZugListener {
 			}
 		});
 		
-		/******* METHODENAUFRUF ************************/
+		/*************************************************************************************************************
+		 *************************************************************************************************************
+		 **************************************** Methodenaufruf je nach Slider **************************************
+		 *************************************************************************************************************
+		 *************************************************************************************************************/
 		// manuell
 		if(spielmodus.getValue() == 0 ){
 			createGrids();
@@ -588,78 +614,26 @@ public class TestGui implements ZugListener {
 			createGrids_automatisch();
 		}
 		
+		/*************************************************************************************************************
+		 *************************************************************************************************************
+		 *********************************************** diverse Stages **********************************************
+		 *************************************************************************************************************
+		 *************************************************************************************************************/
 		
+		// Login Stage
 		Stage loginStage = new Stage();
 		Button login = new Button("Spiel starten");
 		FlowPane pane=new FlowPane();
 		pane.setPadding(new Insets(10, 10, 10, 10));
 		pane.setVgap(4);
 		pane.setHgap(4);
-		
-		
-		Stage gewinnermeldung = new Stage();
-		FlowPane panegewinner = new FlowPane();
-		Label gewinnernachricht = new Label();
-		panegewinner.setPadding(new Insets(10, 10, 10, 10));
-		panegewinner.getChildren().addAll(gewinnernachricht);
-		
-		Scene meldung = new Scene(panegewinner);
-		gewinnermeldung.setScene(meldung);
-
-		
-		
 		pane.getChildren().addAll(spieler1, spielername1, spieler2, spielername2, login);
-		
-		SplitPane alteSpiele = new SplitPane();
-		alteSpiele.setOrientation(Orientation.VERTICAL);
-		Label spieleLabel = new Label("Bisherige Spiele:");
-		ScrollPane listeSpiele = new ScrollPane();
-		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
-		listeSpiele.setContent(beispieltext);
-		Button back = new Button("zurueck");
-		
-		
-		alteSpiele.getItems().addAll(menuBar, spieleLabel, listeSpiele, back);
-		
-		
-		
-		
-		Scene datenbank = new Scene(alteSpiele);
-				alteSpiele.setId("bisherigeSpiele");
-		
-		primaryStage.setScene(scene);
-		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 		Scene scene2 = new Scene(pane, 200, 200);
-		
-	    loginStage.setScene(scene2);
+		loginStage.setScene(scene2);
 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 	    loginStage.initModality(Modality.APPLICATION_MODAL);
 	    loginStage.setTitle("Login");
 	    loginStage.setFullScreen(false);
-	    
-	    Stage gamesStage = new Stage();
-	    gamesStage.setScene(datenbank);
-	    
-	    back.setOnMouseClicked(new EventHandler<MouseEvent>(){
-			@Override
-            public void handle(MouseEvent arg0) {
-				
-				gamesStage.close();
-				primaryStage.toFront();
-				
-				
-            }
-		});
-	    
-	    menu31.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent e) {
-				//menu31.getScene().setRoot(alteSpiele);
-				
-				gamesStage.showAndWait();
-				gamesStage.setFullScreen(true);
-				}
-		});
-	    
 	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	         public void handle(KeyEvent evt)
@@ -681,6 +655,52 @@ public class TestGui implements ZugListener {
 				primaryStage.show();
             }
 		});
+	    
+		// Gewinnermeldung
+		Stage gewinnermeldung = new Stage();
+		FlowPane panegewinner = new FlowPane();
+		Label gewinnernachricht = new Label();
+		panegewinner.setPadding(new Insets(10, 10, 10, 10));
+		panegewinner.getChildren().addAll(gewinnernachricht);
+		Scene meldung = new Scene(panegewinner);
+		gewinnermeldung.setScene(meldung);
+		
+		// bereits gespielte Spiele 
+		Stage gamesStage = new Stage();
+		SplitPane alteSpiele = new SplitPane();
+		alteSpiele.setOrientation(Orientation.VERTICAL);
+		Label spieleLabel = new Label("Bisherige Spiele:");
+		ScrollPane listeSpiele = new ScrollPane();
+		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
+		listeSpiele.setContent(beispieltext);
+		Button back = new Button("zurueck");
+		Scene datenbank = new Scene(alteSpiele);
+		alteSpiele.setId("bisherigeSpiele");
+		alteSpiele.getItems().addAll(menuBar, spieleLabel, listeSpiele, back);
+		gamesStage.setScene(datenbank);
+		back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			@Override
+            public void handle(MouseEvent arg0) {
+				gamesStage.close();
+				primaryStage.toFront();
+            }
+		});
+		 
+		// primary Stage
+		primaryStage.setScene(scene);
+		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
+
+		
+	    menu31.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e) {
+				//menu31.getScene().setRoot(alteSpiele);
+				
+				gamesStage.showAndWait();
+				gamesStage.setFullScreen(true);
+				}
+		});
+	    
+	    
 		
 		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -694,14 +714,14 @@ public class TestGui implements ZugListener {
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
             }
 		});
-		
-		
+	
 		loginStage.show();
 		
 	}
-
-	
 	/*********************************************************************************************************************
+	 *********************************************************************************************************************
+	 **********************************************************************************************************************
+	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
     public void gewinnermethode(Stage gewinnermeldung, Label gewinnernachricht, int spieler){
