@@ -3,6 +3,10 @@ package de.dhbw.vierpunkt.objects;
 public class PlaySlot {
 
 	private Player ownedBy;
+	
+	public PlaySlot(Player player) {
+		this.ownedBy = player;
+	}
 
 	public Player getOwnedBy() {
 		return ownedBy;

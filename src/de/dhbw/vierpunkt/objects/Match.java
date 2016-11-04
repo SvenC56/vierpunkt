@@ -30,7 +30,7 @@ public class Match {
 	//Das Spielfeld
 	private PlaySlot[][] field = new PlaySlot[ROW + 1][COLUMN + 1]; //doing
 	
-	private Turn turn[] = new Turn[TURNS];
+	private Turn turn[] = new Turn[TURNS+1];
 	
 
 	
@@ -40,15 +40,14 @@ public class Match {
 	/**************************************************************/
 	
 	public Match() {
-		this.matchID = matchID;
 		this.matchID++;
 		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {
-				this.field[y][x] = null;
+				this.field[y][x] = new PlaySlot(null);
 			}
 		}
-		for (int i = 0; i <= TURNS; i ++) {
+		for (int i = 0; i <= TURNS; i++) {
 			turn[i] = null;
 		}
 		
@@ -103,17 +102,6 @@ public class Match {
 		this.matchWinner = winner;
 		}
 
-	 
-	 
-		
-	 /**
-	 * Getter fuer field. Erwartet x und y - Wert und liefert den Wert im Array
-	 * zurueck!
-	 **/
-	 PlaySlot getField(int x, int y) {
-		return this.field[y][x];
-		}
-
 	// Setter fuer field
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
@@ -141,6 +129,11 @@ public class Match {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+		 
+		Player getFieldPlayer(int x, int y) {
+				return this.field[y][x].getOwnedBy();
+				}
+		
 		public Turn startTurn (Player player, int x) {
 		if (!player.getIsServer()){
 			x = ki.calcMove(this);
@@ -160,7 +153,7 @@ public class Match {
 		Match match2 = new Match(this.matchID);
 		for (int i = 0; i <= COLUMN; i++) {
 			for (int j = 0; j <= ROW; j++) {
-				match2.setField(i, j, this.getField(i, j).getOwnedBy());
+				match2.setField(i, j, this.getFieldPlayer(i, j));
 			}
 		}
 		return match2;
@@ -172,7 +165,7 @@ public class Match {
 		// Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x > -1 && x <= COLUMN) {
 			for (int y = 0; y <= ROW; y++) {
-				if (this.getField(x, y) == null  ) { // leere Position gefunden
+				if (this.getFieldPlayer(x, y) == null  ) { // leere Position gefunden
 					return y; // gibt Zeile zurueck!
 				} // kein leeres Feld
 				else {
@@ -310,12 +303,12 @@ public class Match {
 			int count = 0; // Zaehler der validen Chips des gleichen Spielers in
 							// Spalte
 			int temp = y;
-			if (this.getField(x, y).getOwnedBy() == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+			if ( this.getFieldPlayer(x, y) == this.getCurrentPlayer() || this.getFieldPlayer(x, y) == null) {
 				count++;
 				y--;
 			}
 			for (; y > -1; y--) { // von unten nach oben!
-				if (this.getField(x, y).getOwnedBy() == getCurrentPlayer()) {
+				if (this.getFieldPlayer(x,y) == this.getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -325,7 +318,7 @@ public class Match {
 											// Spiel sonst gewonnen)
 				y = temp + 1;
 				for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
-					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -341,14 +334,14 @@ public class Match {
 			int count = 0;
 			int startX = x;
 			int startY = y;
-			if (this.getField(x, y).getOwnedBy() == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 				count++;
 				x++;
 				y--;
 			}
 			// Prueft oben - rechts
 			for (; (x <= COLUMN && y > -1); x++, y--) {
-				if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -358,7 +351,7 @@ public class Match {
 				x = startX - 1;
 				y = startY - 1;
 				for (; (x > -1 && y > -1); x--, y--) {
-					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -371,7 +364,7 @@ public class Match {
 				// Prueft unten - links
 				for (; (x > -1 && y <= ROW); x--, y++) {
 
-					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -383,7 +376,7 @@ public class Match {
 				// Prueft unten - rechts
 				for (; (x <= COLUMN && y <= ROW); x++, y++) {
 
-					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -397,13 +390,13 @@ public class Match {
 			// System.err.println("Methode inRow wurde aufgerufen!");
 			int count = 0;
 			int temp = x;
-			if (this.getField(x, y) == null || this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 				count++;
 				x++;
 			}
 			for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
 										// Anzahl Spalten!
-				if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 					count++;
 				} else
 					break;
@@ -413,7 +406,7 @@ public class Match {
 											// gewonnen)
 				x = temp - 1;
 				for (; x > -1; x--) {
-					if (this.getField(x, y).getOwnedBy() == this.getCurrentPlayer()) {
+					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
 						count++;
 					} else
 						break;
@@ -422,7 +415,4 @@ public class Match {
 			}
 			return count;
 		}
-
-	
-
 }
