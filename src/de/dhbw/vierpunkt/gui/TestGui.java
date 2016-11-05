@@ -311,10 +311,16 @@ public class TestGui implements ZugListener {
 		// login Felder
 		Label spieler1 = new Label("Name Spieler 1: ");
 		TextField spielername1 = new TextField();
-		names1 = spielername1.getText();
+		if(spielername1.getText() != null && ! spielername1.getText().trim().isEmpty()){
+			names1 = spielername1.getText();
+		}
+		
 		Label spieler2 = new Label("Name Spieler 2: ");
 		TextField spielername2 = new TextField();
-		names1 = spielername2.getText();
+		if(spielername2.getText() != null && ! spielername2.getText().trim().isEmpty()){
+			names2 = spielername2.getText();
+		}
+		
 	
 		// Ueberschrift Spieler
 		Label spielerfarben = new Label("Spieler");
@@ -633,18 +639,32 @@ public class TestGui implements ZugListener {
 		// Login Stage
 		Stage loginStage = new Stage();
 		Button login = new Button("Spiel starten");
-		FlowPane pane=new FlowPane();
-		pane.setPadding(new Insets(10, 10, 10, 10));
-		pane.setVgap(4);
-		pane.setHgap(4);
-		pane.getChildren().addAll(spieler1, spielername1, spieler2, spielername2, login);
-		Scene scene2 = new Scene(pane, 200, 200);
+		VBox vb = new VBox();
+		vb.setPadding(new Insets(10, 10, 10, 10));
+		
+		Label meldung = new Label("Bitte Spielernamen eingeben");
+		meldung.setOpacity(1);
+		
+		HBox hb5 = new HBox();
+		hb5.getChildren().addAll(spieler1, spielername1);
+		
+		HBox hb6 = new HBox();
+		hb6.getChildren().addAll(spieler2, spielername2);
+		
+		Rectangle p2 = new Rectangle(20, 15);
+		p2.setOpacity(0);
+		Rectangle p3 = new Rectangle(20, 15);
+		p3.setOpacity(0);
+		
+		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
+		Scene scene2 = new Scene(vb, 250, 250);
 		loginStage.setScene(scene2);
 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 	    loginStage.initModality(Modality.APPLICATION_MODAL);
 	    loginStage.setTitle("Login");
 	    loginStage.setFullScreen(false);
-	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    
+	    /*login.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	         public void handle(KeyEvent evt)
 	         {
@@ -654,15 +674,19 @@ public class TestGui implements ZugListener {
 					s2.setText(spielername2.getText());
 					primaryStage.show();
 	         }
-	    });
+	    });*/
 	    
 		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
             public void handle(MouseEvent arg0) {
-				loginStage.close();
-				s1.setText(spielername1.getText());
-				s2.setText(spielername2.getText());
-				primaryStage.show();
+				if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+					meldung.setOpacity(1);
+				}else{
+					loginStage.close();
+					s1.setText(spielername1.getText());
+					s2.setText(spielername2.getText());
+					primaryStage.show();
+				}
             }
 		});
 	    
@@ -672,8 +696,8 @@ public class TestGui implements ZugListener {
 		Label gewinnernachricht = new Label();
 		panegewinner.setPadding(new Insets(10, 10, 10, 10));
 		panegewinner.getChildren().addAll(gewinnernachricht);
-		Scene meldung = new Scene(panegewinner);
-		gewinnermeldung.setScene(meldung);		
+		Scene meldung1 = new Scene(panegewinner);
+		gewinnermeldung.setScene(meldung1);		
 		 
 		// primary Stage
 		primaryStage.setScene(scene);
