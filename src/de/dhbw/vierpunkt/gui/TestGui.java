@@ -640,16 +640,22 @@ public class TestGui implements ZugListener {
 		Stage loginStage = new Stage();
 		Button login = new Button("Spiel starten");
 		VBox vb = new VBox();
+		vb.setAlignment(Pos.CENTER);
 		vb.setPadding(new Insets(10, 10, 10, 10));
 		
 		Label meldung = new Label("Bitte Spielernamen eingeben");
 		meldung.setOpacity(1);
+		meldung.setStyle("-fx-font-weight: lighter;");
 		
 		HBox hb5 = new HBox();
+		spieler1.setPrefWidth(200);
 		hb5.getChildren().addAll(spieler1, spielername1);
+		hb5.setSpacing(10);
 		
 		HBox hb6 = new HBox();
+		spieler2.setPrefWidth(200);
 		hb6.getChildren().addAll(spieler2, spielername2);
+		hb6.setSpacing(10);
 		
 		Rectangle p2 = new Rectangle(20, 15);
 		p2.setOpacity(0);
@@ -657,7 +663,7 @@ public class TestGui implements ZugListener {
 		p3.setOpacity(0);
 		
 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
-		Scene scene2 = new Scene(vb, 250, 250);
+		Scene scene2 = new Scene(vb, 400, 250);
 		loginStage.setScene(scene2);
 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 	    loginStage.initModality(Modality.APPLICATION_MODAL);
