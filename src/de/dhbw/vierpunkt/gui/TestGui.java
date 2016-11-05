@@ -667,7 +667,7 @@ public class TestGui implements ZugListener {
 		loginStage.setScene(scene2);
 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
 	    loginStage.initModality(Modality.APPLICATION_MODAL);
-	    loginStage.setTitle("Login");
+	    loginStage.setTitle("Spielernamen");
 	    loginStage.setFullScreen(false);
 	    
 	    /*login.setOnKeyPressed(new EventHandler<KeyEvent>()
