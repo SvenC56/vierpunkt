@@ -29,6 +29,26 @@
    -fx-tick-label-size: 25px;
 }
 
+#textEinstellungen{
+	-fx-font: 30px Tahoma;
+    -fx-fill: #FF6600;
+    -fx-font-weight: bold;
+}
+
+.checkBox{
+	-fx-text-fill:#FF6600;
+}
+
+.togglebutton{
+    -fx-base: #FF9900;  
+    -fx-text-fill:#FF9900; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990000;
+     -fx-text-fill: white;
+}
+
 .label {
     -fx-text-fill: #FF6600;
     -fx-font-weight: bold;

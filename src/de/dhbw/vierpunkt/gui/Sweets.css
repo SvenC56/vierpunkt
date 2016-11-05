@@ -63,6 +63,17 @@
     -fx-alignment: center;
 }
 
+#textEinstellungen{
+	-fx-font: 30px Tahoma;
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+}
+
+.checkBox{
+	-fx-text-fill:#660066;
+}
+
+
 .togglebutton{
     -fx-base: #FF66FF;  
     -fx-text-fill:#FF66FF; 

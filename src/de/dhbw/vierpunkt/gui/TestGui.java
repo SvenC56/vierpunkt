@@ -68,6 +68,7 @@ public class TestGui implements ZugListener {
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
 	public int spieler = 1; 		// Spieler 1
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
+	private int thema = 1;
 	
 	// Spielernamen
 	private String names1 = "spieler1";
@@ -351,7 +352,7 @@ public class TestGui implements ZugListener {
 		// Schnittstelle
 		Label schnittstelle = new Label("Schnittstelle");
 		CheckBox file = new CheckBox("File");
-		Text keinOrdner = new Text("ACHTUNG! Es wurde keine Ordner ausgewaehlt!");
+		Text keinOrdner = new Text("ACHTUNG! Es wurde kein Ordner ausgewaehlt!");
 		keinOrdner.setStyle("-fx-fill: red;");
 		keinOrdner.setOpacity(0);
 		HBox hb = new HBox();
@@ -383,7 +384,7 @@ public class TestGui implements ZugListener {
 		
 		// Ueberschrift
         Text u1 = new Text("Einstellungen");
-        u1.setId("text");
+        u1.setId("textEinstellungen");
         
         // Pusher Credentials
         Label cred1 = new Label("App ID:");
@@ -505,7 +506,12 @@ public class TestGui implements ZugListener {
                 // Einfuegen in die VBox
                 dialogVbox.getChildren().addAll(u1, hb4, schnittstelle, hb, pusher1, hb1, hb2, hb3, p1, zeitlabel, zeit, ok);
                 Scene dialogScene = new Scene(dialogVbox, 500, 800);
-                dialogScene.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+                
+                if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+                if(thema == 2){ dialogScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+                if(thema == 3){dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+                if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+              
                 dialog.setScene(dialogScene);
                 dialog.show();	
 			}
@@ -541,6 +547,7 @@ public class TestGui implements ZugListener {
 		
 		menu21.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				thema = 4;
 				primaryStage.setScene(scene);
 				primaryStage.setFullScreen(true);
 				setColor(Color.PURPLE);
@@ -556,6 +563,7 @@ public class TestGui implements ZugListener {
 		
 		menu22.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				thema = 1;
 				setColor(Color.BLACK);
 				setImage1(kuerbis);
 				setImage2(fledermaus);
@@ -569,6 +577,7 @@ public class TestGui implements ZugListener {
 		
 		menu23.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				thema = 2;
 				primaryStage.setScene(scene);
 				primaryStage.setFullScreen(true);
 				scene.getStylesheets().clear();
@@ -585,6 +594,7 @@ public class TestGui implements ZugListener {
 		
 		menu24.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				thema = 3;
 				primaryStage.setScene(scene);
 				primaryStage.setFullScreen(true);
 				scene.getStylesheets().clear();
@@ -663,43 +673,52 @@ public class TestGui implements ZugListener {
 		panegewinner.setPadding(new Insets(10, 10, 10, 10));
 		panegewinner.getChildren().addAll(gewinnernachricht);
 		Scene meldung = new Scene(panegewinner);
-		gewinnermeldung.setScene(meldung);
-		
-		// bereits gespielte Spiele 
-		Stage gamesStage = new Stage();
-		SplitPane alteSpiele = new SplitPane();
-		alteSpiele.setOrientation(Orientation.VERTICAL);
-		Label spieleLabel = new Label("Bisherige Spiele:");
-		ScrollPane listeSpiele = new ScrollPane();
-		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
-		listeSpiele.setContent(beispieltext);
-		Button back = new Button("zurueck");
-		Scene datenbank = new Scene(alteSpiele);
-		alteSpiele.setId("bisherigeSpiele");
-		alteSpiele.getItems().addAll(menuBar, spieleLabel, listeSpiele, back);
-		gamesStage.setScene(datenbank);
-		back.setOnMouseClicked(new EventHandler<MouseEvent>(){
-			@Override
-            public void handle(MouseEvent arg0) {
-				gamesStage.close();
-				primaryStage.toFront();
-            }
-		});
+		gewinnermeldung.setScene(meldung);		
 		 
 		// primary Stage
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
-
 		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
-				//menu31.getScene().setRoot(alteSpiele);
 				
-				gamesStage.showAndWait();
-				gamesStage.setFullScreen(true);
+				// neue Stage
+				final Stage spieleStage = new Stage();
+				spieleStage.setTitle("Einstellungen");
+				spieleStage.initModality(Modality.APPLICATION_MODAL);
+				spieleStage.initOwner(primaryStage);
+                VBox spieleVbox = new VBox(20);
+                spieleVbox.setPadding(new Insets(10, 10, 10, 10));                
+                
+                // Button zum Popup schließen
+                Button back = new Button("zurueck");
+                
+                Label spieleLabel = new Label("Bisherige Spiele:");
+                
+                ScrollPane listeSpiele = new ScrollPane();
+        		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
+        		listeSpiele.setContent(beispieltext);
+                
+                // Button Action Event
+                back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+             	   @Override
+                    public void handle(MouseEvent arg0) {
+             		   spieleStage.close();
+                }});
+                
+                // Einfuegen in die VBox
+                spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, back);
+                Scene spieleScene = new Scene(spieleVbox, 1200, 900);
+                if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+                if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+                if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+                if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+              
+                spieleStage.setScene(spieleScene);
+                //spieleStage.setFullScreen(true);
+                spieleStage.show();	
 				}
 		});
-	    
 	    
 		
 		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
