@@ -13,13 +13,13 @@ public class Game implements NameListener {
 	/******************* Attribute ********************************/
 	/**************************************************************/
 	private static final int PLAYER = 1;
-	private Player player[] = new Player[PLAYER];
+	private Player player[] = new Player[PLAYER+1];
 	private Player winner = null;
-	private Match[] match;
 	private Match currentMatch;
 	private DBConnector db = new DBConnector();
 	//maximale Anzahl Matches = 3
 	private static final int MATCHES = 2;
+	private Match match[] = new Match[MATCHES+1];
 	
 	/**************************************************************/
 	/******************* KONSTRUKTOR *******************************/
