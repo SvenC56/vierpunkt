@@ -71,8 +71,8 @@ public class TestGui implements ZugListener {
 	private int thema = 1;
 	
 	// Spielernamen
-	private String names1;
-	private String names2;
+	private String names1 = "Spieler1";
+	private String names2 = "Spieler2";
 	
 	// Angaben aus anderen Klassen
 	private Text spielstand = new Text("0 : 0");
@@ -668,7 +668,7 @@ public class TestGui implements ZugListener {
 		vb.setPadding(new Insets(10, 10, 10, 10));
 		
 		Label meldung = new Label("Bitte Spielernamen eingeben");
-		meldung.setOpacity(1);
+		meldung.setOpacity(0);
 		meldung.setStyle("-fx-font-weight: lighter;");
 		
 		HBox hb5 = new HBox();
@@ -694,7 +694,46 @@ public class TestGui implements ZugListener {
 	    loginStage.setTitle("Spielernamen");
 	    loginStage.setFullScreen(false);
 	    
-	    /*login.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    
+	    // Login bei Enter, egal in welchem Feld man ist
+	    spielername1.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+					meldung.setOpacity(1);
+				}else{
+					loginStage.close();
+					s1.setText(spielername1.getText());
+					s2.setText(spielername2.getText());
+					primaryStage.show();
+				}
+	            }
+	        }
+	    });
+	    
+	    spielername2.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+						meldung.setOpacity(1);
+					}else{
+						loginStage.close();
+						s1.setText(spielername1.getText());
+						s2.setText(spielername2.getText());
+						primaryStage.show();
+					}
+	            }
+	        }
+	    });
+	    
+	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	         public void handle(KeyEvent evt)
 	         {
@@ -704,7 +743,7 @@ public class TestGui implements ZugListener {
 					s2.setText(spielername2.getText());
 					primaryStage.show();
 	         }
-	    });*/
+	    });
 	    
 		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
@@ -786,7 +825,7 @@ public class TestGui implements ZugListener {
 					createGrids();}
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
 				System.out.println(getNames1() + names2);
-				gewinnermethode(1, getNames1(), getNames2());
+				gewinnermethode(1, names1, names2);
             }
 		});
 	
@@ -799,7 +838,38 @@ public class TestGui implements ZugListener {
 	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
-    public void gewinnermethode(int spieler, String names1, String names2){
+   
+	public void satzgewinner(int spieler){
+		// neue Stage
+		final Stage satz = new Stage();
+		satz.setTitle("Satzgewinner");
+        satz.initModality(Modality.APPLICATION_MODAL);
+        satz.initOwner(primaryStage);
+        VBox satzVbox = new VBox(20);
+        satzVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label meldung = new Label();
+        
+        if(spieler==1){ meldung.setText(names1 + "hat den Satz gewonnen!");}
+        else if (spieler == 2) {meldung.setText(names2 + "hat den Satz gewonnen!");
+		}else{meldung.setText("Der Satz ist unentschieden ausgegangen.");}
+        
+        
+        // Einfuegen in die VBox
+        satzVbox.getChildren().addAll(meldung);
+        Scene dialogScene = new Scene(satzVbox, 500, 800);
+        
+        if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ dialogScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        satz.setScene(dialogScene);
+        satz.show();	
+	}
+	
+	
+	public void gewinnermethode(int spieler, String names1, String names2){
 		
 		Label gewinnernachricht = new Label();
 		
@@ -809,6 +879,7 @@ public class TestGui implements ZugListener {
 		gewinnerStage.initModality(Modality.APPLICATION_MODAL);
 		gewinnerStage.initOwner(primaryStage);
         VBox gewinnerVbox = new VBox(20);
+        gewinnerVbox.setAlignment(Pos.CENTER);
         gewinnerVbox.setPadding(new Insets(10, 10, 10, 10));                
         
         // Button zum Popup schließen
@@ -821,7 +892,6 @@ public class TestGui implements ZugListener {
      		   gewinnerStage.close();
         }});
         if(spieler == 1){
-        	System.out.println(getNames1());
 			gewinnernachricht.setText(names1 + " hat gewonnen!");
 		}else {
 			if(spieler == 2){
@@ -831,15 +901,15 @@ public class TestGui implements ZugListener {
 			}}
         // Einfuegen in die VBox
         gewinnerVbox.getChildren().addAll(gewinnernachricht, back);
-        Scene spieleScene = new Scene(gewinnerVbox, 800, 600);
-        if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-      
-        gewinnerStage.setScene(spieleScene);
-        gewinnerStage.setFullScreen(false);
+        Scene gewinnerScene = new Scene(gewinnerVbox, 800, 600);
+        if(thema == 1){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
        
+        
+        gewinnerStage.setFullScreen(false);
+        gewinnerStage.setScene(gewinnerScene);
         gewinnerStage.show();	
 		
 	}
