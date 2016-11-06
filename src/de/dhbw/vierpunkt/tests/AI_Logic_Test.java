@@ -1,4 +1,4 @@
-package de.dhbw.mannheim.vierpunkt.tests;
+package de.dhbw.vierpunkt.tests;
 
 public class AI_Logic_Test {
 	
