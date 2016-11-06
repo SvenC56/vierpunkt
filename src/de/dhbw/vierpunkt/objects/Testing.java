@@ -4,11 +4,10 @@ public class Testing {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Player player = new Player("Tobi");
-		Match match = new Match();
-		match.setCurrentPlayer(player);
-		match.setField(0, 5, player);
-		System.out.println(match.inDiagonal(0, 5));
+		Game game = new Game();
+		game.startGame("Tobi", "Sven", 1);
+		game.startMatch();
+		game.playTurn(2);
 		
 		
 
