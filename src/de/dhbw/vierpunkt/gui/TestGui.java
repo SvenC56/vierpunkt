@@ -828,7 +828,7 @@ public class TestGui implements ZugListener {
 				
 				//satzgewinner(1);
 				//System.out.println(getNames1() + names2);
-				//gewinnermethode(1, names1, names2);
+				gewinnermethode(1, spielername1.getText(), spielername2.getText());
             }
 		});
 	
