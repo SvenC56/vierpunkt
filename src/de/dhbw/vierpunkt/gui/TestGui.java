@@ -1107,9 +1107,9 @@ public class TestGui implements ZugListener {
 		NameListeners.add(toAdd);
 	}
 	
-	public static void fireNames (String name1, String name2) {
+	public static void fireNames (String name1, String name2, int isServer) {
 		for (NameListener name: NameListeners) {
-			name.startGame(name1, name2);
+			name.startGame(name1, name2, isServer);
 		}
 	}
 	
