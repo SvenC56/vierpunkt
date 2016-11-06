@@ -183,11 +183,11 @@ public class GameLogic {
 		//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 		if (this.move >= 4) {
 		//wenn negativ unendlich, dann hat der Gegner (Server) gewonnen
-		if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
+		if (evaluate(this) == (int)Double.NEGATIVE_INFINITY) {
 			return 1;
 		}
 		//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
-		else if (this.evaluate() == (int)Double.POSITIVE_INFINITY) {
+		else if (evaluate(this) == (int)Double.POSITIVE_INFINITY) {
 			return 2;
 		}
 		
@@ -491,73 +491,7 @@ public class GameLogic {
 		dbMatch.run();
 	}
 
-	 int evaluate() { // bewertet die gesamte Spielsituation
-		int agentCount2 = 0;
-		int agentCount3 = 0;
-		int oppCount2 = 0;
-		int oppCount3 = 0;
-		for (int x = 0; x <= this.getColumn(); x++) {
-			for (int y = 0; y <= this.getRow(); y++) {
-				
-				if (this.getCurrentPlayer() == 2) { // unser Agent spielt
-					// inColumn
-					if (this.inColumn(x, y) == 4) { // unser Agent hat 4 in einer Spalte --> wir haben gewonnen
-						return (int) Double.POSITIVE_INFINITY;
-					} else if (this.inColumn(x, y) == 3) {
-						agentCount3++;
-					} else if (this.inColumn(x, y) == 2) {
-						agentCount2++;	
 	
-					// inRow
-					} else if (this.inRow(x, y) == 4) { // unser Agent hat 4 in einer Zeile --> wir haben gewonnen
-						return (int) Double.POSITIVE_INFINITY;
-					} else if (this.inRow(x, y) == 3) {
-						agentCount3++;
-					} else if (this.inRow(x, y) == 2) {
-						agentCount2++;
-					
-					// inDiagonal
-					} else if (this.inDiagonal(x, y) == 4) { // unser Agent hat 4 in der Diagonale --> wir haben gewonnen
-						return (int) Double.POSITIVE_INFINITY;
-					} else if (this.inDiagonal(x, y) == 3) {
-						agentCount3++;
-					} else if (this.inDiagonal(x, y) == 2) {
-						agentCount2++;
-					}
-				}		
-					
-				if (this.getCurrentPlayer() == 1) { // Gegner spielt	
-					// in column
-					if (this.inColumn(x, y) == 4) { // der Gegner hat 4 in einer Spalte --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (this.inColumn(x, y) == 3) {
-						oppCount3++;
-					} else if (this.inColumn(x, y) == 2) {
-						oppCount2++;
-						
-					// in row
-					} else if (this.inRow(x, y) == 4) { // der Gegner hat 4 in einer Zeile --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (this.inRow(x, y) == 3) {
-						oppCount3++;
-					} else if (this.inRow(x, y) == 2) {
-						oppCount2++;
-					
-					// in diagonal
-					} else if (this.inDiagonal(x, y) == 4) { // der Gegner hat 4 in der Diagonale --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (this.inDiagonal(x, y) == 3) {
-						oppCount3++;
-					} else if (this.inDiagonal(x, y) == 2) {
-						oppCount2++;
-					}
-				}	
-			}
-		}
-		return agentCount2 + 2 * agentCount3 - oppCount2 - 4 * oppCount3;
-	}
-	 
-	 
 	 
 /**
  * 
