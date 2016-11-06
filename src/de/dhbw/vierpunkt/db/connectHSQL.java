@@ -207,9 +207,9 @@ public class connectHSQL {
 	 * uebermittlung eines Matches in die DB
 	 **/
 	public void handOverGame(String Player1, String Player2, String WINNER, String POINTS) {
-		System.out.println("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES(" + Player1 + "','" + Player2
+		System.out.println("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES ('" + Player1 + "','" + Player2
 				+ "','" + WINNER + "','" + POINTS + "');");
-		executeSQL("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES(" + Player1 + "','" + Player2 + "','"
+		executeSQL("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES ('" + Player1 + "','" + Player2 + "','"
 				+ WINNER + "','" + POINTS + "');");
 	}
 
@@ -225,14 +225,15 @@ public class connectHSQL {
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void handOverTurn(int M_ID, String PERSON, int POS_Y, int POS_X) {
-		System.out.println("INSERT INTO TURN (M_ID, PERSONS, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
+		System.out.println("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
 				+ POS_Y + ", " + POS_X + ");");
-		executeSQL("INSERT INTO TURN (M_ID, PERSONS, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
+		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
 				+ ", " + POS_X + ");");
+		
 	}
 
 	/**
-	 * �bermittlung des kompletten Highscores in das Game
+	 * uebermittlung des kompletten Highscores in das Game
 	 */
 	public String[][] getHighscoreFull() {
 		String[][] highscore = null;
@@ -241,7 +242,7 @@ public class connectHSQL {
 	}
 
 	/**
-	 * �bermittlung des Game Highscores in das Game
+	 * uebermittlung des Game Highscores in das Game
 	 */
 	public String[][] getHighscoreGame() {
 		String[][] highscore = null;
@@ -250,7 +251,7 @@ public class connectHSQL {
 	}
 
 	/**
-	 * �bermittlung des Match Highscores in das Game
+	 * uebermittlung des Match Highscores in das Game
 	 */
 	public String[][] getHighscoreMatch(int G_ID) {
 		String[][] highscore = null;
@@ -259,7 +260,7 @@ public class connectHSQL {
 	}
 
 	/**
-	 * �bermittlung des Match Highscores in das Game
+	 * uebermittlung des Match Highscores in das Game
 	 */
 	public String[][] getHighscoreTurn(int G_ID, int M_ID) {
 		String[][] highscore = null;
