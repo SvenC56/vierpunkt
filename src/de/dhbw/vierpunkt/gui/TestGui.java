@@ -1,4 +1,5 @@
 package de.dhbw.vierpunkt.gui;
+import javafx.animation.PauseTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -824,8 +825,10 @@ public class TestGui implements ZugListener {
 					spieler = 1;
 					createGrids();}
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
-				System.out.println(getNames1() + names2);
-				gewinnermethode(1, names1, names2);
+				
+				//satzgewinner(1);
+				//System.out.println(getNames1() + names2);
+				//gewinnermethode(1, names1, names2);
             }
 		});
 	
@@ -850,8 +853,8 @@ public class TestGui implements ZugListener {
         
         Label meldung = new Label();
         
-        if(spieler==1){ meldung.setText(names1 + "hat den Satz gewonnen!");}
-        else if (spieler == 2) {meldung.setText(names2 + "hat den Satz gewonnen!");
+        if(spieler==1){ meldung.setText(names1 + " hat den Satz gewonnen!");}
+        else if (spieler == 2) {meldung.setText(names2 + " hat den Satz gewonnen!");
 		}else{meldung.setText("Der Satz ist unentschieden ausgegangen.");}
         
         
@@ -865,7 +868,13 @@ public class TestGui implements ZugListener {
         if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
       
         satz.setScene(dialogScene);
-        satz.show();	
+        PauseTransition delay = new PauseTransition(Duration.seconds(5));
+        delay.setOnFinished( event -> satz.close() );
+       
+        
+        delay.play();
+        satz.show();
+        
 	}
 	
 	
