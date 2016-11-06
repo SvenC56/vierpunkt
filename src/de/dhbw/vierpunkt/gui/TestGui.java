@@ -71,8 +71,13 @@ public class TestGui implements ZugListener {
 	private int thema = 1;
 	
 	// Spielernamen
-	private String names1 = "spieler1";
-	private String names2 = "spieler2";
+	private String names1;
+	private String names2;
+	
+	// Angaben aus anderen Klassen
+	private Text spielstand = new Text("0 : 0");
+	private Text satzstatus = new Text("Spiel noch nicht begonnen");
+	
 	
 	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
@@ -101,11 +106,19 @@ public class TestGui implements ZugListener {
 	public String getSchnittstelle() {return schnittstelle;}
 	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
 	public String getNames1() {return names1;}
+	public void setNames1(String names1){this.names1 = names1;}
 	public String getNames2() {return names2;}
+	public void setNames2(String names2){this.names2 = names2;}
 	public char getXodero() {return xodero;}
 	public void setXodero(char xodero) {this.xodero = xodero;}
 	public javafx.scene.image.Image getImage1() {return image1;}
 	public javafx.scene.image.Image getImage2() {return image2;}
+	public void setSatzstatus(String satzstatus) {this.satzstatus.setText(satzstatus);}
+	public void setSpielstand(String spielstand) {this.spielstand.setText(spielstand);}
+	public Text getSpielstand() {return spielstand;}
+	public Text getSatzstatus() {return satzstatus;}
+	public String getFileSting(){return fileString;}
+
 	
 
 	/*********************************************************************************************************************
@@ -200,15 +213,24 @@ public class TestGui implements ZugListener {
 
 		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
 
-		Label spielstand = new Label("Spielstand: ");
-		Text antwortspielstand = new Text("1 : 1");
-		antwortspielstand.setId("text");
-		spielstand.setPadding(new Insets(20, 0, 0, 0));
+		Label spielstandanzeige = new Label("Spielstand: ");
+		//Text antwortspielstand = new Text(spielstand);
+		spielstand.setId("text");
+		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
 
-		Label satzstatus = new Label("Satzstatus:");
-		Text antwortsatzstatus = new Text("warten auf den Gegner");
-		antwortsatzstatus.setId("text");
-		satzstatus.setPadding(new Insets(20, 0, 0, 0));
+		Label satzstatusanzeige = new Label("Satzstatus:");
+		//Text antwortsatzstatus = new Text(satzstatus);
+		satzstatus.setId("text");
+		satzstatusanzeige.setPadding(new Insets(20, 0, 0, 0));
+		
+		
+		spielstand.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+               
+            	System.out.println("Label Text Changed");
+            }
+        }); 
 
 		Label spielmodi = new Label("Spielmodus:");
 		spielmodi.setPadding(new Insets(20, 0, 0, 0));
@@ -265,7 +287,7 @@ public class TestGui implements ZugListener {
 		Button start = new Button("Spiel starten");
 	
 		// Einfuegen der Elemente in die rechte Box
-		boxrechts.getChildren().addAll(spielstand, antwortspielstand, satzstatus, antwortsatzstatus, spielmodi, spielmodus, platzhalter0, start);
+		boxrechts.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
 
 		// Erzeugen der mittleren Containerbox
 		VBox boxmitte = new VBox();
@@ -312,13 +334,15 @@ public class TestGui implements ZugListener {
 		Label spieler1 = new Label("Name Spieler 1: ");
 		TextField spielername1 = new TextField();
 		if(spielername1.getText() != null && ! spielername1.getText().trim().isEmpty()){
-			names1 = spielername1.getText();
+			//names1 = spielername1.getText();
+			setNames1(spielername1.getText());
 		}
 		
 		Label spieler2 = new Label("Name Spieler 2: ");
 		TextField spielername2 = new TextField();
 		if(spielername2.getText() != null && ! spielername2.getText().trim().isEmpty()){
-			names2 = spielername2.getText();
+			//names2 = spielername2.getText();
+			setNames2(spielername2.getText());
 		}
 		
 	
@@ -327,11 +351,11 @@ public class TestGui implements ZugListener {
 		// Name mit Spielstein Spieler 1
 		ImageView i1 = new ImageView(getImage1());
 		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
-		Label s1 = new Label(names1);
+		Label s1 = new Label(getNames1());
 		// Name mit Spielstein Spieler 2
 		ImageView i2 = new ImageView(getImage2());
 		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
-		Label s2 = new Label(names2);
+		Label s2 = new Label(getNames2());
 		// Platzhalter
 		Rectangle p = new Rectangle(20,20);
 		p.setOpacity(0);
@@ -697,13 +721,13 @@ public class TestGui implements ZugListener {
 		});
 	    
 		// Gewinnermeldung
-		Stage gewinnermeldung = new Stage();
+		/*Stage gewinnermeldung = new Stage();
 		FlowPane panegewinner = new FlowPane();
 		Label gewinnernachricht = new Label();
 		panegewinner.setPadding(new Insets(10, 10, 10, 10));
 		panegewinner.getChildren().addAll(gewinnernachricht);
 		Scene meldung1 = new Scene(panegewinner);
-		gewinnermeldung.setScene(meldung1);		
+		gewinnermeldung.setScene(meldung1);		*/
 		 
 		// primary Stage
 		primaryStage.setScene(scene);
@@ -761,6 +785,8 @@ public class TestGui implements ZugListener {
 					spieler = 1;
 					createGrids();}
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
+				System.out.println(getNames1() + names2);
+				gewinnermethode(1, getNames1(), getNames2());
             }
 		});
 	
@@ -773,16 +799,48 @@ public class TestGui implements ZugListener {
 	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
-    public void gewinnermethode(Stage gewinnermeldung, Label gewinnernachricht, int spieler){
-		if(spieler == 1){
-			gewinnernachricht.setText("Spieler " + spieler + "hat gewonnen!");
+    public void gewinnermethode(int spieler, String names1, String names2){
+		
+		Label gewinnernachricht = new Label();
+		
+		// neue Stage
+		final Stage gewinnerStage = new Stage();
+		gewinnerStage.setTitle("Gewinner");
+		gewinnerStage.initModality(Modality.APPLICATION_MODAL);
+		gewinnerStage.initOwner(primaryStage);
+        VBox gewinnerVbox = new VBox(20);
+        gewinnerVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        // Button zum Popup schließen
+        Button back = new Button("ok");
+        
+        // Button Action Event
+        back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+     	   @Override
+            public void handle(MouseEvent arg0) {
+     		   gewinnerStage.close();
+        }});
+        if(spieler == 1){
+        	System.out.println(getNames1());
+			gewinnernachricht.setText(names1 + " hat gewonnen!");
 		}else {
 			if(spieler == 2){
-				gewinnernachricht.setText("Spieler " + spieler + "hat gewonnen!");
+				gewinnernachricht.setText(names2 + " hat gewonnen!");
 			}else{
 				gewinnernachricht.setText("Das spiel ist unentschieden ausgegangen.");
 			}}
-		gewinnermeldung.show();
+        // Einfuegen in die VBox
+        gewinnerVbox.getChildren().addAll(gewinnernachricht, back);
+        Scene spieleScene = new Scene(gewinnerVbox, 800, 600);
+        if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        gewinnerStage.setScene(spieleScene);
+        gewinnerStage.setFullScreen(false);
+       
+        gewinnerStage.show();	
 		
 	}
     
