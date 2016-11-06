@@ -1,12 +1,13 @@
-package de.dhbw.vierpunkt.tests;
-
+package de.dhbw.mannheim.vierpunkt.tests;
 
 public class AI_Logic_Test {
-
-
-	// Allgemeine Regeln / Hinweise Lauterbach
-	// Spalte: von links nach rechts (0,1,2,3,4,5,6) => 7 Maximale Breite
-	// Zeile: von oben nach unten (2,3,4,5,6,7) => 6 Maximale Tiefe (+1 Kopf?)
+	
+	/*****************************************************************************************************/
+	/*************** Testklasse zum Testen des Zusammenspiels von KI und Spiellogik **********************/
+	/*************** unabhängig von GUI/ DB etc., läuft in Konsole ***************************************/
+	/*****************************************************************************************************/
+	
+	
 
 	/**************************************************************/
 	/******************* Attribute ********************************/
@@ -16,14 +17,7 @@ public class AI_Logic_Test {
 		private static final int COLUMN = 6;
 		// MAXIMALE ANZAHL ZEILEN
 		private static final int ROW = 5;
-		
-	/**
-	 * Array fuer Spielfeld --> 0 enstpricht leere Position! 1 = SERVER! 2 =
-	 * AGENT (SPIELER)
-	 */
 
-
-	
 	// Allgemeine Information: x entspricht Spalte / y entspricht Zeile
 
 	/**************************************************************/
@@ -35,8 +29,6 @@ public class AI_Logic_Test {
 		// Variable die Zuege mitzaehlt! //Move entspricht TURN
 				private int move = 0; // --> maximale Anzahl Zuege 69!
 				private int[][] field = new int[ROW + 1][COLUMN + 1];
-				private String player1 = null;
-				private String player2 = null;
 				private int currentPlayer = 2; //Der aktuelle Spieler
 
 		public GameLogic() {
@@ -156,35 +148,6 @@ public class AI_Logic_Test {
 	 * 0 --> noch kein Gewinner
 	 */
 	 
-	private int checkWinner(GameLogic game) {
-		//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
-		if (this.move >= 4) {
-		//wenn negativ unendlich, dann hat der Gegner (Server) gewonnen
-		if (evaluate(game) == (int)Double.NEGATIVE_INFINITY) {
-			return 1;
-		}
-		//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
-		else if (evaluate(game) == (int)Double.POSITIVE_INFINITY) {
-			return 2;
-		}
-		
-		else {
-			int counter=0;
-			for (int x=0; x <= COLUMN; x++ ) {
-				if (this.validPosition(x) == -1) {
-				counter++;	
-				}
-			}
-			//wenn Counter =7, dann steht es unentschieden
-			if (counter == 7) {
-				return 3;
-			}
-			//andernfalls kann kein Gewinner festgestellt werden
-			return 0;
-		}
-		}
-		return 0;
-	}
 	
 	/**
 	 * Prueft, ob Chip eingeworfen werden kann gibt -1(keine valide Position)
@@ -213,17 +176,6 @@ public class AI_Logic_Test {
 		return temp;
 	}
 	
-	private String getCurrentPlayerName() {
-		if (this.getCurrentPlayer() == 1) {
-			return this.player1;
-		}
-		else if (this.getCurrentPlayer() == 2) {
-			return this.player2;
-		}
-		else{
-			return null;
-		}
-	}
 	
 	/**************************************************************/
 	/************************** KI ********************************/
@@ -240,97 +192,10 @@ public class AI_Logic_Test {
 		field[y][x] = value;
 	}
 	
-	
-	/**************************************************************/
-	/************************ BEWERTUNG *****************************/
-	/**************************************************************/
-
-	/**
-	 * Bewertungsfunktion - Bewertet den Pfad nach aktuellem Stand und liefert
-	 * Zahlenwert!
-	 *
-	private int pathEval(int x, int y, int spieler) {
-		int evaluation = 0;
-		// Idee: Die Summe der count ist die Bewertung des Pfades!!
-		// System.err.println("Methode pathEval wurde aufgerufen!");
-		evaluation = inRow(x, y, spieler) + inColumn(x, y, spieler) + inDiagonal(x, y, spieler);
-		// System.err.println("Bewertung des Pfades durchgefuehrt: " +
-		// evaluation);
-		return evaluation;
-	}
-	**/
-	
-	/**
-	 * Bewertet die aktuelle Spielsituation und liefert die Spalte zurueck, in
-	 * welche eingeworfen werden soll. Wenn -1 uebergeben wird, dann gibt es
-	 * keinen validen Pfad! Bewertet die Situation des letzten Zuges und prueft
-	 * somit, ob Gegner in besserer Gewinnsituation ist!
-	 * 
-	 * @param spieler
-	 * @return
-	 
-	public int bestPath(int spieler) {
-		int bestColumn = -1;
-		int tmp = 0;
-		int maxEval = 0;
-		int oponent = 0;
-		;
-		if (spieler == 2 && move > 0) {
-			oponent = pathEval(lastX, lastY, 1);
-		}
-		for (int x = 0; x <= row; x++) {
-			int y = validPosition(x);
-			if (y != -1) {
-				tmp = pathEval(x, y, spieler);
-				if (maxEval <= tmp) {
-					maxEval = tmp;
-					bestColumn = x;
-				}
-			}
-		}
-		if (maxEval < oponent) {
-			bestColumn = lastX;
-		}
-
-		return bestColumn;
-	}
-*/
-
-	/** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
-	private int inColumn(int x, int y) {
-		// System.err.println("Methode inColumn wurde aufgerufen!");
-		int count = 0; // Zaehler der validen Chips des gleichen Spielers in
-						// Spalte
-		int temp = y;
-		// System.out.println("getField in Column" + this.getField(x, y));
-		if (this.getField(x, y) == 0 || this.getField(x, y) == this.getCurrentPlayer()) {
-			count++;
-			//System.out.println("count" + count);
-			y--;
-		}
-		for (; y > -1; y--) { // von unten nach oben!
-			if (this.getField(x, y) == getCurrentPlayer()) {
-				count++;
-				//System.out.println("count" + count);
-			} else
-				break;
-		}
-		if (count < 4 && temp <= ROW) { // von oben nach unten! (nur, wenn
-										// Counter 4 noch nicht erreicht, da
-										// Spiel sonst gewonnen)
-			y = temp + 1;
-			for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
-					count++;
-					// System.out.println("count" + count);
-				} else
-					break;
-			}
-		}
-		return count;
-	}
-	
-	  public void print() {
+/** 
+ * nur zum testen
+ */
+	  public void runInConsole() {
 		    System.out.println();
 		    for (int y = ROW; y >= 0; y--) {
 				for (int x = 0; x <= COLUMN; x++) 
@@ -345,168 +210,113 @@ public class AI_Logic_Test {
 		    System.out.println((this.currentPlayer==1 ? "Server" : "Agent") + " ist am Zug.");
 		  }
 
-	/** Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-	private int inDiagonal(int x, int y) {
-		// System.err.println("Methode inDiagonal wurde aufgerufen!");
-		int count = 0;
-		int startX = x;
-		int startY = y;
-		if (this.getField(x, y) == 0 || this.getField(x, y) == this.getCurrentPlayer()) {
-			count++;
-			x++;
-			y--;
-		}
-		// Prueft oben - rechts
-		for (; (x <= COLUMN && y > -1); x++, y--) {
-			if (this.getField(x, y) == this.getCurrentPlayer()) {
-				count++;
-			} else
-				break;
-		}
-		// Prueft oben - links
-		if (count < 4 && (y > -1 && x > -1)) {
-			x = startX - 1;
-			y = startY - 1;
-			for (; (x > -1 && y > -1); x--, y--) {
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-		}
-
-		if (count < 4 && (y <= ROW && x > -1)) {
-			x = startX - 1;
-			y = startY + 1;
-			// Prueft unten - links
-			for (; (x > -1 && y <= ROW); x--, y++) {
-
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-		}
-		if (count < 4 && (y <= ROW && x <= COLUMN)) {
-			x = startX + 1;
-			y = startY + 1;
-			// Prueft unten - rechts
-			for (; (x <= COLUMN && y <= ROW); x++, y++) {
-
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-		}
-		return count;
-	}
-
-	/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
-	private int inRow(int x, int y) {
-		// System.err.println("Methode inRow wurde aufgerufen!");
-		int count = 0;
-		int temp = x;
-		if (this.getField(x, y) == 0 || this.getField(x, y) == this.getCurrentPlayer()) {
-			count++;
-			x++;
-		}
-		for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
-									// Anzahl Spalten!
-			if (this.getField(x, y) == this.getCurrentPlayer()) {
-				count++;
-			} else
-				break;
-		}
-		if (count < 4 && temp > 0) { // von rechts nach links (nur, wenn Counter
-										// 4 noch nicht erreicht, da Spiel sonst
-										// gewonnen)
-			x = temp - 1;
-			for (; x > -1; x--) {
-				if (this.getField(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-
-			}
-		}
-		return count;
-	}
-
-
-
-	 static int evaluate(GameLogic game) { // bewertet die gesamte Spielsituation
+	 static int evaluate(GameLogic game) { // bewertet die Spielsituation
 		// System.out.println("Ab jetzt sind wir in evaluate");
 		int agentCount2 = 0;
 		int agentCount3 = 0;
 		int oppCount2 = 0;
 		int oppCount3 = 0;
+		
 		for (int x = 0; x <= game.getColumn(); x++) {
 			for (int y = 0; y <= game.getRow(); y++) {
 				//System.out.println("Jetzt sind wir in den for-Schleifen");
 				//System.out.println("Current Player? " + game.getCurrentPlayer());
-				if (game.getCurrentPlayer() == 2) { // unser Agent spielt
-					// inColumn
-					//System.out.println("in Column: " + game.inColumn(x, y));
-					if (game.inColumn(x, y) == 4) { // unser Agent hat 4 in einer Spalte --> wir haben gewonnen
+				
+				// new try
+				// in column?
+				if (game.getRow()-y>=1) {
+					if (isRow(game.field, 2, x, y, 0, 1) == 4) {
 						return (int) Double.POSITIVE_INFINITY;
-					} else if (game.inColumn(x, y) == 3) {
+					}	else if (isRow(game.field, 1, x, y, 0, 1) == 4) {
+						return (int) Double.NEGATIVE_INFINITY;
+					}	else if (isRow(game.field, 2, x, y, 0, 1) == 3) {
 						agentCount3++;
-					} else if (game.inColumn(x, y) == 2) {
-						agentCount2++;	
-	
-					// inRow
-					} else if (game.inRow(x, y) == 4) { // unser Agent hat 4 in einer Zeile --> wir haben gewonnen
-						return (int) Double.POSITIVE_INFINITY;
-					} else if (game.inRow(x, y) == 3) {
-						agentCount3++;
-					} else if (game.inRow(x, y) == 2) {
+					}	else if (isRow(game.field, 1, x, y, 0, 1) == 3) {
+						oppCount3++;
+					}	else if (isRow(game.field, 2, x, y, 0, 1) == 2) {
 						agentCount2++;
-					
-					// inDiagonal
-					} else if (game.inDiagonal(x, y) == 4) { // unser Agent hat 4 in der Diagonale --> wir haben gewonnen
-						return (int) Double.POSITIVE_INFINITY;
-					} else if (game.inDiagonal(x, y) == 3) {
-						agentCount3++;
-					} else if (game.inDiagonal(x, y) == 2) {
-						agentCount2++;
-					}
-				}		
-					
-				if (game.getCurrentPlayer() == 1) { // Gegner spielt	
-					// in column
-					//System.out.println("in Column: " + game.inColumn(x, y));
-					if (game.inColumn(x, y) == 4) { // der Gegner hat 4 in einer Spalte --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (game.inColumn(x, y) == 3) {
-						oppCount3++;
-					} else if (game.inColumn(x, y) == 2) {
-						oppCount2++;
-						
-					// in row
-					} else if (game.inRow(x, y) == 4) { // der Gegner hat 4 in einer Zeile --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (game.inRow(x, y) == 3) {
-						oppCount3++;
-					} else if (game.inRow(x, y) == 2) {
-						oppCount2++;
-					
-					// in diagonal
-					} else if (game.inDiagonal(x, y) == 4) { // der Gegner hat 4 in der Diagonale --> Gegner hat gewonnen
-						return (int) Double.NEGATIVE_INFINITY;
-					} else if (game.inDiagonal(x, y) == 3) {
-						oppCount3++;
-					} else if (game.inDiagonal(x, y) == 2) {
+					}	else if (isRow(game.field, 1, x, y, 0, 1) == 2) {
 						oppCount2++;
 					}
-				}	
+				}
+				
+				// in row?
+		        if (game.getColumn()-x>=2) {
+		          if (isRow(game.field,2,x,y,1,0)==4) 
+		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
+		          else if (isRow(game.field,1,x,y,1,0)==4)
+		            return (int) Double.NEGATIVE_INFINITY;  // verloren
+		          // 3 gleiche Chips uebereinander?
+		          else if (isRow(game.field,2,x,y,1,0)==3) 
+		            agentCount3++; 
+		          else if (isRow(game.field,1,x,y,1,0)==3)
+		            oppCount3++;
+		          // 2 gleiche Chips uebereinander?
+		          else if (isRow(game.field,2,x,y,1,0)==2) 
+		            agentCount2++; 
+		          else if (isRow(game.field,1,x,y,1,0)==2)
+		            oppCount2++;
+		        }
+				
+				// in diagonal right?
+				if ((game.getRow()-y>=1) && (game.getColumn()-x>=2)) {
+					if (isRow(game.field,2,x,y,1,1) == 4) {
+			            return (int) Double.POSITIVE_INFINITY; 
+					}	else if (isRow(game.field,1,x,y,1,1) == 4) {
+			            return (int) Double.NEGATIVE_INFINITY;
+					}  else if (isRow(game.field,2,x,y,1,1) == 3) {
+			            agentCount3++; 
+					}	else if (isRow(game.field,1,x,y,1,1) == 3) {
+			            oppCount3++;
+					}	else if (isRow(game.field,2,x,y,1,1) == 2) {
+			            agentCount2++; 
+					}	else if (isRow(game.field,2,x,y,1,1) == 2) {
+			            oppCount2++;
+			          }
+			        } 
+				
+		        // in diagonal left?
+		        if ((game.getColumn()-x>=2) && (y>=3)) {
+		           if (isRow(game.field,2,x,y,1,-1)==4) 
+		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
+		          else if (isRow(game.field,1,x,y,1,-1)==4)
+		            return (int) Double.NEGATIVE_INFINITY;  // verloren
+		          // 3 gleiche Chips uebereinander?
+		          else if (isRow(game.field,2,x,y,1,-1)==3) 
+		            agentCount3++; 
+		          else if (isRow(game.field,1,x,y,1,-1)==3)
+		            oppCount3++;
+		          // 2 gleiche Chips uebereinander?
+		          else if (isRow(game.field,2,x,y,1,-1)==2) 
+		            agentCount2++; 
+		          else if (isRow(game.field,1,x,y,1,-1)==2)
+		            oppCount2++;
+		        } 
 			}
-		}
-		//System.out.println("agentCount2 " + agentCount2 + " agentCount3 " + agentCount3 + " oppCount2 " + oppCount2 + " oppCount3 " + oppCount3);
-		return agentCount2 + 2 * agentCount3 - oppCount2 - 4 * oppCount3;
-	}
+			}
 			
-
+			//System.out.println("agentCount2 " + agentCount2 + " agentCount3 " + agentCount3 + " oppCount2 " + oppCount2 + " oppCount3 " + oppCount3);
+			return agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
+			
+		}
+										
+			
+	 private static int isRow(int[][] field, int player, int x, int y, int dx, int dy) {
+		 int cnt = 0;
+		 if (y<=2 && x <= 3) {
+		 if (	((field[y][x] == player) || (field[y][x] == 0)) && ((field[y+1*dy][x+1*dx] == player) || (field[y+1*dy][x+1*dx] == 0))
+			&& ((field[y+2*dy][x+2*dx] == player) || (field[y+2*dy][x+2*dx] == 0)) && ((field[y+3*dy][x+3*dx] == player) || (field[y+3*dy][x+3*dx] == 0))) {
+				
+			 for (int i = 0; i < 4; i++) {
+				 if (field[y+i*dy][x+i*dx] == player) {
+					 cnt++;
+				 }
+			 }
+			}
+		 }
+		 return cnt;
+	 	} 
+	 
 			public static int getAlphaBeta(GameLogic game, int depth, int alpha, int beta) {
 				
 				//Declarations
@@ -574,15 +384,25 @@ public class AI_Logic_Test {
 								move = j; // currently the best move
 							}
 						}
-						System.out.println("move:" + move);
+						System.out.println("move: " + move);
+						System.out.println("max: " + max);
 						return move; // best possible move after all columns have been evaluated
 					
 			}
 
 	 
-		public static void main(String[] args) {
+	public static void main(String[] args) {
 			// TODO Auto-generated method stub
+		
+/*** 
+ * Achtung: Nur zum Testen! While Schleife bricht nur ab, wenn Gegner gewinnt -> Also im Optimalfall nie, wenn wir anfangen zu spielen! => Endlosschleife!
+ 
+			int test = 0;
+			
+	while(test == 0) { 
+	*/
 			GameLogic game = new GameLogic();
+			int count = 0;
 			while (true) {
 			
 			int depth = 6;
@@ -590,53 +410,64 @@ public class AI_Logic_Test {
 
 			    int x;
 			    
-			 
-
-			    if (game.getCurrentPlayer() == 1) {
-			    	
-			      // Server ist dran
-			   
-			        System.out.print("Server ist dran");
-			        x = (int) (Math.random()*5);
+			    if (game.getCurrentPlayer() == 1) {      // Server ist dran
+		   
+			      System.out.print("Server ist dran              "
+			      		+ "");
+			      System.out.println("eval" + evaluate(game));
+			       x = (int) (Math.random()*6);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println("Server hat in Spalte gelegt " + x);
 			      System.out.println("Bewertung: " + evaluate(game));
 			      
-			      // Sieg?
+		      // Sieg?
 			      if (evaluate(game)==(int)Double.NEGATIVE_INFINITY) {
-			        System.out.println("Server hat gewonnen!");
+			    	  // test++;
+			    	  game.runInConsole();
+			    	  System.out.println(evaluate(game));
+			        System.out.println("Server hat gewonnen...");
 			        break;
-			        
 			      };
 			      
-			      game.print();
+			      game.runInConsole();
 			    
 			    }
 			      
 			      // wir sind dran
 			     
 			    if (game.getCurrentPlayer() == 2) {
-			    	 System.out.println("Wir sind dran");
-			      x = calcMove(game, depth);
+			    	 System.out.println("Wir sind dran          "
+			    	 		+ "");
+			    	 if (count == 0) {
+			    		 game.playTurn(3, 2);
+			    		 count++;
+			    	 } else {
+			    	System.out.println("eval" +evaluate(game));
+			      // x = (int) (Math.random()*6); // falls KI nicht getestet werden soll, sondern nur Zufallszahl
+			    	x = calcMove(game, depth);
 			      game.playTurn(x, 2);
+			      System.out.println("Wir haben in Spalte gelegt " + x);
+			    	 }
 			      game.setCurrentPlayer(1);
-			      System.out.println("WIr haben in Spalte gelegt " + x);
-			      System.out.println("Bewertung: " + evaluate(game));
+			      
+
 			      // Sieg?
 			      if (evaluate(game)==(int)Double.POSITIVE_INFINITY) {
+			    	  game.runInConsole();
+			    	  System.out.println(evaluate(game));
 			        System.out.println(" Wir haben gewonnen!");
 			        break;
-			        
 			      };
 			      
-			      game.print();
+			      game.runInConsole();
 			      
 			      System.out.println("_____________________________________");
 			      System.out.println();
 			    };
 			    System.out.println();
 			  }
+		// } End of while(true) loop
 		}
 	}
 }
