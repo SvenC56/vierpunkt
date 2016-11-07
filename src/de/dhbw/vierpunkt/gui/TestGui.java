@@ -354,14 +354,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
 		
 		// login Felder
-		Label spieler1 = new Label("Name Spieler 1: ");
+		Label spieler1 = new Label("Spieler: ");
 		TextField spielername1 = new TextField();
 		if(spielername1.getText() != null && ! spielername1.getText().trim().isEmpty()){
 			//names1 = spielername1.getText();
 			setNames1(spielername1.getText());
 		}
 		
-		Label spieler2 = new Label("Name Spieler 2: ");
+		Label spieler2 = new Label("Gegner: ");
 		TextField spielername2 = new TextField();
 		if(spielername2.getText() != null && ! spielername2.getText().trim().isEmpty()){
 			//names2 = spielername2.getText();
@@ -554,11 +554,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                 ok.setOnMouseClicked(new EventHandler<MouseEvent>(){
              	   @Override
                     public void handle(MouseEvent arg0) {
-             		   setAppId(app1.getText());
-             		   setAppKey(app2.getText());
-             		   setAppSecret(app3.getText());
+             		   if(app1.getText()!= null){setAppId(app1.getText());}
+             		   if(app2.getText()!= null){setAppKey(app2.getText());}
+             		   if(app3.getText()!= null){setAppSecret(app3.getText());}
              		   
-             		   System.out.println(appId + " " + appKey + " " + appSecret);
              		   dialog.close();
                 }});
                 
@@ -905,6 +904,41 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
+	public void changeTheme(){
+		// neue Stage
+		final Stage changetheme = new Stage();
+		changetheme.setTitle("Themenwechsel");
+		changetheme.initModality(Modality.APPLICATION_MODAL);
+		changetheme.initOwner(primaryStage);
+        VBox themaVbox = new VBox(20);
+        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label meldung = new Label();
+        meldung.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
+        Button open = new Button("Einstellungen aendern");
+        
+        open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				changetheme.close();
+			}
+        });
+        // Einfuegen in die VBox
+        themaVbox.getChildren().addAll(meldung, open);
+        Scene themaScene = new Scene(themaVbox, 500, 800);
+        
+        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        changetheme.setScene(themaScene);
+        
+        changetheme.show();
+        
+	}
+	
+	
 	public void onConnectionError(){
 		// neue Stage
 		final Stage connection = new Stage();
