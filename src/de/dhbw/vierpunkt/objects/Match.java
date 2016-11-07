@@ -139,7 +139,13 @@ public class Match {
 		
 		public Turn startTurn (Player player, int x) {
 		if (!player.getIsOpponent()){
+			if (this.getTurnNumber()>0){
 			x = ki.calcMove(this, this.depth);
+			}
+			else {
+				x=3;
+			}
+			
 		}
 		int y = this.validPosition(x);
 		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
