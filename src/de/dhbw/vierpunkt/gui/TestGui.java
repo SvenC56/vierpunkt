@@ -270,16 +270,26 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 				}
 			}
 		});
-		
+		Button einstellungen = new Button("Einstellungen");
+		Button start = new Button("Spiel starten");
 		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
 		            Number oldValue, Number newValue) {
 		    	if(newValue.intValue() == 2){
+		    		einstellungen.setOpacity(1);
+		    		einstellungen.setDisable(false);
+		    		start.setOpacity(1);
+		    		start.setDisable(false);
 		    		createGrids_automatisch();
 		    	}
 		    	if(newValue.intValue() == 0){
+		    		einstellungen.setOpacity(0);
+		    		einstellungen.setDisable(true);
+		    		start.setOpacity(0);
+		    		start.setDisable(true);
 		    		createGrids();
+		    		
 		    	}
 		    }
 		});
@@ -288,7 +298,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		Rectangle platzhalter0 = new Rectangle(10, 40);
 		platzhalter0.setOpacity(0);
 
-		Button start = new Button("Spiel starten");
+		
 	
 		// Einfuegen der Elemente in die rechte Box
 		boxrechts.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
@@ -516,7 +526,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		         }
 		});
 		
-		Button einstellungen = new Button("Einstellungen");
+		
 		einstellungen.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0){
