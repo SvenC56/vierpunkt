@@ -17,9 +17,11 @@ public class MainApplication extends Application implements ParamListener {
 	public static void main(String[] args) throws InterruptedException
 	{
 		// Drei suesse Interfaces senden Events an die GUI
+		MainApplication main = new MainApplication();
 		filey.addListener(gui);
 		pushy.addListener(gui);
 		gui.addNameListener(game);
+		gui.addParamListener(main);
 		launch(args);
 	}
 
@@ -43,6 +45,8 @@ public class MainApplication extends Application implements ParamListener {
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
 			String Kontaktpfad)
 	{
+		System.out.println("**** Startevent fired ****");
+		
 		if(Schnittstelle.equals("pusher"))
 		{
 			Thread pusherThread = new Thread(){

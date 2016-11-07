@@ -784,7 +784,7 @@ public class TestGui implements ZugListener {
                 VBox spieleVbox = new VBox(20);
                 spieleVbox.setPadding(new Insets(10, 10, 10, 10));                
                 
-                // Button zum Popup schließen
+                // Button zum Popup schliessen
                 Button back = new Button("zurueck");
                 
                 Label spieleLabel = new Label("Bisherige Spiele:");
@@ -824,11 +824,13 @@ public class TestGui implements ZugListener {
 				}else{
 					spieler = 1;
 					createGrids();}
+				
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
+				
 				
 				//satzgewinner(1);
 				//System.out.println(getNames1() + names2);
-				gewinnermethode(1, spielername1.getText(), spielername2.getText());
+				//gewinnermethode(1, spielername1.getText(), spielername2.getText());
             }
 		});
 	
@@ -1113,7 +1115,7 @@ public class TestGui implements ZugListener {
 		}
 	}
 	
-	public void addListener(ParamListener toAdd){
+	public void addParamListener(ParamListener toAdd){
 		listeners.add(toAdd);
 	}
 	
