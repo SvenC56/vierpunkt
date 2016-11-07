@@ -107,6 +107,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
     public Color color = Color.rgb(0, 0, 0);
     public GridPane spielfeld = new GridPane();
     
+    public GridPane spielfeld2 = new GridPane();
+    
     // Getter und Setter Methoden
     public void setColor(Color color) {	this.color = color;}
 	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
@@ -291,7 +293,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		    		einstellungen.setDisable(false);
 		    		start.setOpacity(1);
 		    		start.setDisable(false);
-		    		createGrids_automatisch();
+		    		createGrids_automatisch(spielfeld);
 		    	}
 		    	if(newValue.intValue() == 0){
 		    		einstellungen.setOpacity(0);
@@ -682,7 +684,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		
 		// automatisch
 		if(spielmodus.getValue() == 2){
-			createGrids_automatisch();
+			createGrids_automatisch(spielfeld);
 		}
 		
 		/*************************************************************************************************************
@@ -832,17 +834,31 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		// primary Stage
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
+		spielfeld2.setId("spielfeld");
+		
+		
+		// Erzeugen der Spalten (7)
+		spielfeld2.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
+		// Erzeugen der Zeilen (6)
+		spielfeld2.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE));
 		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				
 				// neue Stage
 				final Stage spieleStage = new Stage();
-				spieleStage.setTitle("Einstellungen");
+				spieleStage.setTitle("Bisherige Spiele");
 				spieleStage.initModality(Modality.APPLICATION_MODAL);
 				spieleStage.initOwner(primaryStage);
                 VBox spieleVbox = new VBox(20);
-                spieleVbox.setPadding(new Insets(10, 10, 10, 10));                
+                spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
+                spieleVbox.setAlignment(Pos.CENTER);
                 
                 // Button zum Popup schliessen
                 Button back = new Button("zurueck");
@@ -852,6 +868,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                 ScrollPane listeSpiele = new ScrollPane();
         		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
         		listeSpiele.setContent(beispieltext);
+        		
+        		
                 
                 // Button Action Event
                 back.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -860,14 +878,31 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
              		   spieleStage.close();
                 }});
                 
+                HBox hb = new HBox();
+                Label spielstandanzeige = new Label("Spielstand: ");
+        		Text spielstand_altesSpiel = new Text("3:1");
+        		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
+        		Label spieler = new Label("Spieler: ");
+        		Label spieler1 = new Label("names1");
+        		Label spieler2 = new Label("names2");
+        		
+        		VBox anzeige = new VBox();
+        		anzeige.getChildren().addAll(spielstandanzeige, spielstand_altesSpiel, back);
+        		
+        		VBox spieleranzeige = new VBox();
+        		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2);
+                
+        		hb.getChildren().addAll(spieleranzeige, spielfeld2, anzeige);
+                hb.setAlignment(Pos.BOTTOM_CENTER);
                 // Einfuegen in die VBox
-                spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, back);
+                spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, hb);
                 Scene spieleScene = new Scene(spieleVbox, 1200, 900);
                 if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
                 if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
                 if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
                 if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
               
+                createGrids_automatisch(spielfeld2);
                 spieleStage.setScene(spieleScene);
                 //spieleStage.setFullScreen(true);
                 spieleStage.show();	
@@ -880,7 +915,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
             public void handle(MouseEvent arg0) {
 				if(spielmodus.getValue()==2){
 					spieler = 1;
-	            	createGrids_automatisch();
+	            	createGrids_automatisch(spielfeld);
 				}else{
 					spieler = 1;
 					createGrids();}
@@ -1063,8 +1098,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         gewinnerStage.show();	
 		
 	}
-    
-    public void createGrids_automatisch(){
+	
+
+	
+	
+    public void createGrids_automatisch(GridPane spielfeld){
     	spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
             for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
