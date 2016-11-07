@@ -20,6 +20,8 @@ public class Match {
 	private boolean even = false;	//Unentschieden
 	private AlphaBeta ki = new AlphaBeta();
 	static int depth = 6;
+	private boolean matchActive=false;
+	private Game game;
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -42,7 +44,8 @@ public class Match {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Match() {
+	public Match(Game game) {
+		this.game = game;
 		this.matchID++;
 		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
@@ -72,6 +75,15 @@ public class Match {
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
+	
+	
+	boolean getMatchActive() {
+		return this.matchActive;
+	}
+	
+	void setMatchActive(boolean matchActive) {
+		this.matchActive = matchActive;
+	}
 	
 	  int getColumn() {
 			return COLUMN;
@@ -138,7 +150,8 @@ public class Match {
 				}
 		
 		public Turn startTurn (Player player, int x) {
-		if (!player.getIsOpponent()){
+			
+			if (!player.getIsOpponent()){
 			if (this.getTurnNumber()>0){
 			x = ki.calcMove(this, this.depth);
 			}
@@ -151,8 +164,11 @@ public class Match {
 		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
 		return this.turn[turnNumber];
 		}
-
 		
+		
+		public startMatch() {
+			
+		}
 
 	/**
 	 * Erstellt eine Kopie des derzeitigen Spiels zur Analyse in der KI 
@@ -211,36 +227,34 @@ public class Match {
 		 return null;
 	 }
 
-	 void checkWinner(Game game) {
+	 void checkWinner() {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 			if (this.getTurnNumber() >= 4) {
 				
 				//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
-				if (this.evaluate() == (int)Double.POSITIVE_INFINITY && !currentPlayer.getIsOpponent()) {
+				if (this.evaluate() == (int)Double.POSITIVE_INFINITY) {
 				this.setMatchWinner(currentPlayer);
 				currentPlayer.setWins();
+				this.matchActive = false;
 				}
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
-				if (game.getPlayer(0) == currentPlayer) {
-					this.setMatchWinner(game.getPlayer(0));
-					game.getPlayer(0).setWins();
+					this.setMatchWinner(currentPlayer);
+					currentPlayer.setWins();
+					this.matchActive = false;
 					}
-				else if (game.getPlayer(0) != currentPlayer){
-					this.setMatchWinner(game.getPlayer(1));
-					game.getPlayer(1).setWins();
-				}
-				else {
+				
 					int counter=0;
 					for (int x=0; x <= COLUMN; x++ ) {
 						if (this.validPosition(x) == -1) {
 						counter++;	
 						}			
 				}
-					if (counter == 7 && this.matchWinner== null) {
+				if (counter == 7 && this.matchWinner== null) {
 						this.even = true;
+						this.matchActive = false;
 						}
-					}}}
+					}
 			}
 	 
 	
