@@ -442,23 +442,26 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         // Pusher Credentials
         Label cred1 = new Label("App ID:");
         TextField app1 = new TextField ();
-        app1.setPromptText(appId);
+        //app1.setPromptText(appId);
+        app1.setText(appId);
         
         HBox hb1 = new HBox();
         hb1.getChildren().addAll(cred1, app1);
         hb1.setSpacing(10);
         Label cred2 = new Label("App Key: ");
         TextField app2 = new TextField ();
-        app2.setPromptText(appKey);
+        //app2.setPromptText(appKey);
         app2.setPrefWidth(200);
+        app2.setText(appKey);
         
         HBox hb2 = new HBox();
         hb2.getChildren().addAll(cred2, app2);
         hb2.setSpacing(10);
         Label cred3 = new Label("App Secret: ");
         TextField app3 = new TextField ();
-        app3.setPromptText(appSecret);
+        //app3.setPromptText(appSecret);
         app3.setPrefWidth(200);
+        app3.setText(appSecret);
        
         HBox hb3 = new HBox();
         hb3.getChildren().addAll(cred3, app3);
@@ -882,8 +885,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					spieler = 1;
 					createGrids();}
 				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), appId, appKey, appSecret);
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), app1.getText(), app2.getText(), app3.getText());
+				fireNames(spielername1.getText(), spielername2.getText());
 				
+				
+				
+				
+				
+				
+				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 					plaetzeFreiInReihe[i]=5;
 				}
@@ -1238,9 +1248,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		NameListeners.add(toAdd);
 	}
 	
-	public static void fireNames (String name1, String name2, int isServer) {
+	public static void fireNames (String name1, String name2) {
 		for (NameListener name: NameListeners) {
-			name.startGame(name1, name2, isServer);
+			name.startGame(name1, name2);
 		}
 	}
 	
