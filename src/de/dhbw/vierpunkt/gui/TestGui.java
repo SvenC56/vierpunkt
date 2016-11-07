@@ -738,7 +738,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					meldung.setOpacity(1);
 				}else{
 					if(spielername1.getText().equals(spielername2.getText())){
-						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
@@ -763,7 +763,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 						meldung.setOpacity(1);
 					}else{
 						if(spielername1.getText().equals(spielername2.getText())){
-							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
@@ -786,7 +786,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 						meldung.setOpacity(1);
 					}else{
 						if(spielername1.getText().equals(spielername2.getText())){
-							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
@@ -806,7 +806,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					meldung.setOpacity(1);
 				}else{
 					if(spielername1.getText().equals(spielername2.getText())){
-						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
@@ -884,8 +884,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 				}else{
 					spieler = 1;
 					createGrids();}
-				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), app1.getText(), app2.getText(), app3.getText());
+				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
 				fireNames(spielername1.getText(), spielername2.getText());
 				
 				
