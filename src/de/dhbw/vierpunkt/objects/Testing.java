@@ -8,7 +8,7 @@ public class Testing {
 		game.startGame("Tobi", "Sven");
 		game.startMatch();
 		game.playTurn(2);
-		Thread.sleep(3000);
+		Thread.sleep(500);
 		
 
 	}

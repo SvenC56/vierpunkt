@@ -4,6 +4,7 @@
 
 package de.dhbw.vierpunkt.db;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,7 +33,7 @@ public class connectHSQL {
 		con = null;
 
 		try {
-			con = DriverManager.getConnection("jdbc:hsqldb:file:.\\VierGewinntDB; shutdown=true", "root", "vierpunkt");
+			con = DriverManager.getConnection("jdbc:hsqldb:file:"+ "." + File.separatorChar +"VierGewinntDB; shutdown=true", "root", "vierpunkt");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
