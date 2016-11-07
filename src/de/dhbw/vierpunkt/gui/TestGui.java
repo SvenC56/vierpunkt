@@ -850,63 +850,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
-				
-				// neue Stage
-				final Stage spieleStage = new Stage();
-				spieleStage.setTitle("Bisherige Spiele");
-				spieleStage.initModality(Modality.APPLICATION_MODAL);
-				spieleStage.initOwner(primaryStage);
-                VBox spieleVbox = new VBox(20);
-                spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
-                spieleVbox.setAlignment(Pos.CENTER);
-                
-                // Button zum Popup schliessen
-                Button back = new Button("zurueck");
-                
-                Label spieleLabel = new Label("Bisherige Spiele:");
-                
-                ScrollPane listeSpiele = new ScrollPane();
-        		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
-        		listeSpiele.setContent(beispieltext);
-        		
-        		
-                
-                // Button Action Event
-                back.setOnMouseClicked(new EventHandler<MouseEvent>(){
-             	   @Override
-                    public void handle(MouseEvent arg0) {
-             		   spieleStage.close();
-                }});
-                
-                HBox hb = new HBox();
-                Label spielstandanzeige = new Label("Spielstand: ");
-        		Text spielstand_altesSpiel = new Text("3:1");
-        		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
-        		Label spieler = new Label("Spieler: ");
-        		Label spieler1 = new Label("names1");
-        		Label spieler2 = new Label("names2");
-        		
-        		VBox anzeige = new VBox();
-        		anzeige.getChildren().addAll(spielstandanzeige, spielstand_altesSpiel, back);
-        		
-        		VBox spieleranzeige = new VBox();
-        		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2);
-                
-        		hb.getChildren().addAll(spieleranzeige, spielfeld2, anzeige);
-                hb.setAlignment(Pos.BOTTOM_CENTER);
-                // Einfuegen in die VBox
-                spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, hb);
-                Scene spieleScene = new Scene(spieleVbox, 1200, 900);
-                if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-                if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-                if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-                if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-              
-                createGrids_automatisch(spielfeld2);
-                spieleStage.setScene(spieleScene);
-                //spieleStage.setFullScreen(true);
-                spieleStage.show();	
-				}
+			bisherigeSpiele();	
+			}
 		});
 	    
 		
@@ -949,6 +894,77 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
+	public void bisherigeSpiele(){
+		// neue Stage
+		final Stage spieleStage = new Stage();
+		spieleStage.setTitle("Bisherige Spiele");
+		spieleStage.initModality(Modality.APPLICATION_MODAL);
+		spieleStage.initOwner(primaryStage);
+        VBox spieleVbox = new VBox(20);
+        spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
+        spieleVbox.setAlignment(Pos.CENTER);
+        
+        // Button zum Popup schliessen
+        Button back = new Button("zurueck");
+        
+        Label spieleLabel = new Label("Bisherige Spiele:");
+        
+        ScrollPane listeSpiele = new ScrollPane();
+		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
+		listeSpiele.setContent(beispieltext);
+		Button play = new Button("play"); 
+		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	     	   @Override
+	            public void handle(MouseEvent arg0) {
+	     		   
+	        }});
+		
+		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld2))));
+        
+        // Button Action Event
+        back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+     	   @Override
+            public void handle(MouseEvent arg0) {
+     		   spieleStage.close();
+        }});
+        
+        HBox hb = new HBox();
+        Label spielstandanzeige = new Label("Spielstand: ");
+		Text spielstand_altesSpiel = new Text("3:1");
+		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
+		Label spieler = new Label("Spieler: ");
+		Label spieler1 = new Label("names1");
+		Label spieler2 = new Label("names2");
+		Rectangle platzhalter1 = new Rectangle(7 * l, l);
+		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		VBox grid = new VBox();
+		grid.getChildren().addAll(platzhalter1, spielfeld2);
+		
+		VBox anzeige = new VBox();
+		anzeige.getChildren().addAll(spielstandanzeige, spielstand_altesSpiel, play, back);
+		
+		VBox spieleranzeige = new VBox();
+		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2);
+        
+		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
+        hb.setAlignment(Pos.BOTTOM_CENTER);
+        // Einfuegen in die VBox
+        spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, hb);
+        Scene spieleScene = new Scene(spieleVbox, 1200, 900);
+        if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        createGrids_automatisch(spielfeld2);
+        spieleStage.setScene(spieleScene);
+        //spieleStage.setFullScreen(true);
+        spieleStage.show();	
+		}
+		
+	
+	
 	public void changeTheme(){
 		// neue Stage
 		final Stage changetheme = new Stage();
@@ -1240,7 +1256,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         }
     }
     public void setSpielstein(int zeile, int spalte){
-    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte))));
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))));
     }
     
     public void spielsteinAnzeigen(ImageView spielstein){
@@ -1261,7 +1277,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         }
     }
     
-    public StackPane getNodeByRowColumnIndex (final int row, final int column) {
+    public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
         for (Node node : spielfeld.getChildren()) {
             if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 return (StackPane) node;
