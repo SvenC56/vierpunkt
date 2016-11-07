@@ -119,6 +119,9 @@ public class TestGui implements ZugListener {
 	public Text getSpielstand() {return spielstand;}
 	public Text getSatzstatus() {return satzstatus;}
 	public String getFileSting(){return fileString;}
+	public String getAppId(){return appId;}	
+	public String getAppKey(){return appKey;}
+	public String getAppSecret(){return appSecret;}
 
 	
 
@@ -825,7 +828,7 @@ public class TestGui implements ZugListener {
 					spieler = 1;
 					createGrids();}
 				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero());
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() );
 				
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 					plaetzeFreiInReihe[i]=5;
@@ -1122,9 +1125,10 @@ public class TestGui implements ZugListener {
 	}
 	
 	
-	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung){
+	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung, 
+									  String AppID, String AppKey, String AppSecret){
 		for (ParamListener pl : listeners){
-			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad, spielerKennung);
+			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad, spielerKennung, AppID, AppKey, AppSecret);
 		}
 	}
 	

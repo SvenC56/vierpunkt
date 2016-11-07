@@ -44,7 +44,7 @@ public class MainApplication extends Application implements ParamListener {
 	 */
 	@Override
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
-			String Kontaktpfad, char spielerKennnung)
+			String Kontaktpfad, char spielerKennnung, String AppID, String AppKey, String AppSecret)
 	{
 	
 		// wenn Pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet

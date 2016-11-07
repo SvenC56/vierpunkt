@@ -1,7 +1,5 @@
 package de.dhbw.vierpunkt.interfaces;
 
-import javafx.concurrent.Task;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,14 +7,12 @@ import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
-import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.PrivateChannel;
 import com.pusher.client.channel.PrivateChannelEventListener;
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
-import de.dhbw.vierpunkt.gui.TestGui;
 import de.dhbw.vierpunkt.logic.GameLogic;
 
 
@@ -57,8 +53,11 @@ public class PusherInterface implements Runnable
 		
 	}
 	
-	public PusherInterface(int zugZeit){
+	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret){
 		this.zugZeit = zugZeit;
+		this.MyAppID = AppID;
+		this.MyAppKey = AppKey;
+		this.MyAppSecret = AppSecret;
 	}
 
 	public void run(){
