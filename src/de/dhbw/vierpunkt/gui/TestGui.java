@@ -36,7 +36,7 @@ import de.dhbw.vierpunkt.objects.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener/*, ConnectionErrorListener */{
+public class TestGui implements ZugListener,ConnectionErrorListener {
 
 	/****** VARIABLENDEKLARATION *****/
 	
@@ -863,7 +863,7 @@ public class TestGui implements ZugListener/*, ConnectionErrorListener */{
 					spieler = 1;
 					createGrids();}
 				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() );
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), appId, appKey, appSecret);
 				
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 					plaetzeFreiInReihe[i]=5;
@@ -871,6 +871,7 @@ public class TestGui implements ZugListener/*, ConnectionErrorListener */{
 				//satzgewinner(1);
 				//System.out.println(getNames1() + names2);
 				//gewinnermethode(1, spielername1.getText(), spielername2.getText());
+				
             }
 		});
 	
@@ -884,6 +885,40 @@ public class TestGui implements ZugListener/*, ConnectionErrorListener */{
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
+	public void onConnectionError(){
+		// neue Stage
+		final Stage connection = new Stage();
+		connection.setTitle("Verbindungsfehler");
+        connection.initModality(Modality.APPLICATION_MODAL);
+        connection.initOwner(primaryStage);
+        VBox connectionVbox = new VBox(20);
+        connectionVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label meldung = new Label();
+        meldung.setText("Der Pusher Server reagiert nicht, bitte Pusher Credentials in den Einstellungen ueberpruefen");
+        Button ok = new Button("Einstellungen aendern");
+        
+        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				connection.close();
+			}
+        });
+        // Einfuegen in die VBox
+        connectionVbox.getChildren().addAll(meldung, ok);
+        Scene connectionScene = new Scene(connectionVbox, 500, 800);
+        
+        if(thema == 1){ connectionScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ connectionScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){connectionScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ connectionScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        connection.setScene(connectionScene);
+        
+        connection.show();
+        
+	}
+	
 	public void satzgewinner(int spieler){
 		// neue Stage
 		final Stage satz = new Stage();
