@@ -1,5 +1,7 @@
 package de.dhbw.vierpunkt.objects;
 
+import de.dhbw.vierpunkt.logic.GameLogic;
+
 /**
  * Ein Match ist eine Runde im Spiel (Game)
  * @author tobias
@@ -229,72 +231,94 @@ public class Match {
 	/************* BEWERTUNGS-METHODEN ****************************/
 	/**************************************************************/
 	
-	 int evaluate() { // bewertet die gesamte Spielsituation
+	 int evaluate() { // bewertet die Spielsituation
+			// System.out.println("Ab jetzt sind wir in evaluate");
 			int agentCount2 = 0;
 			int agentCount3 = 0;
 			int oppCount2 = 0;
 			int oppCount3 = 0;
 			for (int x = 0; x <= this.getColumn(); x++) {
 				for (int y = 0; y <= this.getRow(); y++) {
+					//System.out.println("Jetzt sind wir in den for-Schleifen");
+					//System.out.println("Current Player? " + game.getCurrentPlayer());
 					
-					if (!currentPlayer.getIsServer()) { // unser Agent spielt
-						// inColumn
-						if (this.inColumn(x, y) == 4) { // unser Agent hat 4 in einer Spalte --> wir haben gewonnen
+					// new try
+					// in column?
+					if (this.getRow()-y>=1) {
+						if (isRow(this.field, 2 , x, y, 0, 1) == 4) {
 							return (int) Double.POSITIVE_INFINITY;
-						} else if (this.inColumn(x, y) == 3) {
+						}	else if (isRow(this.field, 1, x, y, 0, 1) == 4) {
+							return (int) Double.NEGATIVE_INFINITY;
+						}	else if (isRow(this.field, 2, x, y, 0, 1) == 3) {
 							agentCount3++;
-						} else if (this.inColumn(x, y) == 2) {
-							agentCount2++;	
-		
-						// inRow
-						} else if (this.inRow(x, y) == 4) { // unser Agent hat 4 in einer Zeile --> wir haben gewonnen
-							return (int) Double.POSITIVE_INFINITY;
-						} else if (this.inRow(x, y) == 3) {
-							agentCount3++;
-						} else if (this.inRow(x, y) == 2) {
+						}	else if (isRow(this.field, 1, x, y, 0, 1) == 3) {
+							oppCount3++;
+						}	else if (isRow(this.field, 2, x, y, 0, 1) == 2) {
 							agentCount2++;
-						
-						// inDiagonal
-						} else if (this.inDiagonal(x, y) == 4) { // unser Agent hat 4 in der Diagonale --> wir haben gewonnen
-							return (int) Double.POSITIVE_INFINITY;
-						} else if (this.inDiagonal(x, y) == 3) {
-							agentCount3++;
-						} else if (this.inDiagonal(x, y) == 2) {
-							agentCount2++;
-						}
-					}		
-						
-					if (currentPlayer.getIsServer()) { // Gegner spielt	
-						// in column
-						if (this.inColumn(x, y) == 4) { // der Gegner hat 4 in einer Spalte --> Gegner hat gewonnen
-							return (int) Double.NEGATIVE_INFINITY;
-						} else if (this.inColumn(x, y) == 3) {
-							oppCount3++;
-						} else if (this.inColumn(x, y) == 2) {
-							oppCount2++;
-							
-						// in row
-						} else if (this.inRow(x, y) == 4) { // der Gegner hat 4 in einer Zeile --> Gegner hat gewonnen
-							return (int) Double.NEGATIVE_INFINITY;
-						} else if (this.inRow(x, y) == 3) {
-							oppCount3++;
-						} else if (this.inRow(x, y) == 2) {
-							oppCount2++;
-						
-						// in diagonal
-						} else if (this.inDiagonal(x, y) == 4) { // der Gegner hat 4 in der Diagonale --> Gegner hat gewonnen
-							return (int) Double.NEGATIVE_INFINITY;
-						} else if (this.inDiagonal(x, y) == 3) {
-							oppCount3++;
-						} else if (this.inDiagonal(x, y) == 2) {
+						}	else if (isRow(this.field, 1, x, y, 0, 1) == 2) {
 							oppCount2++;
 						}
-					}	
+					}
+					
+					// in row?
+			        if (this.getColumn()-x>=2) {
+			          if (isRow(this.field,2,x,y,1,0)==4) 
+			            return (int) Double.POSITIVE_INFINITY;  // gewonnen
+			          else if (isRow(this.field,1,x,y,1,0)==4)
+			            return (int) Double.NEGATIVE_INFINITY;  // verloren
+			          // 3 gleiche Chips uebereinander?
+			          else if (isRow(this.field,2,x,y,1,0)==3) 
+			            agentCount3++; 
+			          else if (isRow(this.field,1,x,y,1,0)==3)
+			            oppCount3++;
+			          // 2 gleiche Chips uebereinander?
+			          else if (isRow(this.field,2,x,y,1,0)==2) 
+			            agentCount2++; 
+			          else if (isRow(this.field,1,x,y,1,0)==2)
+			            oppCount2++;
+			        }
+					
+					// in diagonal right?
+					if ((this.getRow()-y>=1) && (this.getColumn()-x>=2)) {
+						if (isRow(this.field,2,x,y,1,1) == 4) {
+				            return (int) Double.POSITIVE_INFINITY; 
+						}	else if (isRow(this.field,1,x,y,1,1) == 4) {
+				            return (int) Double.NEGATIVE_INFINITY;
+						}  else if (isRow(this.field,2,x,y,1,1) == 3) {
+				            agentCount3++; 
+						}	else if (isRow(this.field,1,x,y,1,1) == 3) {
+				            oppCount3++;
+						}	else if (isRow(this.field,2,x,y,1,1) == 2) {
+				            agentCount2++; 
+						}	else if (isRow(this.field,2,x,y,1,1) == 2) {
+				            oppCount2++;
+				          }
+				        } 
+					
+			        // in diagonal left?
+			        if ((this.getColumn()-x>=2) && (y>=3)) {
+			           if (isRow(this.field,2,x,y,1,-1)==4) 
+			            return (int) Double.POSITIVE_INFINITY;  // gewonnen
+			          else if (isRow(this.field,1,x,y,1,-1)==4)
+			            return (int) Double.NEGATIVE_INFINITY;  // verloren
+			          // 3 gleiche Chips uebereinander?
+			          else if (isRow(this.field,2,x,y,1,-1)==3) 
+			            agentCount3++; 
+			          else if (isRow(this.field,1,x,y,1,-1)==3)
+			            oppCount3++;
+			          // 2 gleiche Chips uebereinander?
+			          else if (isRow(this.field,2,x,y,1,-1)==2) 
+			            agentCount2++; 
+			          else if (isRow(this.field,1,x,y,1,-1)==2)
+			            oppCount2++;
+			        } 
 				}
+				}
+				
+				//System.out.println("agentCount2 " + agentCount2 + " agentCount3 " + agentCount3 + " oppCount2 " + oppCount2 + " oppCount3 " + oppCount3);
+				return agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
+				
 			}
-			return agentCount2 + 2 * agentCount3 - oppCount2 - 4 * oppCount3;
-		}
-
 
 	 
 	 /** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
@@ -385,6 +409,22 @@ public class Match {
 			return count;
 		}
 
+		 private int isRow(PlaySlot[][] field, Player player, int x, int y, int dx, int dy) {
+			 int cnt = 0;
+			 if (y<=2 && x <= 3) {
+			 if (	((field[y][x].getOwnedBy() == player) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy() == player) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+				&& ((field[y+2*dy][x+2*dx].getOwnedBy() == player) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy() == player) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+					
+				 for (int i = 0; i < 4; i++) {
+					 if (field[y+i*dy][x+i*dx].getOwnedBy() == player) {
+						 cnt++;
+					 }
+				 }
+				}
+			 }
+			 return cnt;
+		 	} 
+		 
 		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
 		 int inRow(int x, int y) {
 			// System.err.println("Methode inRow wurde aufgerufen!");
