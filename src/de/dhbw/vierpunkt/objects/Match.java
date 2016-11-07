@@ -19,6 +19,7 @@ public class Match {
 	private Player currentPlayer;
 	private boolean even = false;	//Unentschieden
 	private AlphaBeta ki = new AlphaBeta();
+	static int depth = 6;
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -138,7 +139,7 @@ public class Match {
 		
 		public Turn startTurn (Player player, int x) {
 		if (!player.getIsServer()){
-			x = ki.calcMove(this);
+			x = ki.calcMove(this, this.depth);
 		}
 		int y = this.validPosition(x);
 		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
@@ -183,6 +184,16 @@ public class Match {
 		// if, mal gucken, ob erforderlich!
 		return temp;
 	}
+	 
+	 /**
+		 * Setzt den Chip eines Spielers fuer die KI, ohne Pruefung
+		 * 
+		 * @param x
+		 */
+		 void setChip(int x) {
+			int y = this.validPosition(x);
+			this.setField(x, y, this.currentPlayer);
+			}
 	
 	 Player winnerIs() {
 		 if (this.matchWinner != null) {
