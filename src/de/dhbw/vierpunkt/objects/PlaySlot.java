@@ -2,7 +2,7 @@ package de.dhbw.vierpunkt.objects;
 
 public class PlaySlot {
 
-	private Player ownedBy;
+	private Player ownedBy = null;
 	
 	public PlaySlot(Player player) {
 		this.ownedBy = player;
