@@ -237,6 +237,7 @@ public class Match {
 			int agentCount3 = 0;
 			int oppCount2 = 0;
 			int oppCount3 = 0;
+			
 			for (int x = 0; x <= this.getColumn(); x++) {
 				for (int y = 0; y <= this.getRow(); y++) {
 					//System.out.println("Jetzt sind wir in den for-Schleifen");
@@ -319,6 +320,35 @@ public class Match {
 				return agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
 				
 			}
+	 
+	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
+		 int cnt = 0;
+		 if (y<=2 && x <= 3) {
+			if (player == 1) {
+			 if (	((field[y][x].getOwnedBy().getIsServer() == true) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsServer() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+				&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsServer() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsServer() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+					
+				 for (int i = 0; i < 4; i++) {
+					 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsServer() == true) {
+						 cnt++;
+					 }
+				 }
+				}
+			} else if (player == 2) {
+				 if (	((field[y][x].getOwnedBy().getIsServer() == false) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsServer() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsServer() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsServer() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+								
+							 for (int i = 0; i < 4; i++) {
+								 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsServer() == false) {
+									 cnt++;
+								 }
+							 }
+							}
+			}		 
+			 
+		 }
+		 return cnt;
+	 	} 
 
 	 
 	 /** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
@@ -409,21 +439,6 @@ public class Match {
 			return count;
 		}
 
-		 private int isRow(PlaySlot[][] field, Player player, int x, int y, int dx, int dy) {
-			 int cnt = 0;
-			 if (y<=2 && x <= 3) {
-			 if (	((field[y][x].getOwnedBy() == player) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy() == player) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-				&& ((field[y+2*dy][x+2*dx].getOwnedBy() == player) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy() == player) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
-					
-				 for (int i = 0; i < 4; i++) {
-					 if (field[y+i*dy][x+i*dx].getOwnedBy() == player) {
-						 cnt++;
-					 }
-				 }
-				}
-			 }
-			 return cnt;
-		 	} 
 		 
 		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
 		 int inRow(int x, int y) {
