@@ -36,7 +36,7 @@ import de.dhbw.vierpunkt.objects.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener {
+public class TestGui implements ZugListener/*, ConnectionErrorListener */{
 
 	/****** VARIABLENDEKLARATION *****/
 	
@@ -59,9 +59,9 @@ public class TestGui implements ZugListener {
 	private String fileString = new String();
 	
 	// Pusher Credentials
-	private String appId;
-	private String appKey;
-	private String appSecret;
+	private String appId="255967";
+	private String appKey="61783ef3dd40e1b399b2";
+	private String appSecret="66b722950915220b298c";
 	
 	// Grid
 	private int anzahlzeilen;
@@ -423,18 +423,23 @@ public class TestGui implements ZugListener {
         // Pusher Credentials
         Label cred1 = new Label("App ID:");
         TextField app1 = new TextField ();
+        app1.setPromptText(appId);
         
         HBox hb1 = new HBox();
         hb1.getChildren().addAll(cred1, app1);
         hb1.setSpacing(10);
         Label cred2 = new Label("App Key: ");
         TextField app2 = new TextField ();
+        app2.setPromptText(appKey);
+        app2.setPrefWidth(200);
         
         HBox hb2 = new HBox();
         hb2.getChildren().addAll(cred2, app2);
         hb2.setSpacing(10);
         Label cred3 = new Label("App Secret: ");
         TextField app3 = new TextField ();
+        app3.setPromptText(appSecret);
+        app3.setPrefWidth(200);
        
         HBox hb3 = new HBox();
         hb3.getChildren().addAll(cred3, app3);
@@ -706,17 +711,23 @@ public class TestGui implements ZugListener {
 	        public void handle(KeyEvent ke)
 	        {
 	            if (ke.getCode().equals(KeyCode.ENTER))
-	            {if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+	            {meldung.setText("Bitte Spielernamen eingeben");
+				if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
 					meldung.setOpacity(1);
 				}else{
-					loginStage.close();
-					s1.setText(spielername1.getText());
-					s2.setText(spielername2.getText());
-					primaryStage.show();
-				}
+					if(spielername1.getText().equals(spielername2.getText())){
+						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setOpacity(1);
+					}else{
+						loginStage.close();
+						s1.setText(spielername1.getText());
+						s2.setText(spielername2.getText());
+						primaryStage.show();
+						}
+			
 	            }
 	        }
-	    });
+	        }});
 	    
 	    spielername2.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
@@ -725,40 +736,64 @@ public class TestGui implements ZugListener {
 	        {
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
-	            	if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+	            	meldung.setText("Bitte Spielernamen eingeben");
+					if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
 						meldung.setOpacity(1);
 					}else{
-						loginStage.close();
-						s1.setText(spielername1.getText());
-						s2.setText(spielername2.getText());
-						primaryStage.show();
-					}
+						if(spielername1.getText().equals(spielername2.getText())){
+							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setOpacity(1);
+						}else{
+							loginStage.close();
+							s1.setText(spielername1.getText());
+							s2.setText(spielername2.getText());
+							primaryStage.show();
+							}
+				
 	            }
 	        }
-	    });
+	        }});
 	    
 	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	         public void handle(KeyEvent evt)
 	         {
 	              if (evt.getCode() == KeyCode.ENTER)
-	            	loginStage.close();
-					s1.setText(spielername1.getText());
-					s2.setText(spielername2.getText());
-					primaryStage.show();
+	            	  meldung.setText("Bitte Spielernamen eingeben");
+					if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+						meldung.setOpacity(1);
+					}else{
+						if(spielername1.getText().equals(spielername2.getText())){
+							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setOpacity(1);
+						}else{
+							loginStage.close();
+							s1.setText(spielername1.getText());
+							s2.setText(spielername2.getText());
+							primaryStage.show();
+							}
+				
 	         }
-	    });
+	    }});
 	    
 		login.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
             public void handle(MouseEvent arg0) {
+				meldung.setText("Bitte Spielernamen eingeben");
 				if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
 					meldung.setOpacity(1);
 				}else{
-					loginStage.close();
-					s1.setText(spielername1.getText());
-					s2.setText(spielername2.getText());
-					primaryStage.show();
+					if(spielername1.getText().equals(spielername2.getText())){
+						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setOpacity(1);
+					}else{
+						loginStage.close();
+						s1.setText(spielername1.getText());
+						s2.setText(spielername2.getText());
+						primaryStage.show();
+						}
+			
+					
 				}
             }
 		});
