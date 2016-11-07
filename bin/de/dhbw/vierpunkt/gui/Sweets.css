@@ -1,0 +1,99 @@
+/* 
+    Created on : 12.09.2016, 09:03:19
+    Author     : janaschaub
+*/
+
+#root{
+	-fx-background-image: url("Sweets_transparent.png");
+	-fx-background-size: contain;
+}
+
+#ueberschrift{
+	-fx-image: url("ueberschrift.jpg");
+}
+
+#container{-fx-fill: #FFFFFF;}
+
+#bild{-fx-image: url("suessigkeiten.png");}
+
+
+
+
+.slider .axis {
+   -fx-tick-label-fill: #660066; 
+}
+
+#text{
+    -fx-font: 15px Tahoma;
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-text-fill: #660066;
+    -fx-font-weight: bold;
+    -fx-font-size: 20 Tahoma;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+	
+}
+
+#grid{
+    -fx-alignment: CENTER;
+    -fx-Hgap:10;
+    -fx-Vgap:10;
+    -fx-halignment: center;
+    -fx-valignment: center; 
+}
+
+#ueberschrift {
+   -fx-alignment: TOP_CENTER;
+   -fx-halignment: center;
+   -fx-textalign: center;
+}
+
+#spielfeld{
+   -fx-background-color: #E6E8E9;
+   -fx-opacity: 1;
+}
+
+#boxmitte{
+    -fx-width:100%;
+    -fx-height: 100%;
+    -fx-alignment: center;
+}
+
+#textEinstellungen{
+	-fx-font: 30px Tahoma;
+    -fx-fill: #660066;
+    -fx-font-weight: bold;
+}
+
+.checkBox{
+	-fx-text-fill:#660066;
+}
+
+
+.togglebutton{
+    -fx-base: #FF66FF;  
+    -fx-text-fill:#FF66FF; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990099;
+     -fx-text-fill: white;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-size: 20px Tahoma;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#FF3366, #FF6666);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-alignment:bottom_center;
+    -fx-label-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#993366, #CC6699);
+}

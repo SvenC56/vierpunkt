@@ -1,0 +1,50 @@
+/* 
+    Created on : 12.09.2016, 09:03:19
+    Author     : janaschaub
+*/
+
+.root{
+	-fx-background-color: black;
+}
+
+#textEinstellungen{
+	-fx-font: 30px Tahoma;
+    -fx-fill: #FF6600;
+    -fx-font-weight: bold;
+}
+
+.checkBox{
+	-fx-text-fill:#FF6600;
+}
+
+.togglebutton{
+    -fx-base: #FF9900;  
+    -fx-text-fill:#FF9900; 
+}
+
+.togglebutton:selected{
+     -fx-base: #990000;
+     -fx-text-fill: white;
+}
+
+.label {
+    -fx-text-fill: #FF6600;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px Tahoma;
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+}
+
+.button {
+    -fx-text-fill:#660000;
+    -fx-font-size: 14px Tahoma;
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#FF6600,#660000);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-alignment:center;
+    -fx-label-padding: 10px;
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(#660000, #FF6600);
+}

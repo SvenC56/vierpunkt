@@ -50,9 +50,10 @@ public class MainApplication extends Application implements ParamListener {
 		// wenn Pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
 		if(Schnittstelle.equals("pusher"))
 		{
-			PusherInterface pushy = new PusherInterface();
-			// das GUI Objekt wird zum Listener für Zug-Events der Schnittstelle
+			PusherInterface pushy = new PusherInterface(Zugzeit, AppID, AppKey, AppSecret);
+			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
 			pushy.addListener(gui);
+			pushy.addErrorListener(gui);
 			
 			Thread pusherThread = new Thread(){
 				@Override
@@ -66,7 +67,7 @@ public class MainApplication extends Application implements ParamListener {
 		// wenn Datei als Schnittstelle ausgewaehlt wurde wird der file Thread gestartet
 		else {
 				FileInterface filey = new FileInterface(spielerKennnung, Kontaktpfad, Zugzeit);	
-				// das GUI Objekt wird zum Listener für Zug-Events der Schnittstelle	
+				// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle	
 				filey.addListener(gui);
 	
 				Thread fileThread = new Thread(){

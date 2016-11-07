@@ -13,6 +13,7 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
+import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.logic.GameLogic;
 
 
@@ -42,6 +43,8 @@ public class PusherInterface implements Runnable
 	 * Ein Array mit Listenern die auf das ZugEvent hoeren
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
+	private static List<ConnectionErrorListener> errorListeners = new ArrayList<ConnectionErrorListener>();
+	
 	
 	/**
 	 * Die Zeit, die dem Agenten fuer seinen Zug bleibt
@@ -105,6 +108,7 @@ public class PusherInterface implements Runnable
 		        System.out.println(message);
 		        System.out.println("Code:" + code);
 		        System.out.println("Exception: " + e);
+		        
 		    }
 		}, ConnectionState.ALL);
 		
@@ -220,5 +224,16 @@ public class PusherInterface implements Runnable
 			zl.zugGespielt(zug);
 		}
 	}
+	
+	public void addErrorListener(ConnectionErrorListener toAdd){
+		errorListeners.add(toAdd);
+	}
+	
+	public static void fireErrorEvent(){
+		for (ConnectionErrorListener cel : errorListeners){
+			cel.onConnectionError();
+		}
+	}
+	
 
 }
