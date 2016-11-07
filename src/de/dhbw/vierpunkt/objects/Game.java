@@ -74,16 +74,11 @@ public class Game implements NameListener {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-	public void startGame(String name1, String name2, int isServer) {
+	public void startGame(String name1, String name2) {
 		
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
-		if (isServer == 1) {
-			this.player[0].setIsServer(true);
-		}
-		else {
-			this.player[1].setIsServer(true);
-		}
+		this.player[1].setIsServer(true);
 		this.winner = null;
 		for (int i = 0; i <= MATCHES; i++) {
 			match[i] = null;
@@ -104,7 +99,7 @@ public class Game implements NameListener {
 	}
 	
 	
-	public void playTurn(int x) {
+	public int playTurn(int x) {
 		Turn turn = this.currentMatch.startTurn(this.currentMatch.getCurrentPlayer(), x);
 		db.saveTurn(turn.getTurnID(), this.currentMatch.getMatchID(),this.currentMatch.getCurrentPlayer().getName(), turn.getX(), turn.getY() );
 		if (this.currentMatch.getTurnNumber() >= 4) {
@@ -122,6 +117,7 @@ public class Game implements NameListener {
 		}
 		this.setNextPlayer();
 		}
+		return turn.getX();
 	}
 	
 	

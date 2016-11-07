@@ -8,7 +8,7 @@ public class Player {
 
 	private String name = null;	//Jeder Spieler hat einen Namen
 	private int wins = 0;	//Siege des Spielers im Match
-	private boolean isServer = false;
+	private boolean isOpponent = false;
 	
 	
 	/**************************************************************/
@@ -24,12 +24,12 @@ public class Player {
 	/**************************************************************/
 
 	
-	 void setIsServer(boolean isServer) {
-		this.isServer = isServer;
+	 void setIsServer(boolean isOpponent) {
+		this.isOpponent = isOpponent;
 	}
 	
-	 boolean getIsServer() {
-		return this.isServer;
+	 boolean getIsOpponent() {
+		return this.isOpponent;
 	}
 	
 	 int getWins() {

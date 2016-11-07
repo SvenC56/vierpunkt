@@ -14,7 +14,7 @@ public class AlphaBeta {
 		
 		// Initialization
 		// System.out.println("Current Player? " + game.getCurrentPlayer());
-		if (!match.getCurrentPlayer().getIsServer()){ // true if our agent is playing
+		if (!match.getCurrentPlayer().getIsOpponent()){ // true if our agent is playing
 			minimax_curr = alpha; // maximize output for our agent
 		}
 		else { // true if opponent is playing
@@ -29,7 +29,7 @@ public class AlphaBeta {
 				demoMatch = match.getDemoMatch(); // copy current game situation to simulate possible moves without actually changing the play field
 				if (demoMatch.validPosition(i) != -1) { // position is valid
 						minimax_tmp = getAlphaBeta(demoMatch, depth-1, alpha, beta);
-						if (!match.getCurrentPlayer().getIsServer()) { // our agent is playing
+						if (!match.getCurrentPlayer().getIsOpponent()) { // our agent is playing
 							minimax_curr = Math.max(minimax_tmp, minimax_curr); // is the new value of minimax higher than the old one?
 							alpha = minimax_curr; // highest value becomes alpha
 							if (alpha >= beta) {

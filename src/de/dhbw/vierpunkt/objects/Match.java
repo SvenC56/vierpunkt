@@ -1,6 +1,6 @@
 package de.dhbw.vierpunkt.objects;
 
-import de.dhbw.vierpunkt.logic.GameLogic;
+
 
 /**
  * Ein Match ist eine Runde im Spiel (Game)
@@ -138,7 +138,7 @@ public class Match {
 				}
 		
 		public Turn startTurn (Player player, int x) {
-		if (!player.getIsServer()){
+		if (!player.getIsOpponent()){
 			x = ki.calcMove(this, this.depth);
 		}
 		int y = this.validPosition(x);
@@ -210,7 +210,7 @@ public class Match {
 			if (this.getTurnNumber() >= 4) {
 				
 				//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
-				if (this.evaluate() == (int)Double.POSITIVE_INFINITY && !currentPlayer.getIsServer()) {
+				if (this.evaluate() == (int)Double.POSITIVE_INFINITY && !currentPlayer.getIsOpponent()) {
 				this.setMatchWinner(currentPlayer);
 				currentPlayer.setWins();
 				}
@@ -336,21 +336,21 @@ public class Match {
 		 int cnt = 0;
 		 if (y<=2 && x <= 3) {
 			if (player == 1) {
-			 if (	((field[y][x].getOwnedBy().getIsServer() == true) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsServer() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-				&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsServer() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsServer() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+			 if (	((field[y][x].getOwnedBy().getIsOpponent() == true) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+				&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
 					
 				 for (int i = 0; i < 4; i++) {
-					 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsServer() == true) {
+					 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == true) {
 						 cnt++;
 					 }
 				 }
 				}
 			} else if (player == 2) {
-				 if (	((field[y][x].getOwnedBy().getIsServer() == false) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsServer() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsServer() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsServer() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+				 if (	((field[y][x].getOwnedBy().getIsOpponent() == false) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
 								
 							 for (int i = 0; i < 4; i++) {
-								 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsServer() == false) {
+								 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == false) {
 									 cnt++;
 								 }
 							 }
