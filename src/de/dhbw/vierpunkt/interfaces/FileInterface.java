@@ -58,7 +58,7 @@ public class FileInterface implements Runnable {
 		System.out.println("Die eingestellte Kennung ist: " + spielerKennung);
 		System.out.println("Der eingestellte Kontaktpfad ist: " + kontaktPfad);
 		System.out.println("Der neue Kontaktpfad ist: " + getNewPath(kontaktPfad));
-		
+
 		kontaktPfad = getNewPath(kontaktPfad);		
 		
 		while (true)

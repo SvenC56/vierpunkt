@@ -827,7 +827,9 @@ public class TestGui implements ZugListener {
 				
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero());
 				
-				
+				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+					plaetzeFreiInReihe[i]=5;
+				}
 				//satzgewinner(1);
 				//System.out.println(getNames1() + names2);
 				//gewinnermethode(1, spielername1.getText(), spielername2.getText());
