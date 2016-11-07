@@ -99,8 +99,28 @@ public class Game implements NameListener {
 	}
 	
 	
-	public int playTurn(int x) {
+	public void playOpponentTurn(int x) {
 		Turn turn = this.currentMatch.startTurn(this.currentMatch.getCurrentPlayer(), x);
+		db.saveTurn(turn.getTurnID(), this.currentMatch.getMatchID(),this.currentMatch.getCurrentPlayer().getName(), turn.getX(), turn.getY() );
+		if (this.currentMatch.getTurnNumber() >= 4) {
+		this.currentMatch.checkWinner(this);
+		if (this.currentMatch.getMatchWinner() == null && this.currentMatch.getEven()){
+			System.out.println("MATCH:" + this.currentMatch.getMatchID() + " IST UNENTSCHIEDEN");
+			this.currentMatch.setCurrentPlayer(null);
+			}
+		else if(this.currentMatch.getMatchWinner() != null && !this.currentMatch.getEven()) {
+			System.out.println("WINNER IS " + this.currentMatch.getMatchWinner().getName());
+			this.currentMatch.setCurrentPlayer(null);
+			}
+		if (this.checkWinner()==3) {
+			System.out.println("WINNER OF GAME IS " + this.winnerIs());
+		}
+		this.setNextPlayer();
+		}
+	}
+	
+	public int playAgentTurn() {
+		Turn turn = this.currentMatch.startTurn(this.currentMatch.getCurrentPlayer(), 0);
 		db.saveTurn(turn.getTurnID(), this.currentMatch.getMatchID(),this.currentMatch.getCurrentPlayer().getName(), turn.getX(), turn.getY() );
 		if (this.currentMatch.getTurnNumber() >= 4) {
 		this.currentMatch.checkWinner(this);
@@ -119,7 +139,6 @@ public class Game implements NameListener {
 		}
 		return turn.getX();
 	}
-	
 	
 	int checkWinner() {
 		int count = 1;
