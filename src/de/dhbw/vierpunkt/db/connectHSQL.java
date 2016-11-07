@@ -33,7 +33,9 @@ public class connectHSQL {
 		con = null;
 
 		try {
-			con = DriverManager.getConnection("jdbc:hsqldb:file:"+ "." + File.separatorChar +"VierGewinntDB; shutdown=true", "root", "vierpunkt");
+			con = DriverManager.getConnection(
+					"jdbc:hsqldb:file:" + "." + File.separatorChar + "VierGewinntDB; shutdown=true", "root",
+					"vierpunkt");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -215,6 +217,16 @@ public class connectHSQL {
 	}
 
 	/**
+	 * uebermittlung des aktuellen Punktestands
+	 **/
+	public void handOverScore(int G_ID, String WINNER, String POINTS) {
+		System.out.println(
+				"UPDATE GAME SET WINNER=" + "'" + WINNER + "', POINTS=" + "'" + POINTS + "' WHERE G_ID=" + G_ID + ";");
+		executeSQL(
+				"UPDATE GAME SET WINNER=" + "'" + WINNER + "', POINTS=" + "'" + POINTS + "' WHERE G_ID=" + G_ID + ";");
+	}
+
+	/**
 	 * uebermittlung eines Runde in die DB
 	 **/
 	public void handOverMatch(int M_ID, int G_ID) {
@@ -230,7 +242,7 @@ public class connectHSQL {
 				+ POS_Y + ", " + POS_X + ");");
 		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
 				+ ", " + POS_X + ");");
-		
+
 	}
 
 	/**
