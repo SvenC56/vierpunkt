@@ -2,5 +2,5 @@ package de.dhbw.vierpunkt.interfaces;
 
 public interface ParamListener
 {
-	void startParameterAuswerten(int Zugzeit, String Schnittstelle, String Kontaktpfad);
+	void startParameterAuswerten(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung);
 }

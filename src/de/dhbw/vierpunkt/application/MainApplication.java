@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class MainApplication extends Application implements ParamListener {
 	static TestGui gui = new TestGui();
-	static FileInterface filey = new FileInterface();
+
 	static PusherInterface pushy = new PusherInterface();
 	static Game game = new Game();
 	
@@ -18,7 +18,7 @@ public class MainApplication extends Application implements ParamListener {
 	{
 		// Drei suesse Interfaces senden Events an die GUI
 		MainApplication main = new MainApplication();
-		filey.addListener(gui);
+		
 		pushy.addListener(gui);
 		gui.addNameListener(game);
 		gui.addParamListener(main);
@@ -28,22 +28,13 @@ public class MainApplication extends Application implements ParamListener {
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{ 		
-		
-		
-		System.out.println("gewaehlte Schnittstelle: " + gui.getSchnittstelle());
-	
-		
-		// wenn pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
-		
-		
 		gui.start(primaryStage);
-		
-		
+
 	}
 
 	@Override
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
-			String Kontaktpfad)
+			String Kontaktpfad, char spielerKennnung)
 	{
 		System.out.println("**** Startevent fired ****");
 		
@@ -60,12 +51,13 @@ public class MainApplication extends Application implements ParamListener {
 		
 		// wenn datei als Schnittstelle ausgewaehlt wurde wird der file Thread gestartet
 		else {
+			FileInterface filey = new FileInterface(spielerKennnung, Kontaktpfad, Zugzeit);			
+			filey.addListener(gui);
 
 			Thread fileThread = new Thread(){
 				@Override
 				public void run(){
-					filey.setZugZeit(Zugzeit);
-					filey.setKontaktPfad(Kontaktpfad);
+
 					filey.run();	
 				}
 			};

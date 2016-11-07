@@ -825,7 +825,7 @@ public class TestGui implements ZugListener {
 					spieler = 1;
 					createGrids();}
 				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString());
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero());
 				
 				
 				//satzgewinner(1);
@@ -1120,9 +1120,9 @@ public class TestGui implements ZugListener {
 	}
 	
 	
-	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad){
+	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung){
 		for (ParamListener pl : listeners){
-			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad);
+			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad, spielerKennung);
 		}
 	}
 	

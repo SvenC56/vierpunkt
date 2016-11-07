@@ -55,6 +55,11 @@ public class FileInterface implements Runnable {
 	{	
 		// Testausgabe fuer Konstruktor
 		System.out.println("Die eingestellte Zugzeit betraegt: " + zugZeit);
+		System.out.println("Die eingestellte Kennung ist: " + spielerKennung);
+		System.out.println("Der eingestellte Kontaktpfad ist: " + kontaktPfad);
+		System.out.println("Der neue Kontaktpfad ist: " + getNewPath(kontaktPfad));
+		
+		kontaktPfad = getNewPath(kontaktPfad);		
 		
 		while (true)
 		{
@@ -132,7 +137,7 @@ public class FileInterface implements Runnable {
 	public static void zugSpielen(int spalte) throws IOException{
 		FileWriter fileOut = new FileWriter( kontaktPfad + "spieler" + spielerKennung + "2server.txt");
 		System.out.println("Der Zug " + spalte + " wird gespielt.");
-		fileOut.write(String.valueOf(spalte)); // 
+		fileOut.write(String.valueOf(spalte)); 
 		fileOut.flush();
 		fileOut.close();
 	
@@ -189,6 +194,18 @@ public class FileInterface implements Runnable {
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug);
 		}
+	}
+	
+	public static String getNewPath(String kontaktpfad){
+		
+		int stelleSlash = 0;
+		
+	
+		stelleSlash = ordinalIndexOf(kontaktpfad, "\\", 0);
+		kontaktpfad = kontaktpfad.substring(0, stelleSlash) + "\\" + kontaktpfad.substring(stelleSlash, kontaktpfad.length());
+		kontaktpfad = kontaktpfad + "\\\\";
+		
+		return kontaktpfad;
 	}
 
 }
