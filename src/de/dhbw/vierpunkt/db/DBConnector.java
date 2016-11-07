@@ -20,7 +20,13 @@ public class DBConnector {
 		return gameID;
 	}
 	
-
+	/**
+	 * uebermittlung der letzten 10 Spiele aus Game
+	 */
+	public String[][] getLastTenGames() {
+		String[][] highscore = db.getLastTenGames();
+		return highscore;
+	}
 	/**
 	 * Ruft in der Datenbank die aktuelle Match ab, welche einer Runde
 	 * entspricht. Gibt einen int-Wert zurueck
@@ -51,11 +57,17 @@ public class DBConnector {
 		g1.run();
 	}
 	
+	public void saveScore(int gameID, String winner, String score) {
+		sendScore g2 = new sendScore(gameID, winner, score);
+		g2.run();
+	}
 	
 	public void saveMatch(int gameID, int matchID) {
 		sendMatch m1 = new sendMatch(gameID, matchID);
 		m1.run();
 	}
+	
+	
 	
 	public void createGame(String player1, String player2) {
 		sendGame dbGame = new sendGame(player1, player2, null, null);

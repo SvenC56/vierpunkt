@@ -107,6 +107,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
     public Color color = Color.rgb(0, 0, 0);
     public GridPane spielfeld = new GridPane();
     
+    public GridPane spielfeld2 = new GridPane();
+    
     // Getter und Setter Methoden
     public void setColor(Color color) {	this.color = color;}
 	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
@@ -291,7 +293,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		    		einstellungen.setDisable(false);
 		    		start.setOpacity(1);
 		    		start.setDisable(false);
-		    		createGrids_automatisch();
+		    		createGrids_automatisch(spielfeld);
 		    	}
 		    	if(newValue.intValue() == 0){
 		    		einstellungen.setOpacity(0);
@@ -354,14 +356,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
 		
 		// login Felder
-		Label spieler1 = new Label("Name Spieler 1: ");
+		Label spieler1 = new Label("Spieler: ");
 		TextField spielername1 = new TextField();
 		if(spielername1.getText() != null && ! spielername1.getText().trim().isEmpty()){
 			//names1 = spielername1.getText();
 			setNames1(spielername1.getText());
 		}
 		
-		Label spieler2 = new Label("Name Spieler 2: ");
+		Label spieler2 = new Label("Gegner: ");
 		TextField spielername2 = new TextField();
 		if(spielername2.getText() != null && ! spielername2.getText().trim().isEmpty()){
 			//names2 = spielername2.getText();
@@ -442,23 +444,26 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         // Pusher Credentials
         Label cred1 = new Label("App ID:");
         TextField app1 = new TextField ();
-        app1.setPromptText(appId);
+        //app1.setPromptText(appId);
+        app1.setText(appId);
         
         HBox hb1 = new HBox();
         hb1.getChildren().addAll(cred1, app1);
         hb1.setSpacing(10);
         Label cred2 = new Label("App Key: ");
         TextField app2 = new TextField ();
-        app2.setPromptText(appKey);
+        //app2.setPromptText(appKey);
         app2.setPrefWidth(200);
+        app2.setText(appKey);
         
         HBox hb2 = new HBox();
         hb2.getChildren().addAll(cred2, app2);
         hb2.setSpacing(10);
         Label cred3 = new Label("App Secret: ");
         TextField app3 = new TextField ();
-        app3.setPromptText(appSecret);
+        //app3.setPromptText(appSecret);
         app3.setPrefWidth(200);
+        app3.setText(appSecret);
        
         HBox hb3 = new HBox();
         hb3.getChildren().addAll(cred3, app3);
@@ -554,11 +559,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                 ok.setOnMouseClicked(new EventHandler<MouseEvent>(){
              	   @Override
                     public void handle(MouseEvent arg0) {
-             		   setAppId(app1.getText());
-             		   setAppKey(app2.getText());
-             		   setAppSecret(app3.getText());
+             		   if(app1.getText()!= null){setAppId(app1.getText());}
+             		   if(app2.getText()!= null){setAppKey(app2.getText());}
+             		   if(app3.getText()!= null){setAppSecret(app3.getText());}
              		   
-             		   System.out.println(appId + " " + appKey + " " + appSecret);
              		   dialog.close();
                 }});
                 
@@ -680,7 +684,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		
 		// automatisch
 		if(spielmodus.getValue() == 2){
-			createGrids_automatisch();
+			createGrids_automatisch(spielfeld);
 		}
 		
 		/*************************************************************************************************************
@@ -736,7 +740,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					meldung.setOpacity(1);
 				}else{
 					if(spielername1.getText().equals(spielername2.getText())){
-						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
@@ -761,7 +765,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 						meldung.setOpacity(1);
 					}else{
 						if(spielername1.getText().equals(spielername2.getText())){
-							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
@@ -784,7 +788,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 						meldung.setOpacity(1);
 					}else{
 						if(spielername1.getText().equals(spielername2.getText())){
-							meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
@@ -804,7 +808,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					meldung.setOpacity(1);
 				}else{
 					if(spielername1.getText().equals(spielername2.getText())){
-						meldung.setText("Bitte unterschiedliche Spielernamen wählen.");
+						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
@@ -830,46 +834,24 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		// primary Stage
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
+		spielfeld2.setId("spielfeld");
+		
+		
+		// Erzeugen der Spalten (7)
+		spielfeld2.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
+		// Erzeugen der Zeilen (6)
+		spielfeld2.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE));
 		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
-				
-				// neue Stage
-				final Stage spieleStage = new Stage();
-				spieleStage.setTitle("Einstellungen");
-				spieleStage.initModality(Modality.APPLICATION_MODAL);
-				spieleStage.initOwner(primaryStage);
-                VBox spieleVbox = new VBox(20);
-                spieleVbox.setPadding(new Insets(10, 10, 10, 10));                
-                
-                // Button zum Popup schliessen
-                Button back = new Button("zurueck");
-                
-                Label spieleLabel = new Label("Bisherige Spiele:");
-                
-                ScrollPane listeSpiele = new ScrollPane();
-        		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
-        		listeSpiele.setContent(beispieltext);
-                
-                // Button Action Event
-                back.setOnMouseClicked(new EventHandler<MouseEvent>(){
-             	   @Override
-                    public void handle(MouseEvent arg0) {
-             		   spieleStage.close();
-                }});
-                
-                // Einfuegen in die VBox
-                spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, back);
-                Scene spieleScene = new Scene(spieleVbox, 1200, 900);
-                if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-                if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-                if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-                if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-              
-                spieleStage.setScene(spieleScene);
-                //spieleStage.setFullScreen(true);
-                spieleStage.show();	
-				}
+			bisherigeSpiele();	
+			}
 		});
 	    
 		
@@ -878,13 +860,20 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
             public void handle(MouseEvent arg0) {
 				if(spielmodus.getValue()==2){
 					spieler = 1;
-	            	createGrids_automatisch();
+	            	createGrids_automatisch(spielfeld);
 				}else{
 					spieler = 1;
 					createGrids();}
+				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
+				fireNames(spielername1.getText(), spielername2.getText());
 				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), appId, appKey, appSecret);
 				
+				
+				
+				
+				
+				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 					plaetzeFreiInReihe[i]=5;
 				}
@@ -905,6 +894,112 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
+	public void bisherigeSpiele(){
+		// neue Stage
+		final Stage spieleStage = new Stage();
+		spieleStage.setTitle("Bisherige Spiele");
+		spieleStage.initModality(Modality.APPLICATION_MODAL);
+		spieleStage.initOwner(primaryStage);
+        VBox spieleVbox = new VBox(20);
+        spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
+        spieleVbox.setAlignment(Pos.CENTER);
+        
+        // Button zum Popup schliessen
+        Button back = new Button("zurueck");
+        
+        Label spieleLabel = new Label("Bisherige Spiele:");
+        
+        ScrollPane listeSpiele = new ScrollPane();
+		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
+		listeSpiele.setContent(beispieltext);
+		Button play = new Button("play"); 
+		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	     	   @Override
+	            public void handle(MouseEvent arg0) {
+	     		   
+	        }});
+		
+		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld2))));
+        
+        // Button Action Event
+        back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+     	   @Override
+            public void handle(MouseEvent arg0) {
+     		   spieleStage.close();
+        }});
+        
+        HBox hb = new HBox();
+        Label spielstandanzeige = new Label("Spielstand: ");
+		Text spielstand_altesSpiel = new Text("3:1");
+		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
+		Label spieler = new Label("Spieler: ");
+		Label spieler1 = new Label("names1");
+		Label spieler2 = new Label("names2");
+		Rectangle platzhalter1 = new Rectangle(7 * l, l);
+		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		VBox grid = new VBox();
+		grid.getChildren().addAll(platzhalter1, spielfeld2);
+		
+		VBox anzeige = new VBox();
+		anzeige.getChildren().addAll(spielstandanzeige, spielstand_altesSpiel, play, back);
+		
+		VBox spieleranzeige = new VBox();
+		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2);
+        
+		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
+        hb.setAlignment(Pos.BOTTOM_CENTER);
+        // Einfuegen in die VBox
+        spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, hb);
+        Scene spieleScene = new Scene(spieleVbox, 1200, 900);
+        if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        createGrids_automatisch(spielfeld2);
+        spieleStage.setScene(spieleScene);
+        //spieleStage.setFullScreen(true);
+        spieleStage.show();	
+		}
+		
+	
+	
+	public void changeTheme(){
+		// neue Stage
+		final Stage changetheme = new Stage();
+		changetheme.setTitle("Themenwechsel");
+		changetheme.initModality(Modality.APPLICATION_MODAL);
+		changetheme.initOwner(primaryStage);
+        VBox themaVbox = new VBox(20);
+        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label meldung = new Label();
+        meldung.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
+        Button open = new Button("Einstellungen aendern");
+        
+        open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				changetheme.close();
+			}
+        });
+        // Einfuegen in die VBox
+        themaVbox.getChildren().addAll(meldung, open);
+        Scene themaScene = new Scene(themaVbox, 500, 800);
+        
+        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        changetheme.setScene(themaScene);
+        
+        changetheme.show();
+        
+	}
+	
+	
 	public void onConnectionError(){
 		// neue Stage
 		final Stage connection = new Stage();
@@ -1019,8 +1114,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         gewinnerStage.show();	
 		
 	}
-    
-    public void createGrids_automatisch(){
+	
+
+	
+	
+    public void createGrids_automatisch(GridPane spielfeld){
     	spielfeld.getChildren().clear();
         for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
             for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
@@ -1158,7 +1256,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         }
     }
     public void setSpielstein(int zeile, int spalte){
-    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte))));
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))));
     }
     
     public void spielsteinAnzeigen(ImageView spielstein){
@@ -1179,7 +1277,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         }
     }
     
-    public StackPane getNodeByRowColumnIndex (final int row, final int column) {
+    public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
         for (Node node : spielfeld.getChildren()) {
             if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
                 return (StackPane) node;
@@ -1204,9 +1302,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		NameListeners.add(toAdd);
 	}
 	
-	public static void fireNames (String name1, String name2, int isServer) {
+	public static void fireNames (String name1, String name2) {
 		for (NameListener name: NameListeners) {
-			name.startGame(name1, name2, isServer);
+			name.startGame(name1, name2);
 		}
 	}
 	
