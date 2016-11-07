@@ -253,6 +253,15 @@ public class connectHSQL {
 		highscore = saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN"));
 		return highscore;
 	}
+	
+	/**
+	 * uebermittlung der letzten 10 Spiele aus Game
+	 */
+	public String[][] getLastTenGames() {
+		String[][] highscore = null;
+		highscore = saveResult(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
+		return highscore;
+	}
 
 	/**
 	 * uebermittlung des Game Highscores in das Game

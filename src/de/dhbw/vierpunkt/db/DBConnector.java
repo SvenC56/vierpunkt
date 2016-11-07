@@ -20,7 +20,13 @@ public class DBConnector {
 		return gameID;
 	}
 	
-
+	/**
+	 * uebermittlung der letzten 10 Spiele aus Game
+	 */
+	public String[][] getLastTenGames() {
+		String[][] highscore = db.getLastTenGames();
+		return highscore;
+	}
 	/**
 	 * Ruft in der Datenbank die aktuelle Match ab, welche einer Runde
 	 * entspricht. Gibt einen int-Wert zurueck
