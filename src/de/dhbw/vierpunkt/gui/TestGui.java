@@ -60,6 +60,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	
 	// Pusher Credentials
 	private String appId="255967";
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public void setAppKey(String appKey) {
+		this.appKey = appKey;
+	}
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
+	}
+
 	private String appKey="61783ef3dd40e1b399b2";
 	private String appSecret="66b722950915220b298c";
 	
@@ -289,7 +299,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		    		start.setOpacity(0);
 		    		start.setDisable(true);
 		    		createGrids();
-		    		
 		    	}
 		    }
 		});
@@ -545,9 +554,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                 ok.setOnMouseClicked(new EventHandler<MouseEvent>(){
              	   @Override
                     public void handle(MouseEvent arg0) {
-             		   appId = app1.getText();
-             		   appKey = app2.getText();
-             		   appSecret = app3.getText();
+             		   setAppId(app1.getText());
+             		   setAppKey(app2.getText());
+             		   setAppSecret(app3.getText());
+             		   
              		   System.out.println(appId + " " + appKey + " " + appSecret);
              		   dialog.close();
                 }});
