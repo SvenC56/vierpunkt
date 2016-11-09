@@ -608,67 +608,169 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 				}
 		});
 		
+		// neue Stage
+				final Stage changetheme = new Stage();
+				changetheme.setTitle("Themenwechsel");
+				changetheme.initModality(Modality.APPLICATION_MODAL);
+				changetheme.initOwner(primaryStage);
+		        VBox themaVbox = new VBox(20);
+		        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+		        
+		        Label nachricht = new Label();
+		        nachricht.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
+		        nachricht.setWrapText(true);
+		        Button open = new Button("Thema wechseln");
+		        Button close = new Button("Abbrechen");
+		        HBox hbox = new HBox();
+		        hbox.getChildren().addAll(open, close);
+		        hbox.setAlignment(Pos.BASELINE_CENTER);
+		        hbox.setSpacing(20);
+		        
+		        close.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		        	@Override
+		        	public void handle(MouseEvent arg0){
+		        		changetheme.close();
+		        	}
+		        });
+		        // Einfuegen in die VBox
+		        themaVbox.getChildren().addAll(nachricht, hbox);
+		        Scene themaScene = new Scene(themaVbox, 500, 200);
+		        
+		       /* if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+		        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+		        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+		        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+		      */
+		        changetheme.setScene(themaScene);
+		        
+		      //  changetheme.show();
+		
 		menu21.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				thema = 4;
-				primaryStage.setScene(scene);
-				primaryStage.setFullScreen(true);
-				setColor(Color.PURPLE);
-				setImage1(orange);
-				setImage2(gruen);
-				i1.setImage(orange);
-				i2.setImage(gruen);
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());
-				createGrids();
+				if(thema!=4){
+					themaScene.getStylesheets().clear();
+					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+			        
+					
+					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+			            public void handle(MouseEvent arg0) {
+							
+							changetheme.close();
+							primaryStage.setScene(scene);
+							primaryStage.setFullScreen(true);
+							setColor(Color.PURPLE);
+							setImage1(orange);
+							setImage2(gruen);
+							i1.setImage(orange);
+							i2.setImage(gruen);
+							scene.getStylesheets().clear();
+							scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());
+							createGrids();
+							thema = 4;
+						}
+			        });
+					
+					changetheme.show();
+				
+				}
+				
 			}
 		});
 		
 		menu22.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				thema = 1;
-				setColor(Color.BLACK);
-				setImage1(kuerbis);
-				setImage2(fledermaus);
-				i1.setImage(kuerbis);
-				i2.setImage(fledermaus);
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
-				createGrids();
+				if(thema != 1){ 
+					themaScene.getStylesheets().clear();
+					if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+			            public void handle(MouseEvent arg0) {
+							
+							changetheme.close();
+							primaryStage.setScene(scene);
+							primaryStage.setFullScreen(true);
+							scene.getStylesheets().clear();
+							scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
+							setColor(Color.BLACK);
+							setImage1(kuerbis);
+							setImage2(fledermaus);
+							i1.setImage(kuerbis);
+							i2.setImage(fledermaus);
+							createGrids();
+							thema = 1;
+						}
+			        });
+					changetheme.show();
+				}
+		        
 			}
 		});
 		
 		menu23.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				thema = 2;
-				primaryStage.setScene(scene);
-				primaryStage.setFullScreen(true);
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
-				setColor(Color.DARKGREEN);
-				setImage1(pizza);
-				setImage2(burger);
-				i1.setImage(pizza);
-				i2.setImage(burger);
+				if(thema != 2){
+					themaScene.getStylesheets().clear();
+					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+					
+					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+			            public void handle(MouseEvent arg0) {
+							
+							changetheme.close();
+							primaryStage.setScene(scene);
+							primaryStage.setFullScreen(true);
+							scene.getStylesheets().clear();
+							scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
+							setColor(Color.DARKGREEN);
+							setImage1(pizza);
+							setImage2(burger);
+							i1.setImage(pizza);
+							i2.setImage(burger);
+							createGrids();
+							thema = 2;
+						}
+			        });
+					changetheme.show();
 				
-				createGrids();
+				}
 			}
 		});
 		
 		menu24.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
-				thema = 3;
-				primaryStage.setScene(scene);
-				primaryStage.setFullScreen(true);
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
-				setColor(Color.CADETBLUE);
-				setImage1(basketball);
-				setImage2(baseball);
-				i1.setImage(basketball);
-				i2.setImage(baseball);
-				
-				createGrids();
+				if(thema!= 3){
+					themaScene.getStylesheets().clear();
+					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+					
+					
+					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+			            public void handle(MouseEvent arg0) {
+							changetheme.close();
+							primaryStage.setScene(scene);
+							primaryStage.setFullScreen(true);
+							scene.getStylesheets().clear();
+							scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
+							setColor(Color.CADETBLUE);
+							setImage1(basketball);
+							setImage2(baseball);
+							i1.setImage(basketball);
+							i2.setImage(baseball);
+							createGrids();
+							thema = 3;
+						}
+			        });
+					changetheme.show();
+				}
 			}
 		});
 		
@@ -964,8 +1066,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		}
 		
 	
-	
-	public void changeTheme(){
+	/*public void changeTheme(){
 		// neue Stage
 		final Stage changetheme = new Stage();
 		changetheme.setTitle("Themenwechsel");
@@ -976,13 +1077,32 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         
         Label meldung = new Label();
         meldung.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
-        Button open = new Button("Einstellungen aendern");
+        Button open = new Button("Thema wechseln");
+        Button close = new Button("abbrechen");
         
         open.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
             public void handle(MouseEvent arg0) {
 				changetheme.close();
+				primaryStage.setScene(scene);
+				primaryStage.setFullScreen(true);
+				scene.getStylesheets().clear();
+				scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
+				setColor(Color.CADETBLUE);
+				setImage1(basketball);
+				setImage2(baseball);
+				i1.setImage(basketball);
+				i2.setImage(baseball);
+				
+				createGrids();
 			}
+        });
+        
+        close.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		changetheme.close();
+        	}
         });
         // Einfuegen in die VBox
         themaVbox.getChildren().addAll(meldung, open);
@@ -997,7 +1117,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         
         changetheme.show();
         
-	}
+	}*/
 	
 	
 	public void onConnectionError(){
