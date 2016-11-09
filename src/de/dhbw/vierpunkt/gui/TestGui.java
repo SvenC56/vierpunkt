@@ -4,6 +4,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -950,9 +952,40 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
 				new RowConstraints(l, l, Double.MAX_VALUE));
 		
+		
+		//Beispieldaten
+		
+		String[][] aAllGames = new String[10][5];
+		aAllGames[0][0] = "123";
+		aAllGames[0][1] = "Leon";
+		aAllGames[0][2] = "Phil";
+		aAllGames[0][3] = "Phil";
+		aAllGames[0][4] = "3:0";
+		aAllGames[1][0] = "456";
+		aAllGames[1][1] = "Tim";
+		aAllGames[1][2] = "Tobi";
+		aAllGames[1][3] = "Tim";
+		aAllGames[1][4] = "2:1";
+		
+		String[][] alleSaetze = new String[20][3]; 
+		alleSaetze[0][0] = "Satz1";
+		alleSaetze[0][1] = "123";
+		alleSaetze[0][2] = "irgendwas";
+
+		String[][] alleZuege = new String[20][5]; 
+		alleZuege[0][0] = "Zug1";
+		alleZuege[0][1] = "123";
+		alleZuege[0][2] = "Leon";
+		alleZuege[0][3] = "1";
+		alleZuege[0][4] = "0";
+		
+		
+		
+		
+		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
-			bisherigeSpiele();	
+			bisherigeSpiele(aAllGames, alleSaetze, alleZuege);	
 			}
 		});
 	    
@@ -969,11 +1002,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
 				fireNames(spielername1.getText(), spielername2.getText());
-				
-				
-				
-				
-				
 				
 				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
@@ -996,7 +1024,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
-	public void bisherigeSpiele(){
+	public void bisherigeSpiele(String[][] aGame, String[][] aSet, String[][] aMove){
 		// neue Stage
 		final Stage spieleStage = new Stage();
 		spieleStage.setTitle("Bisherige Spiele");
@@ -1011,14 +1039,65 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         
         Label spieleLabel = new Label("Bisherige Spiele:");
         
-        ScrollPane listeSpiele = new ScrollPane();
-		Text beispieltext = new Text("Spiele ID 1 \n Spiele ID 2 \n Spiele ID 3 \n Spiele ID 4");
-		listeSpiele.setContent(beispieltext);
+       // ScrollPane listeSpiele = new ScrollPane();
+       //ListView<String> list = new ListView<String>();
+        
+        
+        //List<String> supplierNames = new List<String>();
+       
+       
+        TableView<Spiele> table = new TableView<>();
+        table.setEditable(true);
+
+
+        TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
+        gameIDCol.setCellValueFactory(new PropertyValueFactory<>("gameID"));
+        gameIDCol.setMinWidth(250);
+        gameIDCol.setId("spalte0");
+        TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
+        player1Col.setCellValueFactory(new PropertyValueFactory<>("spieler1"));
+        player1Col.setMinWidth(250);
+        TableColumn<Spiele, String> player2Col = new TableColumn<>("Spieler 2");
+        player2Col.setCellValueFactory(new PropertyValueFactory<>("spieler2"));
+        player2Col.setMinWidth(250);
+        TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
+        winnerCol.setCellValueFactory(new PropertyValueFactory<>("winner"));
+        winnerCol.setMinWidth(250);
+        TableColumn<Spiele, String> pointsCol = new TableColumn<>("Punkte");
+        pointsCol.setCellValueFactory(new PropertyValueFactory<>("points"));
+        pointsCol.setMinWidth(250);
+        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol, pointsCol);
+       
+        ObservableList<Spiele> items = FXCollections.observableArrayList();
+        
+        for (int i = 0; i < 10; i++) {
+        	String game = aGame[i][0];
+        	String player1 = aGame[i][1];
+        	String player2 = aGame[i][2];
+        	String winner = aGame[i][3];
+        	String points = aGame[i][4];
+        	items.add(new Spiele(game, player1, player2, winner, points));
+        	System.out.println(aGame[i][0]+ aGame[i][1]+ aGame[i][2]+ aGame[i][3]+ aGame[i][4]);
+		}
+        table.setItems(items);
+       
+       
+        /*list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("ListView selection changed from oldValue = " 
+                        + oldValue + " to newValue = " + newValue);
+            }
+        });
+        */
+		//listeSpiele.setContent(list);
 		Button play = new Button("play"); 
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 	     	   @Override
 	            public void handle(MouseEvent arg0) {
-	     		   
+	     		  //String selectedItem = list.getSelectionModel().getSelectedItem();
+	     		 
+	     		  
 	        }});
 		
 		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld2))));
@@ -1052,7 +1131,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
         hb.setAlignment(Pos.BOTTOM_CENTER);
         // Einfuegen in die VBox
-        spieleVbox.getChildren().addAll(spieleLabel, listeSpiele, hb);
+        spieleVbox.getChildren().addAll(spieleLabel, table, hb);
         Scene spieleScene = new Scene(spieleVbox, 1200, 900);
         if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
         if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
