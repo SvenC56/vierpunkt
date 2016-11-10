@@ -80,9 +80,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	private int anzahlzeilen;
 	private int anzahlspalten;
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
-	public int spieler = 1; 		// Spieler 1
+	public char spieler = 'x'; 		// Spieler 1
+	public char gegner = 'o';
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
 	private int thema = 1;
+	public char manuellerSpieler= 'x';
 	
 	// Spielernamen
 	private String names1 = "Spieler1";
@@ -606,7 +608,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
 				primaryStage.setFullScreen(true);
-				spieler = 1;
+				spieler = getXodero();
+				if(spieler == 'x'){
+					gegner = 'o';
+				}else{gegner = 'x';}
+				
 				createGrids();
 				}
 		});
@@ -996,10 +1002,17 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 			@Override
             public void handle(MouseEvent arg0) {
 				if(spielmodus.getValue()==2){
-					spieler = 1;
+					spieler = getXodero();
+					if(spieler == 'x'){
+						gegner = 'o';
+					}else{gegner = 'x';}
+					
 	            	createGrids_automatisch(spielfeld);
 				}else{
-					spieler = 1;
+					spieler = getXodero();
+					if(spieler == 'x'){
+						gegner = 'o';
+					}else{gegner = 'x';}
 					createGrids();}
 				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
@@ -1026,6 +1039,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
 	 static Spiele selectedGame;
+	 static String personX;
 	public void bisherigeSpiele(){
 		
 		connectHSQL db = new connectHSQL();
@@ -1107,8 +1121,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	     	                System.out.println(g_id + " " + m_id);
 	     	                	
 	     	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
+	     	                personX = alleZuege[0][2];
 	     	                for (int i = 0; i < alleZuege[0].length; i++) {
-	     	                	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))));
+	     	                	
+	     	                	System.out.println(personX);
+	     	                	if(personX.equals(alleZuege[i][2])){
+	     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	                	} else{
+	     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	     	                	}
+	     	                	
 								/*try {
 									Thread.sleep(2000);
 								} catch (InterruptedException e) {
@@ -1291,7 +1313,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         gewinnerVbox.setAlignment(Pos.CENTER);
         gewinnerVbox.setPadding(new Insets(10, 10, 10, 10));                
         
-        // Button zum Popup schließen
+        // Button zum Popup schliessen
         Button back = new Button("ok");
         
         // Button Action Event
@@ -1409,7 +1431,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
                    @Override
                    public void handle(MouseEvent arg0) {
-                       if(spieler==1){vorschauspielstein.setImage(image1);      
+                       if(spieler=='x'){vorschauspielstein.setImage(image1);      
                        }else{vorschauspielstein.setImage(image2);}
                    }
                });
@@ -1429,7 +1451,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                @Override
                    public void handle(MouseEvent arg0) {
                        vorschauspielstein.setImage(image3);
-                       if(spieler==1){ vorschauspielstein.setImage(image1);
+                       if(spieler=='x'){ vorschauspielstein.setImage(image1);
                        }else{vorschauspielstein.setImage(image2); }
                    }
                });
@@ -1444,12 +1466,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
               
               // Setzen der Spielsteine
               spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override public void handle(MouseEvent arg0) { spielsteinAnzeigen(spielstein);}
+                   @Override public void handle(MouseEvent arg0) { 
+                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                	   if(manuellerSpieler == 'x'){
+                		   manuellerSpieler = 'o';
+                	   }else{
+                		   manuellerSpieler = 'x';
+                	   }
+                	   }
                });
               
                // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
                vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override public void handle(MouseEvent arg0) {spielsteinAnzeigen(spielstein);}
+                   @Override public void handle(MouseEvent arg0) {
+                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                	   }
                });
            
             /*******************************************************************************************************************
@@ -1464,24 +1495,24 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         }
     }
 	
-    public void setSpielstein(int zeile, int spalte){
-    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))));
+    public void setSpielstein(int zeile, int spalte, char amZug){
+    	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))), amZug);
     }
     
-    public void spielsteinAnzeigen(ImageView spielstein){
+    public void spielsteinAnzeigen(ImageView spielstein, char amZug){
     	if(spielstein.getTranslateY()!=0){ 
     		//spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
             final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             translateTransition.setToY(0);				//Runterfallen der Steine
             translateTransition.play();
-            if(spieler==1){
+            if(amZug=='x'){
                 spielstein.setImage(image1);
                 System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
-                spieler=2;
+                
             }else{
                 spielstein.setImage(image2);
                 System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
-                spieler=1;
+               
             }
         }
     }
@@ -1500,17 +1531,17 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
     }
     
     
-	@Override
+	/*@Override
 	public void zugGespielt(int zug)
 	{
 		setSpielstein(plaetzeFreiInReihe[zug], zug);
         plaetzeFreiInReihe[zug]--;
         
-	}
+	}*/
 	@Override
-	public void zugGespielt(int zug, char sieger)
+	public void zugGespielt(int zug, char amZug)
 	{
-		setSpielstein(plaetzeFreiInReihe[zug], zug);
+		setSpielstein(plaetzeFreiInReihe[zug], zug, amZug);
         plaetzeFreiInReihe[zug]--;
 		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthält 'x' oder 'o' als char
 	}
@@ -1539,6 +1570,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	
 	public String getFileString(){
 		return fileString;
+	}
+	@Override
+	public void zugGespielt(int zug) {
+		// TODO Auto-generated method stub
+		
 	}
  
 }
