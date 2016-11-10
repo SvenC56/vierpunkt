@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dhbw.vierpunkt.db.ConnectHSQL;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
 import de.dhbw.vierpunkt.objects.NameListener;
@@ -954,31 +955,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		
 		
 		//Beispieldaten
+		ConnectHSQL db = new ConnectHSQL();
+		String[][] aAllGames = db.getLastTenGames();
 		
-		String[][] aAllGames = new String[10][5];
-		aAllGames[0][0] = "123";
-		aAllGames[0][1] = "Leon";
-		aAllGames[0][2] = "Phil";
-		aAllGames[0][3] = "Phil";
-		aAllGames[0][4] = "3:0";
-		aAllGames[1][0] = "456";
-		aAllGames[1][1] = "Tim";
-		aAllGames[1][2] = "Tobi";
-		aAllGames[1][3] = "Tim";
-		aAllGames[1][4] = "2:1";
+		String[][] alleSaetze = db.getHighscoreMatch(G_ID);
 		
-		String[][] alleSaetze = new String[20][3]; 
-		alleSaetze[0][0] = "Satz1";
-		alleSaetze[0][1] = "123";
-		alleSaetze[0][2] = "irgendwas";
 
-		String[][] alleZuege = new String[20][5]; 
-		alleZuege[0][0] = "Zug1";
-		alleZuege[0][1] = "123";
-		alleZuege[0][2] = "Leon";
-		alleZuege[0][3] = "1";
-		alleZuege[0][4] = "0";
-		
+		String[][] alleZuege = db.getHighscoreTurn(G_ID, M_ID);		
 		
 		
 		

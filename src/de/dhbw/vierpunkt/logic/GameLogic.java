@@ -2,10 +2,10 @@ package de.dhbw.vierpunkt.logic;
 
 import de.dhbw.vierpunkt.db.*;
 import de.dhbw.vierpunkt.gui.*;
-import de.dhbw.vierpunkt.db.connectHSQL;
-import de.dhbw.vierpunkt.db.sendGame;
-import de.dhbw.vierpunkt.db.sendMatch;
-import de.dhbw.vierpunkt.db.sendTurn;
+import de.dhbw.vierpunkt.db.ConnectHSQL;
+import de.dhbw.vierpunkt.db.SetGame;
+import de.dhbw.vierpunkt.db.SetMatch;
+import de.dhbw.vierpunkt.db.SetTurn;
 import de.dhbw.vierpunkt.gui.TestGui;
 
 import java.util.Random; //Temporaer fuer Test
@@ -23,7 +23,7 @@ public class GameLogic {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private connectHSQL db = new connectHSQL();
+	private ConnectHSQL db = new ConnectHSQL();
 //	private AlphaBeta ki = new AlphaBeta();
 	private TestGui gui = new TestGui();
 	// Spielfeld
@@ -447,7 +447,7 @@ public class GameLogic {
 	 * @param y
 	 */
 	private void saveTurn(int x, int y) {
-		sendTurn turnDBThread = new sendTurn(matchID,getCurrentPlayerName(), x, y);
+		SetTurn turnDBThread = new SetTurn(matchID,getCurrentPlayerName(), x, y);
 		turnDBThread.run();
 	}
 
@@ -482,12 +482,12 @@ public class GameLogic {
 	 * Mthode startet / initialisiert das Spiel und auch die DB
 	 */
 	private void startGame() {
-		sendGame dbGame = new sendGame(gui.getNames1(), gui.getNames2(), null, null);
+		SetGame dbGame = new SetGame(gui.getNames1(), gui.getNames2(), null, null);
 		dbGame.run();
 	}
 	
 	private void startMatch() {
-		sendMatch dbMatch = new sendMatch(matchID, getGameID());
+		SetMatch dbMatch = new SetMatch(matchID, getGameID());
 		dbMatch.run();
 	}
 

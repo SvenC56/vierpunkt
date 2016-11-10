@@ -1,10 +1,14 @@
+/**
+ * Schnittstelle zum Programm
+ *
+ * @author Sven Cieslok
+ * @version 1.0
+ */
 package de.dhbw.vierpunkt.db;
-
-
 
 public class DBConnector {
 	
-	private connectHSQL db = new connectHSQL();
+	private ConnectHSQL db = new ConnectHSQL();
 	
 	
 	/**
@@ -41,42 +45,44 @@ public class DBConnector {
 		return matchID;
 	}
 	
+	
+	
 	/**
 	 * Speichert den durchgefuehrten Zug in der Datenbank
 	 * @param x
 	 * @param y
 	 */
-	public void saveTurn(int turnID, int matchID, String playername, int x, int y) {
-		sendTurn turnDBThread = new sendTurn(matchID,playername, x, y);
+	public void saveTurn(int turnID, int matchID, String playername, int x, int y, int gameID) {
+		SetTurn turnDBThread = new SetTurn(matchID,playername, x, y, gameID);
 		turnDBThread.run();
 	}
 	
 	
 	public void saveGame(int gameID, String playerName1, String playerName2, String winner, String score) {
-		sendGame g1 = new sendGame(playerName1, playerName2, winner, score);
+		SetGame g1 = new SetGame(playerName1, playerName2, winner, score);
 		g1.run();
 	}
 	
 	public void saveScore(int gameID, String winner, String score) {
-		sendScore g2 = new sendScore(gameID, winner, score);
+		SetScore g2 = new SetScore(gameID, winner, score);
 		g2.run();
 	}
 	
 	public void saveMatch(int gameID, int matchID) {
-		sendMatch m1 = new sendMatch(gameID, matchID);
+		SetMatch m1 = new SetMatch(gameID, matchID);
 		m1.run();
 	}
 	
 	
 	
 	public void createGame(String player1, String player2) {
-		sendGame dbGame = new sendGame(player1, player2, null, null);
+		SetGame dbGame = new SetGame(player1, player2, null, null);
 		dbGame.run();
 	}
 	
 	
 	public void createMatch(int gameID, int matchID) {
-		sendMatch dbMatch = new sendMatch(matchID, gameID);
+		SetMatch dbMatch = new SetMatch(matchID, gameID);
 		dbMatch.run();
 	}
 	
