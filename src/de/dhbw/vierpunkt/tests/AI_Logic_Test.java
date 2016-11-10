@@ -426,7 +426,7 @@ public class AI_Logic_Test {
 			      // String s = br.readLine();
 			     // int input = Integer.parseInt(s);
 			    //  x = input;
-			       x = (int) (Math.random()*6);
+			       x = (int) (Math.random()*7);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println("Server hat in Spalte gelegt " + x);

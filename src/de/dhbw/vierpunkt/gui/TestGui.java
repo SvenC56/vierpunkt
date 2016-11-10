@@ -153,7 +153,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		}
 		
 		// Grundlegende Eigenschaften der Stage
-		primaryStage.setFullScreen(true); 		// automatisches Oeffnen im Fullscreen
+		primaryStage.setFullScreen(false); 		// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
 
@@ -653,7 +653,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
-				primaryStage.setFullScreen(true);
+				// primaryStage.setFullScreen(true);
 				spieler = getXodero();
 				if(spieler == 'x'){
 					gegner = 'o';
@@ -715,7 +715,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 							
 							changetheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(true);
+							primaryStage.setFullScreen(false);
 							setColor(Color.PURPLE);
 							setImage1(orange);
 							setImage2(gruen);
@@ -748,7 +748,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 							
 							changetheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(true);
+							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 							setColor(Color.BLACK);
@@ -780,7 +780,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 							
 							changetheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(true);
+							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
 							setColor(Color.DARKGREEN);
@@ -812,7 +812,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 			            public void handle(MouseEvent arg0) {
 							changetheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(true);
+							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
 							setColor(Color.CADETBLUE);
