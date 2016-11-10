@@ -149,7 +149,7 @@ public class PusherInterface implements Runnable
 		    public void onEvent(String channel1, String event, String data) {
 		    	// Zug des Gegners aus Nachricht von Server erhalten
 		        System.out.println("Empfangene Daten: " + data);
-		        int zug = getGegnerzug(data);
+		       int zug = getGegnerzug(data);
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
 		        
 		        if (zug != -1){

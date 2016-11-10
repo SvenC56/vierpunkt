@@ -1,12 +1,16 @@
+/**
+ * @author Sven Cieslok
+ * @version 1.0
+ */
 package de.dhbw.vierpunkt.db;
 
-public class sendWinner implements Runnable {
+public class SetWinner implements Runnable {
 
 	private int G_ID;
 	private String Winner;
 	private String Points;
 
-	public sendWinner(int G_ID, String Winner, String Points){
+	public SetWinner(int G_ID, String Winner, String Points){
 		this.G_ID = G_ID;
 		this.Winner = Winner;
 		this.Points = Points;
@@ -14,7 +18,7 @@ public class sendWinner implements Runnable {
 	
 	@Override
 	public void run() {
-		connectHSQL dbConnection = new connectHSQL();
+		ConnectHSQL dbConnection = new ConnectHSQL();
 		dbConnection.executeSQL("UPDATE GAME SET WINNER='"+ Winner +"', POINTS='"+ Points +"' WHERE G_ID="+G_ID+";");
 	}
 

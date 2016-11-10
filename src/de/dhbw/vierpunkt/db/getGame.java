@@ -1,10 +1,14 @@
+/**
+ * @author Sven Cieslok
+ * @version 1.0
+ */
 package de.dhbw.vierpunkt.db;
 
-public class getGame  implements Runnable{
+public class GetGame  implements Runnable{
 
 	@Override
 	public void run() {
-		connectHSQL getGame = new connectHSQL();
+		ConnectHSQL getGame = new ConnectHSQL();
 		getGame.getHighscoreGame();
 	}
 }
