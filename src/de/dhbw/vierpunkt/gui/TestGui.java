@@ -1115,7 +1115,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 
         TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
         gameIDCol.setCellValueFactory(new PropertyValueFactory<>("gameID"));
-        gameIDCol.setMinWidth(250);
+        gameIDCol.setMinWidth(100);
         gameIDCol.setId("spalte0");
         TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
         player1Col.setCellValueFactory(new PropertyValueFactory<>("spieler1"));
@@ -1126,10 +1126,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
         winnerCol.setCellValueFactory(new PropertyValueFactory<>("winner"));
         winnerCol.setMinWidth(250);
-        TableColumn<Spiele, String> pointsCol = new TableColumn<>("Punkte");
-        pointsCol.setCellValueFactory(new PropertyValueFactory<>("points"));
-        pointsCol.setMinWidth(250);
-        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol, pointsCol);
+        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);
        
         ObservableList<Spiele> items = FXCollections.observableArrayList();
         
@@ -1138,9 +1135,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         	String player1 = alleGames[i][1];
         	String player2 = alleGames[i][2];
         	String winner = alleGames[i][3];
-        	String points = alleGames[i][4];
-        	items.add(new Spiele(game, player1, player2, winner, points));
-        	System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]+ alleGames[i][4]);
+        	items.add(new Spiele(game, player1, player2, winner));
+        	System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]);
 		}
         table.setItems(items);
         
