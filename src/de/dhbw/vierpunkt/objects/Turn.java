@@ -1,5 +1,5 @@
 package de.dhbw.vierpunkt.objects;
-import de.dhbw.vierpunkt.logic.AlphaBeta;
+import de.dhbw.vierpunkt.objects.AlphaBeta;
 
 public class Turn {
 	
@@ -13,6 +13,7 @@ public class Turn {
 	private boolean turnActive = false;
 	private AlphaBeta ki = new AlphaBeta();
 	private static int depth = 6;
+	private Match match;
 	
 	
 	
@@ -22,12 +23,10 @@ public class Turn {
 
 		
 	
-	public Turn(int turnID, Player player, int x, int y) {
-	this.turnID = turnID;
-	this.player = player;
-	this.x= x;
-	this.y = y;
-		
+	public Turn(int turnID, Player player, Match match) {
+		this.turnID=turnID;
+		this.player=player;
+		this.match = match;
 	}
 	
 	/**************************************************************/
@@ -77,6 +76,24 @@ public class Turn {
 	/******************* METHODEN *********************************/
 	/**************************************************************/
 	
+	public void startOpponentTurn(int x) {
+		this.match.startTurn(this.player, this.x);
+	}
+	
+	
+	
+	
+	public int startAgentTurn() {
+		int x;
+		if (turnID == 0) {
+			x=3;
+		}
+		else {
+		 x = ki.calcMove(this.match, this.depth);
+		}
+		this.match.startTurn(this.player, x);
+		return x;
+	}
 	
 }
 	

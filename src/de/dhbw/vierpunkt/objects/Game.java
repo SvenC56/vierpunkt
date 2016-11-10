@@ -74,6 +74,12 @@ public class Game implements NameListener {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+		
+	/**Startet ein neues Spiel und legt hierfuer zwei Spieler an
+	 * Diese Klasse laeuft und legt jeweils ein neues Match an sobald ein Match abgeschlossen wurde, maximal 3
+	 * (non-Javadoc)
+	 * @see de.dhbw.vierpunkt.objects.NameListener#startGame(java.lang.String, java.lang.String)
+	 **/
 	public void startGame(String name1, String name2) {
 		
 		this.player[0] = new Player(name1);
@@ -89,14 +95,13 @@ public class Game implements NameListener {
 				startMatch();
 			}
 			}
-		
 		}
 
 	
 	public void startMatch() {
 		 for (int i = 0; i <= MATCHES; i++) {
 			 if (this.match[i] == null) {
-				this.match[i] = new Match(this);
+				this.match[i] = new Match();
 				this.currentMatch = match[i];
 				this.currentMatch.setCurrentPlayer(this.player[0]);
 				db.createMatch(db.getGameID(), match[i].getMatchID());
