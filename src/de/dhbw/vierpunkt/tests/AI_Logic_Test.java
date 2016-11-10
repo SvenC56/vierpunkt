@@ -1,5 +1,9 @@
 package de.dhbw.vierpunkt.tests;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class AI_Logic_Test {
 	
 	/*****************************************************************************************************/
@@ -391,16 +395,19 @@ public class AI_Logic_Test {
 			}
 
 	 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 			// TODO Auto-generated method stub
 		
 /*** 
  * Achtung: Nur zum Testen! While Schleife bricht nur ab, wenn Gegner gewinnt -> Also im Optimalfall nie, wenn wir anfangen zu spielen! => Endlosschleife!
- 
+ */
 			int test = 0;
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	      
 			
 	while(test == 0) { 
-	*/
+	
 			GameLogic game = new GameLogic();
 			int count = 0;
 			while (true) {
@@ -415,7 +422,11 @@ public class AI_Logic_Test {
 			      System.out.print("Server ist dran              "
 			      		+ "");
 			      System.out.println("eval" + evaluate(game));
-			       x = (int) (Math.random()*6);
+			      System.out.print("Enter column");
+			      String s = br.readLine();
+			      int input = Integer.parseInt(s);
+			      x = input;
+			       // x = (int) (Math.random()*6);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println("Server hat in Spalte gelegt " + x);
@@ -423,7 +434,7 @@ public class AI_Logic_Test {
 			      
 		      // Sieg?
 			      if (evaluate(game)==(int)Double.NEGATIVE_INFINITY) {
-			    	  // test++;
+			    	   test++;
 			    	  game.runInConsole();
 			    	  System.out.println(evaluate(game));
 			        System.out.println("Server hat gewonnen...");
@@ -467,7 +478,7 @@ public class AI_Logic_Test {
 			    };
 			    System.out.println();
 			  }
-		// } End of while(true) loop
+		 } // End of while(true) loop
 		}
 	}
 }
