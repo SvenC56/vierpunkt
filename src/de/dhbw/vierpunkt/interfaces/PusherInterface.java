@@ -155,36 +155,39 @@ public class PusherInterface implements Runnable
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        // game.playTurn(zug, 1);
-		        game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
+		        // game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
 		       	
 		        	
 		        	
 		        // Spielstein wird in der GUI eingeworfen
-		        fireZugEvent(zug);
+		        fireZugEvent(zug, gegnerKennung);
 
 		        }
 		        
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
-		        	//int move = game.playTurn(-1, 2);
-		        	//SPielerzug!
-		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+		        	int move = (int) (Math.random()*7);
+		        	// int move = game.playTurn(-1, 2);
+		        	// int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
-		        	fireZugEvent(move);
+		        	fireZugEvent(move, spielerKennung);
 		        }
 		        
 		        // Wird aufgerufen wenn Spieler X gewinnt
 		        if (data.contains("false") && data.contains("Spieler X")){
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	fireZugEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
+		        	
 		        	
 		        	// Wird aufgerufen wenn Spieler O gewinnt	
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	fireZugEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        }
 		       			        
@@ -241,15 +244,21 @@ public class PusherInterface implements Runnable
 	}
 	
 	
-	public static void fireZugEvent(int zug){
+//	public static void fireZugEvent(int zug){
+//		for (ZugListener zl : listeners){
+//			zl.zugGespielt(zug);
+//		}
+//	}
+	
+	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
-			zl.zugGespielt(zug);
+			zl.zugGespielt(zug, spieler);
 		}
 	}
 	
-	public static void fireZugEvent(int zug, char sieger){
+	public static void fireZugEvent(char spieler){
 		for (ZugListener zl : listeners){
-			zl.zugGespielt(zug, sieger);
+			zl.zugGespielt(spieler);
 		}
 	}
 	

@@ -6,7 +6,7 @@ import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener {
+public class MainApplication extends Application implements ParamListener,  {
 	
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
