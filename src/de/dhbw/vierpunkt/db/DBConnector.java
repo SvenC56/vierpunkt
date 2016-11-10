@@ -40,7 +40,7 @@ public class DBConnector {
 	}
 	
 	public void saveMatch(int gameID, int matchID, int matchnumber) {
-		SetMatch m1 = new SetMatch(gameID, matchID, matchnumber);
+		SetMatch m1 = new SetMatch(gameID, matchnumber);
 		m1.run();
 	}
 	
