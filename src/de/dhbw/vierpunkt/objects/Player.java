@@ -24,7 +24,7 @@ public class Player {
 	/**************************************************************/
 
 	
-	 void setIsServer(boolean isOpponent) {
+	 void setIsOpponent(boolean isOpponent) {
 		this.isOpponent = isOpponent;
 	}
 	

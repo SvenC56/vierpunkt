@@ -87,10 +87,11 @@ public class Game implements NameListener {
 		
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
-		this.player[1].setIsServer(true);
+		this.player[1].setIsOpponent(true);
 		this.winner = null;
-		startMatch();
 		db.createGame(name1, name2);
+		startMatch();
+		
 		}
 
 	
@@ -102,12 +103,14 @@ public class Game implements NameListener {
 				this.currentMatch.setCurrentPlayer(this.player[0]);
 				db.createMatch(db.getGameID(), match[i].getMatchID());
 				this.currentMatch.setMatchActive(true);
+				this.currentMatch.startTurn();
 				break;
 			 }
 		 }
 			while (this.currentMatch.getMatchID() <= MATCHES) {
 				if (this.currentMatch.getMatchActive() == false) {
 					startMatch();
+					this.currentMatch.startTurn();
 				}
 				}
 		 

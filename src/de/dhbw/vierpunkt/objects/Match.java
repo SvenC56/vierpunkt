@@ -46,29 +46,16 @@ public class Match {
 	public Match(Game game, int matchID) {
 		this.game = game;
 		this.matchID = matchID;
-		this.turnNumber=0;
-		for (int y = 0; y <= ROW; y++) {
-			for (int x = 0; x <= COLUMN; x++) {
-				this.field[y][x] = new PlaySlot(null);
+		this.turnNumber=0;	
+		for (int i = 0; i <= COLUMN; i++ ) {
+			for (int j = 0; j <= ROW; j++) {
+				field[j][i] = new PlaySlot(null);
 			}
 		}
-		for (int i = 0; i <= TURNS; i++) {
-			turn[i] = null;
-		}
-		
 	}
 	
 	public Match(int matchID) {
 		this.matchID = matchID;
-		for (int y = 0; y <= ROW; y++) {
-			for (int x = 0; x <= COLUMN; x++) {
-				this.field[y][x] = null;
-			}
-		}
-		for (int i = 0; i <= TURNS; i ++) {
-			turn[i] = null;
-		}
-		
 	}
 	
 	/**************************************************************/
@@ -156,6 +143,17 @@ public class Match {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+			
+		public void startTurn() {
+						Turn turn = this.setNewTurn();
+					
+					while (turn.getTurnID() <= TURNS) {
+						if (this.turnActive == false) {
+							turn = this.setNewTurn();
+						}
+						}
+				 
+			}	
 		/**
 		 * Liefert den aktuellen Zug zurueck
 		 * @return
@@ -168,7 +166,7 @@ public class Match {
 		 * Unsere moeglichen Zuege werden in einem Array gespeichert. Diese Methode erstellt, wenn moeglich einen neuen Turn 
 		 * @return
 		 */
-		  Turn getNewTurn() {
+		  Turn setNewTurn() {
 				for (int i = 0; i <= TURNS; i++) {
 					if (turn[i] == null) {
 						turn[i] = new Turn(i, this.currentPlayer, this);
