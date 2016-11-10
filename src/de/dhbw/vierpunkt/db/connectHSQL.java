@@ -186,6 +186,31 @@ public class connectHSQL {
 		return null;
 
 	}
+	
+	/**
+	 * Speichern eines beliebigen ResultSets in einem Array. Weiterfuehrung der
+	 * Methode executeSQL(). Falls das SQL Statement fehlerhaft ist, wird eine
+	 * SQL Exception zurueckgegeben.
+	 * Liefert 10 Zeilen zurück
+	 **/
+	public String[][] save10Result(ResultSet result) {
+		try {
+			int y = 0; // Zeilenwert
+			String[][] returnStatements = new String[10][result.getMetaData().getColumnCount()];
+			while (result.next()) {
+				int maxColumns = result.getMetaData().getColumnCount();
+				for (int i = 1; i <= maxColumns; i++) {
+					returnStatements[y][(i - 1)] = result.getString(i);
+				}
+				y++; // hochzaehlen des Zeilenwerts
+			}
+			return returnStatements;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
 
 	/**
 	 * Umwandlung eines bestimmten Arrays in SQL Statements. Falls das SQL
@@ -259,7 +284,7 @@ public class connectHSQL {
 	 */
 	public String[][] getLastTenGames() {
 		String[][] highscore = null;
-		highscore = saveResult(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
+		highscore = save10Result(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
 		return highscore;
 	}
 
