@@ -1571,8 +1571,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	public String getFileString(){
 		return fileString;
 	}
+	
 	@Override
-	public void zugGespielt(int zug) {
+	public void zugGespielt(char sieger) {
 		// TODO Auto-generated method stub
 		
 	}
