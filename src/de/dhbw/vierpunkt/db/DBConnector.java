@@ -29,8 +29,8 @@ public class DBConnector {
 	}
 	
 	
-	public void saveGame(int gameID, String playerName1, String playerName2, String winner, String score) {
-		SetGame g1 = new SetGame(playerName1, playerName2, winner, score);
+	public void saveGame(int gameID, String playerName1, String playerName2, String winner) {
+		SetGame g1 = new SetGame(playerName1, playerName2, winner);
 		g1.run();
 	}
 	
@@ -39,21 +39,21 @@ public class DBConnector {
 		g2.run();
 	}
 	
-	public void saveMatch(int gameID, int matchID) {
-		SetMatch m1 = new SetMatch(gameID, matchID);
+	public void saveMatch(int gameID, int matchID, int matchnumber) {
+		SetMatch m1 = new SetMatch(gameID, matchID, matchnumber);
 		m1.run();
 	}
 	
 	
 	
-	public void createGame(String player1, String player2) {
-		SetGame dbGame = new SetGame(player1, player2, null, null);
+	public void createGame(String player1, String player2, String winner) {
+		SetGame dbGame = new SetGame(player1, player2, winner);
 		dbGame.run();
 	}
 	
 	
-	public void createMatch(int gameID, int matchID) {
-		SetMatch dbMatch = new SetMatch(matchID, gameID);
+	public void createMatch(int gameID, int matchID, int matchnumber) {
+		SetMatch dbMatch = new SetMatch(matchID, gameID, matchnumber);
 		dbMatch.run();
 	}
 	

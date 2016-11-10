@@ -22,8 +22,7 @@ public class SetTurn implements Runnable {
 	@Override
 	public void run() {
 		ConnectHSQL dbConnection = new ConnectHSQL();
-		int Z_ID = dbConnection.getZID(G_ID, M_ID);
-		dbConnection.setTurnDb(M_ID, PERSON, POS_Y, POS_X, Z_ID);
+		dbConnection.setTurnDb(M_ID, PERSON, POS_Y, POS_X);
 	}
 
 }
