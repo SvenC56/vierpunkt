@@ -33,9 +33,8 @@ public class connectHSQL {
 		con = null;
 
 		try {
-			con = DriverManager.getConnection(
-					"jdbc:hsqldb:file:" + "." + File.separatorChar + "VierGewinntDB; shutdown=true", "root",
-					"vierpunkt");
+			con = DriverManager.getConnection("jdbc:hsqldb:file:" + "." + File.separatorChar + "database"
+					+ File.separatorChar + "VierGewinntDB; shutdown=true", "root", "vierpunkt");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -188,6 +187,30 @@ public class connectHSQL {
 	}
 
 	/**
+	 * Speichern eines beliebigen ResultSets in einem Array. Weiterfuehrung der
+	 * Methode executeSQL(). Falls das SQL Statement fehlerhaft ist, wird eine
+	 * SQL Exception zurueckgegeben. Liefert 10 Zeilen zurück
+	 **/
+	public String[][] save10Result(ResultSet result) {
+		try {
+			int y = 0; // Zeilenwert
+			String[][] returnStatements = new String[10][result.getMetaData().getColumnCount()];
+			while (result.next()) {
+				int maxColumns = result.getMetaData().getColumnCount();
+				for (int i = 1; i <= maxColumns; i++) {
+					returnStatements[y][(i - 1)] = result.getString(i);
+				}
+				y++; // hochzaehlen des Zeilenwerts
+			}
+			return returnStatements;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+	}
+
+	/**
 	 * Umwandlung eines bestimmten Arrays in SQL Statements. Falls das SQL
 	 * Statement fehlerhaft ist, wird eine SQL Exception zurueckgegeben.
 	 **/
@@ -253,13 +276,13 @@ public class connectHSQL {
 		highscore = saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN"));
 		return highscore;
 	}
-	
+
 	/**
 	 * uebermittlung der letzten 10 Spiele aus Game
 	 */
 	public String[][] getLastTenGames() {
 		String[][] highscore = null;
-		highscore = saveResult(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
+		highscore = save10Result(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
 		return highscore;
 	}
 
