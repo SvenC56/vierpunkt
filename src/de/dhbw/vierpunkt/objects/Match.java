@@ -43,9 +43,9 @@ public class Match {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Match(Game game) {
-		this.setGame(game);
-		this.matchID++;
+	public Match(Game game, int matchID) {
+		this.game = game;
+		this.matchID = matchID;
 		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {

@@ -7,7 +7,6 @@ public class Testing {
 		Game game = new Game();
 		game.startGame("Tobi", "Sven");
 		game.startMatch();
-		game.playTurn(2);
 		Thread.sleep(500);
 		
 
