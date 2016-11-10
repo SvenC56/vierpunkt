@@ -87,7 +87,7 @@ public class Game implements NameListener {
 		
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
-		this.player[1].setIsOpponent(true);
+		this.player[0].setIsOpponent(true);
 		this.winner = null;
 		db.createGame(name1, name2);
 		startMatch();

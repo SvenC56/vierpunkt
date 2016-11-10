@@ -93,6 +93,7 @@ public class Turn {
 	 */
 	public int startAgentTurn() {
 		int x;
+		System.out.println("Start Agent turnID:" + this.turnID);
 		if (this.turnID == 0) { //Beim ersten Zug immer Spalte 3
 			x=3;
 		}
