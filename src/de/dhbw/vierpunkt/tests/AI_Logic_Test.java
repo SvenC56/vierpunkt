@@ -403,7 +403,7 @@ public class AI_Logic_Test {
  */
 			int test = 0;
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
 	      
 			
 	while(test == 0) { 
@@ -423,10 +423,10 @@ public class AI_Logic_Test {
 			      		+ "");
 			      System.out.println("eval" + evaluate(game));
 			      System.out.print("Enter column");
-			      String s = br.readLine();
-			      int input = Integer.parseInt(s);
-			      x = input;
-			       // x = (int) (Math.random()*6);
+			      // String s = br.readLine();
+			     // int input = Integer.parseInt(s);
+			    //  x = input;
+			       x = (int) (Math.random()*6);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println("Server hat in Spalte gelegt " + x);
