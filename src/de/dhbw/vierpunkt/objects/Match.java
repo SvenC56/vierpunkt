@@ -47,8 +47,8 @@ public class Match {
 		this.game = game;
 		this.matchID = matchID;
 		this.turnNumber=0;	
-		for (int x = 0; x <= ROW; x++ ) {
-			for (int y = 0; y <= COLUMN; y++) {
+		for (int x = 0; x <= COLUMN; x++ ) {
+			for (int y = 0; y <= ROW; y++) {
 				field[y][x] = new PlaySlot(null);
 			}
 		}

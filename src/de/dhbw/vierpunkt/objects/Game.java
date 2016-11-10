@@ -101,7 +101,7 @@ public class Game implements NameListener {
 				this.match[i] = new Match(this, i);
 				this.currentMatch = match[i];
 				this.currentMatch.setCurrentPlayer(this.player[0]);
-				db.createMatch(db.getGameID(), match[i].getMatchID(), 2); // MATCHNUMBER
+				db.createMatch(db.getGameID(), 2 , match[i].getMatchID()); // MatchID
 				this.currentMatch.setMatchActive(true);
 				this.currentMatch.startTurn();
 				break;
