@@ -49,7 +49,7 @@ public class Match {
 		this.turnNumber=0;	
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
-				field[y][x] = new PlaySlot(null);
+				this.field[y][x] = new PlaySlot(null);
 			}
 		}
 	}
