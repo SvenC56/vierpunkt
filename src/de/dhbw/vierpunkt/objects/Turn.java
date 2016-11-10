@@ -6,7 +6,7 @@ public class Turn {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private int turnID;
+	private int turnNumber;
 	private Player player;
 	private int x;
 	private int y;
@@ -22,8 +22,8 @@ public class Turn {
 
 		
 	
-	public Turn(int turnID, Player player, Match match) {
-		this.turnID=turnID;
+	public Turn(int turnNumber, Player player, Match match) {
+		this.turnNumber=turnNumber;
 		this.player=player;
 		this.match = match;
 	}
@@ -53,12 +53,12 @@ public class Turn {
 		this.y = y;
 	}
 
-	public int getTurnID() {
-		return turnID;
+	public int getTurnNumber() {
+		return turnNumber;
 	}
 
-	public void setTurnID(int turnID) {
-		this.turnID = turnID;
+	public void setTurnNumber(int turnNumber) {
+		this.turnNumber = turnNumber;
 	}
 
 	
@@ -75,7 +75,7 @@ public class Turn {
 	 this.y = this.match.validPosition(x);
 	 this.x = x;
 	 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-	 this.match.getGame().getDb().saveTurn(this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+	 this.match.getGame().getDb().saveTurn(this.match.getMatchNumber(), this.match.getCurrentPlayer().getName(), x, this.y);
 	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 		 Player winner = this.match.winnerIs();
@@ -93,8 +93,8 @@ public class Turn {
 	 */
 	public int startAgentTurn() {
 		int x;
-		System.out.println("Start Agent turnID:" + this.turnID);
-		if (this.turnID == 0) { //Beim ersten Zug immer Spalte 3
+		System.out.println("Start Agent turnID:" + this.turnNumber);
+		if (this.turnNumber == 0) { //Beim ersten Zug immer Spalte 3
 			x=3;
 		}
 		else {
@@ -102,7 +102,7 @@ public class Turn {
 		}
 		int y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-		 this.match.getGame().getDb().saveTurn(this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 this.match.getGame().getDb().saveTurn(this.match.getMatchNumber(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 			 Player winner = this.match.winnerIs();

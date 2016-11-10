@@ -13,7 +13,7 @@ public class Match {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private int matchID = 0;
+	private int matchNumber = 0;
 	private int turnNumber = 0;
 	private Player matchWinner;
 	private Player currentPlayer;
@@ -45,7 +45,7 @@ public class Match {
 	
 	public Match(Game game, int matchID) {
 		this.game = game;
-		this.matchID = matchID;
+		this.matchNumber = matchID;
 		this.turnNumber=0;	
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
@@ -55,7 +55,7 @@ public class Match {
 	}
 	
 	public Match(int matchID) {
-		this.matchID = matchID;
+		this.matchNumber = matchID;
 	}
 	
 	/**************************************************************/
@@ -87,8 +87,8 @@ public class Match {
 			return turnNumber;
 		}
 	 
-	  int getMatchID() {
-		 return this.matchID;
+	  int getMatchNumber() {
+		 return this.matchNumber;
 	 }
 
 	 void setTurnNumber(int turnNumber) {
@@ -147,7 +147,7 @@ public class Match {
 		public void startTurn() {
 						Turn turn = this.setNewTurn();
 					
-					while (turn.getTurnID() <= TURNS) {
+					while (turn.getTurnNumber() <= TURNS) {
 						if (this.turnActive == false) {
 							turn = this.setNewTurn();
 						}
@@ -190,7 +190,7 @@ public class Match {
 	 * @return
 	 */
 	 Match getDemoMatch() {
-		Match match2 = new Match(this.matchID);
+		Match match2 = new Match(this.matchNumber);
 		for (int i = 0; i <= COLUMN; i++) {
 			for (int j = 0; j <= ROW; j++) {
 				match2.setField(i, j, this.getFieldPlayer(i, j));
