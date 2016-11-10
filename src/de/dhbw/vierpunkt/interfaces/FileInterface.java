@@ -23,7 +23,6 @@ public class FileInterface implements Runnable {
 	
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
-	// gegner und spieler char immer mitsenden bei fireZugEvent
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	public static int zugZeit = 1000;
 	
@@ -45,14 +44,14 @@ public class FileInterface implements Runnable {
 	
 	// Dem Konstruktor werden die Spielerkennung und der Kontaktpfad uebergeben
 	public FileInterface(char spielerKennung, String kontaktPfad, int zugZeit){
-		this.spielerKennung = spielerKennung;
-		this.kontaktPfad = kontaktPfad;
+		FileInterface.spielerKennung = spielerKennung;
+		FileInterface.kontaktPfad = kontaktPfad;
 		this.zugZeit = zugZeit;
 		if (spielerKennung == 'x'){
 			this.gegnerKennung = 'o';
-	} else {
-		this.gegnerKennung = 'x';
-	}
+			} else {
+				this.gegnerKennung = 'x';
+			}
 	}
 	
 
@@ -90,7 +89,7 @@ public class FileInterface implements Runnable {
 				
 				// Zug des Gegners wird in GUI dargestellt
 				System.out.println("Der Gegner spielt den Zug " + zug1 + ".");
-				fireZugEvent(zug1);
+				fireZugEvent(zug1, gegnerKennung);
 				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
 				zugSchongespielt = true;
@@ -119,7 +118,7 @@ public class FileInterface implements Runnable {
 				zugSpielen(zug2);
 				
 				// Eigener Zug wird in GUI dargestellt
-				fireZugEvent(zug2);
+				fireZugEvent(zug2, spielerKennung);
 				
 				try {
 						Thread.sleep(zugZeit);
@@ -133,14 +132,14 @@ public class FileInterface implements Runnable {
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler X!");
-        	fireZugEvent(zug1, 'x');
+        	fireZugEvent('x');
         	zugSchongespielt = true;
         	
 		} else if  (serverString.contains("false") && serverString.contains("Spieler O")){
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler O!");
-        	fireZugEvent(zug1, 'o');
+        	fireZugEvent('o');
         	zugSchongespielt = true;
 		}
 	}
@@ -208,15 +207,21 @@ public class FileInterface implements Runnable {
 		listeners.add(toAdd);
 	}
 	
-	public static void fireZugEvent(int zug){
+//	public static void fireZugEvent(int zug){
+//		for (ZugListener zl : listeners){
+//			zl.zugGespielt(zug);
+//		}
+//	}
+	
+	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
-			zl.zugGespielt(zug);
+			zl.zugGespielt(zug, spieler);
 		}
 	}
 	
-	public static void fireZugEvent(int zug, char sieger){
+	public static void fireZugEvent(char spieler){
 		for (ZugListener zl : listeners){
-			zl.zugGespielt(zug, sieger);
+			zl.zugGespielt(spieler);
 		}
 	}
 	
