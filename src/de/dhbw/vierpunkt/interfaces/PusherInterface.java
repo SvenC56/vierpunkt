@@ -154,7 +154,7 @@ public class PusherInterface implements Runnable
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        // game.playTurn(zug, 1);
-		        // game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
+		         game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
 		       	
 		        	
 		        	
@@ -165,9 +165,9 @@ public class PusherInterface implements Runnable
 		        
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
-		        	 int move = (int) (Math.random()*7);
+		        	 //int move = (int) (Math.random()*7);
 		        	// int move = game.playTurn(-1, 2);
-		        	// int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen

@@ -1062,7 +1062,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					createGrids();}
 				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
-				//fireNames(spielername1.getText(), spielername2.getText());
+				Thread t1 = new Thread(){
+				@Override
+				public void run(){
+					fireNames(spielername1.getText(), spielername2.getText());
+				}
+				};
+				t1.start();
 				
 				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){

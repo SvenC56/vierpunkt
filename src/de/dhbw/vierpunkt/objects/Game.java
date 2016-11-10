@@ -119,7 +119,7 @@ public class Game implements NameListener {
 				break;
 			 }
 		 }
-			while (this.currentMatch.getMatchNumber() <= MATCHES) {
+			while (this.currentMatch.getMatchNumber() <= MATCHES || !this.currentMatch.getEven() || this.currentMatch.winnerIs() == null) {
 				if (this.currentMatch.getMatchActive() == false) {
 					startMatch();
 					this.currentMatch.startTurn();
