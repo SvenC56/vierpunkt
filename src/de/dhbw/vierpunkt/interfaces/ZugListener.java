@@ -9,4 +9,5 @@ package de.dhbw.vierpunkt.interfaces;
 public interface ZugListener{
 	
 	void zugGespielt(int zug);
+	void zugGespielt(int zug, char sieger);
 }

@@ -51,18 +51,28 @@ public class PusherInterface implements Runnable
 	 */
 	public static int zugZeit = 1000;
 	
+	public static char spielerKennung = 'x';
+	public static char gegnerKennung = 'o';
+	
 	// Konstruktoren
 	public PusherInterface(){
-		
 	}
 	
-	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret){
+	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung){
 		this.zugZeit = zugZeit;
 		this.MyAppID = AppID;
 		this.MyAppKey = AppKey;
 		this.MyAppSecret = AppSecret;
+		this.spielerKennung = spielerKennung;
+		
+		if (spielerKennung == 'x'){
+				this.gegnerKennung = 'o';
+		} else {
+			this.gegnerKennung = 'x';
+		}
 	}
 
+	
 	public void run(){
 		
 		
@@ -162,8 +172,17 @@ public class PusherInterface implements Runnable
 		        	fireZugEvent(move);
 		        }
 		        
-		        if (data.contains("false")){
+		        // Wird aufgerufen wenn Spieler X gewinnt
+		        if (data.contains("false") && data.contains("Spieler X")){
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
+		        	System.out.println("");
+		        	System.out.println("Sieger des Spiels ist Spieler X!");
+		        	
+		        	// Wird aufgerufen wenn Spieler O gewinnt	
+		        } else if (data.contains("false") && data.contains("Spieler O")) {
+		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
+		        	System.out.println("");
+		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        }
 		       			        
 		    }
@@ -222,6 +241,12 @@ public class PusherInterface implements Runnable
 	public static void fireZugEvent(int zug){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug);
+		}
+	}
+	
+	public static void fireZugEvent(int zug, char sieger){
+		for (ZugListener zl : listeners){
+			zl.zugGespielt(zug, sieger);
 		}
 	}
 	
