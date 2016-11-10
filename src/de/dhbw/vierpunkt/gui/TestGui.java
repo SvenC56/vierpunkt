@@ -80,15 +80,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	private int anzahlzeilen;
 	private int anzahlspalten;
 	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
-	public char spieler = 'x'; 		// Spieler 1
+	public static char spieler = 'x'; 		// Spieler 1
 	public char gegner = 'o';
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
-	private int thema = 1;
+	private static int thema = 1;
 	public char manuellerSpieler= 'x';
 	
 	// Spielernamen
-	private String names1 = "Spieler1";
-	private String names2 = "Spieler2";
+	private static String names1 = "Spieler1";
+	private static String names2 = "Spieler2";
 	
 	// Angaben aus anderen Klassen
 	private Text spielstand = new Text("0 : 0");
@@ -647,7 +647,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		Scene scene = new Scene(root);
 		
 		menu13.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) { 
+		    @Override public void handle(ActionEvent e) {
 		    	final Stage close = new Stage();
 		    	close.setTitle("Schliessen");
 		    	close.initModality(Modality.APPLICATION_MODAL);
@@ -692,9 +692,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		        close.setScene(themaScene);
 		        close.show();
 		    	}
-		});
-		
-		menu11.setOnAction(new EventHandler<ActionEvent>(){
+		});		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
 				// primaryStage.setFullScreen(true);
@@ -1392,7 +1390,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	}
 	
 	
-	public void gewinnermethode(char gewinner, String names1, String names2){
+	public static void gewinnermethode(char gewinner){
 		
 		Label gewinnernachricht = new Label();
 		
@@ -1520,7 +1518,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
                    @Override
                    public void handle(MouseEvent arg0) {
-                       if(spieler=='x'){vorschauspielstein.setImage(image1);      
+                       if(manuellerSpieler=='x'){vorschauspielstein.setImage(image1);      
                        }else{vorschauspielstein.setImage(image2);}
                    }
                });
@@ -1540,7 +1538,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                @Override
                    public void handle(MouseEvent arg0) {
                        vorschauspielstein.setImage(image3);
-                       if(spieler=='x'){ vorschauspielstein.setImage(image1);
+                       if(manuellerSpieler=='x'){ vorschauspielstein.setImage(image1);
                        }else{vorschauspielstein.setImage(image2); }
                    }
                });
@@ -1597,11 +1595,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
             translateTransition.play();
             if(amZug=='x'){
                 spielstein.setImage(image1);
-                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
+                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);
                 
             }else{
                 spielstein.setImage(image2);
-                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + spieler);
+                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);
                
             }
         }
@@ -1615,10 +1613,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         } return null;
     }
     
-    public ImageView getImageView (StackPane stack) {
+    public ImageView getImageView (StackPane stack) throws NullPointerException {
+    	try{
         ObservableList<Node> list = stack.getChildren();
         return (ImageView)list.get(2);
-    }
+    	} catch (NullPointerException e){
+    		e.getMessage();
+    		return null;
+    	}
+    } 
     
     
 	/*@Override
@@ -1666,7 +1669,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	public void zugGespielt(char sieger) {
 		
 	// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
-	gewinnermethode(sieger, names1, names2);
+	gewinnermethode(sieger);
 	for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 						plaetzeFreiInReihe[i]=5;
 					}
