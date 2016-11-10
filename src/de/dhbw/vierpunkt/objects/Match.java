@@ -18,9 +18,8 @@ public class Match {
 	private Player matchWinner;
 	private Player currentPlayer;
 	private boolean even = false;	//Unentschieden
-	private AlphaBeta ki = new AlphaBeta();
-	static int depth = 6;
 	private boolean matchActive=false;
+	private boolean turnActive = false;
 	private Game game;
 	
 	//Anzahl Spalten des Spielfeldes
@@ -44,9 +43,9 @@ public class Match {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Match(Game game) {
+	public Match(Game game, int matchID) {
 		this.game = game;
-		this.matchID++;
+		this.matchID = matchID;
 		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
 			for (int x = 0; x <= COLUMN; x++) {
@@ -138,45 +137,54 @@ public class Match {
 			this.currentPlayer = currentPlayer;
 		}
 		
+		  boolean isTurnActive() {
+				return turnActive;
+			}
 
-			
+			void setTurnActive(boolean turnActive) {
+				this.turnActive = turnActive;
+			}
+
+			Game getGame() {
+				return game;
+			}
+
+			void setGame(Game game) {
+				this.game = game;
+			}
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+		/**
+		 * Liefert den aktuellen Zug zurueck
+		 * @return
+		 */
+		public Turn getCurrentTurn() {
+			return turn[getTurnNumber()];
+		}
 		 
+		 /**
+		 * Unsere moeglichen Zuege werden in einem Array gespeichert. Diese Methode erstellt, wenn moeglich einen neuen Turn 
+		 * @return
+		 */
+		  Turn getNewTurn() {
+				for (int i = 0; i <= TURNS; i++) {
+					if (turn[i] == null) {
+						turn[i] = new Turn(i, this.currentPlayer, this);
+						setTurnNumber(i);
+						this.setTurnActive(true);
+						return turn[i];
+					}
+		}
+				return null;
+}
+		
+	
 		Player getFieldPlayer(int x, int y) {
 				return this.field[y][x].getOwnedBy();
 				}
-		
-		
-		Turn createTurn(Player player, int x, int y) {
-			for (int i = 0; i <= TURNS; i++) {
-				if (turn[i] == null) {
-					turn[i] = new Turn(i, player, x, y);
-					turn[i].setTurnActive(true);
-					setTurnNumber(i);
-					return turn[i];
-				}
-			}
-			return null;
-		}
-		
-		
-		public Turn startTurn (Player player, int x) {
-			if (!player.getIsOpponent()){
-			if (this.getTurnNumber()>0){
-			x = ki.calcMove(this, this.depth);
-			}
-			else {
-				x=3;
-			}
-			
-		}
-		int y = this.validPosition(x);
-		Turn turn = createTurn(player, x, y);
-		return turn;
-		}
+	
 
 
 	/**
@@ -193,7 +201,11 @@ public class Match {
 		return match2;
 	}
 	
-	
+	/**
+	 * Prueft ob in der angegebenen Spalte x eine moegliche Position ist und liefert dann die Zeile zurueck
+	 * @param x
+	 * @return
+	 */
 	 int validPosition(int x) {
 		int temp = 0;
 		// Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
@@ -225,7 +237,10 @@ public class Match {
 			int y = this.validPosition(x);
 			this.setField(x, y, this.currentPlayer);
 			}
-	
+	/**
+	 * Liefert zurueck wer der Gewinner des Matches ist und prueft ob unentschieden gespielt wurde
+	 * @return
+	 */
 	 Player winnerIs() {
 		 if (this.matchWinner != null) {
 			 return this.matchWinner;
@@ -235,7 +250,10 @@ public class Match {
 		 }
 		 return null;
 	 }
-
+	 
+	 /**
+	  * Ueberprueft ob ein Match-Winner existiert (Spiel gewonnen)
+	  */
 	 void checkWinner() {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 			if (this.getTurnNumber() >= 4) {
@@ -270,7 +288,10 @@ public class Match {
 	/**************************************************************/
 	/************* BEWERTUNGS-METHODEN ****************************/
 	/**************************************************************/
-	
+	/**
+	 * Bewertet die derzeitige Spielsituation und liefert eine Bewertung
+	 * @return
+	 */
 	 int evaluate() { // bewertet die Spielsituation
 			// System.out.println("Ab jetzt sind wir in evaluate");
 			int agentCount2 = 0;
@@ -361,6 +382,16 @@ public class Match {
 				
 			}
 	 
+	 /**
+	  * Diese Klasse bewertet die Spielsteine des aktuellen Spielers in Reihe und liefert die Anzahl der Steine in Reihe zurueck
+	  * @param field
+	  * @param player
+	  * @param x
+	  * @param y
+	  * @param dx
+	  * @param dy
+	  * @return
+	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
 		 if (y<=2 && x <= 3) {
@@ -479,35 +510,37 @@ public class Match {
 			return count;
 		}
 
-		 
-		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
-		 int inRow(int x, int y) {
-			// System.err.println("Methode inRow wurde aufgerufen!");
-			int count = 0;
-			int temp = x;
-			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-				count++;
-				x++;
-			}
-			for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
-										// Anzahl Spalten!
-				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-			if (count < 4 && temp > 0) { // von rechts nach links (nur, wenn Counter
-											// 4 noch nicht erreicht, da Spiel sonst
-											// gewonnen)
-				x = temp - 1;
-				for (; x > -1; x--) {
-					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-						count++;
-					} else
-						break;
+		
 
-				}
-			}
-			return count;
-		}
+		 
+//		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
+//		 int inRow(int x, int y) {
+//			// System.err.println("Methode inRow wurde aufgerufen!");
+//			int count = 0;
+//			int temp = x;
+//			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//				count++;
+//				x++;
+//			}
+//			for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
+//										// Anzahl Spalten!
+//				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//					count++;
+//				} else
+//					break;
+//			}
+//			if (count < 4 && temp > 0) { // von rechts nach links (nur, wenn Counter
+//											// 4 noch nicht erreicht, da Spiel sonst
+//											// gewonnen)
+//				x = temp - 1;
+//				for (; x > -1; x--) {
+//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//						count++;
+//					} else
+//						break;
+//
+//				}
+//			}
+//			return count;
+//		}
 }

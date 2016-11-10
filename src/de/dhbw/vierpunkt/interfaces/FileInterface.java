@@ -22,6 +22,7 @@ public class FileInterface implements Runnable {
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	
 	public static char spielerKennung = 'x';
+	public static char gegnerKennung = 'o';
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	public static int zugZeit = 1000;
 	
@@ -43,9 +44,14 @@ public class FileInterface implements Runnable {
 	
 	// Dem Konstruktor werden die Spielerkennung und der Kontaktpfad uebergeben
 	public FileInterface(char spielerKennung, String kontaktPfad, int zugZeit){
-		this.spielerKennung = spielerKennung;
-		this.kontaktPfad = kontaktPfad;
+		FileInterface.spielerKennung = spielerKennung;
+		FileInterface.kontaktPfad = kontaktPfad;
 		this.zugZeit = zugZeit;
+		if (spielerKennung == 'x'){
+			this.gegnerKennung = 'o';
+			} else {
+				this.gegnerKennung = 'x';
+			}
 	}
 	
 
@@ -61,7 +67,7 @@ public class FileInterface implements Runnable {
 
 		kontaktPfad = getNewPath(kontaktPfad);		
 		
-		while (true)
+		while (zugSchongespielt == false)
 		{
 	
 		// Input aus ServerFile lesen
@@ -83,7 +89,7 @@ public class FileInterface implements Runnable {
 				
 				// Zug des Gegners wird in GUI dargestellt
 				System.out.println("Der Gegner spielt den Zug " + zug1 + ".");
-				fireZugEvent(zug1);
+				fireZugEvent(zug1, gegnerKennung);
 				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
 				zugSchongespielt = true;
@@ -112,18 +118,29 @@ public class FileInterface implements Runnable {
 				zugSpielen(zug2);
 				
 				// Eigener Zug wird in GUI dargestellt
-				fireZugEvent(zug2);
+				fireZugEvent(zug2, spielerKennung);
 				
 				try {
-								
 						Thread.sleep(zugZeit);
 						// Fuer diese Runde wurde ein Zug gespielt
 						zugSchongespielt = false;	
 						
-						
-			} catch (InterruptedException e){e.getMessage();}
+					} catch (InterruptedException e){e.getMessage();}
+						}catch (IOException e){e.getMessage();}
 			
-				}catch (IOException e){e.getMessage();}
+		} else if  (serverString.contains("false") && serverString.contains("Spieler X")){
+			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
+        	System.out.println("");
+        	System.out.println("Sieger des Spiels ist Spieler X!");
+        	fireZugEvent('x');
+        	zugSchongespielt = true;
+        	
+		} else if  (serverString.contains("false") && serverString.contains("Spieler O")){
+			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
+        	System.out.println("");
+        	System.out.println("Sieger des Spiels ist Spieler O!");
+        	fireZugEvent('o');
+        	zugSchongespielt = true;
 		}
 	}
 }
@@ -182,7 +199,7 @@ public class FileInterface implements Runnable {
 	  */
 	public static String zugEmpfangen() throws IOException{
 		String data = new String(Files.readAllBytes(Paths.get(kontaktPfad + "server2spieler" + spielerKennung +".xml")), StandardCharsets.UTF_8);
-		System.out.print(data);
+		//System.out.print(data);
 		return data;
 	}
 	
@@ -190,9 +207,21 @@ public class FileInterface implements Runnable {
 		listeners.add(toAdd);
 	}
 	
-	public static void fireZugEvent(int zug){
+//	public static void fireZugEvent(int zug){
+//		for (ZugListener zl : listeners){
+//			zl.zugGespielt(zug);
+//		}
+//	}
+	
+	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
-			zl.zugGespielt(zug);
+			zl.zugGespielt(zug, spieler);
+		}
+	}
+	
+	public static void fireZugEvent(char spieler){
+		for (ZugListener zl : listeners){
+			zl.zugGespielt(spieler);
 		}
 	}
 	

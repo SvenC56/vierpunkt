@@ -55,7 +55,7 @@ public class Game implements NameListener {
 		 this.match[i] = match;
 	 }
 
-	  Match getCurrentMatch() {
+	  public Match getCurrentMatch() {
 			return currentMatch;
 		}
 
@@ -68,41 +68,49 @@ public class Game implements NameListener {
 		Player getPlayer(int i) {
 			return this.player[i];
 		}
-
+		
+		DBConnector getDb() {
+			return this.db;
+		}
 	
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+		
+	/**Startet ein neues Spiel und legt hierfuer zwei Spieler an
+	 * Diese Klasse laeuft und legt jeweils ein neues Match an sobald ein Match abgeschlossen wurde, maximal 3
+	 * (non-Javadoc)
+	 * @see de.dhbw.vierpunkt.objects.NameListener#startGame(java.lang.String, java.lang.String)
+	 **/
 	public void startGame(String name1, String name2) {
 		
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
 		this.player[1].setIsServer(true);
 		this.winner = null;
-		for (int i = 0; i <= MATCHES; i++) {
-			match[i] = null;
-		}
+		startMatch();
 		db.createGame(name1, name2);
-		while (match[2] == null) {
-			if (this.currentMatch.getMatchActive() == false) {
-				startMatch();
-			}
-			}
-		
 		}
 
 	
 	public void startMatch() {
 		 for (int i = 0; i <= MATCHES; i++) {
 			 if (this.match[i] == null) {
-				this.match[i] = new Match(this);
+				this.match[i] = new Match(this, i);
 				this.currentMatch = match[i];
 				this.currentMatch.setCurrentPlayer(this.player[0]);
 				db.createMatch(db.getGameID(), match[i].getMatchID());
 				this.currentMatch.setMatchActive(true);
+				break;
 			 }
 		 }
+			while (this.currentMatch.getMatchID() <= MATCHES) {
+				if (this.currentMatch.getMatchActive() == false) {
+					startMatch();
+				}
+				}
+		 
 	}
 	
 	int checkWinner() {
