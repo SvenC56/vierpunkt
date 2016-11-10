@@ -12,6 +12,7 @@ public class Game implements NameListener {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
+	private int matchID;
 	private static final int PLAYER = 1;
 	private Player player[] = new Player[PLAYER+1];
 	private Player winner = null;
@@ -102,6 +103,7 @@ public class Game implements NameListener {
 				this.currentMatch = match[i];
 				this.currentMatch.setCurrentPlayer(this.player[0]);
 				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // MatchID
+				matchID = db.getMatchID();
 				this.currentMatch.setMatchActive(true);
 				this.currentMatch.startTurn();
 				break;
