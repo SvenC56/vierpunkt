@@ -5,12 +5,10 @@
 package de.dhbw.vierpunkt.db;
 
 public class SetMatch implements Runnable {
-	int M_ID;
 	int G_ID;
 	int MATCHNUMBER;
 
-	public SetMatch(int M_ID, int G_ID, int MATCHNUMBER) {
-		this.M_ID = M_ID;
+	public SetMatch(int G_ID, int MATCHNUMBER) {
 		this.G_ID = G_ID;
 		this.MATCHNUMBER = MATCHNUMBER;
 	}
@@ -18,7 +16,7 @@ public class SetMatch implements Runnable {
 	@Override
 	public void run() {
 		ConnectHSQL dbConnection = new ConnectHSQL();
-		dbConnection.setMatchDb(M_ID, G_ID, MATCHNUMBER);
+		dbConnection.setMatchDb(G_ID, MATCHNUMBER);
 	}
 
 }

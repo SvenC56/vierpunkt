@@ -141,34 +141,27 @@ public class ConnectHSQL {
 	/**
 	 * uebermittlung eines Satzes in die DB
 	 **/
-	public void setMatchDb(int M_ID, int G_ID, int MATCHNUMBER) {
+	public void setMatchDb(int G_ID, int MATCHNUMBER) {
 		System.out.println(
-				"INSERT INTO MATCH (M_ID, G_ID, MATCHNUMBER) VALUES(" + M_ID + "," + G_ID + "," + MATCHNUMBER + ");");
-		executeSQL("INSERT INTO MATCH (M_ID,G_ID, MATCHWINNER) VALUES(" + M_ID + "," + G_ID + "," + MATCHNUMBER + ");");
+				"INSERT INTO MATCH (G_ID, MATCHWINNER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
+		executeSQL("INSERT INTO MATCH (G_ID, MATCHWINNER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
 	}
 
 	public void updateMatch(int M_ID, int G_ID, int MATCHNUMBER, String SCORE) {
+		System.out.println("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE G_ID=" + G_ID + " AND M_ID= " + M_ID
+				+ " AND MATCHNUMBER= " + MATCHNUMBER + ";");
 		executeSQL("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE G_ID=" + G_ID + " AND M_ID= " + M_ID
 				+ " AND MATCHNUMBER= " + MATCHNUMBER + ";");
-	}
-
-	/**
-	 * Rueckgabe der Z_ID zur erstellung eines Zugs
-	 **/
-	public int getM_ID(int G_ID, int MATCHNUMBER) {
-		String[][] temp = saveResult(
-				executeSQL("SELECT M_ID FROM MATCH WHERE G_ID = " + G_ID + " AND MATCHNUMBER= " + MATCHNUMBER + ";"));
-		return Integer.parseInt(temp[0][0]);
 	}
 
 	/**
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void setTurnDb(int M_ID, String PERSON, int POS_Y, int POS_X) {
-		System.out.println("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
-				+ POS_Y + ", " + POS_X + ");");
-		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
-				+ POS_Y + ", " + POS_X + ");");
+		System.out.println("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
+				+ ", " + POS_X + ");");
+		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
+				+ ", " + POS_X + ");");
 
 	}
 

@@ -52,8 +52,8 @@ public class DBConnector {
 	}
 	
 	
-	public void createMatch(int gameID, int matchID, int matchnumber) {
-		SetMatch dbMatch = new SetMatch(matchID, gameID, matchnumber);
+	public void createMatch(int gameID, int matchnumber) {
+		SetMatch dbMatch = new SetMatch(gameID, matchnumber);
 		dbMatch.run();
 	}
 	
