@@ -6,7 +6,7 @@ import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener, GewinnerListener{
+public class MainApplication extends Application implements ParamListener{
 	
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
@@ -31,7 +31,6 @@ public class MainApplication extends Application implements ParamListener, Gewin
 	public void start(Stage primaryStage) throws Exception
 	{ 		
 		gui.start(primaryStage);
-
 	}
 	
 	/**
@@ -52,7 +51,7 @@ public class MainApplication extends Application implements ParamListener, Gewin
 			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
 			pushy.addListener(gui);
 			pushy.addErrorListener(gui);
-			pushy.addGewinnerListener(main);
+			pushy.addGewinnerListener(gui);
 			
 			Thread pusherThread = new Thread(){
 				@Override
@@ -79,9 +78,4 @@ public class MainApplication extends Application implements ParamListener, Gewin
 		}
 	}
 
-	@Override
-	public void siegerAnzeigen(char sieger)
-	{
-		gui.gewinnermethode(sieger);
-	}
 }

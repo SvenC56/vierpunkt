@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dhbw.vierpunkt.db.ConnectHSQL;
+import de.dhbw.vierpunkt.interfaces.GewinnerListener;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
 import de.dhbw.vierpunkt.objects.NameListener;
@@ -39,7 +40,7 @@ import de.dhbw.vierpunkt.objects.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener,ConnectionErrorListener {
+public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerListener {
 
 	/****** VARIABLENDEKLARATION *****/
 	
@@ -1681,6 +1682,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 						plaetzeFreiInReihe[i]=5;
 					}
+	}
+	
+	@Override
+	public void siegerAnzeigen(char sieger)
+	{
+		gewinnermethode(sieger);
 	}
 }
 
