@@ -1555,11 +1555,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
               spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
                    @Override public void handle(MouseEvent arg0) { 
                 	   if(manuellerSpieler == 'x'){
+                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
                 		   manuellerSpieler = 'o';
                 	   }else{
+                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
                 		   manuellerSpieler = 'x';
                 	   }
-                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                	   
                 	   
                 	   }
                });
@@ -1567,7 +1569,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
                // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
                vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
                    @Override public void handle(MouseEvent arg0) {
-                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                	   if(manuellerSpieler == 'x'){
+                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                		   manuellerSpieler = 'o';
+                	   }else{
+                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                		   manuellerSpieler = 'x';
+                	   }
                 	   }
                });
            
