@@ -272,16 +272,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		spielmodus.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n == 0)return "manuell";
-				if (n > 0 && n < 2)return "gegen den Computer";
+				if (n == 0)return "gegen den Comupter";
+				if (n > 0 && n < 2)return "manuell";
 				if (n == 2)return "automatisch";
 				return "automatisch";
 			}
 			@Override
 			public Double fromString(String x) {
 				switch (x) {
-				case "manuell":return 0d;
-				case "gegen den Computer":return 1d;
+				case "manuell":return 1d;
+				case "gegen den Computer":return 0d;
 				case "automatisch":return 2d;
 				default:return 2d;
 				}
@@ -300,13 +300,59 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		    		start.setDisable(false);
 		    		createGrids_automatisch(spielfeld);
 		    	}
-		    	if(newValue.intValue() == 0){
+		    	if(newValue.intValue() == 1){
 		    		einstellungen.setOpacity(0);
 		    		einstellungen.setDisable(true);
 		    		start.setOpacity(0);
 		    		start.setDisable(true);
 		    		createGrids();
 		    	}
+		    	if(newValue.intValue()==0){
+		    		final Stage notImpl = new Stage();
+		    		notImpl.setTitle("Noch nicht Implementiert");
+		    		notImpl.initModality(Modality.APPLICATION_MODAL);
+		    		notImpl.initOwner(primaryStage);
+			        VBox themaVbox = new VBox(20);
+			        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+			        
+			        Label nachricht = new Label();
+			        nachricht.setText("Diese Funktion wurde noch nicht implementiert. Bitte waehle einen anderen Spielmodus.");
+			        nachricht.setWrapText(true);
+			        Button manuell = new Button("Manuell");
+			        Button auto = new Button("Automatisch");
+			        HBox hbox = new HBox();
+			        hbox.getChildren().addAll(manuell, auto);
+			        hbox.setAlignment(Pos.BASELINE_CENTER);
+			        hbox.setSpacing(20);
+			        
+			       auto.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			        	@Override
+			        	public void handle(MouseEvent arg0){
+			        		spielmodus.setValue(2);
+			        		notImpl.close();
+			        	}
+			        });
+			       manuell.setOnMouseClicked(new EventHandler<MouseEvent>(){
+			        	@Override
+			        	public void handle(MouseEvent arg0){
+			        		spielmodus.setValue(1);
+			        		notImpl.close();
+			        	}
+			        });
+			        // Einfuegen in die VBox
+			        themaVbox.getChildren().addAll(nachricht, hbox);
+			        Scene themaScene = new Scene(themaVbox, 500, 200);
+			        
+			       /* if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+			      */
+			        notImpl.setScene(themaScene);
+			        notImpl.show();
+			        
+		    	}
+
 		    }
 		});
 		
@@ -789,7 +835,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		 *************************************************************************************************************
 		 *************************************************************************************************************/
 		// manuell
-		if(spielmodus.getValue() == 0 ){
+		if(spielmodus.getValue() == 1 ){
 			createGrids();
 		}
 		
