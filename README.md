@@ -1,3 +1,4 @@
+![Logo](https://raw.githubusercontent.com/SvenC56/vierpunkt/master/bin/de/dhbw/vierpunkt/gui/ueberschrift.jpg)
 ## VIER.
 
 School project for an AI for the game 'Connect 4'
