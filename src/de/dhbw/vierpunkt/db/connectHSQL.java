@@ -33,9 +33,8 @@ public class connectHSQL {
 		con = null;
 
 		try {
-			con = DriverManager.getConnection(
-					"jdbc:hsqldb:file:" + "." + File.separatorChar + "VierGewinntDB; shutdown=true", "root",
-					"vierpunkt");
+			con = DriverManager.getConnection("jdbc:hsqldb:file:" + "." + File.separatorChar + "database"
+					+ File.separatorChar + "VierGewinntDB; shutdown=true", "root", "vierpunkt");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -186,12 +185,11 @@ public class connectHSQL {
 		return null;
 
 	}
-	
+
 	/**
 	 * Speichern eines beliebigen ResultSets in einem Array. Weiterfuehrung der
 	 * Methode executeSQL(). Falls das SQL Statement fehlerhaft ist, wird eine
-	 * SQL Exception zurueckgegeben.
-	 * Liefert 10 Zeilen zurück
+	 * SQL Exception zurueckgegeben. Liefert 10 Zeilen zurück
 	 **/
 	public String[][] save10Result(ResultSet result) {
 		try {
@@ -278,7 +276,7 @@ public class connectHSQL {
 		highscore = saveResult(executeSQL("SELECT * FROM GAME NATURAL JOIN MATCH NATURAL JOIN TURN"));
 		return highscore;
 	}
-	
+
 	/**
 	 * uebermittlung der letzten 10 Spiele aus Game
 	 */
