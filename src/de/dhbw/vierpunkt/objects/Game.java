@@ -73,6 +73,16 @@ public class Game implements NameListener {
 		DBConnector getDb() {
 			return this.db;
 		}
+		
+		int getMatchID() {
+			return matchID;
+		}
+
+
+
+		void setMatchID(int matchID) {
+			this.matchID = matchID;
+		}
 	
 	
 	/**************************************************************/
@@ -103,7 +113,7 @@ public class Game implements NameListener {
 				this.currentMatch = match[i];
 				this.currentMatch.setCurrentPlayer(this.player[0]);
 				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // MatchID
-				matchID = db.getMatchID();
+				setMatchID(db.getMatchID());
 				this.currentMatch.setMatchActive(true);
 				this.currentMatch.startTurn();
 				break;
