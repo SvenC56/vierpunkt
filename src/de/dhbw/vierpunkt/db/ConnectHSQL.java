@@ -143,8 +143,8 @@ public class ConnectHSQL {
 	 **/
 	public void setMatchDb(int G_ID, int MATCHNUMBER) {
 		System.out.println(
-				"INSERT INTO MATCH (G_ID, MATCHWINNER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
-		executeSQL("INSERT INTO MATCH (G_ID, MATCHWINNER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
+				"INSERT INTO MATCH (G_ID, MATCHNUMBER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
+		executeSQL("INSERT INTO MATCH (G_ID, MATCHNUMBER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
 	}
 
 	public void updateMatch(int M_ID, int G_ID, int MATCHNUMBER, String SCORE) {
