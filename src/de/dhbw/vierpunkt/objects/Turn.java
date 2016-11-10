@@ -102,7 +102,7 @@ public class Turn {
 		}
 		int y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-		 this.match.getGame().getDb().saveTurn(this.match.getMatchNumber(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 			 Player winner = this.match.winnerIs();
