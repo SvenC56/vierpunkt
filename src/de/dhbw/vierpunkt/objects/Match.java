@@ -99,7 +99,7 @@ public class Match {
 		return matchWinner;
 		}
 
-	void setMatchWinner(Player winner) {
+	public void setMatchWinner(Player winner) {
 		this.matchWinner = winner;
 		}
 
@@ -116,7 +116,7 @@ public class Match {
 			this.turn = turns;
 		}
 		
-		 Player getCurrentPlayer() {
+		public Player getCurrentPlayer() {
 			return currentPlayer;
 		}
 

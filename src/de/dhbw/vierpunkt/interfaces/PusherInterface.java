@@ -178,6 +178,9 @@ public class PusherInterface implements Runnable
 		        if (data.contains("false") && data.contains("Spieler X")){
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	if (spielerKennung == 'x'){
+		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
+		        	}
 		        	fireZugEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
 		        	
