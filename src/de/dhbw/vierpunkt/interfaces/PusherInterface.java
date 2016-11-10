@@ -44,6 +44,7 @@ public class PusherInterface implements Runnable
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	private static List<ConnectionErrorListener> errorListeners = new ArrayList<ConnectionErrorListener>();
+	private static List<GewinnerListener> gewinnerListeners = new ArrayList<GewinnerListener>();
 	
 	
 	/**
@@ -181,7 +182,7 @@ public class PusherInterface implements Runnable
 		        	if (spielerKennung == 'x'){
 		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
 		        	}
-		        	fireZugEvent('x');
+		        	fireGewinnerEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
 		        	
 		        	
@@ -189,7 +190,7 @@ public class PusherInterface implements Runnable
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
-		        	fireZugEvent('o');
+		        	fireGewinnerEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        }
 		       			        
@@ -274,5 +275,14 @@ public class PusherInterface implements Runnable
 		}
 	}
 	
+	public void addGewinnerListener(GewinnerListener toAdd){
+		gewinnerListeners.add(toAdd);
+	}
+	
+	public static void fireGewinnerEvent(char sieger){
+		for (GewinnerListener gwl : gewinnerListeners){
+			gwl.siegerAnzeigen(sieger);
+		}
+	}
 
 }

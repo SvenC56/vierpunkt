@@ -6,19 +6,17 @@ import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener  {
+public class MainApplication extends Application implements ParamListener, GewinnerListener{
 	
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
-	
+	static MainApplication main = new MainApplication();
 	/**
 	 * In der Main-Methode der MainApplication Klasse werden die Empfaenger fuer die Start- und Logik-Events festgelegt.
 	 * Danach wird die Startmethode aufgerufen, in der das GUI aufgebaut wird
 	 */
 	public static void main(String[] args) throws InterruptedException
 	{
-		
-		MainApplication main = new MainApplication();
 		gui.addParamListener(main);
 		gui.addNameListener(game);
 		
@@ -54,6 +52,7 @@ public class MainApplication extends Application implements ParamListener  {
 			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
 			pushy.addListener(gui);
 			pushy.addErrorListener(gui);
+			pushy.addGewinnerListener(main);
 			
 			Thread pusherThread = new Thread(){
 				@Override
@@ -78,5 +77,11 @@ public class MainApplication extends Application implements ParamListener  {
 				};
 				fileThread.start();
 		}
+	}
+
+	@Override
+	public void siegerAnzeigen(char sieger)
+	{
+		gui.gewinnermethode(sieger);
 	}
 }
