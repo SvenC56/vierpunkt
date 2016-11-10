@@ -1062,7 +1062,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 					createGrids();}
 				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
-				fireNames(spielername1.getText(), spielername2.getText());
+				//fireNames(spielername1.getText(), spielername2.getText());
 				
 				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
@@ -1342,7 +1342,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	}
 	
 	
-	public void gewinnermethode(int spieler, String names1, String names2){
+	public void gewinnermethode(char gewinner, String names1, String names2){
 		
 		Label gewinnernachricht = new Label();
 		
@@ -1364,14 +1364,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
             public void handle(MouseEvent arg0) {
      		   gewinnerStage.close();
         }});
-        if(spieler == 1){
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
 			gewinnernachricht.setText(names1 + " hat gewonnen!");
-		}else {
-			if(spieler == 2){
+		}else {		
 				gewinnernachricht.setText(names2 + " hat gewonnen!");
-			}else{
-				gewinnernachricht.setText("Das spiel ist unentschieden ausgegangen.");
-			}}
+			}
         // Einfuegen in die VBox
         gewinnerVbox.getChildren().addAll(gewinnernachricht, back);
         Scene gewinnerScene = new Scene(gewinnerVbox, 800, 600);
@@ -1586,7 +1583,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	{
 		setSpielstein(plaetzeFreiInReihe[zug], zug, amZug);
         plaetzeFreiInReihe[zug]--;
-		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthält 'x' oder 'o' als char
+		
 	}
 	
 	public void addNameListener(NameListener toAdd) {
@@ -1617,10 +1614,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	
 	@Override
 	public void zugGespielt(char sieger) {
-		// TODO Auto-generated method stub
 		
+	// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
+	gewinnermethode(sieger, names1, names2);
+	for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+						plaetzeFreiInReihe[i]=5;
+					}
 	}
- 
 }
 
                
