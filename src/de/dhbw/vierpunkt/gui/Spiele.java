@@ -5,16 +5,14 @@ public class Spiele {
 	private String player1;
 	private String player2;
 	private String winner;
-	private String punkte;
 	
 	
-	public Spiele(String gameID, String player1, String player2, String winner, String punkte) {
+	public Spiele(String gameID, String player1, String player2, String winner) {
 		super();
 		this.gameID = gameID;
 		this.player1 = player1;
 		this.player2 = player2;
 		this.winner = winner;
-		this.punkte = punkte;
 	}
 
 	
@@ -42,12 +40,5 @@ public class Spiele {
 	public void setWinner(String winner) {
 		this.winner = winner;
 	}
-	public String getPunkte() {
-		return punkte;
-	}
-	public void setPunkte(String punkte) {
-		this.punkte = punkte;
-	}
-	
 	
 }
