@@ -105,8 +105,8 @@ public class Match {
 		 return this.matchID;
 	 }
 
-	 void setTurnNumber() {
-		this.turnNumber++;
+	 void setTurnNumber(int turnNumber) {
+		this.turnNumber = turnNumber;
 		}
 
 	 Player getMatchWinner() {
@@ -149,8 +149,21 @@ public class Match {
 				return this.field[y][x].getOwnedBy();
 				}
 		
+		
+		Turn createTurn(Player player, int x, int y) {
+			for (int i = 0; i <= TURNS; i++) {
+				if (turn[i] == null) {
+					turn[i] = new Turn(i, player, x, y);
+					turn[i].setTurnActive(true);
+					setTurnNumber(i);
+					return turn[i];
+				}
+			}
+			return null;
+		}
+		
+		
 		public Turn startTurn (Player player, int x) {
-			
 			if (!player.getIsOpponent()){
 			if (this.getTurnNumber()>0){
 			x = ki.calcMove(this, this.depth);
@@ -161,14 +174,10 @@ public class Match {
 			
 		}
 		int y = this.validPosition(x);
-		this.turn[turnNumber] = new Turn(turnNumber, player, x, y);
-		return this.turn[turnNumber];
+		Turn turn = createTurn(player, x, y);
+		return turn;
 		}
-		
-		
-		public startMatch() {
-			
-		}
+
 
 	/**
 	 * Erstellt eine Kopie des derzeitigen Spiels zur Analyse in der KI 

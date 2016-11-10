@@ -13,7 +13,6 @@ public class Turn {
 	private boolean turnActive = false;
 	private AlphaBeta ki = new AlphaBeta();
 	private static int depth = 6;
-	private Match match;
 	
 	
 	
@@ -23,8 +22,7 @@ public class Turn {
 
 		
 	
-	public Turn(Match match, int turnID, Player player, int x, int y) {
-	this.match = match;
+	public Turn(int turnID, Player player, int x, int y) {
 	this.turnID = turnID;
 	this.player = player;
 	this.x= x;
@@ -79,32 +77,8 @@ public class Turn {
 	/******************* METHODEN *********************************/
 	/**************************************************************/
 	
-	public void playOpponentTurn(Match match int x) {
-		Turn turn = this.startTurn(this.player, x);
-		if (this.turnID >= 4) {
-		}
-	}
 	
-	public int playAgentTurn(Match match) {
-		if (!player.getIsOpponent()){
-			if (this.turnID>0){
-			x = ki.calcMove(this.match, this.depth);
-			}
-			else {
-				x=3;
-			}
-			
-		}
-		int y = match.validPosition(x);
-
-		return this.turn[turnNumber];
-		}
-		return turn.getX();
-	}
-
-		
-	}
-	
+}
 	
 
 
