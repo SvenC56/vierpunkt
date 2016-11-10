@@ -6,14 +6,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dhbw.vierpunkt.logic.GameLogic;
-
 import java.io.*;
 
 public class FileInterface implements Runnable {
 
 	public static String serverString ="";
-	public static GameLogic game = new GameLogic();
 	public static int zug1;
 	public static int zug2;
 	public static int stelle;

@@ -1,7 +1,6 @@
 package de.dhbw.vierpunkt.application;
 
 import de.dhbw.vierpunkt.interfaces.*;
-import de.dhbw.vierpunkt.logic.GameLogic;
 import javafx.application.Application;
 
 /**
