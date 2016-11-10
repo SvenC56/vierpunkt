@@ -1,5 +1,5 @@
 package de.dhbw.vierpunkt.objects;
-import de.dhbw.vierpunkt.logic.AlphaBeta;
+import de.dhbw.vierpunkt.objects.AlphaBeta;
 
 public class Turn {
 	
@@ -10,9 +10,9 @@ public class Turn {
 	private Player player;
 	private int x;
 	private int y;
-	private boolean turnActive = false;
 	private AlphaBeta ki = new AlphaBeta();
 	private static int depth = 6;
+	private Match match;
 	
 	
 	
@@ -22,12 +22,10 @@ public class Turn {
 
 		
 	
-	public Turn(int turnID, Player player, int x, int y) {
-	this.turnID = turnID;
-	this.player = player;
-	this.x= x;
-	this.y = y;
-		
+	public Turn(int turnID, Player player, Match match) {
+		this.turnID=turnID;
+		this.player=player;
+		this.match = match;
 	}
 	
 	/**************************************************************/
@@ -63,20 +61,56 @@ public class Turn {
 		this.turnID = turnID;
 	}
 
-	public boolean isTurnActive() {
-		return turnActive;
-	}
-
-	public void setTurnActive(boolean turnActive) {
-		this.turnActive = turnActive;
-	}
 	
 	
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
+	/**
+	 * Spielt den Zug des Gegners, ohne die KI aufzurufen
+	 * @param x
+	 */
+	public void startOpponentTurn(int x) {
+	 this.y = this.match.validPosition(x);
+	 this.x = x;
+	 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
+	 this.match.getGame().getDb().saveTurn(this.turnID, this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
+	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
+		 Player winner = this.match.winnerIs();
+		//Hier muss die GUI informiert werden
+	 }
+	 this.match.setTurnActive(false);
+	 this.match.getGame().setNextPlayer();
+	} 
 	
+	
+	
+	/**
+	 * Spielt den Zug des Agent und ruft die KI auf
+	 * @return
+	 */
+	public int startAgentTurn() {
+		int x;
+		if (this.turnID == 0) { //Beim ersten Zug immer Spalte 3
+			x=3;
+		}
+		else {
+		 x = ki.calcMove(this.match, this.depth);
+		}
+		int y = this.match.validPosition(x);
+		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
+		 this.match.getGame().getDb().saveTurn(this.turnID, this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
+		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
+			 Player winner = this.match.winnerIs();
+			 //Hier muss die GUI informiert werden
+		 }
+		this.match.setTurnActive(false);
+		this.match.getGame().setNextPlayer();
+		return x;
+	}
 	
 }
 	

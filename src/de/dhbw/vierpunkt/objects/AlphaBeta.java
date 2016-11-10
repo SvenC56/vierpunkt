@@ -1,6 +1,5 @@
 package de.dhbw.vierpunkt.objects;
 
-import de.dhbw.vierpunkt.logic.GameLogic;
 
 public class AlphaBeta {
 	

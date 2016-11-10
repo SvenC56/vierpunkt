@@ -6,7 +6,7 @@ import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener {
+public class MainApplication extends Application implements ParamListener,  {
 	
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
@@ -44,13 +44,13 @@ public class MainApplication extends Application implements ParamListener {
 	 */
 	@Override
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
-			String Kontaktpfad, char spielerKennnung, String AppID, String AppKey, String AppSecret)
+			String Kontaktpfad, char spielerKennung, String AppID, String AppKey, String AppSecret)
 	{
 	
 		// wenn Pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
 		if(Schnittstelle.equals("pusher"))
 		{
-			PusherInterface pushy = new PusherInterface(Zugzeit, AppID, AppKey, AppSecret);
+			PusherInterface pushy = new PusherInterface(Zugzeit, AppID, AppKey, AppSecret, spielerKennung, game);
 			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
 			pushy.addListener(gui);
 			pushy.addErrorListener(gui);
@@ -66,7 +66,7 @@ public class MainApplication extends Application implements ParamListener {
 		
 		// wenn Datei als Schnittstelle ausgewaehlt wurde wird der file Thread gestartet
 		else {
-				FileInterface filey = new FileInterface(spielerKennnung, Kontaktpfad, Zugzeit);	
+				FileInterface filey = new FileInterface(spielerKennung, Kontaktpfad, Zugzeit);	
 				// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle	
 				filey.addListener(gui);
 	

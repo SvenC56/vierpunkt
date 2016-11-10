@@ -1,20 +1,16 @@
-/**
- * @author Sven Cieslok
- * @version 1.0
- */
 package de.dhbw.vierpunkt.db;
 
-public class GetMatch implements Runnable{
+public class getMatch implements Runnable{
 
 private int G_ID;
 
-public GetMatch(int G_ID){
+public getMatch(int G_ID){
 	this.G_ID = G_ID;
 }	
 	
 	@Override
 	public void run() {
-		ConnectHSQL getMatch = new ConnectHSQL();
+		connectHSQL getMatch = new connectHSQL();
 		getMatch.getHighscoreMatch(G_ID);
 	}
 }
