@@ -31,7 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dhbw.vierpunkt.db.connectHSQL;
+import de.dhbw.vierpunkt.db.ConnectHSQL;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
 import de.dhbw.vierpunkt.objects.NameListener;
@@ -1088,7 +1088,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	 static String personX;
 	public void bisherigeSpiele(){
 		
-		connectHSQL db = new connectHSQL();
+		ConnectHSQL db = new ConnectHSQL();
 		String[][] alleGames = db.getLastTenGames();
 		
 		//String[][] alleSaetze = db.getHighscoreMatch(G_ID);
@@ -1513,12 +1513,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
               // Setzen der Spielsteine
               spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
                    @Override public void handle(MouseEvent arg0) { 
-                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
                 	   if(manuellerSpieler == 'x'){
                 		   manuellerSpieler = 'o';
                 	   }else{
                 		   manuellerSpieler = 'x';
                 	   }
+                	   spielsteinAnzeigen(spielstein, manuellerSpieler);
+                	   
                 	   }
                });
               
