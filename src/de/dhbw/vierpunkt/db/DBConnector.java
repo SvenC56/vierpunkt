@@ -23,14 +23,14 @@ public class DBConnector {
 	 * @param x
 	 * @param y
 	 */
-	public void saveTurn(int turnID, int matchID, String playername, int x, int y, int gameID) {
-		SetTurn turnDBThread = new SetTurn(matchID,playername, x, y, gameID);
+	public void saveTurn(int matchID, String playername, int x, int y) {
+		SetTurn turnDBThread = new SetTurn(matchID,playername, x, y);
 		turnDBThread.run();
 	}
 	
 	
-	public void saveGame(int gameID, String playerName1, String playerName2, String winner) {
-		SetGame g1 = new SetGame(playerName1, playerName2, winner);
+	public void saveGame(int gameID, String playerName1, String playerName2) {
+		SetGame g1 = new SetGame(playerName1, playerName2);
 		g1.run();
 	}
 	
@@ -46,8 +46,8 @@ public class DBConnector {
 	
 	
 	
-	public void createGame(String player1, String player2, String winner) {
-		SetGame dbGame = new SetGame(player1, player2, winner);
+	public void createGame(String player1, String player2) {
+		SetGame dbGame = new SetGame(player1, player2);
 		dbGame.run();
 	}
 	
@@ -57,7 +57,10 @@ public class DBConnector {
 		dbMatch.run();
 	}
 	
-	
+	public int getGameID() {
+		ConnectHSQL dbGID = new ConnectHSQL();
+		return dbGID.getMaxId("GAME");
+	}
 	
 	
 	//Methode, die Anhand der GameID, die entsprechende MatchID zurueckgibt!

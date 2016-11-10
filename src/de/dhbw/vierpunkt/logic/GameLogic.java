@@ -2,7 +2,7 @@ package de.dhbw.vierpunkt.logic;
 
 import de.dhbw.vierpunkt.db.*;
 import de.dhbw.vierpunkt.gui.*;
-import de.dhbw.vierpunkt.db.connectHSQL;
+import de.dhbw.vierpunkt.db.ConnectHSQL;
 import de.dhbw.vierpunkt.db.sendGame;
 import de.dhbw.vierpunkt.db.sendMatch;
 import de.dhbw.vierpunkt.db.sendTurn;
@@ -23,7 +23,7 @@ public class GameLogic {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private connectHSQL db = new connectHSQL();
+	private ConnectHSQL db = new ConnectHSQL();
 //	private AlphaBeta ki = new AlphaBeta();
 	private TestGui gui = new TestGui();
 	// Spielfeld

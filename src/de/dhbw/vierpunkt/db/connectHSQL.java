@@ -125,11 +125,9 @@ public class ConnectHSQL {
 	/**
 	 * uebermittlung eines Spiels in die DB
 	 **/
-	public void setGameDb(String Player1, String Player2, String WINNER) {
-		System.out.println("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES ('" + Player1 + "','" + Player2
-				+ "','" + WINNER + "');");
-		executeSQL("INSERT INTO GAME (PLAYER1, PLAYER2, WINNER, POINTS) VALUES ('" + Player1 + "','" + Player2 + "','"
-				+ WINNER + "');");
+	public void setGameDb(String Player1, String Player2) {
+		System.out.println("INSERT INTO GAME (PLAYER1, PLAYER2) VALUES ('" + Player1 + "','" + Player2 + "');");
+		executeSQL("INSERT INTO GAME (PLAYER1, PLAYER2) VALUES ('" + Player1 + "','" + Player2 + "');");
 	}
 
 	/**
@@ -220,4 +218,47 @@ public class ConnectHSQL {
 		return highscore;
 	}
 
+	/**
+	 * Rückgabe der IDs
+	 */
+	public int getMaxId(String tableName) {
+		try {
+			String firstLetter = String.valueOf(tableName.charAt(0));
+			ResultSet getId = executeSQL("SELECT MAX(" + firstLetter + "_ID) FROM " + tableName + ";");
+			int tableMaxId = 0;
+			while (getId.next()) {
+				String print = getId.getString(1);
+				if (print == null) {
+					return 0;
+				}
+				tableMaxId = Integer.parseInt(print);
+			}
+			getId.close();
+			return tableMaxId;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public int getMaxMatchId(int G_ID) {
+		try {
+			ResultSet getId = executeSQL("SELECT MAX(M_ID) FROM MATCH WHERE G_ID=" + G_ID + ";");
+			int tableMaxId = 0;
+			while (getId.next()) {
+				String print = getId.getString(1);
+				if (print == null) {
+					return 0;
+				}
+				tableMaxId = Integer.parseInt(print);
+			}
+			getId.close();
+			return tableMaxId;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

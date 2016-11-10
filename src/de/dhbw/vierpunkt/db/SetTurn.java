@@ -9,14 +9,12 @@ public class SetTurn implements Runnable {
 	String PERSON;
 	int POS_Y;
 	int POS_X;
-	int G_ID;
 
-	public SetTurn(int M_ID, String PERSON, int POS_Y, int POS_X, int G_ID) {
+	public SetTurn(int M_ID, String PERSON, int POS_Y, int POS_X) {
 		this.M_ID = M_ID;
 		this.PERSON = PERSON;
 		this.POS_Y = POS_Y;
 		this.POS_X = POS_X;
-		this.G_ID = G_ID;
 	}
 
 	@Override
