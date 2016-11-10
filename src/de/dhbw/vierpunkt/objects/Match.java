@@ -19,6 +19,8 @@ public class Match {
 	private Player currentPlayer;
 	private boolean even = false;	//Unentschieden
 	private boolean matchActive=false;
+	private boolean turnActive = false;
+	private Game game;
 	
 	//Anzahl Spalten des Spielfeldes
 	private static final int COLUMN = 6;
@@ -41,7 +43,8 @@ public class Match {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	public Match() {
+	public Match(Game game) {
+		this.setGame(game);
 		this.matchID++;
 		this.turnNumber=0;
 		for (int y = 0; y <= ROW; y++) {
@@ -134,14 +137,34 @@ public class Match {
 			this.currentPlayer = currentPlayer;
 		}
 		
+		  boolean isTurnActive() {
+				return turnActive;
+			}
 
-			
+			void setTurnActive(boolean turnActive) {
+				this.turnActive = turnActive;
+			}
+
+			Game getGame() {
+				return game;
+			}
+
+			void setGame(Game game) {
+				this.game = game;
+			}
 	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-		
 		/**
+		 * Liefert den aktuellen Zug zurueck
+		 * @return
+		 */
+		public Turn getCurrentTurn() {
+			return turn[getTurnNumber()];
+		}
+		 
+		 /**
 		 * Unsere moeglichen Zuege werden in einem Array gespeichert. Diese Methode erstellt, wenn moeglich einen neuen Turn 
 		 * @return
 		 */
@@ -149,8 +172,8 @@ public class Match {
 				for (int i = 0; i <= TURNS; i++) {
 					if (turn[i] == null) {
 						turn[i] = new Turn(i, this.currentPlayer, this);
-						turn[i].setTurnActive(true);
-						turn[i].setTurnActive(true);
+						setTurnNumber(i);
+						this.setTurnActive(true);
 						return turn[i];
 					}
 		}
@@ -486,6 +509,8 @@ public class Match {
 			}
 			return count;
 		}
+
+		
 
 		 
 //		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/

@@ -15,6 +15,7 @@ import com.pusher.client.connection.ConnectionStateChange;
 
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.logic.GameLogic;
+import de.dhbw.vierpunkt.objects.Game;
 
 
 public class PusherInterface implements Runnable
@@ -53,17 +54,19 @@ public class PusherInterface implements Runnable
 	
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
+	private static Game game;
 	
 	// Konstruktoren
 	public PusherInterface(){
 	}
 	
-	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung){
+	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung, Game game){
 		this.zugZeit = zugZeit;
 		this.MyAppID = AppID;
 		this.MyAppKey = AppKey;
 		this.MyAppSecret = AppSecret;
 		this.spielerKennung = spielerKennung;
+		this.game = game;
 		
 		if (spielerKennung == 'x'){
 				this.gegnerKennung = 'o';
@@ -140,7 +143,6 @@ public class PusherInterface implements Runnable
 		// Der Pusher wartet auf dem vorgegebenen Channel
 		PrivateChannel channel = pusher.subscribePrivate(ChannelName);
 		
-		GameLogic game = new GameLogic();
 		
 		// Auf das "MoveToAgent"-Event wird reagiert, indem die empfangenen Daten in der Konsole ausgegeben werden
 		channel.bind("MoveToAgent", new PrivateChannelEventListener() {
@@ -153,7 +155,8 @@ public class PusherInterface implements Runnable
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        // game.playTurn(zug, 1);
-		        	
+		        game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
+		       	
 		        	
 		        	
 		        // Spielstein wird in der GUI eingeworfen
@@ -164,8 +167,8 @@ public class PusherInterface implements Runnable
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
 		        	//int move = game.playTurn(-1, 2);
-		        	
-		        	int move = (int) (Math.random()*7);
+		        	//SPielerzug!
+		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
