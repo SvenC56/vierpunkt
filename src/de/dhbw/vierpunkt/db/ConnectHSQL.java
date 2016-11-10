@@ -101,7 +101,7 @@ public class ConnectHSQL {
 	/**
 	 * Speichern eines beliebigen ResultSets in einem Array. Weiterfuehrung der
 	 * Methode executeSQL(). Falls das SQL Statement fehlerhaft ist, wird eine
-	 * SQL Exception zurueckgegeben. Liefert 10 Zeilen zurück
+	 * SQL Exception zurueckgegeben. Liefert 10 Zeilen zurï¿½ck
 	 **/
 	public String[][] save10Result(ResultSet result) {
 		try {
@@ -219,7 +219,7 @@ public class ConnectHSQL {
 	}
 
 	/**
-	 * Rückgabe der IDs
+	 * Rï¿½ckgabe der IDs
 	 */
 	public int getMaxId(String tableName) {
 		try {
