@@ -62,6 +62,11 @@ public class DBConnector {
 		return dbGID.getMaxId("GAME");
 	}
 	
+	public int getMatchID() {
+		ConnectHSQL dbGID = new ConnectHSQL();
+		return dbGID.getMaxId("MATCH");
+	}
+	
 	
 	//Methode, die Anhand der GameID, die entsprechende MatchID zurueckgibt!
 	
