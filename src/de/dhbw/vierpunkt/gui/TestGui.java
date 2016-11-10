@@ -31,6 +31,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dhbw.vierpunkt.db.connectHSQL;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
 import de.dhbw.vierpunkt.objects.NameListener;
@@ -955,8 +956,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		
 		//Beispieldaten
 		
-		String[][] aAllGames = new String[10][5];
-		aAllGames[0][0] = "123";
+		
+		
+		/*aAllGames[0][0] = "123";
 		aAllGames[0][1] = "Leon";
 		aAllGames[0][2] = "Phil";
 		aAllGames[0][3] = "Phil";
@@ -978,14 +980,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		alleZuege[0][2] = "Leon";
 		alleZuege[0][3] = "1";
 		alleZuege[0][4] = "0";
-		
+		*/
 		
 		
 		
 		
 	    menu31.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
-			bisherigeSpiele(aAllGames, alleSaetze, alleZuege);	
+			bisherigeSpiele();	
 			}
 		});
 	    
@@ -1024,7 +1026,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
    
-	public void bisherigeSpiele(String[][] aGame, String[][] aSet, String[][] aMove){
+	public void bisherigeSpiele(){
+		
+		connectHSQL db = new connectHSQL();
+		String[][] alleGames = db.getLastTenGames();
+		
+		//String[][] alleSaetze = db.getHighscoreMatch(G_ID);
+		
+		//String[][] alleZuege = db.getHighscoreTurn(G_ID, M_ID);
 		// neue Stage
 		final Stage spieleStage = new Stage();
 		spieleStage.setTitle("Bisherige Spiele");
@@ -1035,19 +1044,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         spieleVbox.setAlignment(Pos.CENTER);
         
         // Button zum Popup schliessen
-        Button back = new Button("zurueck");
+        Button back = new Button("Zurueck");
         
         Label spieleLabel = new Label("Bisherige Spiele:");
-        
-       // ScrollPane listeSpiele = new ScrollPane();
-       //ListView<String> list = new ListView<String>();
-        
-        
-        //List<String> supplierNames = new List<String>();
        
        
         TableView<Spiele> table = new TableView<>();
-        table.setEditable(true);
+       // table.setEditable(true);
 
 
         TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
@@ -1071,34 +1074,44 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         ObservableList<Spiele> items = FXCollections.observableArrayList();
         
         for (int i = 0; i < 10; i++) {
-        	String game = aGame[i][0];
-        	String player1 = aGame[i][1];
-        	String player2 = aGame[i][2];
-        	String winner = aGame[i][3];
-        	String points = aGame[i][4];
+        	String game = alleGames[i][0];
+        	String player1 = alleGames[i][1];
+        	String player2 = alleGames[i][2];
+        	String winner = alleGames[i][3];
+        	String points = alleGames[i][4];
         	items.add(new Spiele(game, player1, player2, winner, points));
-        	System.out.println(aGame[i][0]+ aGame[i][1]+ aGame[i][2]+ aGame[i][3]+ aGame[i][4]);
+        	System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]+ alleGames[i][4]);
 		}
         table.setItems(items);
+        
+        Slider satz = new Slider(0, 2, 1); 	
        
        
-        /*list.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                System.out.println("ListView selection changed from oldValue = " 
-                        + oldValue + " to newValue = " + newValue);
-            }
-        });
-        */
-		//listeSpiele.setContent(list);
-		Button play = new Button("play"); 
+        
+		Button play = new Button("Play"); 
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 	     	   @Override
 	            public void handle(MouseEvent arg0) {
-	     		  //String selectedItem = list.getSelectionModel().getSelectedItem();
+	     		  table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+	     	            if (newSelection != null) {
+	     	                Spiele selectedGame = table.getSelectionModel().getSelectedItem();
+	     	                 int g_id = Integer.parseInt(selectedGame.getGameID());
+	     	                
+	     	                String[][] alleSaetze = db.getHighscoreMatch(g_id);
+	     	                
+	     	                	int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);
+	     	                	
+	     	               
+	     	                
+	     	            }
+	     	        });
+	     		   
+	     		  
+	     			 
+	     		 }
 	     		 
 	     		  
-	        }});
+	        });
 		
 		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld2))));
         
@@ -1119,14 +1132,50 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 		Rectangle platzhalter1 = new Rectangle(7 * l, l);
 		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
 		
+		Rectangle platzhalter2 = new Rectangle(l, l);
+		platzhalter2.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		Rectangle platzhalter3 = new Rectangle(l, l);
+		platzhalter3.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		
+				// Slider geht von 0 bis 2 in 1er Abstaenden
+		satz.setMinorTickCount(0);
+		satz.setMajorTickUnit(100); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
+		satz.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
+		satz.setShowTickMarks(true); 					// Markierungen anzeigen -
+		satz.setOrientation(Orientation.VERTICAL); 	// Vertikale Anordnung,standardmaessig horizontal
+		satz.setValue(0);	
+		
+		satz.setLabelFormatter(new StringConverter<Double>() {
+			@Override
+			public String toString(Double n) {
+				if (n == 0)return "Satz 1";
+				if (n > 0 && n < 2)return "Satz 2";
+				if (n == 2)return "Satz 3";
+				return "Satz 1";
+			}
+			@Override
+			public Double fromString(String x) {
+				switch (x) {
+				case "Satz 1":return 0d;
+				case "Satz 2":return 1d;
+				case "Satz 3":return 2d;
+				default:return 2d;
+				}
+			}
+		});
+		
 		VBox grid = new VBox();
 		grid.getChildren().addAll(platzhalter1, spielfeld2);
 		
 		VBox anzeige = new VBox();
-		anzeige.getChildren().addAll(spielstandanzeige, spielstand_altesSpiel, play, back);
+		anzeige.setAlignment(Pos.TOP_RIGHT);
+		anzeige.getChildren().addAll(satz, play);
 		
 		VBox spieleranzeige = new VBox();
-		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2);
+		spieleranzeige.setAlignment(Pos.TOP_LEFT);
+		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2, platzhalter2, spielstandanzeige, spielstand_altesSpiel, platzhalter3, back);
         
 		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
         hb.setAlignment(Pos.BOTTOM_CENTER);
@@ -1255,7 +1304,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
         
         if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
         if(thema == 2){ dialogScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 3){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
         if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
       
         satz.setScene(dialogScene);
@@ -1495,6 +1544,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener {
 	{
 		setSpielstein(plaetzeFreiInReihe[zug], zug);
         plaetzeFreiInReihe[zug]--;
+        
+	}
+	@Override
+	public void zugGespielt(int zug, char sieger)
+	{
+		setSpielstein(plaetzeFreiInReihe[zug], zug);
+        plaetzeFreiInReihe[zug]--;
+		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthält 'x' oder 'o' als char
 	}
 	
 	public void addNameListener(NameListener toAdd) {
