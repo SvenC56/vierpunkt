@@ -18,8 +18,8 @@ import java.io.*;
 public class FileInterface implements Runnable, Observer {
 
 	public static String serverString ="";
-	public static int zug1;
-	public static int zug2;
+	public static int zug;
+	public static int move;
 	public static int stelle;
 	public static char charAtStelle;
 	public static boolean zugSchongespielt = false;
@@ -115,14 +115,14 @@ public class FileInterface implements Runnable, Observer {
 			stelle = ordinalIndexOf(serverString, ">", 6) + 1;
 			charAtStelle = serverString.charAt(stelle);
 			if (charAtStelle != '-'){
-				zug1 = Integer.parseInt(String.valueOf(charAtStelle));
+				zug = Integer.parseInt(String.valueOf(charAtStelle));
 				
 				// Zug des Gegners wird in eigenes Logikarray eingetragen
 				//game.setChip(zug, 1);
 				
 				// Zug des Gegners wird in GUI dargestellt
-				System.out.println("Der Gegner spielt den Zug " + zug1 + ".");
-				fireZugEvent(zug1, gegnerKennung);
+				System.out.println("Der Gegner spielt den Zug " + zug + ".");
+				fireZugEvent(zug, gegnerKennung);
 				
 
 		        // Aktion des Servers wird registriert
@@ -154,13 +154,13 @@ public class FileInterface implements Runnable, Observer {
 			try {
 				// Eigener Zug wird durch Logik bestimmt
 				//zug = game.playerTurn();
-				zug2 = (int)(Math.random()*7);
+				move = (int)(Math.random()*7);
 				
 				// Eigener Zug wird dem Server uebergeben
-				zugSpielen(zug2);
+				zugSpielen(move);
 				
 				// Eigener Zug wird in GUI dargestellt
-				fireZugEvent(zug2, spielerKennung);
+				fireZugEvent(move, spielerKennung);
 				
 				try {
 						Thread.sleep(zugZeit);
