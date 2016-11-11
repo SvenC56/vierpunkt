@@ -1282,17 +1282,22 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 								}
 							}*/
 	     		   
-	     		  String[][] alleZuege = new String[4][2];
-	     		  alleZuege[0][0]="0";
-	     		  alleZuege[0][1]="0";
-	     		 alleZuege[1][0]="0";
-	     		 alleZuege[1][1]="1";
-	     		 alleZuege[2][0]="1";
+	     		String[][] alleZuege = new String[4][2];
+	     		alleZuege[0][0]="0";
+	     		alleZuege[0][1]="0";
+	     		alleZuege[1][0]="0";
+	     		alleZuege[1][1]="1";
+	     		alleZuege[2][0]="1";
 	     		alleZuege[2][1]="1";
 	     		alleZuege[3][0]="1";
 	     		alleZuege[3][1]="0";
-	     		int spieler = 1;
-	     		for (int i = 0; i < 4; i++) {
+	     		
+	     		Thread playThread = new Thread(){
+	     			
+	     			int spieler = 1;
+	     			@Override
+	     			public void run(){
+	     				for (int i = 0; i < 4; i++) {
 	                	
 	                	if(spieler == 1){
 	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'x');
@@ -1312,6 +1317,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							e.printStackTrace();
 						}
 	     		}
+	     			}
+	     		};
+	     		playThread.start();
 	                	
 					/*try {
 						Thread.sleep(2000);
