@@ -1,14 +1,21 @@
 package de.dhbw.vierpunkt.interfaces;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.Timer;
 
 import java.io.*;
 
-public class FileInterface implements Runnable {
+public class FileInterface implements Runnable, Observer {
 
 	public static String serverString ="";
 	public static int zug1;
@@ -17,6 +24,7 @@ public class FileInterface implements Runnable {
 	public static char charAtStelle;
 	public static boolean zugSchongespielt = false;
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
+	private static List<GewinnerListener> gewinnerListeners = new ArrayList<GewinnerListener>();
 	
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
@@ -28,10 +36,28 @@ public class FileInterface implements Runnable {
 		return kontaktPfad;
 	}
 
-	public static void setKontaktPfad(String kontaktPfad)
-	{
+	public static void setKontaktPfad(String kontaktPfad)	{
 		FileInterface.kontaktPfad = kontaktPfad;
 	}
+	/**
+	 * Der zum Status des Servers zu beobachtende Wert
+	 * @see ServerStatus
+	 */
+	private static ServerStatus serverstatus = new ServerStatus("unchanged");
+	
+	/**
+	 * Timer, der die Beobachtung des Serverstatus unterstuetzt
+	 */
+	private static Timer timer;
+	
+	/**
+	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
+	 */
+	private static int timervalue = 30;
+	private static int incrementalVal = 0;
+	// bei der ersten Nachricht vom Server wird der Timer gestartet
+	private static boolean firstMessage = true;
+	
 
 	// Leerer Konstruktor: Standardwerte werden verwendet
 	public FileInterface()
@@ -55,7 +81,17 @@ public class FileInterface implements Runnable {
 
 	@Override
 	public void run()
-	{	
+	{
+		serverstatus.addObserver(this);
+		timer = new Timer(1000, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				timervalue--;
+				if (timervalue == 0){
+					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
+					}
+				}
+			});
+		
 		// Testausgabe fuer Konstruktor
 		System.out.println("Die eingestellte Zugzeit betraegt: " + zugZeit);
 		System.out.println("Die eingestellte Kennung ist: " + spielerKennung);
@@ -87,6 +123,15 @@ public class FileInterface implements Runnable {
 				// Zug des Gegners wird in GUI dargestellt
 				System.out.println("Der Gegner spielt den Zug " + zug1 + ".");
 				fireZugEvent(zug1, gegnerKennung);
+				
+
+		        // Aktion des Servers wird registriert
+		        incrementalVal++;
+		        if (firstMessage == true){
+		        	timer.start();
+		        	firstMessage = false;
+		        }
+		        serverstatus.setValueToWatch("changed" + incrementalVal);
 				
 				// Es wird sichergestellt, dass die Daten nur einmal erhoben werden
 				zugSchongespielt = true;
@@ -129,14 +174,14 @@ public class FileInterface implements Runnable {
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler X!");
-        	fireZugEvent('x');
+        	fireGewinnerEvent('x');
         	zugSchongespielt = true;
         	
 		} else if  (serverString.contains("false") && serverString.contains("Spieler O")){
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler O!");
-        	fireZugEvent('o');
+        	fireGewinnerEvent('o');
         	zugSchongespielt = true;
 		}
 	}
@@ -222,6 +267,16 @@ public class FileInterface implements Runnable {
 		}
 	}
 	
+	public void addGewinnerListener(GewinnerListener toAdd){
+		gewinnerListeners.add(toAdd);
+	}
+	
+	public static void fireGewinnerEvent(char sieger){
+		for (GewinnerListener gwl : gewinnerListeners){
+			gwl.siegerAnzeigen(sieger);
+		}
+	}
+	
 	public static String getNewPath(String kontaktpfad){
 		
 		int stelleSlash = 0;
@@ -232,6 +287,13 @@ public class FileInterface implements Runnable {
 		kontaktpfad = kontaktpfad + "\\\\";
 		
 		return kontaktpfad;
+	}
+	
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		timervalue = 30;
+		System.out.println(arg);
 	}
 
 }

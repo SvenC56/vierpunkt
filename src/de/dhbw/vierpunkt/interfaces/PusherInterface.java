@@ -1,7 +1,14 @@
 package de.dhbw.vierpunkt.interfaces;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.Timer;
 
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
@@ -17,7 +24,8 @@ import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.objects.Game;
 
 
-public class PusherInterface implements Runnable
+
+public class PusherInterface implements Runnable, Observer
 {
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -40,11 +48,29 @@ public class PusherInterface implements Runnable
 	private static String ChannelName = "private-channel";
 	
 	/**
-	 * Ein Array mit Listenern die auf das ZugEvent hoeren
+	 * Arrays mit Listenern die auf ZugEvents, ConnectionErrors und GewinnerEvents hoeren
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	private static List<ConnectionErrorListener> errorListeners = new ArrayList<ConnectionErrorListener>();
 	private static List<GewinnerListener> gewinnerListeners = new ArrayList<GewinnerListener>();
+	
+	/**
+	 * Der zum Status des Servers zu beobachtende Wert
+	 * @see ServerStatus
+	 */
+	private static ServerStatus serverstatus = new ServerStatus("unchanged");
+	
+	/**
+	 * Timer, der die Beobachtung des Serverstatus unterstuetzt
+	 */
+	private static Timer timer;
+	
+	/**
+	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
+	 */
+	private static int timervalue = 30;
+	
+	private static int incrementalVal = 0;
 	
 	
 	/**
@@ -55,6 +81,9 @@ public class PusherInterface implements Runnable
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
 	private static Game game;
+	
+	// bei der ersten Nachricht vom Server wird der Timer gestartet
+	private static boolean firstMessage = true;
 	
 	// Konstruktoren
 	public PusherInterface(){
@@ -78,6 +107,17 @@ public class PusherInterface implements Runnable
 	
 	public void run(){
 		
+		serverstatus.addObserver(this);
+		timer = new Timer(1000, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				timervalue--;
+				if (timervalue == 0){
+					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
+					}
+				}
+			});
+		
+				
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -163,6 +203,14 @@ public class PusherInterface implements Runnable
 		        	
 		        // Spielstein wird in der GUI eingeworfen
 		        fireZugEvent(zug, gegnerKennung);
+		        
+		        // Aktion des Servers wird registriert
+		        incrementalVal++;
+		        if (firstMessage == true){
+		        	timer.start();
+		        	firstMessage = false;
+		        }
+		        serverstatus.setValueToWatch("changed" + incrementalVal);
 
 		        }
 		        
@@ -285,6 +333,14 @@ public class PusherInterface implements Runnable
 		for (GewinnerListener gwl : gewinnerListeners){
 			gwl.siegerAnzeigen(sieger);
 		}
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		timervalue = 30;
+		System.out.println(arg);
 	}
 
 }

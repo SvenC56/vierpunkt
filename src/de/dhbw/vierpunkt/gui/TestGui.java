@@ -52,7 +52,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	
 	/** Variablendeklaration fuer die Einstellungsattribute */	
 	private String schnittstelle = "pusher";
-	private int zugzeit = 2000;
+	private int zugzeit = 1000;
 	private char xodero = 'x';
 	private String fileString = new String();
 	
@@ -183,47 +183,36 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		/******************************************* UEBERSCHRIFT *********************************************************/
 
 		// Ansicht der Ueberschrift
-		ImageView ueberschrift = new ImageView();
-		ueberschrift.setId("ueberschrift");
-		ueberschrift.setFitWidth(breite / 2); // Ueberschrift soll die Haelfte des Bildschirms breit sein
-		ueberschrift.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
-		ueberschrift.setPreserveRatio(true);
+		ImageView headingImg = new ImageView();
+		headingImg.setId("headerImg");
+		headingImg.setFitWidth(breite / 2); 			// Ueberschrift soll die Haelfte des Bildschirms breit sein
+		headingImg.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
+		headingImg.setPreserveRatio(true);			
 
 		// Container, in dem die Ueberschrift platziert wird
-		HBox titelbox = new HBox();
-		titelbox.setId("titel");
+		HBox headerHBox = new HBox();
+		headerHBox.setId("titel");
 
 		// Rechtecke als Platzhalter, um die Ueberschrift mittig zu platzieren
-		Rectangle containerlinks = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerlinks.setId("container");
-		Rectangle containerrechts = new Rectangle(breite / 4, (breite / 2) / 3.33);
-		containerrechts.setId("container");
+		Rectangle headingRectLeft = new Rectangle(breite / 4, (breite / 2) / 3.33);
+		headingRectLeft.setId("container");
+		Rectangle headingRectRight = new Rectangle(breite / 4, (breite / 2) / 3.33);
+		headingRectRight.setId("container");
 
-		// Platzhalter und Ueberschrift in den Container einfuegen
-		titelbox.getChildren().addAll(containerlinks, ueberschrift, containerrechts);
+		// Rechtecke und Ueberschrift in den Container einfuegen
+		headerHBox.getChildren().addAll(headingRectLeft, headingImg, headingRectRight);
 
 		/******************************************* CONTAINERBOXEN *********************************************************/
 
 		// Hauptcontainer erhaelt den Inhalt
-		root.getChildren().addAll(menuBar, titelbox, content);
-
-		/******************************************* Sieger Popup ******************************************************/
-		VBox boxrechts2 = new VBox();
-		boxrechts2.setPrefWidth(breite / 4);
-		boxrechts2.setSpacing(10);
-		boxrechts2.setPadding(new Insets(50, 0, 0, 50));
-		
-		Label sieger = new Label("Sieger:");
-		Text antwortsieger = new Text("Spieler 1");
-		boxrechts2.getChildren().addAll(sieger, antwortsieger);
-		
+		root.getChildren().addAll(menuBar, headerHBox, content);
 
 		/******************************************** CONTAINERBOXEN IN CONTENT ************************************************/
 		// Erzeugen der rechten Containerbox
-		VBox boxrechts = new VBox();
-		boxrechts.setPrefWidth(breite / 4);
-		boxrechts.setSpacing(10);
-		boxrechts.setPadding(new Insets(50, 0, 0, 50));
+		VBox vbRight = new VBox();
+		vbRight.setPrefWidth(breite / 4);
+		vbRight.setSpacing(10);
+		vbRight.setPadding(new Insets(50, 0, 0, 50));
 
 		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
 
@@ -356,7 +345,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 	
 		// Einfuegen der Elemente in die rechte Box
-		boxrechts.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
+		vbRight.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
 
 		// Erzeugen der mittleren Containerbox
 		VBox boxmitte = new VBox();
@@ -469,9 +458,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		zeit.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
 		zeit.setShowTickMarks(true); 					// Markierungen anzeigen -
 		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
-		zeit.setValue(2000);								// Default Value = 2
+		zeit.setValue(zugzeit);								// Default Value = 2
 		
-		Label zeitlabel = new Label("Zugzeit:   2000 ms");
+		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");
 		zeit.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
@@ -629,7 +618,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
-		content.getChildren().addAll(boxlinks, boxmitte, boxrechts);
+		content.getChildren().addAll(boxlinks, boxmitte, vbRight);
 
 		/*************************************************************************************************************
 		 *************************************************************************************************************

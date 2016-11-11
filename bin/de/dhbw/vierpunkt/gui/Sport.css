@@ -9,7 +9,7 @@
 	-fx-background-size: stretch;
 }
 
-#ueberschrift{
+#headerImg{
 	-fx-image: url("vier_sport.png");
 }
 
@@ -45,11 +45,7 @@
     -fx-valignment: center; 
 }
 
-#ueberschrift {
-   -fx-alignment: TOP_CENTER;
-   -fx-halignment: center;
-   -fx-textalign: center;
-}
+
 
 #spielfeld{
    -fx-background-color: #E6E8E9;
