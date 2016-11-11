@@ -444,6 +444,12 @@ public class Match {
 				
 			}
 	 
+	 
+	 String getScore() {
+		 String score = this.getGame().getPlayer(0).getWins() + " : " + this.getGame().getPlayer(1).getWins();
+		 return score;
+	 }
+	 
 	 /**
 	  * Diese Klasse bewertet die Spielsteine des aktuellen Spielers in Reihe und liefert die Anzahl der Steine in Reihe zurueck
 	  * @param field

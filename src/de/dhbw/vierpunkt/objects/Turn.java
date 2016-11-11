@@ -72,8 +72,8 @@ public class Turn {
 	 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
-		 Player winner = this.match.winnerIs();
-		//Hier muss die DB informiert werden
+		//Hier wird die Datenbank informiert und der Score gespeichert
+		 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
 	 }
 	 this.match.getGame().setNextPlayer();
 	 this.match.setTurnActive(false); 
@@ -101,8 +101,8 @@ public class Turn {
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
-			 Player winner = this.match.winnerIs();
-			 //Hier muss die DB informiert werden
+			 //Hier wird die Datenbank informiert und der Score gespeichert
+			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
 		 }
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
