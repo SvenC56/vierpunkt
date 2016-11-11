@@ -8,11 +8,7 @@
 package de.dhbw.vierpunkt.db;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class ConnectHSQL {
 	/**
@@ -81,14 +77,18 @@ public class ConnectHSQL {
 	 **/
 	public String[][] saveResult(ResultSet result) {
 		try {
-			int y = 0; // Zeilenwert
-			String[][] returnStatements = new String[result.getRow() + 1][result.getMetaData().getColumnCount()];
+
+			int row = 0; // Zeilenwert
+			while (result.next()) {
+				row++;
+			}
+			String[][] returnStatements = new String[row][result.getMetaData().getColumnCount()];
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
-				for (int i = 1; i <= maxColumns; i++) {
-					returnStatements[y][(i - 1)] = result.getString(i);
+				for (int column = 1; column <= maxColumns; column++) {
+					returnStatements[row][(column - 1)] = result.getString(column);
 				}
-				y++; // hochzaehlen des Zeilenwerts
+				row++; // hochzaehlen des Zeilenwerts
 			}
 			return returnStatements;
 		} catch (SQLException e) {
@@ -131,35 +131,29 @@ public class ConnectHSQL {
 	}
 
 	/**
-	 * uebermittlung des aktuellen Punktestands
-	 **/
-	public void setScoreDb(int G_ID, String WINNER) {
-		System.out.println("UPDATE GAME SET WINNER=" + "'" + WINNER + "' WHERE G_ID=" + G_ID + ";");
-		executeSQL("UPDATE GAME SET WINNER=" + "'" + WINNER + "' WHERE G_ID=" + G_ID + ";");
-	}
-
-	/**
 	 * uebermittlung eines Satzes in die DB
 	 **/
 	public void setMatchDb(int G_ID, int MATCHNUMBER) {
-		System.out.println(
-				"INSERT INTO MATCH (G_ID, MATCHNUMBER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
+		System.out.println("INSERT INTO MATCH (G_ID, MATCHNUMBER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
 		executeSQL("INSERT INTO MATCH (G_ID, MATCHNUMBER) VALUES(" + G_ID + "," + MATCHNUMBER + ");");
 	}
 
-	public void updateMatch(int M_ID, int G_ID, int MATCHNUMBER, String SCORE) {
-		System.out.println("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE G_ID=" + G_ID + " AND M_ID= " + M_ID
-				+ " AND MATCHNUMBER= " + MATCHNUMBER + ";");
-		executeSQL("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE G_ID=" + G_ID + " AND M_ID= " + M_ID
-				+ " AND MATCHNUMBER= " + MATCHNUMBER + ";");
+	public void updateMatch(int M_ID, String SCORE) {
+		System.out.println("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE M_ID=" + M_ID + ";");
+		executeSQL("UPDATE MATCH SET SCORE='" + SCORE + "' WHERE M_ID=" + M_ID + ";");
+	}
+
+	public void updateWinner(int G_ID, String WINNER) {
+		System.out.println("UPDATE GAME SET WINNER='" + WINNER + "' WHERE G_ID=" + G_ID + ";");
+		executeSQL("UPDATE GAME SET WINNER='" + WINNER + "' WHERE G_ID=" + G_ID + ";");
 	}
 
 	/**
 	 * uebermittlung eines Zugs in die DB
 	 **/
 	public void setTurnDb(int M_ID, String PERSON, int POS_Y, int POS_X) {
-		System.out.println("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
-				+ ", " + POS_X + ");");
+		System.out.println("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', "
+				+ POS_Y + ", " + POS_X + ");");
 		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
 				+ ", " + POS_X + ");");
 

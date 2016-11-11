@@ -34,9 +34,14 @@ public class DBConnector {
 		g1.run();
 	}
 	
-	public void saveScore(int gameID, String winner, String score) {
-		SetScore g2 = new SetScore(gameID, winner, score);
+	public void saveScore(int matchID, String score) {
+		SetScore g2 = new SetScore(matchID, score);
 		g2.run();
+	}
+	
+	public void saveWinner(int gameID, String winner) {
+		SetScore g3 = new SetScore(gameID, winner);
+		g3.run();
 	}
 	
 	public void saveMatch(int gameID, int matchID, int matchnumber) {
