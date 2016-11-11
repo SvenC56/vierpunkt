@@ -91,7 +91,7 @@ public class Match {
 		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
-				this.field[y][x] = new PlaySlot(null);
+				this.field[y][x] = new PlaySlot();
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class Match {
 		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
-				this.field[y][x] = new PlaySlot(null);
+				this.field[y][x] = new PlaySlot();
 			}
 		}
 	}
@@ -494,93 +494,93 @@ public class Match {
 	 	} 
 
 	 
-	 /** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
-		 int inColumn(int x, int y) {
-			// System.err.println("Methode inColumn wurde aufgerufen!");
-			int count = 0; // Zaehler der validen Chips des gleichen Spielers in
-							// Spalte
-			int temp = y;
-			if ( this.getFieldPlayer(x, y) == this.getCurrentPlayer() || this.getFieldPlayer(x, y) == null) {
-				count++;
-				y--;
-			}
-			for (; y > -1; y--) { // von unten nach oben!
-				if (this.getFieldPlayer(x,y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-			if (count < 4 && temp <= ROW) { // von oben nach unten! (nur, wenn
-											// Counter 4 noch nicht erreicht, da
-											// Spiel sonst gewonnen)
-				y = temp + 1;
-				for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
-					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-						count++;
-					} else
-						break;
-				}
-			}
-			return count;
-		}
-
-		
-		/** Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-		 int inDiagonal(int x, int y) {
-			// System.err.println("Methode inDiagonal wurde aufgerufen!");
-			int count = 0;
-			int startX = x;
-			int startY = y;
-			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-				count++;
-				x++;
-				y--;
-			}
-			// Prueft oben - rechts
-			for (; (x <= COLUMN && y > -1); x++, y--) {
-				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-					count++;
-				} else
-					break;
-			}
-			// Prueft oben - links
-			if (count < 4 && (y > -1 && x > -1)) {
-				x = startX - 1;
-				y = startY - 1;
-				for (; (x > -1 && y > -1); x--, y--) {
-					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-						count++;
-					} else
-						break;
-				}
-			}
-
-			if (count < 4 && (y <= ROW && x > -1)) {
-				x = startX - 1;
-				y = startY + 1;
-				// Prueft unten - links
-				for (; (x > -1 && y <= ROW); x--, y++) {
-
-					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-						count++;
-					} else
-						break;
-				}
-			}
-			if (count < 4 && (y <= ROW && x <= COLUMN)) {
-				x = startX + 1;
-				y = startY + 1;
-				// Prueft unten - rechts
-				for (; (x <= COLUMN && y <= ROW); x++, y++) {
-
-					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-						count++;
-					} else
-						break;
-				}
-			}
-			return count;
-		}
+//	 /** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
+//		 int inColumn(int x, int y) {
+//			// System.err.println("Methode inColumn wurde aufgerufen!");
+//			int count = 0; // Zaehler der validen Chips des gleichen Spielers in
+//							// Spalte
+//			int temp = y;
+//			if ( this.getFieldPlayer(x, y) == this.getCurrentPlayer() || this.getFieldPlayer(x, y) == null) {
+//				count++;
+//				y--;
+//			}
+//			for (; y > -1; y--) { // von unten nach oben!
+//				if (this.getFieldPlayer(x,y) == this.getCurrentPlayer()) {
+//					count++;
+//				} else
+//					break;
+//			}
+//			if (count < 4 && temp <= ROW) { // von oben nach unten! (nur, wenn
+//											// Counter 4 noch nicht erreicht, da
+//											// Spiel sonst gewonnen)
+//				y = temp + 1;
+//				for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
+//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//						count++;
+//					} else
+//						break;
+//				}
+//			}
+//			return count;
+//		}
+//
+//		
+//		/** Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
+//		 int inDiagonal(int x, int y) {
+//			// System.err.println("Methode inDiagonal wurde aufgerufen!");
+//			int count = 0;
+//			int startX = x;
+//			int startY = y;
+//			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//				count++;
+//				x++;
+//				y--;
+//			}
+//			// Prueft oben - rechts
+//			for (; (x <= COLUMN && y > -1); x++, y--) {
+//				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//					count++;
+//				} else
+//					break;
+//			}
+//			// Prueft oben - links
+//			if (count < 4 && (y > -1 && x > -1)) {
+//				x = startX - 1;
+//				y = startY - 1;
+//				for (; (x > -1 && y > -1); x--, y--) {
+//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//						count++;
+//					} else
+//						break;
+//				}
+//			}
+//
+//			if (count < 4 && (y <= ROW && x > -1)) {
+//				x = startX - 1;
+//				y = startY + 1;
+//				// Prueft unten - links
+//				for (; (x > -1 && y <= ROW); x--, y++) {
+//
+//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//						count++;
+//					} else
+//						break;
+//				}
+//			}
+//			if (count < 4 && (y <= ROW && x <= COLUMN)) {
+//				x = startX + 1;
+//				y = startY + 1;
+//				// Prueft unten - rechts
+//				for (; (x <= COLUMN && y <= ROW); x++, y++) {
+//
+//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
+//						count++;
+//					} else
+//						break;
+//				}
+//			}
+//			return count;
+//		}
 
 	
 		 
