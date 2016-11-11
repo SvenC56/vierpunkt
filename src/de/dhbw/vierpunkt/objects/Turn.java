@@ -28,10 +28,10 @@ public class Turn {
 		this.match = match;
 	}
 	
+
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
-	
 	
 	public Player getPlayer() {
 		return this.player;
@@ -52,15 +52,6 @@ public class Turn {
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	public int getTurnNumber() {
-		return turnNumber;
-	}
-
-	public void setTurnNumber(int turnNumber) {
-		this.turnNumber = turnNumber;
-	}
-
 	
 	
 	
@@ -79,10 +70,11 @@ public class Turn {
 	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 		 Player winner = this.match.winnerIs();
-		//Hier muss die GUI informiert werden
+		//Hier muss die DB informiert werden
 	 }
-	 this.match.setTurnActive(false);
 	 this.match.getGame().setNextPlayer();
+	 this.match.setTurnActive(false); 
+	 this.match.setNewTurn();
 	} 
 	
 	
@@ -106,10 +98,11 @@ public class Turn {
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 			 Player winner = this.match.winnerIs();
-			 //Hier muss die GUI informiert werden
+			 //Hier muss die DB informiert werden
 		 }
-		this.match.setTurnActive(false);
-		this.match.getGame().setNextPlayer();
+		 this.match.getGame().setNextPlayer();
+		 this.match.setTurnActive(false);
+		 this.match.setNewTurn();
 		return x;
 	}
 	

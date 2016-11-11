@@ -115,14 +115,14 @@ public class Game implements NameListener {
 				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // MatchID
 				setMatchID(db.getMatchID());
 				this.currentMatch.setMatchActive(true);
-				this.currentMatch.startTurn();
+				this.currentMatch.setNewTurn();
 				break;
 			 }
 		 }
 			while (this.currentMatch.getMatchNumber() <= MATCHES || !this.currentMatch.getEven() || this.currentMatch.winnerIs() == null) {
 				if (this.currentMatch.getMatchActive() == false) {
 					startMatch();
-					this.currentMatch.startTurn();
+					this.currentMatch.setNewTurn();
 				}
 				}
 		 
@@ -164,6 +164,7 @@ public class Game implements NameListener {
 		for (int i = 0; i <= PLAYER; i++) {
 			if (this.currentMatch.getCurrentPlayer() != this.player[i]) {
 				Player currentPlayer = this.currentMatch.getCurrentPlayer();
+				//this.currentMatch.setCurrentPlayer(player[i]);
 				this.player[i] = currentPlayer;
 			}
 		}
