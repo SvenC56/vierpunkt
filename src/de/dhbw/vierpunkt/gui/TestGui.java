@@ -479,7 +479,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
 		zeit.setValue(2000);								// Default Value = 2
 		
-		Label zeitlabel = new Label("Zugzeit");
+		Label zeitlabel = new Label("Zugzeit:   2000 ms");
 		zeit.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
