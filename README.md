@@ -1,4 +1,4 @@
-![Logo](https://raw.githubusercontent.com/SvenC56/vierpunkt/master/bin/de/dhbw/vierpunkt/gui/Logo.jpg)
+![Logo](https://raw.githubusercontent.com/SvenC56/vierpunkt/master/bin/de/dhbw/vierpunkt/gui/ueberschrift.jpg)
 ## VIER. ![Build](https://travis-ci.org/SvenC56/vierpunkt.svg?branch=master)
 
 Programming project for an AI for the game 'Connect 4'
