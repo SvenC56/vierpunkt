@@ -326,19 +326,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
 		
 		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
-		spielfeld.setId("spielfeld");
+		createSpielfeld(spielfeld);
 		
-		// Erzeugen der Spalten (7)
-		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
-		// Erzeugen der Zeilen (6)
-		spielfeld.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE));
-
 		// Einfuegen der Elemente in die mittlere Box
 		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
 				
@@ -366,6 +355,39 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		if(opponentInput.getText() != null && ! opponentInput.getText().trim().isEmpty()){
 			setNames2(opponentInput.getText());
 		}
+
+ 		Stage loginStage = new Stage();
+ 		Button login = new Button("Spiel starten");
+ 		VBox vb = new VBox();
+ 		vb.setAlignment(Pos.CENTER);
+ 		vb.setPadding(new Insets(10, 10, 10, 10));
+ 		
+ 		Label meldung = new Label("Bitte Spielernamen eingeben");
+ 		meldung.setOpacity(0);
+ 		meldung.setStyle("-fx-font-weight: lighter;");
+ 		
+ 		HBox hb5 = new HBox();
+ 		playerLab.setPrefWidth(200);
+ 		hb5.getChildren().addAll(playerLab, playerInput);
+ 		hb5.setSpacing(10);
+ 		
+ 		HBox hb6 = new HBox();
+ 		opponentLab.setPrefWidth(200);
+ 		hb6.getChildren().addAll(opponentLab, opponentInput);
+ 		hb6.setSpacing(10);
+ 		
+ 		Rectangle p2 = new Rectangle(20, 15);
+ 		p2.setOpacity(0);
+ 		Rectangle p3 = new Rectangle(20, 15);
+ 		p3.setOpacity(0);
+ 		
+ 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
+ 		Scene scene2 = new Scene(vb, 400, 250);
+ 		loginStage.setScene(scene2);
+ 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+ 	    loginStage.initModality(Modality.APPLICATION_MODAL);
+ 	    loginStage.setTitle("Spielernamen");
+ 	    loginStage.setFullScreen(false); 
 		
 		/******* INHALTE DER EINSTELLUNGEN STAGE ************************/
 		
@@ -611,49 +633,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
        
         changeTheme.setScene(themaScene);
         
-        // Login Stage
- 		Stage loginStage = new Stage();
- 		Button login = new Button("Spiel starten");
- 		VBox vb = new VBox();
- 		vb.setAlignment(Pos.CENTER);
- 		vb.setPadding(new Insets(10, 10, 10, 10));
- 		
- 		Label meldung = new Label("Bitte Spielernamen eingeben");
- 		meldung.setOpacity(0);
- 		meldung.setStyle("-fx-font-weight: lighter;");
- 		
- 		HBox hb5 = new HBox();
- 		playerLab.setPrefWidth(200);
- 		hb5.getChildren().addAll(playerLab, playerInput);
- 		hb5.setSpacing(10);
- 		
- 		HBox hb6 = new HBox();
- 		opponentLab.setPrefWidth(200);
- 		hb6.getChildren().addAll(opponentLab, opponentInput);
- 		hb6.setSpacing(10);
- 		
- 		Rectangle p2 = new Rectangle(20, 15);
- 		p2.setOpacity(0);
- 		Rectangle p3 = new Rectangle(20, 15);
- 		p3.setOpacity(0);
- 		
- 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
- 		Scene scene2 = new Scene(vb, 400, 250);
- 		loginStage.setScene(scene2);
- 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
- 	    loginStage.initModality(Modality.APPLICATION_MODAL);
- 	    loginStage.setTitle("Spielernamen");
- 	    loginStage.setFullScreen(false); 
+        
     
- 	    
- 	    
- 	    
- 	    
- 	    
- 	    
- 	    
-       
-		// neues Spiel
+ 	    /*********************** NEUES SPIEL *****************************/
 		menu00.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
@@ -666,16 +648,18 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				createGrids();
 				}
 		});
-		
-		// Spiel beenden
+		/*********************** BEREITS GESPIELTE SPIELE *****************************/
+		menu01.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent e) {
+			bisherigeSpiele();	
+			}
+		});
+		/*********************** SPIEL BEENDEN *****************************/
 		menu02.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	onCloseEvent();
 		    	}
-		});	
-		
-		
-		        
+		});		        
         /*********************** THEMA SWEETS *****************************/
 		menu10.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
@@ -789,33 +773,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
-		/*************************************************************************************************************
-		 *************************************************************************************************************
-		 **************************************** Methodenaufruf je nach Slider **************************************
-		 *************************************************************************************************************
-		 *************************************************************************************************************/
-		// manuell
-		if(spielmodus.getValue() == 1 ){
-			createGrids();
-		}
-		
-		// automatisch
-		if(spielmodus.getValue() == 2){
-			createGrids_automatisch(spielfeld);
-		}
-		
-		/*************************************************************************************************************
-		 *************************************************************************************************************
-		 *********************************************** diverse Stages **********************************************
-		 *************************************************************************************************************
-		 *************************************************************************************************************/
-		
 		
 	    
-	    
-	    // Login bei Enter, egal in welchem Feld man ist
-	    playerInput.setOnKeyPressed(new EventHandler<KeyEvent>()
-	    {
+		/*********************** LOGIN BEI ENTER UND CLICK *****************************/
+	    playerInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
@@ -838,8 +799,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	        }
 	        }});
 	    
-	    opponentInput.setOnKeyPressed(new EventHandler<KeyEvent>()
-	    {
+	    opponentInput.setOnKeyPressed(new EventHandler<KeyEvent>(){
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
@@ -862,8 +822,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	        }
 	        }});
 	    
-	    login.setOnKeyPressed(new EventHandler<KeyEvent>()
-	    {
+	    login.setOnKeyPressed(new EventHandler<KeyEvent>() {
 	         public void handle(KeyEvent evt)
 	         {
 	              if (evt.getCode() == KeyCode.ENTER)
@@ -900,8 +859,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 						s2.setText(opponentInput.getText());
 						primaryStage.show();
 						}
-			
-					
 				}
             }
 		});
@@ -911,27 +868,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// primary Stage
 		primaryStage.setScene(scene);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
-		spielfeld2.setId("spielfeld");
 		
-		
-		// Erzeugen der Spalten (7)
-		spielfeld2.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
-		// Erzeugen der Zeilen (6)
-		spielfeld2.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE));
+		createSpielfeld(spielfeld2);
 		
 		
 		
-	    menu01.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent e) {
-			bisherigeSpiele();	
-			}
-		});
+		
+	    
 	    
 		
 		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -967,6 +910,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             }
 		});
 	
+		// manuell
+		if(spielmodus.getValue() == 1 ){
+			createGrids();
+		}
+				
+		// automatisch
+		if(spielmodus.getValue() == 2){
+			createGrids_automatisch(spielfeld);
+		}
+		
 		loginStage.show();
 		
 	}
@@ -976,6 +929,23 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
+	
+	public void createSpielfeld(GridPane spielfeldGrid){
+		spielfeldGrid.setId("spielfeld");
+		
+		
+		// Erzeugen der Spalten (7)
+		spielfeldGrid.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
+		// Erzeugen der Zeilen (6)
+		spielfeldGrid.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE));
+	}
+	
 	public void setCSS(Scene scene){
 		scene.getStylesheets().clear();
 		if(thema == 1){ scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
