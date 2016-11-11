@@ -368,7 +368,7 @@ public class Match {
 					
 					// new try
 					// in column?
-					if (this.getRow()-y>=1) {
+					if (this.getRow()-y>=4) {
 						if (isRow(this.field, 2 , x, y, 0, 1) == 4) {
 							return (int) Double.POSITIVE_INFINITY;
 						}	else if (isRow(this.field, 1, x, y, 0, 1) == 4) {
@@ -385,7 +385,7 @@ public class Match {
 					}
 					
 					// in row?
-			        if (this.getColumn()-x>=2) {
+			        if (this.getColumn()-x>=4) {
 			          if (isRow(this.field,2,x,y,1,0)==4) 
 			            return (int) Double.POSITIVE_INFINITY;  // gewonnen
 			          else if (isRow(this.field,1,x,y,1,0)==4)
@@ -403,7 +403,7 @@ public class Match {
 			        }
 					
 					// in diagonal right?
-					if ((this.getRow()-y>=1) && (this.getColumn()-x>=2)) {
+					if ((this.getRow()-y>=4) && (this.getColumn()-x>=4)) {
 						if (isRow(this.field,2,x,y,1,1) == 4) {
 				            return (int) Double.POSITIVE_INFINITY; 
 						}	else if (isRow(this.field,1,x,y,1,1) == 4) {
@@ -420,7 +420,7 @@ public class Match {
 				        } 
 					
 			        // in diagonal left?
-			        if ((this.getColumn()-x>=2) && (y>=3)) {
+			        if ((this.getColumn()-x>=4) && (y>=3)) {
 			           if (isRow(this.field,2,x,y,1,-1)==4) 
 			            return (int) Double.POSITIVE_INFINITY;  // gewonnen
 			          else if (isRow(this.field,1,x,y,1,-1)==4)
@@ -462,10 +462,12 @@ public class Match {
 	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-		 if (y<=2 && x <= 3) {
 			if (player == 1) {
-			 if (	((field[y][x].getOwnedBy().getIsOpponent() == true) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-				&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+			 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
+					 && ((field[y][x].getOwnedBy().getIsOpponent() == true) || (field[y][x].getOwnedBy() == null)) 
+					 && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+					 && ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) 
+					 && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
 					
 				 for (int i = 0; i < 4; i++) {
 					 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == true) {
@@ -474,8 +476,11 @@ public class Match {
 				 }
 				}
 			} else if (player == 2) {
-				 if (	((field[y][x].getOwnedBy().getIsOpponent() == false) || (field[y][x].getOwnedBy() == null)) && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+				 if (		(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
+						 	&& ((field[y][x].getOwnedBy().getIsOpponent() == false) || (field[y][x].getOwnedBy() == null)) 
+						 	&& ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
+							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) 
+							&& ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
 								
 							 for (int i = 0; i < 4; i++) {
 								 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == false) {
@@ -484,8 +489,7 @@ public class Match {
 							 }
 							}
 			}		 
-			 
-		 }
+
 		 return cnt;
 	 	} 
 

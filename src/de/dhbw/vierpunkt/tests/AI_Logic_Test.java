@@ -246,7 +246,7 @@ public class AI_Logic_Test {
 				}
 				
 				// in row?
-		        if (game.getColumn()-x>=2) {
+		        if (game.getColumn()-x>=4) {
 		          if (isRow(game.field,2,x,y,1,0)==4) 
 		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
 		          else if (isRow(game.field,1,x,y,1,0)==4)
@@ -264,7 +264,7 @@ public class AI_Logic_Test {
 		        }
 				
 				// in diagonal right?
-				if ((game.getRow()-y>=1) && (game.getColumn()-x>=2)) {
+				if ((game.getRow()-y>=4) && (game.getColumn()-x>=4)) {
 					if (isRow(game.field,2,x,y,1,1) == 4) {
 			            return (int) Double.POSITIVE_INFINITY; 
 					}	else if (isRow(game.field,1,x,y,1,1) == 4) {
@@ -281,7 +281,7 @@ public class AI_Logic_Test {
 			        } 
 				
 		        // in diagonal left?
-		        if ((game.getColumn()-x>=2) && (y>=3)) {
+		        if ((game.getColumn()-x>=4) && (y>=3)) {
 		           if (isRow(game.field,2,x,y,1,-1)==4) 
 		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
 		          else if (isRow(game.field,1,x,y,1,-1)==4)
