@@ -35,7 +35,7 @@ import de.dhbw.vierpunkt.db.ConnectHSQL;
 import de.dhbw.vierpunkt.interfaces.GewinnerListener;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
-import de.dhbw.vierpunkt.objects.NameListener;
+import de.dhbw.vierpunkt.logic.NameListener;
 /**
  *
  * @author janaschaub

@@ -1,4 +1,4 @@
-package de.dhbw.vierpunkt.objects;
+package de.dhbw.vierpunkt.logic;
 
 
 

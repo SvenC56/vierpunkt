@@ -21,7 +21,7 @@ import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
-import de.dhbw.vierpunkt.objects.Game;
+import de.dhbw.vierpunkt.logic.Game;
 
 
 

@@ -1,4 +1,4 @@
-package de.dhbw.vierpunkt.objects;
+package de.dhbw.vierpunkt.logic;
 
 import de.dhbw.vierpunkt.db.DBConnector;
 
@@ -92,7 +92,7 @@ public class Game implements NameListener {
 	/**Startet ein neues Spiel und legt hierfuer zwei Spieler an
 	 * Diese Klasse laeuft und legt jeweils ein neues Match an sobald ein Match abgeschlossen wurde, maximal 3
 	 * (non-Javadoc)
-	 * @see de.dhbw.vierpunkt.objects.NameListener#startGame(java.lang.String, java.lang.String)
+	 * @see de.dhbw.vierpunkt.logic.NameListener#startGame(java.lang.String, java.lang.String)
 	 **/
 	public void startGame(String name1, String name2) {
 		

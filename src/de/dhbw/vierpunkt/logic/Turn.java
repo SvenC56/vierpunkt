@@ -1,5 +1,5 @@
-package de.dhbw.vierpunkt.objects;
-import de.dhbw.vierpunkt.objects.AlphaBeta;
+package de.dhbw.vierpunkt.logic;
+import de.dhbw.vierpunkt.logic.AlphaBeta;
 
 public class Turn {
 	

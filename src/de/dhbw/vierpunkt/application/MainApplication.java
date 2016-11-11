@@ -1,8 +1,8 @@
 package de.dhbw.vierpunkt.application;
 
 import de.dhbw.vierpunkt.interfaces.*;
+import de.dhbw.vierpunkt.logic.Game;
 import de.dhbw.vierpunkt.gui.TestGui;
-import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
