@@ -42,59 +42,53 @@ import de.dhbw.vierpunkt.objects.NameListener;
  */
 public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerListener {
 
-	/****** VARIABLENDEKLARATION *****/
-	
-
-	
-	
-	/**
-	 * Gibt den aktuellen Fuellstand aller Spalten an
-	 */	
+	/** Gibt den aktuellen Fuellstand aller Spalten an*/	
 	static int[] plaetzeFreiInReihe = new int[7];
 	private static List<NameListener> NameListeners = new ArrayList<NameListener>();
 	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
 	
+	/** Hauptstage */	
 	public static Stage primaryStage = new Stage();
 	
-	// Einstellungen
+	/** Variablendeklaration fuer die Einstellungsattribute */	
 	private String schnittstelle = "pusher";
 	private int zugzeit = 2000;
 	private char xodero = 'x';
 	private String fileString = new String();
 	
-	// Pusher Credentials
+	/** Variablendeklaration und default -initialisierung der Pusher Credentials */	
 	private String appId="255967";
-	public void setAppId(String appId) {
-		this.appId = appId;
-	}
-	public void setAppKey(String appKey) {
-		this.appKey = appKey;
-	}
-	public void setAppSecret(String appSecret) {
-		this.appSecret = appSecret;
-	}
-
 	private String appKey="61783ef3dd40e1b399b2";
 	private String appSecret="66b722950915220b298c";
 	
-	// Grid
-	private int anzahlzeilen;
-	private int anzahlspalten;
-	private final int l = 70; 		// Seitenlaenge der Grids - spaeter manuelle Einstellung
-	public static char spieler = 'x'; 		// Spieler 1
+	/** Variablendeklaration und -initialisierung der Spielerbelegung */
+	// Spielernamen
+	private static String names1;
+	private static String names2;
+	// Spieler fuer das automatische Spiel
+	public static char spieler = 'x'; 		
 	public char gegner = 'o';
-	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width; // Breite des Fensters in Pixeln
-	private static int thema = 1;
+	// Spieler fuer das manuelle Spiel
 	public char manuellerSpieler= 'x';
 	
-	// Spielernamen
-	private static String names1 = "Spieler1";
-	private static String names2 = "Spieler2";
+	/** Groeßen- und Laengeneinheiten */
+	// Seitenlaenge der Grids
+	private final int l = 70; 				
+	// Breite des geoeffneten Fensters in Double
+	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;
 	
-	// Angaben aus anderen Klassen
+	/** Defaultbelegung des Themas fuer die Verknuepfung mit der CSS-Datei */
+	private static int thema = 1;
+	
+	/*Darzustellende Informationen */
 	private Text spielstand = new Text("0 : 0");
 	private Text satzstatus = new Text("Spiel noch nicht begonnen");
-	
+	// Deklarieren des Hauptspielfelds
+	public GridPane spielfeld = new GridPane();
+	// Deklarieren des Spielfelds fuer die bereits gespielten Spiele
+    public GridPane spielfeld2 = new GridPane();
+	// Variable fuer die Farbe des Spielfelds
+    public Color color = Color.rgb(0, 0, 0);
 	
 	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
@@ -109,39 +103,36 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     
-    // Variable fuer die Farbe des Spielfelds
-    public Color color = Color.rgb(0, 0, 0);
-    public GridPane spielfeld = new GridPane();
     
-    public GridPane spielfeld2 = new GridPane();
     
     // Getter und Setter Methoden
-    public void setColor(Color color) {	this.color = color;}
-	public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
-	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
-	public void setImage3(javafx.scene.image.Image image3) {this.image3 = image3;}
-	public int getZugzeit() {return zugzeit;}
-	public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
-	public String getSchnittstelle() {return schnittstelle;}
-	public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
-	public String getNames1() {return names1;}
-	public void setNames1(String names1){this.names1 = names1;}
-	public String getNames2() {return names2;}
-	public void setNames2(String names2){this.names2 = names2;}
-	public char getXodero() {return xodero;}
-	public void setXodero(char xodero) {this.xodero = xodero;}
-	public javafx.scene.image.Image getImage1() {return image1;}
-	public javafx.scene.image.Image getImage2() {return image2;}
-	public void setSatzstatus(String satzstatus) {this.satzstatus.setText(satzstatus);}
+    public void setSatzstatus(String satzstatus) {this.satzstatus.setText(satzstatus);}
 	public void setSpielstand(String spielstand) {this.spielstand.setText(spielstand);}
-	public Text getSpielstand() {return spielstand;}
+    public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
+    public void setSchnittstelle(String schnittstelle) {this.schnittstelle = schnittstelle;}
+    public void setAppId(String appId) {this.appId = appId;}
+	public void setAppKey(String appKey) {this.appKey = appKey;}
+	public void setAppSecret(String appSecret) {this.appSecret = appSecret;}
+    public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
+	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
+	public void setNames1(String names1){this.names1 = names1;}
+	public void setNames2(String names2){this.names2 = names2;}
+	public void setXodero(char xodero) {this.xodero = xodero;}
+    public void setColor(Color color) {	this.color = color;}
+	
+    public Text getSpielstand() {return spielstand;}
 	public Text getSatzstatus() {return satzstatus;}
+	public int getZugzeit() {return zugzeit;}
+	public String getSchnittstelle() {return schnittstelle;}
 	public String getFileSting(){return fileString;}
 	public String getAppId(){return appId;}	
 	public String getAppKey(){return appKey;}
 	public String getAppSecret(){return appSecret;}
-
-	
+	public javafx.scene.image.Image getImage1() {return image1;}
+	public javafx.scene.image.Image getImage2() {return image2;}
+	public String getNames1() {return names1;}
+	public String getNames2() {return names2;}
+	public char getXodero() {return xodero;}
 
 	/*********************************************************************************************************************
 	 ******************************************* START METHODE *********************************************************
@@ -161,32 +152,33 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// Layout Boxen
 		VBox root = new VBox(); 				// aeusserste Box
 		root.setId("root");
+		
 		HBox content = new HBox();
 		content.setPrefWidth(breite); 			// content ueber gesamte Bildschirmbreite
 		content.setAlignment(Pos.TOP_CENTER); 	// alle Inhalte werden mittig ausgerichtet
 
 		/********************************************** MENUBAR ******************************************************/
 		// MenuBar Hauptkategorien
-		final Menu vierpunkt = new Menu("Optionen");
-		final Menu themen = new Menu("Themen");
+		final Menu options = new Menu("Optionen");
+		final Menu themes = new Menu("Themen");
 
 		// Menubar, Hauptkategorien setzen
 		MenuBar menuBar = new MenuBar();
 		menuBar.setId("menu");
-		menuBar.getMenus().addAll(vierpunkt, themen);
+		menuBar.getMenus().addAll(options, themes);
 
 		// Unterkategorien fuer "vierpunkt"
-		MenuItem menu11 = new MenuItem("neues Spiel");
-		MenuItem menu31 = new MenuItem("bereits gespielte Spiele");
-		MenuItem menu13 = new MenuItem("Spiel beenden");
-		vierpunkt.getItems().addAll(menu11, menu31, menu13);
+		MenuItem menu00 = new MenuItem("neues Spiel");
+		MenuItem menu01 = new MenuItem("bereits gespielte Spiele");
+		MenuItem menu02 = new MenuItem("Spiel beenden");
+		options.getItems().addAll(menu00, menu01, menu02);
 		
 		// Unterkategorien fuer "themen"
-		MenuItem menu21 = new MenuItem("Suessigkeiten");
-		MenuItem menu22 = new MenuItem("Halloween");
-		MenuItem menu23 = new MenuItem("Food");
-		MenuItem menu24 = new MenuItem("Sports");
-		themen.getItems().addAll(menu21, menu22, menu23, menu24);
+		MenuItem menu10 = new MenuItem("Suessigkeiten");
+		MenuItem menu11 = new MenuItem("Halloween");
+		MenuItem menu12 = new MenuItem("Food");
+		MenuItem menu13 = new MenuItem("Sports");
+		themes.getItems().addAll(menu10, menu11, menu12, menu13);
 
 		/******************************************* UEBERSCHRIFT *********************************************************/
 
@@ -652,11 +644,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});*/
 		
-		menu13.setOnAction(new EventHandler<ActionEvent>() {
+		menu02.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
 		    	onCloseEvent();
 		    	}
-		});		menu11.setOnAction(new EventHandler<ActionEvent>(){
+		});		menu00.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
 				// primaryStage.setFullScreen(true);
@@ -706,7 +698,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		        
 		      //  changetheme.show();
 		
-		menu21.setOnAction(new EventHandler<ActionEvent>(){
+		menu10.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				if(thema!=4){
 					themaScene.getStylesheets().clear();
@@ -741,7 +733,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
-		menu22.setOnAction(new EventHandler<ActionEvent>(){
+		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				if(thema != 1){ 
 					themaScene.getStylesheets().clear();
@@ -772,7 +764,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
-		menu23.setOnAction(new EventHandler<ActionEvent>(){
+		menu12.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				if(thema != 2){
 					themaScene.getStylesheets().clear();
@@ -804,7 +796,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
-		menu24.setOnAction(new EventHandler<ActionEvent>(){
+		menu13.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
 				if(thema!= 3){
 					themaScene.getStylesheets().clear();
@@ -1043,7 +1035,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 		
 		
-	    menu31.setOnAction(new EventHandler<ActionEvent>(){
+	    menu01.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 			bisherigeSpiele();	
 			}
@@ -1565,8 +1557,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	
     public void createGrids_automatisch(GridPane spielfeld){
     	spielfeld.getChildren().clear();
-        for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
             
             // Darstellung des Rahmens/ der Zellen    
             Rectangle rect = new Rectangle(l,l);
@@ -1607,8 +1599,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 
 	public void createGrids(){
     	spielfeld.getChildren().clear();
-        for(anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-            for(anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
             
             // Darstellung des Rahmens/ der Zellen    
             Rectangle rect = new Rectangle(l,l);
