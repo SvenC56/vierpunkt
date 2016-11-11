@@ -353,29 +353,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 		/******* INHALTE DER LOGIN STAGE ************************/
 		
-		
 		// login Felder
-		Label spieler1 = new Label("Spieler: ");
-		TextField spielername1 = new TextField();
-		if(spielername1.getText() != null && ! spielername1.getText().trim().isEmpty()){
-			//names1 = spielername1.getText();
-			setNames1(spielername1.getText());
+		Label playerLab = new Label("Spieler: ");
+		TextField playerInput= new TextField();
+		if(playerInput.getText() != null && ! playerInput.getText().trim().isEmpty()){
+			setNames1(playerInput.getText());
 		}
 		
-		Label spieler2 = new Label("Gegner: ");
-		TextField spielername2 = new TextField();
-		if(spielername2.getText() != null && ! spielername2.getText().trim().isEmpty()){
-			//names2 = spielername2.getText();
-			setNames2(spielername2.getText());
+		Label opponentLab = new Label("Gegner: ");
+		TextField opponentInput= new TextField();
+		if(opponentInput.getText() != null && ! opponentInput.getText().trim().isEmpty()){
+			setNames2(opponentInput.getText());
 		}
 		
-	
+		/******* INHALTE DER EINSTELLUNGEN STAGE ************************/
 		
-		/*************************************************************************************************************
-		 *************************************************************************************************************
-		 ***************************************       Einstellungen       *******************************************
-		 *************************************************************************************************************
-		 *************************************************************************************************************/
 		// Ueberschrift
         Text u1 = new Text("Einstellungen");
         u1.setId("textEinstellungen");
@@ -438,7 +430,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         hb2.setOpacity(0);
         hb3.setOpacity(0);
         
-		
 		// Zeit
 		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
@@ -454,7 +445,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, vbRight);
-		
 		
 		
 		/*********************** LISTENER *****************************/
@@ -574,10 +564,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
                 dialogVbox.getChildren().addAll(u1, hb4, schnittstelle, hb, pusher, hb1, hb2, hb3, p1, zeitlabel, zeit, ok);
                 Scene dialogScene = new Scene(dialogVbox, 500, 800);
                 
-                if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-                if(thema == 2){ dialogScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-                if(thema == 3){dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-                if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+                setCSS(dialogScene);
+                
               
                 dialog.setScene(dialogScene);
                 dialog.show();	
@@ -591,17 +579,75 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		 *************************************************************************************************************/
 		
 		Scene scene = new Scene(root);
-		/*primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
-			@Override public void handle(WindowEvent e){
-				onCloseEvent();
-			}
-		});*/
 		
-		menu02.setOnAction(new EventHandler<ActionEvent>() {
-		    @Override public void handle(ActionEvent e) {
-		    	onCloseEvent();
-		    	}
-		});		menu00.setOnAction(new EventHandler<ActionEvent>(){
+		// changeTheme Stage
+		final Stage changeTheme = new Stage();
+		changeTheme.setTitle("Themenwechsel");
+		changeTheme.initModality(Modality.APPLICATION_MODAL);
+		changeTheme.initOwner(primaryStage);
+        VBox themaVbox = new VBox(20);
+        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label nachricht = new Label();
+        nachricht.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
+        nachricht.setWrapText(true);
+        Button open = new Button("Thema wechseln");
+        Button close = new Button("Abbrechen");
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(open, close);
+        hbox.setAlignment(Pos.BASELINE_CENTER);
+        hbox.setSpacing(20);
+        
+        close.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		changeTheme.close();
+        	}
+        });
+        
+        // Einfuegen in die VBox
+        themaVbox.getChildren().addAll(nachricht, hbox);
+        Scene themaScene = new Scene(themaVbox, 500, 200);
+       
+        changeTheme.setScene(themaScene);
+        
+        // Login Stage
+ 		Stage loginStage = new Stage();
+ 		Button login = new Button("Spiel starten");
+ 		VBox vb = new VBox();
+ 		vb.setAlignment(Pos.CENTER);
+ 		vb.setPadding(new Insets(10, 10, 10, 10));
+ 		
+ 		Label meldung = new Label("Bitte Spielernamen eingeben");
+ 		meldung.setOpacity(0);
+ 		meldung.setStyle("-fx-font-weight: lighter;");
+ 		
+ 		HBox hb5 = new HBox();
+ 		playerLab.setPrefWidth(200);
+ 		hb5.getChildren().addAll(playerLab, playerInput);
+ 		hb5.setSpacing(10);
+ 		
+ 		HBox hb6 = new HBox();
+ 		opponentLab.setPrefWidth(200);
+ 		hb6.getChildren().addAll(opponentLab, opponentInput);
+ 		hb6.setSpacing(10);
+ 		
+ 		Rectangle p2 = new Rectangle(20, 15);
+ 		p2.setOpacity(0);
+ 		Rectangle p3 = new Rectangle(20, 15);
+ 		p3.setOpacity(0);
+ 		
+ 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
+ 		Scene scene2 = new Scene(vb, 400, 250);
+ 		loginStage.setScene(scene2);
+ 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+ 	    loginStage.initModality(Modality.APPLICATION_MODAL);
+ 	    loginStage.setTitle("Spielernamen");
+ 	    loginStage.setFullScreen(false); 
+    
+       
+		// neues Spiel
+		menu00.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
 				// primaryStage.setFullScreen(true);
@@ -614,57 +660,27 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				}
 		});
 		
-		// neue Stage
-				final Stage changetheme = new Stage();
-				changetheme.setTitle("Themenwechsel");
-				changetheme.initModality(Modality.APPLICATION_MODAL);
-				changetheme.initOwner(primaryStage);
-		        VBox themaVbox = new VBox(20);
-		        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
-		        
-		        Label nachricht = new Label();
-		        nachricht.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
-		        nachricht.setWrapText(true);
-		        Button open = new Button("Thema wechseln");
-		        Button close = new Button("Abbrechen");
-		        HBox hbox = new HBox();
-		        hbox.getChildren().addAll(open, close);
-		        hbox.setAlignment(Pos.BASELINE_CENTER);
-		        hbox.setSpacing(20);
-		        
-		        close.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		        	@Override
-		        	public void handle(MouseEvent arg0){
-		        		changetheme.close();
-		        	}
-		        });
-		        // Einfuegen in die VBox
-		        themaVbox.getChildren().addAll(nachricht, hbox);
-		        Scene themaScene = new Scene(themaVbox, 500, 200);
-		        
-		       /* if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-		        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-		        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-		        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-		      */
-		        changetheme.setScene(themaScene);
-		        
-		      //  changetheme.show();
+		// Spiel beenden
+		menu02.setOnAction(new EventHandler<ActionEvent>() {
+		    @Override public void handle(ActionEvent e) {
+		    	onCloseEvent();
+		    	}
+		});	
 		
+		
+		        
+        /*********************** THEMA SWEETS *****************************/
 		menu10.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				// wir nur ausgefuehrt, wenn das Thema nicht eh schon das gleiche ist
 				if(thema!=4){
-					themaScene.getStylesheets().clear();
-					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-			        
-					
+					setCSS(themaScene);
+					// wenn man bei der Abfrage wirklich das Thema wechseln will
 					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 			            public void handle(MouseEvent arg0) {
 							
-							changetheme.close();
+							changeTheme.close();
 							primaryStage.setScene(scene);
 							primaryStage.setFullScreen(false);
 							setColor(Color.PURPLE);
@@ -678,26 +694,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							thema = 4;
 						}
 			        });
-					
-					changetheme.show();
-				
+					changeTheme.show();
 				}
-				
 			}
 		});
-		
+        /*********************** THEMA HALLOWEEN *****************************/
 		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				// wir nur ausgefuehrt, wenn das Thema nicht eh schon das gleiche ist
 				if(thema != 1){ 
-					themaScene.getStylesheets().clear();
-					if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+					setCSS(themaScene);
 					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 			            public void handle(MouseEvent arg0) {
 							
-							changetheme.close();
+							changeTheme.close();
 							primaryStage.setScene(scene);
 							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
@@ -711,25 +722,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							thema = 1;
 						}
 			        });
-					changetheme.show();
-				}
-		        
+					changeTheme.show();
+				} 
 			}
 		});
-		
+        /*********************** THEMA FOOD *****************************/
 		menu12.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				// wir nur ausgefuehrt, wenn das Thema nicht eh schon das gleiche ist
 				if(thema != 2){
-					themaScene.getStylesheets().clear();
-					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-					
+					setCSS(themaScene);
 					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 			            public void handle(MouseEvent arg0) {
 							
-							changetheme.close();
+							changeTheme.close();
 							primaryStage.setScene(scene);
 							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
@@ -743,25 +750,20 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							thema = 2;
 						}
 			        });
-					changetheme.show();
-				
+					changeTheme.show();
 				}
 			}
 		});
-		
+        /*********************** THEMA SPORT *****************************/
 		menu13.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e){
+				// wir nur ausgefuehrt, wenn das Thema nicht eh schon das gleiche ist
 				if(thema!= 3){
-					themaScene.getStylesheets().clear();
-					if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-					
-					
+					setCSS(themaScene);
 					open.setOnMouseClicked(new EventHandler<MouseEvent>() {
 						@Override
 			            public void handle(MouseEvent arg0) {
-							changetheme.close();
+							changeTheme.close();
 							primaryStage.setScene(scene);
 							primaryStage.setFullScreen(false);
 							scene.getStylesheets().clear();
@@ -775,7 +777,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							thema = 3;
 						}
 			        });
-					changetheme.show();
+					changeTheme.show();
 				}
 			}
 		});
@@ -801,59 +803,27 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		 *************************************************************************************************************
 		 *************************************************************************************************************/
 		
-		// Login Stage
-		Stage loginStage = new Stage();
-		Button login = new Button("Spiel starten");
-		VBox vb = new VBox();
-		vb.setAlignment(Pos.CENTER);
-		vb.setPadding(new Insets(10, 10, 10, 10));
 		
-		Label meldung = new Label("Bitte Spielernamen eingeben");
-		meldung.setOpacity(0);
-		meldung.setStyle("-fx-font-weight: lighter;");
-		
-		HBox hb5 = new HBox();
-		spieler1.setPrefWidth(200);
-		hb5.getChildren().addAll(spieler1, spielername1);
-		hb5.setSpacing(10);
-		
-		HBox hb6 = new HBox();
-		spieler2.setPrefWidth(200);
-		hb6.getChildren().addAll(spieler2, spielername2);
-		hb6.setSpacing(10);
-		
-		Rectangle p2 = new Rectangle(20, 15);
-		p2.setOpacity(0);
-		Rectangle p3 = new Rectangle(20, 15);
-		p3.setOpacity(0);
-		
-		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
-		Scene scene2 = new Scene(vb, 400, 250);
-		loginStage.setScene(scene2);
-	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
-	    loginStage.initModality(Modality.APPLICATION_MODAL);
-	    loginStage.setTitle("Spielernamen");
-	    loginStage.setFullScreen(false);
 	    
 	    
 	    // Login bei Enter, egal in welchem Feld man ist
-	    spielername1.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    playerInput.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
 	        public void handle(KeyEvent ke)
 	        {
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {meldung.setText("Bitte Spielernamen eingeben");
-				if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+				if(playerInput.getText() == null || playerInput.getText().trim().isEmpty() || opponentInput.getText() == null ||  opponentInput.getText().trim().isEmpty()){
 					meldung.setOpacity(1);
 				}else{
-					if(spielername1.getText().equals(spielername2.getText())){
+					if(playerInput.getText().equals(opponentInput.getText())){
 						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
-						s1.setText(spielername1.getText());
-						s2.setText(spielername2.getText());
+						s1.setText(playerInput.getText());
+						s2.setText(opponentInput.getText());
 						primaryStage.show();
 						}
 			
@@ -861,7 +831,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	        }
 	        }});
 	    
-	    spielername2.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    opponentInput.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
 	        public void handle(KeyEvent ke)
@@ -869,19 +839,18 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	            if (ke.getCode().equals(KeyCode.ENTER))
 	            {
 	            	meldung.setText("Bitte Spielernamen eingeben");
-					if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+					if(playerInput.getText() == null || playerInput.getText().trim().isEmpty() || opponentInput.getText() == null ||  opponentInput.getText().trim().isEmpty()){
 						meldung.setOpacity(1);
 					}else{
-						if(spielername1.getText().equals(spielername2.getText())){
+						if(playerInput.getText().equals(opponentInput.getText())){
 							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
-							s1.setText(spielername1.getText());
-							s2.setText(spielername2.getText());
+							s1.setText(playerInput.getText());
+							s2.setText(opponentInput.getText());
 							primaryStage.show();
 							}
-				
 	            }
 	        }
 	        }});
@@ -892,16 +861,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	         {
 	              if (evt.getCode() == KeyCode.ENTER)
 	            	  meldung.setText("Bitte Spielernamen eingeben");
-					if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+					if(playerInput.getText() == null || playerInput.getText().trim().isEmpty() || opponentInput.getText() == null ||  opponentInput.getText().trim().isEmpty()){
 						meldung.setOpacity(1);
 					}else{
-						if(spielername1.getText().equals(spielername2.getText())){
+						if(playerInput.getText().equals(opponentInput.getText())){
 							meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 							meldung.setOpacity(1);
 						}else{
 							loginStage.close();
-							s1.setText(spielername1.getText());
-							s2.setText(spielername2.getText());
+							s1.setText(playerInput.getText());
+							s2.setText(opponentInput.getText());
 							primaryStage.show();
 							}
 				
@@ -912,16 +881,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			@Override
             public void handle(MouseEvent arg0) {
 				meldung.setText("Bitte Spielernamen eingeben");
-				if(spielername1.getText() == null || spielername1.getText().trim().isEmpty() || spielername2.getText() == null ||  spielername2.getText().trim().isEmpty()){
+				if(playerInput.getText() == null || playerInput.getText().trim().isEmpty() || opponentInput.getText() == null ||  opponentInput.getText().trim().isEmpty()){
 					meldung.setOpacity(1);
 				}else{
-					if(spielername1.getText().equals(spielername2.getText())){
+					if(playerInput.getText().equals(opponentInput.getText())){
 						meldung.setText("Bitte unterschiedliche Spielernamen waehlen.");
 						meldung.setOpacity(1);
 					}else{
 						loginStage.close();
-						s1.setText(spielername1.getText());
-						s2.setText(spielername2.getText());
+						s1.setText(playerInput.getText());
+						s2.setText(opponentInput.getText());
 						primaryStage.show();
 						}
 			
@@ -930,14 +899,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             }
 		});
 	    
-		// Gewinnermeldung
-		/*Stage gewinnermeldung = new Stage();
-		FlowPane panegewinner = new FlowPane();
-		Label gewinnernachricht = new Label();
-		panegewinner.setPadding(new Insets(10, 10, 10, 10));
-		panegewinner.getChildren().addAll(gewinnernachricht);
-		Scene meldung1 = new Scene(panegewinner);
-		gewinnermeldung.setScene(meldung1);		*/
+	
 		 
 		// primary Stage
 		primaryStage.setScene(scene);
@@ -957,36 +919,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				new RowConstraints(l, l, Double.MAX_VALUE));
 		
 		
-		//Beispieldaten
-		
-		
-		
-		/*aAllGames[0][0] = "123";
-		aAllGames[0][1] = "Leon";
-		aAllGames[0][2] = "Phil";
-		aAllGames[0][3] = "Phil";
-		aAllGames[0][4] = "3:0";
-		aAllGames[1][0] = "456";
-		aAllGames[1][1] = "Tim";
-		aAllGames[1][2] = "Tobi";
-		aAllGames[1][3] = "Tim";
-		aAllGames[1][4] = "2:1";
-		
-		String[][] alleSaetze = new String[20][3]; 
-		alleSaetze[0][0] = "Satz1";
-		alleSaetze[0][1] = "123";
-		alleSaetze[0][2] = "irgendwas";
-
-		String[][] alleZuege = new String[20][5]; 
-		alleZuege[0][0] = "Zug1";
-		alleZuege[0][1] = "123";
-		alleZuege[0][2] = "Leon";
-		alleZuege[0][3] = "1";
-		alleZuege[0][4] = "0";
-		*/
-		
-		
-		
 		
 	    menu01.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
@@ -1003,7 +935,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 					if(spieler == 'x'){
 						gegner = 'o';
 					}else{gegner = 'x';}
-					
 	            	createGrids_automatisch(spielfeld);
 				}else{
 					spieler = getXodero();
@@ -1011,13 +942,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 						gegner = 'o';
 					}else{gegner = 'x';}
 					createGrids();}
-				System.out.println(getAppId() + " " + getAppKey() +" "+ getAppSecret());
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret() /*app1.getText(), app2.getText(), app3.getText()*/);
+				
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
 				Thread t1 = new Thread(){
-				@Override
-				public void run(){
-					fireNames(spielername1.getText(), spielername2.getText());
-				}
+					@Override
+					public void run(){
+						fireNames(playerInput.getText(), opponentInput.getText());
+					}
 				};
 				t1.start();
 				
@@ -1025,9 +956,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
 					plaetzeFreiInReihe[i]=5;
 				}
-				//satzgewinner(1);
-				//System.out.println(getNames1() + names2);
-				//gewinnermethode(1, spielername1.getText(), spielername2.getText());
 				
             }
 		});
@@ -1041,6 +969,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
+	public void setCSS(Scene scene){
+		scene.getStylesheets().clear();
+		if(thema == 1){ scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+	}
+	
 	public void changeSpielmodus(Number newValue, Button einstellungen, Button start, Slider spielmodus){
 		// bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt
     	if(newValue.intValue() == 2){		
