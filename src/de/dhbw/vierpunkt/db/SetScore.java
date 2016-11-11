@@ -5,18 +5,18 @@
 package de.dhbw.vierpunkt.db;
 
 public class SetScore implements Runnable {
-	int G_ID;
-	String WINNER;
+	int M_ID;
+	String SCORE;
 
-	public SetScore(int G_ID, String Winner, String Points) {
-		this.G_ID = G_ID;
-		this.WINNER = WINNER;
+	public SetScore(int G_ID, String SCORE) {
+		this.M_ID = M_ID;
+		this.SCORE = SCORE;
 	}
 
 	@Override
 	public void run() {
 		ConnectHSQL dbConnection = new ConnectHSQL();
-		dbConnection.setScoreDb(G_ID, WINNER);
+		dbConnection.updateMatch(M_ID, SCORE);
 	}
 
 }

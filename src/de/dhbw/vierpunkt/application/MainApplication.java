@@ -6,21 +6,24 @@ import de.dhbw.vierpunkt.objects.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainApplication extends Application implements ParamListener  {
+public class MainApplication extends Application implements ParamListener{
 	
+	static PusherInterface pushy = new PusherInterface(); 
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
-	
+	static MainApplication main = new MainApplication();
 	/**
 	 * In der Main-Methode der MainApplication Klasse werden die Empfaenger fuer die Start- und Logik-Events festgelegt.
 	 * Danach wird die Startmethode aufgerufen, in der das GUI aufgebaut wird
 	 */
 	public static void main(String[] args) throws InterruptedException
 	{
-		
-		MainApplication main = new MainApplication();
 		gui.addParamListener(main);
 		gui.addNameListener(game);
+		
+		pushy.addListener(gui);
+		pushy.addErrorListener(gui);
+		pushy.addGewinnerListener(gui);
 		
 		launch(args);
 	}
@@ -33,7 +36,6 @@ public class MainApplication extends Application implements ParamListener  {
 	public void start(Stage primaryStage) throws Exception
 	{ 		
 		gui.start(primaryStage);
-
 	}
 	
 	/**
@@ -46,14 +48,12 @@ public class MainApplication extends Application implements ParamListener  {
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
 			String Kontaktpfad, char spielerKennung, String AppID, String AppKey, String AppSecret)
 	{
-	
 		// wenn Pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
 		if(Schnittstelle.equals("pusher"))
 		{
 			PusherInterface pushy = new PusherInterface(Zugzeit, AppID, AppKey, AppSecret, spielerKennung, game);
 			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
-			pushy.addListener(gui);
-			pushy.addErrorListener(gui);
+			
 			
 			Thread pusherThread = new Thread(){
 				@Override
@@ -79,4 +79,5 @@ public class MainApplication extends Application implements ParamListener  {
 				fileThread.start();
 		}
 	}
+
 }

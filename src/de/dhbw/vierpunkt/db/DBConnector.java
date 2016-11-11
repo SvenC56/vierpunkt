@@ -34,9 +34,14 @@ public class DBConnector {
 		g1.run();
 	}
 	
-	public void saveScore(int gameID, String winner, String score) {
-		SetScore g2 = new SetScore(gameID, winner, score);
+	public void saveMatchScore(int matchID, String score) {
+		SetScore g2 = new SetScore(matchID, score);
 		g2.run();
+	}
+	
+	public void saveGameWinner(int gameID, String playerName) {
+		SetScore g3 = new SetScore(gameID, playerName);
+		g3.run();
 	}
 	
 	public void saveMatch(int gameID, int matchID, int matchnumber) {
@@ -60,6 +65,11 @@ public class DBConnector {
 	public int getGameID() {
 		ConnectHSQL dbGID = new ConnectHSQL();
 		return dbGID.getMaxId("GAME");
+	}
+	
+	public int getMatchID() {
+		ConnectHSQL dbGID = new ConnectHSQL();
+		return dbGID.getMaxId("MATCH");
 	}
 	
 	

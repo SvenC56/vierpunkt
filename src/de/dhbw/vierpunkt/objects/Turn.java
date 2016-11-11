@@ -6,7 +6,7 @@ public class Turn {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private int turnID;
+	private int turnNumber;
 	private Player player;
 	private int x;
 	private int y;
@@ -22,16 +22,16 @@ public class Turn {
 
 		
 	
-	public Turn(int turnID, Player player, Match match) {
-		this.turnID=turnID;
+	public Turn(int turnNumber, Player player, Match match) {
+		this.turnNumber=turnNumber;
 		this.player=player;
 		this.match = match;
 	}
 	
+
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
-	
 	
 	public Player getPlayer() {
 		return this.player;
@@ -52,15 +52,6 @@ public class Turn {
 	public void setY(int y) {
 		this.y = y;
 	}
-
-	public int getTurnID() {
-		return turnID;
-	}
-
-	public void setTurnID(int turnID) {
-		this.turnID = turnID;
-	}
-
 	
 	
 	
@@ -72,17 +63,21 @@ public class Turn {
 	 * @param x
 	 */
 	public void startOpponentTurn(int x) {
+		if (this.turnNumber == 0) {
+			this.match.setCurrentPlayer(this.match.getGame().getPlayer(1));
+		}
 	 this.y = this.match.validPosition(x);
 	 this.x = x;
 	 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-	 this.match.getGame().getDb().saveTurn(this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+	 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
-		 Player winner = this.match.winnerIs();
-		//Hier muss die GUI informiert werden
+		//Hier wird die Datenbank informiert und der Score gespeichert
+		 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
 	 }
-	 this.match.setTurnActive(false);
 	 this.match.getGame().setNextPlayer();
+	 this.match.setTurnActive(false); 
+	 this.match.setNewTurn();
 	} 
 	
 	
@@ -93,23 +88,25 @@ public class Turn {
 	 */
 	public int startAgentTurn() {
 		int x;
-		System.out.println("Start Agent turnID:" + this.turnID);
-		if (this.turnID == 0) { //Beim ersten Zug immer Spalte 3
-			x=3;
+		System.out.println("Start Agent turnID:" + this.turnNumber);
+		if (this.turnNumber == 0) {
+			this.match.setCurrentPlayer(this.match.getGame().getPlayer(0));
+			x = 3;
 		}
 		else {
 		 x = ki.calcMove(this.match, this.depth);
 		}
 		int y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-		 this.match.getGame().getDb().saveTurn(this.match.getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
-			 Player winner = this.match.winnerIs();
-			 //Hier muss die GUI informiert werden
+			 //Hier wird die Datenbank informiert und der Score gespeichert
+			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
 		 }
-		this.match.setTurnActive(false);
-		this.match.getGame().setNextPlayer();
+		 this.match.getGame().setNextPlayer();
+		 this.match.setTurnActive(false);
+		 this.match.setNewTurn();
 		return x;
 	}
 	

@@ -13,27 +13,66 @@ public class Match {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
-	private int matchID = 0;
-	private int turnNumber = 0;
+	/**
+	 * MatchNumber, diese kann 0, 1 oder 2 sein
+	 */
+	private int matchNumber = 0;
+	/**
+	 * die aktuelle TurnNumber im Match
+	 */
+	private int matchTurnNumber;
+	/**
+	 * Hinterlegt den Gewinner des Match
+	 */
 	private Player matchWinner;
+	/**
+	 * hinterlegt den Spieler, der gerade am Zug ist
+	 */
 	private Player currentPlayer;
-	private boolean even = false;	//Unentschieden
+	/**
+	 * Eine Boolean-Variable die gesetzt wird, sobald das Match unentschieden ausgegangen ist
+	 */
+	private boolean even = false;
+	/**
+	 * Eine Boolean-Variable die gesetzt wird, sobald ein Match aktiv ist
+	 * Wird benoetigt, um nach einem Match, das naechste Match zu starten
+	 * Hintergrund 3 Matches = 1 Game
+	 */
 	private boolean matchActive=false;
+	/**
+	 * Eine Boolean-Variable die gesetzt wird, sobald ein Turn aktiv ist
+	 * Wird benoetigt, um nach letztem Zug den naechsten Zug zu starten
+	 */
 	private boolean turnActive = false;
+	/**
+	 * Das Attribut game, welches im Konstruktor uebergeben wird
+	 */
 	private Game game;
 	
-	//Anzahl Spalten des Spielfeldes
+	/**Anzahl Spalten des Spielfeldes
+	 * 
+	 */
 	private static final int COLUMN = 6;
 	
-	//Anzahl Zeilen des Spielfeldes
+	/**Anzahl Zeilen des Spielfeldes
+	 * 
+	 */
 	private static final int ROW = 5;
 	
-	//Maximal 69 Zuege pro Match moeglich
+	
+	/**Maximal 69 Zuege pro Match moeglich
+	 * 
+	 */
 	private static final int TURNS = 68;
 	
-	//Das Spielfeld
+	/**
+	 * Das Spielfeld, in welchem die gespielten Steine positioniert werden (fuer KI)
+	 */
 	private PlaySlot[][] field = new PlaySlot[ROW + 1][COLUMN + 1]; //doing
 	
+	/**
+	 * Das Turn-Array, in welchem saemtliche Zuege abgelegt werden
+	 */
 	private Turn turn[] = new Turn[TURNS+1];
 	
 
@@ -42,11 +81,26 @@ public class Match {
 	/**************************************************************/
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
-	
-	public Match(Game game, int matchID) {
+	/**
+	 * Konstruktor zum Anlegen eines neuen Matches
+	 * @param game
+	 * @param matchNumber
+	 */
+	public Match(Game game, int matchNumber) {
 		this.game = game;
-		this.matchID = matchID;
-		this.turnNumber=0;	
+		this.matchNumber = matchNumber;
+		for (int x = 0; x <= COLUMN; x++ ) {
+			for (int y = 0; y <= ROW; y++) {
+				this.field[y][x] = new PlaySlot(null);
+			}
+		}
+	}
+	/**
+	 * Konstruktor fuer die KI
+	 * @param matchNumber
+	 */
+	public Match(int matchNumber) {
+		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
 				this.field[y][x] = new PlaySlot(null);
@@ -54,13 +108,10 @@ public class Match {
 		}
 	}
 	
-	public Match(int matchID) {
-		this.matchID = matchID;
-	}
-	
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
 	/**************************************************************/
+	//Bei getter- / und setter-Methoden wird auf die Kommentare verzichtet
 	
 	
 	boolean getMatchActive() {
@@ -83,27 +134,18 @@ public class Match {
 		 return this.even;
 	 }
 	 
-	  int getTurnNumber() {
-			return turnNumber;
-		}
-	 
-	  int getMatchID() {
-		 return this.matchID;
+	  int getMatchNumber() {
+		 return this.matchNumber;
 	 }
-
-	 void setTurnNumber(int turnNumber) {
-		this.turnNumber = turnNumber;
-		}
 
 	 Player getMatchWinner() {
 		return matchWinner;
 		}
 
-	void setMatchWinner(Player winner) {
+	public void setMatchWinner(Player winner) {
 		this.matchWinner = winner;
 		}
 
-	// Setter fuer field
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
 		}
@@ -116,7 +158,7 @@ public class Match {
 			this.turn = turns;
 		}
 		
-		 Player getCurrentPlayer() {
+		public Player getCurrentPlayer() {
 			return currentPlayer;
 		}
 
@@ -139,27 +181,36 @@ public class Match {
 			void setGame(Game game) {
 				this.game = game;
 			}
-	
+			
+			int getMatchTurnNumber() {
+				return matchTurnNumber;
+			}
+
+			void setMatchTurnNumber(int matchTurnNumber) {
+				this.matchTurnNumber = matchTurnNumber;
+			}
+			
+			
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-			
-		public void startTurn() {
-						Turn turn = this.setNewTurn();
-					
-					while (turn.getTurnID() <= TURNS) {
-						if (this.turnActive == false) {
-							turn = this.setNewTurn();
-						}
-						}
-				 
-			}	
+//			
+//		public void startTurn() {
+//			while (!this.turnActive){
+//				setNewTurn();
+//				while (this.turnActive) {
+//			
+//				}
+//				
+//			}
+//				 
+//			}	
 		/**
-		 * Liefert den aktuellen Zug zurueck
+		 * Liefert den aktuellen Zug zurueck (fuer Interfaces)
 		 * @return
 		 */
 		public Turn getCurrentTurn() {
-			return turn[getTurnNumber()];
+			return turn[this.getMatchTurnNumber()];
 		}
 		 
 		 /**
@@ -168,17 +219,26 @@ public class Match {
 		 */
 		  Turn setNewTurn() {
 				for (int i = 0; i <= TURNS; i++) {
-					if (turn[i] == null) {
-						turn[i] = new Turn(i, this.currentPlayer, this);
-						setTurnNumber(i);
+					if (turn[i] == null) { //Sucht nach der naechsten freien Position im turn-Array
+						turn[i] = new Turn (i, this.currentPlayer, this); //legt neuen Turn an
+						System.out.println("Es wurde ein turn an stelle " + i +" gefunden"); //Kontrollausgabe
 						this.setTurnActive(true);
-						return turn[i];
+						if (this.turnActive) {	//Kontrollausgabe
+							System.out.println("IS TRUE");
+						}
+						this.setMatchTurnNumber(i);	//setzt die aktuelle MatchTurnNumber (fuer getCurrentTurn())
+						return this.turn[i];
 					}
 		}
 				return null;
 }
 		
-	
+		/**
+		 * Uebergibt den Player, welcher im PlayerSlot liegt (Spielfeld)
+		 * @param x
+		 * @param y
+		 * @return
+		 */
 		Player getFieldPlayer(int x, int y) {
 				return this.field[y][x].getOwnedBy();
 				}
@@ -190,12 +250,13 @@ public class Match {
 	 * @return
 	 */
 	 Match getDemoMatch() {
-		Match match2 = new Match(this.matchID);
-		for (int i = 0; i <= COLUMN; i++) {
-			for (int j = 0; j <= ROW; j++) {
-				match2.setField(i, j, this.getFieldPlayer(i, j));
-			}
-		}
+		Match match2 = this;
+//		match2.setCurrentPlayer(this.getCurrentPlayer());
+//		for (int x = 0; x <= COLUMN; x++) {
+//			for (int y = 0; y <= ROW; y++) {
+//				match2.setField(x, y, this.getFieldPlayer(x, y));
+//			}
+//		}
 		return match2;
 	}
 	
@@ -235,6 +296,8 @@ public class Match {
 			int y = this.validPosition(x);
 			this.setField(x, y, this.currentPlayer);
 			}
+		 
+		 
 	/**
 	 * Liefert zurueck wer der Gewinner des Matches ist und prueft ob unentschieden gespielt wurde
 	 * @return
@@ -249,12 +312,13 @@ public class Match {
 		 return null;
 	 }
 	 
+	 
 	 /**
 	  * Ueberprueft ob ein Match-Winner existiert (Spiel gewonnen)
 	  */
 	 void checkWinner() {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
-			if (this.getTurnNumber() >= 4) {
+			if (this.getMatchTurnNumber() >= 7) {
 				
 				//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
 				if (this.evaluate() == (int)Double.POSITIVE_INFINITY) {
@@ -379,6 +443,12 @@ public class Match {
 				return agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
 				
 			}
+	 
+	 
+	 String getScore() {
+		 String score = this.getGame().getPlayer(0).getWins() + " : " + this.getGame().getPlayer(1).getWins();
+		 return score;
+	 }
 	 
 	 /**
 	  * Diese Klasse bewertet die Spielsteine des aktuellen Spielers in Reihe und liefert die Anzahl der Steine in Reihe zurueck
@@ -508,8 +578,7 @@ public class Match {
 			return count;
 		}
 
-		
-
+	
 		 
 //		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
 //		 int inRow(int x, int y) {

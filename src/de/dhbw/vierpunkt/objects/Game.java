@@ -12,6 +12,7 @@ public class Game implements NameListener {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
+	private int matchID;
 	private static final int PLAYER = 1;
 	private Player player[] = new Player[PLAYER+1];
 	private Player winner = null;
@@ -72,6 +73,16 @@ public class Game implements NameListener {
 		DBConnector getDb() {
 			return this.db;
 		}
+		
+		int getMatchID() {
+			return matchID;
+		}
+
+
+
+		void setMatchID(int matchID) {
+			this.matchID = matchID;
+		}
 	
 	
 	/**************************************************************/
@@ -87,30 +98,33 @@ public class Game implements NameListener {
 		
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
-		this.player[0].setIsOpponent(true);
+		this.player[1].setIsOpponent(true);
 		this.winner = null;
 		db.createGame(name1, name2);
 		startMatch();
 		
 		}
 
-	
+	/**
+	 * Diese Methode startet automastisiert bis zu maximal 3 Matches (3 Saetze)
+	 */
 	public void startMatch() {
-		 for (int i = 0; i <= MATCHES; i++) {
-			 if (this.match[i] == null) {
-				this.match[i] = new Match(this, i);
-				this.currentMatch = match[i];
-				this.currentMatch.setCurrentPlayer(this.player[0]);
-				db.createMatch(db.getGameID(), match[i].getMatchID()); // MatchID
+		 for (int i = 0; i <= MATCHES; i++) {	//durch das Match-Array
+			 if (this.match[i] == null) {	//wenn freie Position gefunden
+				this.match[i] = new Match(this, i);		//neues Match erstellen
+				this.currentMatch = match[i];			//als currentMatch() setzen
+			//	this.currentMatch.setCurrentPlayer(this.player[0]);	//den currentPlayer() setzen
+				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // Match in DB speichern
+				setMatchID(db.getMatchID());
 				this.currentMatch.setMatchActive(true);
-				this.currentMatch.startTurn();
+				this.currentMatch.setNewTurn();
 				break;
 			 }
 		 }
-			while (this.currentMatch.getMatchID() <= MATCHES) {
+			while (this.currentMatch.getMatchNumber() <= MATCHES || !this.currentMatch.getEven() || this.currentMatch.winnerIs() == null) {
 				if (this.currentMatch.getMatchActive() == false) {
 					startMatch();
-					this.currentMatch.startTurn();
+					this.currentMatch.setNewTurn();
 				}
 				}
 		 
@@ -147,12 +161,15 @@ public class Game implements NameListener {
 			}
 	}
 	
-	
+	/**
+	 * Der naechste Spieler ist dran. Methode wechselt den currentPlayer
+	 */
 	void setNextPlayer() {
 		for (int i = 0; i <= PLAYER; i++) {
 			if (this.currentMatch.getCurrentPlayer() != this.player[i]) {
-				Player currentPlayer = this.currentMatch.getCurrentPlayer();
-				this.player[i] = currentPlayer;
+				//Player currentPlayer = this.currentMatch.getCurrentPlayer();
+				//this.currentMatch.setCurrentPlayer(player[i]);
+				this.currentMatch.setCurrentPlayer(player[i]);
 			}
 		}
 	}

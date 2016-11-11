@@ -5,21 +5,18 @@
 package de.dhbw.vierpunkt.db;
 
 public class SetWinner implements Runnable {
+	int G_ID;
+	String WINNER;
 
-	private int G_ID;
-	private String Winner;
-	private String Points;
-
-	public SetWinner(int G_ID, String Winner, String Points){
+	public SetWinner(int G_ID, String POINTS) {
 		this.G_ID = G_ID;
-		this.Winner = Winner;
-		this.Points = Points;
+		this.WINNER = WINNER;
 	}
-	
+
 	@Override
 	public void run() {
 		ConnectHSQL dbConnection = new ConnectHSQL();
-		dbConnection.executeSQL("UPDATE GAME SET WINNER='"+ Winner +"', POINTS='"+ Points +"' WHERE G_ID="+G_ID+";");
+		dbConnection.updateWinner(G_ID, WINNER);
 	}
 
 }

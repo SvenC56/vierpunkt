@@ -1,7 +1,14 @@
 package de.dhbw.vierpunkt.interfaces;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
+
+import javax.swing.Timer;
 
 import com.pusher.client.AuthorizationFailureException;
 import com.pusher.client.Authorizer;
@@ -14,26 +21,26 @@ import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
-import de.dhbw.vierpunkt.logic.GameLogic;
 import de.dhbw.vierpunkt.objects.Game;
 
 
-public class PusherInterface implements Runnable
+
+public class PusherInterface implements Runnable, Observer
 {
 	/**
 	 * App-ID der Pusher Instanz des Clients
 	 */
-	private static String MyAppID = "255967";
+	private static String MyAppID = "";
 	
 	/**
 	 * App-Key der Pusher-Instanz des Clients
 	 */
-	private static String MyAppKey = "61783ef3dd40e1b399b2";
+	private static String MyAppKey = "";
 	
 	/**
 	 * App-Secret der Pusher-Instanz des Clients
 	 */
-	private static String MyAppSecret = "66b722950915220b298c";
+	private static String MyAppSecret = "";
 	
 	/**
 	 * Channel-Name des Kommunikationskanals
@@ -41,10 +48,29 @@ public class PusherInterface implements Runnable
 	private static String ChannelName = "private-channel";
 	
 	/**
-	 * Ein Array mit Listenern die auf das ZugEvent hoeren
+	 * Arrays mit Listenern die auf ZugEvents, ConnectionErrors und GewinnerEvents hoeren
 	 */
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
 	private static List<ConnectionErrorListener> errorListeners = new ArrayList<ConnectionErrorListener>();
+	private static List<GewinnerListener> gewinnerListeners = new ArrayList<GewinnerListener>();
+	
+	/**
+	 * Der zum Status des Servers zu beobachtende Wert
+	 * @see ServerStatus
+	 */
+	private static ServerStatus serverstatus = new ServerStatus("unchanged");
+	
+	/**
+	 * Timer, der die Beobachtung des Serverstatus unterstuetzt
+	 */
+	private static Timer timer;
+	
+	/**
+	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
+	 */
+	private static int timervalue = 30;
+	
+	private static int incrementalVal = 0;
 	
 	
 	/**
@@ -55,6 +81,9 @@ public class PusherInterface implements Runnable
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
 	private static Game game;
+	
+	// bei der ersten Nachricht vom Server wird der Timer gestartet
+	private static boolean firstMessage = true;
 	
 	// Konstruktoren
 	public PusherInterface(){
@@ -78,6 +107,17 @@ public class PusherInterface implements Runnable
 	
 	public void run(){
 		
+		serverstatus.addObserver(this);
+		timer = new Timer(1000, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				timervalue--;
+				if (timervalue == 0){
+					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
+					}
+				}
+			});
+		
+				
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -117,10 +157,12 @@ public class PusherInterface implements Runnable
 
 		    @Override
 		    public void onError(String message, String code, Exception e) {
+		        fireErrorEvent();
 		        System.out.println("Es gab ein Problem beim Verbindungsaufbau.");
 		        System.out.println(message);
 		        System.out.println("Code:" + code);
 		        System.out.println("Exception: " + e);
+		        
 		        
 		    }
 		}, ConnectionState.ALL);
@@ -161,14 +203,22 @@ public class PusherInterface implements Runnable
 		        	
 		        // Spielstein wird in der GUI eingeworfen
 		        fireZugEvent(zug, gegnerKennung);
+		        
+		        // Aktion des Servers wird registriert
+		        incrementalVal++;
+		        if (firstMessage == true){
+		        	timer.start();
+		        	firstMessage = false;
+		        }
+		        serverstatus.setValueToWatch("changed" + incrementalVal);
 
 		        }
 		        
 		        if (data.contains("true")){
 		        	// der Move wird von der Logik berechnet
-		        	// int move = (int) (Math.random()*7);
+		        	 //int move = (int) (Math.random()*7);
 		        	// int move = game.playTurn(-1, 2);
-		        	 int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	// der Spielstein wird in der GUI eingeworfen
@@ -179,7 +229,10 @@ public class PusherInterface implements Runnable
 		        if (data.contains("false") && data.contains("Spieler X")){
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
-		        	fireZugEvent('x');
+		        	if (spielerKennung == 'x'){
+		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
+		        	}
+		        	fireGewinnerEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
 		        	
 		        	
@@ -187,7 +240,7 @@ public class PusherInterface implements Runnable
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
-		        	fireZugEvent('o');
+		        	fireGewinnerEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        }
 		       			        
@@ -272,5 +325,22 @@ public class PusherInterface implements Runnable
 		}
 	}
 	
+	public void addGewinnerListener(GewinnerListener toAdd){
+		gewinnerListeners.add(toAdd);
+	}
+	
+	public static void fireGewinnerEvent(char sieger){
+		for (GewinnerListener gwl : gewinnerListeners){
+			gwl.siegerAnzeigen(sieger);
+		}
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg)
+	{
+		timervalue = 30;
+		System.out.println(arg);
+	}
 
 }
