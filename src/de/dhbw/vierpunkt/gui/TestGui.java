@@ -279,7 +279,39 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		boxlinks.setPrefWidth(breite / 4);
 		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
 		
+		// Ueberschrift Spieler
+		Label spielerfarben = new Label("Spieler");
+		
+		// Name mit Spielstein Spieler 1
+		ImageView i1 = new ImageView(getImage1());
+		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
+		Label s1 = new Label(getNames1());
+		
+		// Name mit Spielstein Spieler 2
+		ImageView i2 = new ImageView(getImage2());
+		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
+		Label s2 = new Label(getNames2());
+		
+		// Platzhalter
+		Rectangle p = new Rectangle(20,20);
+		p.setOpacity(0);
+		Rectangle p1 = new Rectangle(20,20);
+		p1.setOpacity(0);
+		
+		// zur Box Hinzufuegen
+		HBox box3 = new HBox();
+		box3.getChildren().addAll(s1, i1, s2, i2);
+		
 		Button einstellungen = new Button("Einstellungen");
+		
+		ImageView bild = new ImageView();
+		bild.setId("bild");
+		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
+		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
+		
+		Rectangle platzhalter2 = new Rectangle(l, 2*l);
+		platzhalter2.setOpacity(0);
+				
 		
 		/******* INHALTE DER MITTLEREN CONTAINERBOX *********************/
 		// Erzeugen der mittleren Containerbox
@@ -343,7 +375,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 		
 		
-		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
+		/******* INHALTE DER LOGIN STAGE ************************/
 		
 		
 		// login Felder
@@ -362,33 +394,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		}
 		
 	
-		// Ueberschrift Spieler
-		Label spielerfarben = new Label("Spieler");
-		// Name mit Spielstein Spieler 1
-		ImageView i1 = new ImageView(getImage1());
-		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
-		Label s1 = new Label(getNames1());
-		// Name mit Spielstein Spieler 2
-		ImageView i2 = new ImageView(getImage2());
-		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
-		Label s2 = new Label(getNames2());
-		// Platzhalter
-		Rectangle p = new Rectangle(20,20);
-		p.setOpacity(0);
-		Rectangle p1 = new Rectangle(20,20);
-		p1.setOpacity(0);
-		// zur Box Hinzufuegen
-		HBox box3 = new HBox();
-		box3.getChildren().addAll(s1, i1, s2, i2);
-		
-		ImageView bild = new ImageView();
-		bild.setId("bild");
-		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
-		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
-		
-		
-		Rectangle platzhalter2 = new Rectangle(l, 2*l);
-		platzhalter2.setOpacity(0);
 		
 		/*************************************************************************************************************
 		 *************************************************************************************************************
