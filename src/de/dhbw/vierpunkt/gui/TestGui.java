@@ -90,6 +90,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     public GridPane spielfeld2 = new GridPane();
 	// Variable fuer die Farbe des Spielfelds
     public Color color = Color.rgb(0, 0, 0);
+    
+    // Deklarieren der Variablen fuer die Methode bisherigeSpiele()
+    static Spiele selectedGame;
+	static String personX;
+	private final TableView<Spiele> table = new TableView<>();
+	private ConnectHSQL db = new ConnectHSQL();
+	private String[][] alleGames = db.getLastTenGames();
+    private final ObservableList<Spiele> items = FXCollections.observableArrayList();
 	
 	//Erzeugen der Spielsteine
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
@@ -591,6 +599,40 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
+		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+            public void handle(MouseEvent arg0) {
+				if(spielmodus.getValue()==2){
+					spieler = getXodero();
+					if(spieler == 'x'){
+						gegner = 'o';
+					}else{gegner = 'x';}
+	            	createGrids_automatisch(spielfeld);
+				}else{
+					spieler = getXodero();
+					if(spieler == 'x'){
+						gegner = 'o';
+					}else{gegner = 'x';}
+					createGrids();}
+				
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+				Thread t1 = new Thread(){
+					@Override
+					public void run(){
+						fireNames(playerInput.getText(), opponentInput.getText());
+					}
+				};
+				t1.start();
+				
+				//Diese Methode muss in das Event Match beendet verschoben werden!
+				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+					plaetzeFreiInReihe[i]=5;
+				}
+				
+            }
+		});
+	
+		
 		/*************************************************************************************************************
 		 *************************************************************************************************************
 		 ******************************************* EVENTHANDLER FUER DAS MENU **************************************
@@ -859,53 +901,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             }
 		});
 	    
-	
-		 
 		// primary Stage
 		primaryStage.setScene(scene);
+		primaryStage.setFullScreen(fullscreen);
 		scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
-		
 		createSpielfeld(spielfeld2);
 		
-		
-		
-		
-	    
-	    
-		
-		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-            public void handle(MouseEvent arg0) {
-				if(spielmodus.getValue()==2){
-					spieler = getXodero();
-					if(spieler == 'x'){
-						gegner = 'o';
-					}else{gegner = 'x';}
-	            	createGrids_automatisch(spielfeld);
-				}else{
-					spieler = getXodero();
-					if(spieler == 'x'){
-						gegner = 'o';
-					}else{gegner = 'x';}
-					createGrids();}
-				
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
-				Thread t1 = new Thread(){
-					@Override
-					public void run(){
-						fireNames(playerInput.getText(), opponentInput.getText());
-					}
-				};
-				t1.start();
-				
-				//Diese Methode muss in das Event Match beendet verschoben werden!
-				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-					plaetzeFreiInReihe[i]=5;
-				}
-				
-            }
-		});
-	
 		// manuell
 		if(spielmodus.getValue() == 1 ){
 			createGrids();
@@ -928,8 +929,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	
 	public void createSpielfeld(GridPane spielfeldGrid){
 		spielfeldGrid.setId("spielfeld");
-		
-		
 		// Erzeugen der Spalten (7)
 		spielfeldGrid.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
 				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
@@ -951,7 +950,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	}
 	
 	public void changeSpielmodus(Number newValue, Button einstellungen, Button start, Slider spielmodus){
-		// bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt
+		/** bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt*/
     	if(newValue.intValue() == 2){		
     		einstellungen.setOpacity(1);
     		einstellungen.setDisable(false);
@@ -959,7 +958,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     		start.setDisable(false);
     		createGrids_automatisch(spielfeld);		// Das Spielfeld wird erzeugt (Grid nicht clickbar)
     	}
-    	// bei manuellem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder ausgeblendet
+    	/** bei manuellem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder ausgeblendet*/
     	if(newValue.intValue() == 1){
     		einstellungen.setOpacity(0);
     		einstellungen.setDisable(true);
@@ -967,7 +966,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     		start.setDisable(true);
     		createGrids();							// Das Spielfeld wird erzeugt (Grid clickbar)
     	}
-    	// bei manuellem Spiel gegen die KI wird eine Meldung ausgegeben
+    	/** bei manuellem Spiel gegen die KI wird eine Meldung ausgegeben*/
     	if(newValue.intValue()==0){
     		
     		final Stage notImpl = new Stage();
@@ -1007,49 +1006,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	        vb.getChildren().addAll(msg, hb);
 	        
 	        Scene themaScene = new Scene(vb, 500, 200);
-	        
-	        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-	        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-	        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-	        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-	     
+	        setCSS(themaScene);
+	   
 	        notImpl.setScene(themaScene);
-	        notImpl.show();
-	        
+	        notImpl.show();  
     	}
 	}
 	
-	
-	
-	
-	
-	
-	 static Spiele selectedGame;
-	 static String personX;
-	 private final TableView<Spiele> table = new TableView<>();
-	 static boolean clicked = false;
-	 
-	 ConnectHSQL db = new ConnectHSQL();
-		String[][] alleGames = db.getLastTenGames();
-     
-     private final ObservableList<Spiele> items = FXCollections.observableArrayList(/*
-     		new Spiele(alleGames[0][0], alleGames[0][1], alleGames[0][2], alleGames[0][3]),
-             new Spiele(alleGames[1][0], alleGames[1][1], alleGames[1][2], alleGames[1][3]),
-             new Spiele(alleGames[2][0], alleGames[2][1], alleGames[2][2], alleGames[2][3]),
-             new Spiele(alleGames[3][0], alleGames[3][1], alleGames[3][2], alleGames[3][3]),
-             new Spiele(alleGames[4][0], alleGames[4][1], alleGames[4][2], alleGames[4][3]),
-             new Spiele(alleGames[5][0], alleGames[5][1], alleGames[5][2], alleGames[5][3]),
-             new Spiele(alleGames[6][0], alleGames[6][1], alleGames[6][2], alleGames[6][3]),
-             new Spiele(alleGames[7][0], alleGames[7][1], alleGames[7][2], alleGames[7][3]),
-             new Spiele(alleGames[8][0], alleGames[8][1], alleGames[8][2], alleGames[8][3]),
-             new Spiele(alleGames[9][0], alleGames[9][1], alleGames[9][2], alleGames[9][3])*/);
-     
 	public void bisherigeSpiele(){
-		
-		
-		
-		//String[][] alleSaetze = db.getHighscoreMatch(G_ID);
-		
 		
 		// neue Stage
 		final Stage spieleStage = new Stage();
@@ -1712,11 +1676,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	@Override
 	public void zugGespielt(char sieger) {
 		
-	// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
-	gewinnermethode(sieger);
-	for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-						plaetzeFreiInReihe[i]=5;
-					}
+		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
+		gewinnermethode(sieger);
+		for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+			plaetzeFreiInReihe[i]=5;
+		}
 	}
 	
 	@Override
@@ -1728,9 +1692,5 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             	satzgewinner(sieger);
             }
         });
-		
 	}
 }
-
-               
-            
