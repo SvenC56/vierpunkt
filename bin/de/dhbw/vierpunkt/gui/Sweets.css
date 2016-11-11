@@ -8,7 +8,7 @@
 	-fx-background-size: contain;
 }
 
-#ueberschrift{
+#headerImg{
 	-fx-image: url("ueberschrift.jpg");
 }
 
@@ -46,11 +46,6 @@
     -fx-valignment: center; 
 }
 
-#ueberschrift {
-   -fx-alignment: TOP_CENTER;
-   -fx-halignment: center;
-   -fx-textalign: center;
-}
 
 #spielfeld{
    -fx-background-color: #E6E8E9;
