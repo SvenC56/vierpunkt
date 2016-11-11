@@ -1020,216 +1020,43 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		spieleStage.setTitle("Bisherige Spiele");
 		spieleStage.initModality(Modality.APPLICATION_MODAL);
 		spieleStage.initOwner(primaryStage);
-        VBox spieleVbox = new VBox(20);
-        spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
-        spieleVbox.setAlignment(Pos.CENTER);
-        
-        // Button zum Popup schliessen
+       
+        // Elemente der Stage
         Button back = new Button("Zurueck");
-        
+        Button play = new Button("Play"); 
         Label spieleLabel = new Label("Bisherige Spiele:");
-       
-       
-        
-
-        table.setEditable(true);
-        
-        TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
-        gameIDCol.setMinWidth(100);
-        gameIDCol.setCellValueFactory(
-                new PropertyValueFactory<Spiele, String>("gameID"));
-        
-        TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
-        player1Col.setMinWidth(100);
-        player1Col.setCellValueFactory(
-                new PropertyValueFactory<Spiele, String>("player1"));
-        
-        TableColumn<Spiele, String> player2Col = new TableColumn<>("Spieler 2");
-        player2Col.setMinWidth(100);
-        player2Col.setCellValueFactory(
-                new PropertyValueFactory<Spiele, String>("player2"));
-        
-        TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
-        winnerCol.setMinWidth(100);
-        winnerCol.setCellValueFactory(
-                new PropertyValueFactory<Spiele, String>("winner"));
-        
-        /*TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
-        gameIDCol.setCellValueFactory(new PropertyValueFactory<>("gameID"));
-        gameIDCol.setMinWidth(100);
-        gameIDCol.setId("spalte0");
-        TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
-        player1Col.setCellValueFactory(new PropertyValueFactory<>("spieler1"));
-        player1Col.setMinWidth(250);
-        TableColumn<Spiele, String> player2Col = new TableColumn<>("Spieler 2");
-        player2Col.setCellValueFactory(new PropertyValueFactory<>("spieler2"));
-        player2Col.setMinWidth(250);
-        TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
-        winnerCol.setCellValueFactory(new PropertyValueFactory<>("winner"));
-        winnerCol.setMinWidth(250);*/
-       
-       
-        
-       
-        
-        for (int i = 0; i < 10; i++) {
-         
-          	try{
-                items.add(new Spiele(alleGames[i][0], alleGames[i][1], alleGames[i][2], alleGames[i][3]));
-                }
-                catch(Exception ex){
-                    System.out.println("Empty fields or illegal arguments passed.");
-                }
-   
-        	/*String game = alleGames[i][0];
-        	String player1 = alleGames[i][1];
-        	String player2 = alleGames[i][2];
-        	String winner = alleGames[i][3];
-        	items.addAll(new Spiele(game, player1, player2, winner));*/
-        	System.out.println(items);
-        	//System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]);
-		}
-        System.out.println(items);
- table.setItems(items);
-        
-        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);
-        
-        Slider satz = new Slider(0, 2, 1); 	
-       
-       
-        
-        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-	          System.out.println(newSelection);  
-			  if (newSelection != null) {
-	                selectedGame = table.getSelectionModel().getSelectedItem();
-	                System.out.println(selectedGame);
-	                }});
-        
-		Button play = new Button("Play"); 
-		
-		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
-	     	   @Override
-	            public void handle(MouseEvent arg0) {
-	     		   
-	     			/*String[][] alleZuege = new String[4][2];
-	   	     		alleZuege[0][0]="0";
-	   	     		alleZuege[0][1]="0";
-	   	     		alleZuege[1][0]="0";
-	   	     		alleZuege[1][1]="1";
-	   	     		alleZuege[2][0]="1";
-	   	     		alleZuege[2][1]="1";
-	   	     		alleZuege[3][0]="1";
-	   	     		alleZuege[3][1]="0";*/
-	     		  int g_id = Integer.parseInt(selectedGame.getGameID());
-	                
-	                String[][] alleSaetze = db.getHighscoreMatch(g_id);
-	              
-	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);
-	                
-	                System.out.println(g_id + " " + m_id);
-	                	
-	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
-	                personX = alleZuege[0][2];
-	               System.out.println(personX);
-	               
-	   	     		Thread playThread = new Thread(){
-	   	     			
-	   	     			//int spieler = 1;
-	   	     			
-	   	     			@Override
-	   	     			public void run(){
-	   	     				
-	   	     				
-	   	     			for (int i = 0; i < alleZuege[0].length; i++) {
-     	                	
-     	                	System.out.println(personX);
-     	                	if(personX.equals(alleZuege[i][2])){
-     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-     	                	} else{
-     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-     	                	}
-     	                	
-							try {
-								Thread.sleep(2000);
-							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}	
-	   	     				
-	   	     				
-	   	     				
-	   	     				
-	   	     				
-	   	     				
-	   	     				/*for (int i = 0; i < 4; i++) {
-	   	                	if(spieler == 1){
-	   	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'x');
-	   	                		spieler = 0;
-	   	                	} else{
-	   	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'o');
-	   	                		spieler =1;
-	   	                	 }
-	   	                	try {
-	   							Thread.sleep(2000);
-	   						} catch (InterruptedException e) {
-	   							// TODO Auto-generated catch block
-	   							e.printStackTrace();
-	   						}}*/
-	   	     		
-	   	     			}
-	   	     		};
-	   	     		playThread.start();
-	   	     		
-	     		   			
-	     	                
-	     	                
-	     		   
-	     		
-	                	
-					/*try {
-						Thread.sleep(2000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}*/
-	     		   
-	     		   
-	     		   
-	     	            }
-	     	        });
-	     		   
-        // Button Action Event
-        back.setOnMouseClicked(new EventHandler<MouseEvent>(){
-     	   @Override
-            public void handle(MouseEvent arg0) {
-     		   spieleStage.close();
-        }});
-        
-        HBox hb = new HBox();
         Label spielstandanzeige = new Label("Spielstand: ");
-		Text spielstand_altesSpiel = new Text("3:1");
-		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
-		Label spieler = new Label("Spieler: ");
+        Label spielerLabel = new Label("Spieler: ");
 		Label spieler1 = new Label("names1");
 		Label spieler2 = new Label("names2");
+		Text spielstand_altesSpiel = new Text("3:1");
 		Rectangle platzhalter1 = new Rectangle(7 * l, l);
-		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
-		
 		Rectangle platzhalter2 = new Rectangle(l, l);
-		platzhalter2.setOpacity(0); // Platzhalter nicht sichtbar
-		
 		Rectangle platzhalter3 = new Rectangle(l, l);
-		platzhalter3.setOpacity(0); // Platzhalter nicht sichtbar
 		Rectangle platzhalter4 = new Rectangle(l, l);
-		platzhalter4.setOpacity(0); // Platzhalter nicht sichtbar
 		Rectangle platzhalter5 = new Rectangle(l, l);
-		platzhalter5.setOpacity(0); // Platzhalter nicht sichtbar
 		Rectangle platzhalter7 = new Rectangle(l, l*2);
+        Slider satz = new Slider(0, 2, 1); 	
+       
+        HBox hb = new HBox();
+        VBox grid = new VBox();
+		VBox anzeige = new VBox();
+		VBox spieleranzeige = new VBox();
+		VBox spieleVbox = new VBox(20);
+		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
+        grid.getChildren().addAll(platzhalter1, spielfeld2);
+		anzeige.getChildren().addAll(satz, platzhalter7, play, platzhalter4);
+		spieleranzeige.getChildren().addAll(spielerLabel, spieler1, spieler2, platzhalter2, spielstandanzeige, spielstand_altesSpiel, platzhalter3, back, platzhalter5);
+		spieleVbox.getChildren().addAll(spieleLabel, table, hb);
+        
+        // weitere Details zu den Elementen
+        spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
+		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		platzhalter2.setOpacity(0); // Platzhalter nicht sichtbar
+		platzhalter3.setOpacity(0); // Platzhalter nicht sichtbar
+		platzhalter4.setOpacity(0); // Platzhalter nicht sichtbar
+		platzhalter5.setOpacity(0); // Platzhalter nicht sichtbar
 		platzhalter7.setOpacity(0); // Platzhalter nicht sichtbar
-		
-		
 		// Slider geht von 0 bis 2 in 1er Abstaenden
 		satz.setMinorTickCount(0);
 		satz.setMajorTickUnit(1); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
@@ -1238,7 +1065,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		satz.setShowTickLabels(true);
 		satz.setOrientation(Orientation.VERTICAL); 	// Vertikale Anordnung,standardmaessig horizontal
 		satz.setValue(0);	
-		
 		satz.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
@@ -1257,30 +1083,93 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				}
 			}
 		});
-		
-		VBox grid = new VBox();
-		grid.getChildren().addAll(platzhalter1, spielfeld2);
-		
-		VBox anzeige = new VBox();
+		// VBox und HBox Details
 		anzeige.setAlignment(Pos.BOTTOM_CENTER);
 		anzeige.setPrefWidth((breite-(7*l))/2);
-		anzeige.getChildren().addAll(satz, platzhalter7, play, platzhalter4);
-		
-		VBox spieleranzeige = new VBox();
 		spieleranzeige.setAlignment(Pos.BOTTOM_CENTER);
 		spieleranzeige.setPrefWidth((breite-(7*l))/2);
-		spieleranzeige.getChildren().addAll(spieler, spieler1, spieler2, platzhalter2, spielstandanzeige, spielstand_altesSpiel, platzhalter3, back, platzhalter5);
-        
-		hb.getChildren().addAll(spieleranzeige, grid, anzeige);
         hb.setAlignment(Pos.BOTTOM_CENTER);
-        // Einfuegen in die VBox
-        spieleVbox.getChildren().addAll(spieleLabel, table, hb);
+        spieleVbox.setAlignment(Pos.CENTER);
+        spieleVbox.setPadding(new Insets(10, 10, 10, 10));   
+        
+        
+        table.setEditable(true);
+        
+        // Initialisierung der Spalten der Tabelle
+        TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
+        gameIDCol.setMinWidth(100);
+        gameIDCol.setCellValueFactory(new PropertyValueFactory<Spiele, String>("gameID"));
+        
+        TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
+        player1Col.setMinWidth(100);
+        player1Col.setCellValueFactory(new PropertyValueFactory<Spiele, String>("player1"));
+        
+        TableColumn<Spiele, String> player2Col = new TableColumn<>("Spieler 2");
+        player2Col.setMinWidth(100);
+        player2Col.setCellValueFactory(new PropertyValueFactory<Spiele, String>("player2"));
+        
+        TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
+        winnerCol.setMinWidth(100);
+        winnerCol.setCellValueFactory(new PropertyValueFactory<Spiele, String>("winner"));
+        
+        for (int i = 0; i < alleGames[0].length; i++) {
+          	try{items.add(new Spiele(alleGames[i][0], alleGames[i][1], alleGames[i][2], alleGames[i][3])); }
+            catch(Exception ex){System.out.println("Empty fields or illegal arguments passed.");}
+		}
+        
+        table.setItems(items);
+        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);
+        table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+	          System.out.println(newSelection);  
+			  if (newSelection != null) {
+	                selectedGame = table.getSelectionModel().getSelectedItem();
+	          }
+        });
+        
+		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	     	   @Override
+	            public void handle(MouseEvent arg0) {
+	     		   
+	     		   	int g_id = Integer.parseInt(selectedGame.getGameID());
+	                String[][] alleSaetze = db.getHighscoreMatch(g_id);
+	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);
+	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
+	                
+	                personX = alleZuege[0][2];
+	               
+	   	     		Thread playThread = new Thread(){
+	   	     			@Override
+	   	     			public void run(){
+		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){
+	     	                		if(personX.equals(alleZuege[i][2])){
+	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	         	                	} else{
+	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	         	                	}
+	    							try {Thread.sleep(2000);} 
+	    							catch (InterruptedException e) {e.printStackTrace();}
+	     	                	}
+		   	     			}	
+	   	     			}
+	   	     		};
+	   	     		playThread.start();
+	   	     	}
+	     });
+	     		   
+        // Button Action Event
+        back.setOnMouseClicked(new EventHandler<MouseEvent>(){
+     	   @Override
+            public void handle(MouseEvent arg0) {
+     		   spieleStage.close();
+        }});
+       
         Scene spieleScene = new Scene(spieleVbox, 1200, 900);
         setCSS(spieleScene);
        
         createGrids_automatisch(spielfeld2);
         spieleStage.setScene(spieleScene);
-        //spieleStage.setFullScreen(true);
+        spieleStage.setFullScreen(fullscreen);
         spieleStage.show();	
 		}
 		
@@ -1289,35 +1178,34 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     	close.setTitle("Schliessen");
     	close.initModality(Modality.APPLICATION_MODAL);
     	close.initOwner(primaryStage);
-        VBox vbox = new VBox(20);
-        vbox.setPadding(new Insets(10, 10, 10, 10));                
         
-        Label nachricht = new Label();
-        nachricht.setText("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
-        nachricht.setWrapText(true);
-        Button beenden = new Button("Beenden");
+    	VBox vbox = new VBox(20);
+    	HBox hbox = new HBox();
+    	Label nachricht = new Label();
+    	Button beenden = new Button("Beenden");
         Button abbrechen = new Button("Abbrechen");
-        HBox hbox = new HBox();
+    	
+        vbox.setPadding(new Insets(10, 10, 10, 10));                
         hbox.getChildren().addAll(beenden, abbrechen);
         hbox.setAlignment(Pos.BASELINE_CENTER);
         hbox.setSpacing(20);
-        
-       abbrechen.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        nachricht.setText("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
+        nachricht.setWrapText(true);
+       
+        abbrechen.setOnMouseClicked(new EventHandler<MouseEvent>(){
         	@Override
         	public void handle(MouseEvent arg0){
-        		
         		close.close();
         	}
         });
-       beenden.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        beenden.setOnMouseClicked(new EventHandler<MouseEvent>(){
         	@Override
         	public void handle(MouseEvent arg0){
-        		
         		close.close();
         		Platform.exit();
         	}
         });
-        // Einfuegen in die VBox
+       
         vbox.getChildren().addAll(nachricht, hbox);
         Scene themaScene = new Scene(vbox, 500, 200);
         setCSS(themaScene);
