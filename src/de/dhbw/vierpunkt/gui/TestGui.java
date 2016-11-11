@@ -1262,7 +1262,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	     	                	
 	     	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
 	     	                personX = alleZuege[0][2];
-	     	                for (int i = 0; i < alleZuege[0].length; i++) {
+	     	                
+	     	                for (int i = 0; i < alleZuege.length; i++) {
 	     	                	
 	     	                	System.out.println(personX);
 	     	                	if(personX.equals(alleZuege[i][2])){
