@@ -224,25 +224,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		satzstatus.setId("text");
 		satzstatusanzeige.setPadding(new Insets(20, 0, 0, 0));
 		
-		spielstand.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-            	spielstand.setText(t1);
-            	System.out.println("Spielstand hat sich geaendert");
-            }
-        }); 
-		
-		satzstatus.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-            	satzstatus.setText(t1);
-            	System.out.println("Satzstatzs hat sich geaendert");
-            }
-        }); 
-
+		// Ueberschrift fuer den Slider
 		Label spielmodi = new Label("Spielmodus:");
 		spielmodi.setPadding(new Insets(20, 0, 0, 0));
-
+		
 		// Slider, um einfach den Spielmodus einstellen zu koennen
 		Slider spielmodus = new Slider(0, 2, 1); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		spielmodus.setMinorTickCount(0);
@@ -259,7 +244,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		spielmodus.setLabelFormatter(new StringConverter<Double>() {
 			@Override
 			public String toString(Double n) {
-				if (n == 0)return "gegen den Comupter";
+				if (n == 0)return "gegen den Computer";
 				if (n > 0 && n < 2)return "manuell";
 				if (n == 2)return "automatisch";
 				return "automatisch";
@@ -274,71 +259,33 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				}
 			}
 		});
+			
+		/******* INHALTE DER LINKEN CONTAINERBOX *********************/
 		Button einstellungen = new Button("Einstellungen");
 		Button start = new Button("Spiel starten");
+				
+		/*********************** LISTENER *****************************/
+		spielstand.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+            	spielstand.setText(t1);
+            	System.out.println("Spielstand hat sich geaendert");
+            }
+        }); 
+		
+		satzstatus.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+            	satzstatus.setText(t1);
+            	System.out.println("Satzstatus hat sich geaendert");
+            }
+        }); 
+		
 		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
 		            Number oldValue, Number newValue) {
-		    	if(newValue.intValue() == 2){
-		    		einstellungen.setOpacity(1);
-		    		einstellungen.setDisable(false);
-		    		start.setOpacity(1);
-		    		start.setDisable(false);
-		    		createGrids_automatisch(spielfeld);
-		    	}
-		    	if(newValue.intValue() == 1){
-		    		einstellungen.setOpacity(0);
-		    		einstellungen.setDisable(true);
-		    		start.setOpacity(0);
-		    		start.setDisable(true);
-		    		createGrids();
-		    	}
-		    	if(newValue.intValue()==0){
-		    		final Stage notImpl = new Stage();
-		    		notImpl.setTitle("Noch nicht Implementiert");
-		    		notImpl.initModality(Modality.APPLICATION_MODAL);
-		    		notImpl.initOwner(primaryStage);
-			        VBox themaVbox = new VBox(20);
-			        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
-			        
-			        Label nachricht = new Label();
-			        nachricht.setText("Diese Funktion wurde noch nicht implementiert. Bitte waehle einen anderen Spielmodus.");
-			        nachricht.setWrapText(true);
-			        Button manuell = new Button("Manuell");
-			        Button auto = new Button("Automatisch");
-			        HBox hbox = new HBox();
-			        hbox.getChildren().addAll(manuell, auto);
-			        hbox.setAlignment(Pos.BASELINE_CENTER);
-			        hbox.setSpacing(20);
-			        
-			       auto.setOnMouseClicked(new EventHandler<MouseEvent>(){
-			        	@Override
-			        	public void handle(MouseEvent arg0){
-			        		spielmodus.setValue(2);
-			        		notImpl.close();
-			        	}
-			        });
-			       manuell.setOnMouseClicked(new EventHandler<MouseEvent>(){
-			        	@Override
-			        	public void handle(MouseEvent arg0){
-			        		spielmodus.setValue(1);
-			        		notImpl.close();
-			        	}
-			        });
-			        // Einfuegen in die VBox
-			        themaVbox.getChildren().addAll(nachricht, hbox);
-			        Scene themaScene = new Scene(themaVbox, 500, 200);
-			        
-			       /* if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-			        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-			        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-			        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-			      */
-			        notImpl.setScene(themaScene);
-			        notImpl.show();
-			        
-		    	}
+		    	changeSpielmodus(newValue, einstellungen, start, spielmodus);
 
 		    }
 		});
@@ -1082,6 +1029,80 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	 *********************************************************************************************************************
      *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
      ********************************************************************************************************************/
+	public void changeSpielmodus(Number newValue, Button einstellungen, Button start, Slider spielmodus){
+		// bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt
+    	if(newValue.intValue() == 2){		
+    		einstellungen.setOpacity(1);
+    		einstellungen.setDisable(false);
+    		start.setOpacity(1);
+    		start.setDisable(false);
+    		createGrids_automatisch(spielfeld);		// Das Spielfeld wird erzeugt (Grid nicht clickbar)
+    	}
+    	// bei manuellem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder ausgeblendet
+    	if(newValue.intValue() == 1){
+    		einstellungen.setOpacity(0);
+    		einstellungen.setDisable(true);
+    		start.setOpacity(0);
+    		start.setDisable(true);
+    		createGrids();							// Das Spielfeld wird erzeugt (Grid clickbar)
+    	}
+    	// bei manuellem Spiel gegen die KI wird eine Meldung ausgegeben
+    	if(newValue.intValue()==0){
+    		
+    		final Stage notImpl = new Stage();
+    		notImpl.setTitle("Noch nicht Implementiert");
+    		notImpl.initModality(Modality.APPLICATION_MODAL);
+    		notImpl.initOwner(primaryStage);
+	        
+	        Label msg = new Label();
+	        msg.setText("Diese Funktion wurde noch nicht implementiert. Bitte waehle einen anderen Spielmodus.");
+	        msg.setWrapText(true);
+	        
+	        Button manuell = new Button("Manuell");
+	        manuell.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	        	@Override
+	        	public void handle(MouseEvent arg0){
+	        		spielmodus.setValue(1);
+	        		notImpl.close();
+	        	}
+	        });
+	        
+	        Button auto = new Button("Automatisch");
+	        auto.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	        	@Override
+	        	public void handle(MouseEvent arg0){
+	        		spielmodus.setValue(2);
+	        		notImpl.close();
+	        	}
+	        });
+	      
+	        HBox hb = new HBox();
+	        hb.getChildren().addAll(manuell, auto);
+	        hb.setAlignment(Pos.BASELINE_CENTER);
+	        hb.setSpacing(20);
+	        
+	        VBox vb = new VBox(20);
+	        vb.setPadding(new Insets(10, 10, 10, 10)); 
+	        vb.getChildren().addAll(msg, hb);
+	        
+	        Scene themaScene = new Scene(vb, 500, 200);
+	        
+	        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+	        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+	        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+	        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+	     
+	        notImpl.setScene(themaScene);
+	        notImpl.show();
+	        
+    	}
+	}
+	
+	
+	
+	
+	
+	
 	 static Spiele selectedGame;
 	 static String personX;
 	 private final TableView<Spiele> table = new TableView<>();
