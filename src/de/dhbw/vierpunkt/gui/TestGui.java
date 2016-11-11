@@ -1136,6 +1136,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	 static Spiele selectedGame;
 	 static String personX;
 	 private final TableView<Spiele> table = new TableView<>();
+	 static boolean clicked = false;
 	 
 	 ConnectHSQL db = new ConnectHSQL();
 		String[][] alleGames = db.getLastTenGames();
@@ -1250,76 +1251,86 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	                }});
         
 		Button play = new Button("Play"); 
+		
 		play.setOnMouseClicked(new EventHandler<MouseEvent>(){
 	     	   @Override
 	            public void handle(MouseEvent arg0) {
-	     		   			/*int g_id = Integer.parseInt(selectedGame.getGameID());
-	     	                
-	     	                String[][] alleSaetze = db.getHighscoreMatch(g_id);
-	     	              
-	     	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);
-	     	                
-	     	                System.out.println(g_id + " " + m_id);
-	     	                	
-	     	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
-	     	                personX = alleZuege[0][2];
-	     	               System.out.println(personX);
-	     	                
-	     	                for (int i = 0; i < alleZuege[0].length; i++) {
-	     	                	
-	     	                	System.out.println(personX);
-	     	                	if(personX.equals(alleZuege[i][2])){
-	     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	                	} else{
-	     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	     	                	}
-	     	                	
-								/*try {
-									Thread.sleep(2000);
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}*/
 	     		   
-	     		String[][] alleZuege = new String[4][2];
-	     		alleZuege[0][0]="0";
-	     		alleZuege[0][1]="0";
-	     		alleZuege[1][0]="0";
-	     		alleZuege[1][1]="1";
-	     		alleZuege[2][0]="1";
-	     		alleZuege[2][1]="1";
-	     		alleZuege[3][0]="1";
-	     		alleZuege[3][1]="0";
-	     		
-	     		Thread playThread = new Thread(){
-	     			
-	     			int spieler = 1;
-	     			@Override
-	     			public void run(){
-	     				for (int i = 0; i < 4; i++) {
+	     			/*String[][] alleZuege = new String[4][2];
+	   	     		alleZuege[0][0]="0";
+	   	     		alleZuege[0][1]="0";
+	   	     		alleZuege[1][0]="0";
+	   	     		alleZuege[1][1]="1";
+	   	     		alleZuege[2][0]="1";
+	   	     		alleZuege[2][1]="1";
+	   	     		alleZuege[3][0]="1";
+	   	     		alleZuege[3][1]="0";*/
+	     		  int g_id = Integer.parseInt(selectedGame.getGameID());
+	                
+	                String[][] alleSaetze = db.getHighscoreMatch(g_id);
+	              
+	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);
+	                
+	                System.out.println(g_id + " " + m_id);
 	                	
-	                	if(spieler == 1){
-	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'x');
-	                		
-	                		spieler = 0;
-	                	}
-	                		
-	                	 else{
-	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'o');
-	                		
-	                		spieler =1;
-	                	 }
-	                	try {
-							Thread.sleep(2000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-	     		}
-	     			}
-	     		};
-	     		playThread.start();
+	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);
+	                personX = alleZuege[0][2];
+	               System.out.println(personX);
+	               
+	   	     		Thread playThread = new Thread(){
+	   	     			
+	   	     			//int spieler = 1;
+	   	     			
+	   	     			@Override
+	   	     			public void run(){
+	   	     				
+	   	     				
+	   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+     	                	
+     	                	System.out.println(personX);
+     	                	if(personX.equals(alleZuege[i][2])){
+     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+     	                	} else{
+     	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+     	                	}
+     	                	
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}	
+	   	     				
+	   	     				
+	   	     				
+	   	     				
+	   	     				
+	   	     				
+	   	     				/*for (int i = 0; i < 4; i++) {
+	   	                	if(spieler == 1){
+	   	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'x');
+	   	                		spieler = 0;
+	   	                	} else{
+	   	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][0]), Integer.parseInt(alleZuege[i][1]), spielfeld2))), 'o');
+	   	                		spieler =1;
+	   	                	 }
+	   	                	try {
+	   							Thread.sleep(2000);
+	   						} catch (InterruptedException e) {
+	   							// TODO Auto-generated catch block
+	   							e.printStackTrace();
+	   						}}*/
+	   	     		
+	   	     			}
+	   	     		};
+	   	     		playThread.start();
+	   	     		
+	     		   			
+	     	                
+	     	                
+	     		   
+	     		
 	                	
 					/*try {
 						Thread.sleep(2000);
