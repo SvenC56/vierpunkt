@@ -163,9 +163,9 @@ public class Game implements NameListener {
 	void setNextPlayer() {
 		for (int i = 0; i <= PLAYER; i++) {
 			if (this.currentMatch.getCurrentPlayer() != this.player[i]) {
-				Player currentPlayer = this.currentMatch.getCurrentPlayer();
+				//Player currentPlayer = this.currentMatch.getCurrentPlayer();
 				//this.currentMatch.setCurrentPlayer(player[i]);
-				this.player[i] = currentPlayer;
+				this.currentMatch.setCurrentPlayer(player[i]);
 			}
 		}
 	}
