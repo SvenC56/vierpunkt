@@ -341,36 +341,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// Einfuegen der Elemente in die mittlere Box
 		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
 				
-		/*********************** LISTENER *****************************/
-		spielstand.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-            	spielstand.setText(t1);
-            	System.out.println("Spielstand hat sich geaendert");
-            }
-        }); 
-		
-		satzstatus.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-            	satzstatus.setText(t1);
-            	System.out.println("Satzstatus hat sich geaendert");
-            }
-        }); 
-		
-		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Number> observable,
-		            Number oldValue, Number newValue) {
-		    	changeSpielmodus(newValue, einstellungen, start, spielmodus);
-		    }
-		});
 		
 		
 		
 		
 		/*********************************************************************************************************************
-		 ******************************************* *********************************************************
+		 ****************************************************************************************************
 		 ********************************************************************************************************************/
 		
 		
@@ -400,118 +376,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		 ***************************************       Einstellungen       *******************************************
 		 *************************************************************************************************************
 		 *************************************************************************************************************/
-		// Schnittstelle
-		Label schnittstelle = new Label("Schnittstelle");
-		CheckBox file = new CheckBox("File");
-		Text keinOrdner = new Text("ACHTUNG! Es wurde kein Ordner ausgewaehlt!");
-		keinOrdner.setStyle("-fx-fill: red;");
-		keinOrdner.setOpacity(0);
-		HBox hb = new HBox();
-		hb.getChildren().addAll(file, keinOrdner);
-		
-		CheckBox pusher1 = new CheckBox("Pusher");
-		
-		file.getStyleClass().add("checkBox");
-		pusher1.getStyleClass().add("checkBox");
-		
-		// Zeit
-		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
-		zeit.setMinorTickCount(0);
-		zeit.setMajorTickUnit(100); 					// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
-		zeit.setSnapToTicks(true); 						// Der Punkt rutzscht zur naechsten Zahl
-		zeit.setShowTickMarks(true); 					// Markierungen anzeigen -
-		zeit.setOrientation(Orientation.HORIZONTAL); 	// Vertikale Anordnung,standardmaessig horizontal
-		zeit.setValue(zugzeit);								// Default Value = 2
-		
-		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");
-		zeit.valueProperty().addListener(new ChangeListener<Number>() {
-		    @Override
-		    public void changed(ObservableValue<? extends Number> observable,
-		            Number oldValue, Number newValue) {
-		    	zeitlabel.setText("Zugzeit:   " + newValue + " ms");
-		    	setZugzeit(newValue.intValue());
-		    }
-		});
-		
 		// Ueberschrift
         Text u1 = new Text("Einstellungen");
         u1.setId("textEinstellungen");
-        
-        // Pusher Credentials
-        Label cred1 = new Label("App ID:");
-        TextField app1 = new TextField ();
-        //app1.setPromptText(appId);
-        app1.setText(appId);
-        
-        HBox hb1 = new HBox();
-        hb1.getChildren().addAll(cred1, app1);
-        hb1.setSpacing(10);
-        Label cred2 = new Label("App Key: ");
-        TextField app2 = new TextField ();
-        //app2.setPromptText(appKey);
-        app2.setPrefWidth(200);
-        app2.setText(appKey);
-        
-        HBox hb2 = new HBox();
-        hb2.getChildren().addAll(cred2, app2);
-        hb2.setSpacing(10);
-        Label cred3 = new Label("App Secret: ");
-        TextField app3 = new TextField ();
-        //app3.setPromptText(appSecret);
-        app3.setPrefWidth(200);
-        app3.setText(appSecret);
-       
-        HBox hb3 = new HBox();
-        hb3.getChildren().addAll(cred3, app3);
-        hb3.setSpacing(10);
-        
-        hb1.setOpacity(0);
-        hb2.setOpacity(0);
-        hb3.setOpacity(0);
-        
-    	pusher1.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            @Override
-            public void handle(MouseEvent arg0) {
-                if(file.isSelected()){
-             	   file.setSelected(false); 
-             	   keinOrdner.setOpacity(0);
-             	   pusher1.setSelected(true);
-                }else{pusher1.setSelected(true);}
-                setSchnittstelle("pusher");
-                hb1.setOpacity(1);
-                hb2.setOpacity(1);
-                hb3.setOpacity(1);
-            }
-    	});
-	
-		DirectoryChooser chooser = new DirectoryChooser();
-	
-		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
-	     @Override
-	     public void handle(MouseEvent arg0) {
-	         if(pusher1.isSelected()){
-	      	   pusher1.setSelected(false);   
-	      	   file.setSelected(true);
-	         }else{file.setSelected(true);}
-	         setSchnittstelle("file");
-	         hb1.setOpacity(0);
-	         hb2.setOpacity(0);
-	         hb3.setOpacity(0);
-	         
-	         
-	         
-	         File dir = chooser.showDialog(primaryStage);
-	 	    if (dir == null) {
-	 	        System.out.println("Kein Ordner ausgewählt");
-	 	        keinOrdner.setOpacity(1);
-	 	    }else{
-	 	    	fileString = dir.getPath();
-	 	    	System.out.println(fileString);
-	 	    	keinOrdner.setOpacity(0);
-	 	    }
-	     }
-		});
-			
+		
 		// X oder O
 		ToggleGroup group = new ToggleGroup();
 		ToggleButton tb1 = new ToggleButton("X");
@@ -524,7 +392,104 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		HBox hb4 = new HBox();
         hb4.getChildren().addAll(tb1, tb2);
         hb4.setSpacing(10);
+		
+		// Schnittstelle
+		Label schnittstelle = new Label("Schnittstelle");
+		CheckBox file = new CheckBox("File");
+		file.getStyleClass().add("checkBox");
+		Text keinOrdner = new Text("ACHTUNG! Es wurde kein Ordner ausgewaehlt!");
+		keinOrdner.setStyle("-fx-fill: red;");
+		keinOrdner.setOpacity(0);
+		HBox hb = new HBox();
+		hb.getChildren().addAll(file, keinOrdner);
+		DirectoryChooser chooser = new DirectoryChooser();
+		
+		CheckBox pusher = new CheckBox("Pusher");
+		pusher.getStyleClass().add("checkBox");
+		
+		// Pusher Credentials
+        Label cred1 = new Label("App ID:");
+        TextField app1 = new TextField ();
+        app1.setText(appId);
+        
+        HBox hb1 = new HBox();
+        hb1.getChildren().addAll(cred1, app1);
+        hb1.setSpacing(10);
+        
+        Label cred2 = new Label("App Key: ");
+        TextField app2 = new TextField ();
+        app2.setPrefWidth(200);
+        app2.setText(appKey);
+        
+        HBox hb2 = new HBox();
+        hb2.getChildren().addAll(cred2, app2);
+        hb2.setSpacing(10);
+        
+        Label cred3 = new Label("App Secret: ");
+        TextField app3 = new TextField ();
+        app3.setPrefWidth(200);
+        app3.setText(appSecret);
        
+        HBox hb3 = new HBox();
+        hb3.getChildren().addAll(cred3, app3);
+        hb3.setSpacing(10);
+        
+        hb1.setOpacity(0);
+        hb2.setOpacity(0);
+        hb3.setOpacity(0);
+        
+		
+		// Zeit
+		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");
+		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
+		zeit.setMinorTickCount(0);
+		zeit.setMajorTickUnit(100); 						// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
+		zeit.setSnapToTicks(true); 							// Der Punkt rutzscht zur naechsten Zahl
+		zeit.setShowTickMarks(true); 						// Markierungen anzeigen -
+		zeit.setOrientation(Orientation.HORIZONTAL); 		// Vertikale Anordnung,standardmaessig horizontal
+		zeit.setValue(zugzeit);								// Default Value = 2
+
+		// Einfuegen der Elemente in die linke Box
+		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
+
+		/******* CONTAINERBOXEN EINFUEGEN ************************/
+		content.getChildren().addAll(boxlinks, boxmitte, vbRight);
+		
+		
+		
+		/*********************** LISTENER *****************************/
+		spielstand.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+            	spielstand.setText(t1);
+            	System.out.println("Spielstand hat sich geaendert");
+            }
+        }); 
+		
+		satzstatus.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+            	satzstatus.setText(t1);
+            	System.out.println("Satzstatus hat sich geaendert");
+            }
+        }); 
+		
+		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+		    	changeSpielmodus(newValue, einstellungen, start, spielmodus);
+		    }
+		});
+		
+		zeit.valueProperty().addListener(new ChangeListener<Number>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Number> observable,
+		            Number oldValue, Number newValue) {
+		    	zeitlabel.setText("Zugzeit:   " + newValue + " ms");
+		    	setZugzeit(newValue.intValue());
+		    }
+		});
 		
 		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
@@ -536,6 +501,49 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		         }
 		});
 		
+		/*************************************************************************************************************
+		 *************************************************************************************************************
+		 ***************************************       EVENTHANDLER       *******************************************
+		 *************************************************************************************************************
+		 *************************************************************************************************************/
+		pusher.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            @Override
+            public void handle(MouseEvent arg0) {
+                if(file.isSelected()){
+             	   file.setSelected(false); 
+             	   keinOrdner.setOpacity(0);
+             	   pusher.setSelected(true);
+                }else{pusher.setSelected(true);}
+                setSchnittstelle("pusher");
+                hb1.setOpacity(1);
+                hb2.setOpacity(1);
+                hb3.setOpacity(1);
+            }
+    	});
+		
+		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
+		     @Override
+		     public void handle(MouseEvent arg0) {
+		         if(pusher.isSelected()){
+		      	   pusher.setSelected(false);   
+		      	   file.setSelected(true);
+		         }else{file.setSelected(true);}
+		         setSchnittstelle("file");
+		         hb1.setOpacity(0);
+		         hb2.setOpacity(0);
+		         hb3.setOpacity(0);
+		         
+		         File dir = chooser.showDialog(primaryStage);
+		 	    if (dir == null) {
+		 	        System.out.println("Kein Ordner ausgewählt");
+		 	        keinOrdner.setOpacity(1);
+		 	    }else{
+		 	    	fileString = dir.getPath();
+		 	    	System.out.println(fileString);
+		 	    	keinOrdner.setOpacity(0);
+		 	    }
+		     }
+			});
 		
 		einstellungen.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
@@ -563,7 +571,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
                 }});
                 
                 // Einfuegen in die VBox
-                dialogVbox.getChildren().addAll(u1, hb4, schnittstelle, hb, pusher1, hb1, hb2, hb3, p1, zeitlabel, zeit, ok);
+                dialogVbox.getChildren().addAll(u1, hb4, schnittstelle, hb, pusher, hb1, hb2, hb3, p1, zeitlabel, zeit, ok);
                 Scene dialogScene = new Scene(dialogVbox, 500, 800);
                 
                 if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
@@ -575,14 +583,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
                 dialog.show();	
 			}
 		});
-
-
-		// Einfuegen der Elemente in die linke Box
-		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
-
-		/******* CONTAINERBOXEN EINFUEGEN ************************/
-		content.getChildren().addAll(boxlinks, boxmitte, vbRight);
-
+		
 		/*************************************************************************************************************
 		 *************************************************************************************************************
 		 ******************************************* EVENTHANDLER FUER DAS MENU **************************************
