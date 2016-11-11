@@ -215,25 +215,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		vbRight.setPadding(new Insets(50, 0, 0, 50));
 
 		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
-
+		// Spielstand und Satzstatus anzeigen
 		Label spielstandanzeige = new Label("Spielstand: ");
-		//Text antwortspielstand = new Text(spielstand);
 		spielstand.setId("text");
 		spielstandanzeige.setPadding(new Insets(20, 0, 0, 0));
 
 		Label satzstatusanzeige = new Label("Satzstatus:");
-		//Text antwortsatzstatus = new Text(satzstatus);
 		satzstatus.setId("text");
 		satzstatusanzeige.setPadding(new Insets(20, 0, 0, 0));
 		
-		
-		spielstand.textProperty().addListener(new ChangeListener<String>() {
+		/*spielstand.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-               
             	System.out.println("Label Text Changed");
             }
-        }); 
+        }); */
 
 		Label spielmodi = new Label("Spielmodus:");
 		spielmodi.setPadding(new Insets(20, 0, 0, 0));
@@ -1464,6 +1460,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	}
 	
 	public void satzgewinner(char gewinner){
+		setSatzstatus("Satz beendet");
 		// neue Stage
 		final Stage satz = new Stage();
 		satz.setTitle("Satzgewinner");
@@ -1701,6 +1698,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     }
 	
     public void setSpielstein(int zeile, int spalte, char amZug){
+    	setSatzstatus("Satz spielen");
     	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))), amZug);
     }
     
