@@ -105,14 +105,16 @@ public class Game implements NameListener {
 		
 		}
 
-	
+	/**
+	 * Diese Methode startet automastisiert bis zu maximal 3 Matches (3 Saetze)
+	 */
 	public void startMatch() {
-		 for (int i = 0; i <= MATCHES; i++) {
-			 if (this.match[i] == null) {
-				this.match[i] = new Match(this, i);
-				this.currentMatch = match[i];
-				this.currentMatch.setCurrentPlayer(this.player[0]);
-				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // MatchID
+		 for (int i = 0; i <= MATCHES; i++) {	//durch das Match-Array
+			 if (this.match[i] == null) {	//wenn freie Position gefunden
+				this.match[i] = new Match(this, i);		//neues Match erstellen
+				this.currentMatch = match[i];			//als currentMatch() setzen
+			//	this.currentMatch.setCurrentPlayer(this.player[0]);	//den currentPlayer() setzen
+				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // Match in DB speichern
 				setMatchID(db.getMatchID());
 				this.currentMatch.setMatchActive(true);
 				this.currentMatch.setNewTurn();
@@ -159,7 +161,9 @@ public class Game implements NameListener {
 			}
 	}
 	
-	
+	/**
+	 * Der naechste Spieler ist dran. Methode wechselt den currentPlayer
+	 */
 	void setNextPlayer() {
 		for (int i = 0; i <= PLAYER; i++) {
 			if (this.currentMatch.getCurrentPlayer() != this.player[i]) {

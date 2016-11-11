@@ -63,6 +63,9 @@ public class Turn {
 	 * @param x
 	 */
 	public void startOpponentTurn(int x) {
+		if (this.turnNumber == 0) {
+			this.match.setCurrentPlayer(this.match.getGame().getPlayer(1));
+		}
 	 this.y = this.match.validPosition(x);
 	 this.x = x;
 	 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
@@ -86,8 +89,9 @@ public class Turn {
 	public int startAgentTurn() {
 		int x;
 		System.out.println("Start Agent turnID:" + this.turnNumber);
-		if (this.turnNumber == 0) { //Beim ersten Zug immer Spalte 3
-			x=3;
+		if (this.turnNumber == 0) {
+			this.match.setCurrentPlayer(this.match.getGame().getPlayer(0));
+			x = 3;
 		}
 		else {
 		 x = ki.calcMove(this.match, this.depth);
