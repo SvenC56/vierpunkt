@@ -1373,39 +1373,46 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	
 	public void onConnectionError(){
 		// neue Stage
-		final Stage connection = new Stage();
-		connection.setTitle("Verbindungsfehler");
-        connection.initModality(Modality.APPLICATION_MODAL);
-        connection.initOwner(primaryStage);
-        VBox connectionVbox = new VBox(20);
-        connectionVbox.setPadding(new Insets(10, 10, 10, 10));                
-        
-        Label meldung = new Label();
-        meldung.setText("Der Pusher Server reagiert nicht, bitte Pusher Credentials in den Einstellungen ueberpruefen");
-        Button ok = new Button("Einstellungen aendern");
-        
-        ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-            public void handle(MouseEvent arg0) {
-				connection.close();
-			}
+		Platform.runLater(new Runnable() { 
+            @Override
+            public void run() {
+            	
+            	final Stage connection = new Stage();
+        		connection.setTitle("Verbindungsfehler");
+                connection.initModality(Modality.APPLICATION_MODAL);
+                connection.initOwner(primaryStage);
+                VBox connectionVbox = new VBox(20);
+                connectionVbox.setPadding(new Insets(10, 10, 10, 10));                
+                
+                Label meldung = new Label();
+                meldung.setText("Der Pusher Server reagiert nicht, bitte Pusher Credentials in den Einstellungen ueberpruefen");
+                Button ok = new Button("Einstellungen aendern");
+                
+                ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        			@Override
+                    public void handle(MouseEvent arg0) {
+        				connection.close();
+        			}
+                });
+                // Einfuegen in die VBox
+                connectionVbox.getChildren().addAll(meldung, ok);
+                Scene connectionScene = new Scene(connectionVbox, 500, 800);
+                
+                if(thema == 1){ connectionScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+                if(thema == 2){ connectionScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+                if(thema == 3){connectionScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+                if(thema == 4){ connectionScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+              
+                connection.setScene(connectionScene);
+                
+                connection.show();
+            	
+            }
         });
-        // Einfuegen in die VBox
-        connectionVbox.getChildren().addAll(meldung, ok);
-        Scene connectionScene = new Scene(connectionVbox, 500, 800);
-        
-        if(thema == 1){ connectionScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ connectionScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){connectionScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ connectionScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-      
-        connection.setScene(connectionScene);
-        
-        connection.show();
-        
+		
 	}
 	
-	public void satzgewinner(int spieler){
+	public void satzgewinner(char gewinner){
 		// neue Stage
 		final Stage satz = new Stage();
 		satz.setTitle("Satzgewinner");
@@ -1416,9 +1423,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         
         Label meldung = new Label();
         
-        if(spieler==1){ meldung.setText(names1 + " hat den Satz gewonnen!");}
-        else if (spieler == 2) {meldung.setText(names2 + " hat den Satz gewonnen!");
-		}else{meldung.setText("Der Satz ist unentschieden ausgegangen.");}
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(names1 + " hat den Satz gewonnen!");}
+        else {meldung.setText(names2 + " hat den Satz gewonnen!");
+		}
         
         
         // Einfuegen in die VBox
@@ -1736,8 +1743,14 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	
 	@Override
 	public void siegerAnzeigen(char sieger)
-	{
-		gewinnermethode(sieger);
+	{	
+		Platform.runLater(new Runnable() { 
+            @Override
+            public void run() {
+            	satzgewinner(sieger);
+            }
+        });
+		
 	}
 }
 

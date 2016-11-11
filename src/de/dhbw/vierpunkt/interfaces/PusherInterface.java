@@ -22,17 +22,17 @@ public class PusherInterface implements Runnable
 	/**
 	 * App-ID der Pusher Instanz des Clients
 	 */
-	private static String MyAppID = "255967";
+	private static String MyAppID = "";
 	
 	/**
 	 * App-Key der Pusher-Instanz des Clients
 	 */
-	private static String MyAppKey = "61783ef3dd40e1b399b2";
+	private static String MyAppKey = "";
 	
 	/**
 	 * App-Secret der Pusher-Instanz des Clients
 	 */
-	private static String MyAppSecret = "66b722950915220b298c";
+	private static String MyAppSecret = "";
 	
 	/**
 	 * Channel-Name des Kommunikationskanals
@@ -117,10 +117,12 @@ public class PusherInterface implements Runnable
 
 		    @Override
 		    public void onError(String message, String code, Exception e) {
+		        fireErrorEvent();
 		        System.out.println("Es gab ein Problem beim Verbindungsaufbau.");
 		        System.out.println(message);
 		        System.out.println("Code:" + code);
 		        System.out.println("Exception: " + e);
+		        
 		        
 		    }
 		}, ConnectionState.ALL);

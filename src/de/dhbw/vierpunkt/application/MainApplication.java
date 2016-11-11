@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 public class MainApplication extends Application implements ParamListener{
 	
+	static PusherInterface pushy = new PusherInterface(); 
 	static TestGui gui = new TestGui();
 	static Game game = new Game();
 	static MainApplication main = new MainApplication();
@@ -19,6 +20,10 @@ public class MainApplication extends Application implements ParamListener{
 	{
 		gui.addParamListener(main);
 		gui.addNameListener(game);
+		
+		pushy.addListener(gui);
+		pushy.addErrorListener(gui);
+		pushy.addGewinnerListener(gui);
 		
 		launch(args);
 	}
@@ -43,15 +48,12 @@ public class MainApplication extends Application implements ParamListener{
 	public void startParameterAuswerten(int Zugzeit, String Schnittstelle,
 			String Kontaktpfad, char spielerKennung, String AppID, String AppKey, String AppSecret)
 	{
-	
 		// wenn Pusher als Schnittstelle ausgewaehlt wurde wird der Pusher Thread gestartet
 		if(Schnittstelle.equals("pusher"))
 		{
 			PusherInterface pushy = new PusherInterface(Zugzeit, AppID, AppKey, AppSecret, spielerKennung, game);
 			// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle
-			pushy.addListener(gui);
-			pushy.addErrorListener(gui);
-			pushy.addGewinnerListener(gui);
+			
 			
 			Thread pusherThread = new Thread(){
 				@Override
