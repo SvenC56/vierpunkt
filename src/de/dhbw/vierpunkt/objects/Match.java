@@ -462,7 +462,7 @@ public class Match {
 	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-			if (player == 1) {
+			if (player == 2) {
 			 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
 					 && ((field[y][x].getOwnedBy().getIsOpponent() == true) || (field[y][x].getOwnedBy() == null)) 
 					 && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
@@ -475,7 +475,7 @@ public class Match {
 					 }
 				 }
 				}
-			} else if (player == 2) {
+			} else if (player == 1) {
 				 if (		(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
 						 	&& ((field[y][x].getOwnedBy().getIsOpponent() == false) || (field[y][x].getOwnedBy() == null)) 
 						 	&& ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
