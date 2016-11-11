@@ -17,6 +17,7 @@ public class FileInterface implements Runnable {
 	public static char charAtStelle;
 	public static boolean zugSchongespielt = false;
 	private static List<ZugListener> listeners = new ArrayList<ZugListener>();
+	private static List<GewinnerListener> gewinnerListeners = new ArrayList<GewinnerListener>();
 	
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
@@ -129,14 +130,14 @@ public class FileInterface implements Runnable {
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler X!");
-        	fireZugEvent('x');
+        	fireGewinnerEvent('x');
         	zugSchongespielt = true;
         	
 		} else if  (serverString.contains("false") && serverString.contains("Spieler O")){
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
         	System.out.println("Sieger des Spiels ist Spieler O!");
-        	fireZugEvent('o');
+        	fireGewinnerEvent('o');
         	zugSchongespielt = true;
 		}
 	}
@@ -219,6 +220,16 @@ public class FileInterface implements Runnable {
 	public static void fireZugEvent(char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(spieler);
+		}
+	}
+	
+	public void addGewinnerListener(GewinnerListener toAdd){
+		gewinnerListeners.add(toAdd);
+	}
+	
+	public static void fireGewinnerEvent(char sieger){
+		for (GewinnerListener gwl : gewinnerListeners){
+			gwl.siegerAnzeigen(sieger);
 		}
 	}
 	
