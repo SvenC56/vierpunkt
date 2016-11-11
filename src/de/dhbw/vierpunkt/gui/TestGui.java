@@ -224,12 +224,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		satzstatus.setId("text");
 		satzstatusanzeige.setPadding(new Insets(20, 0, 0, 0));
 		
-		/*spielstand.textProperty().addListener(new ChangeListener<String>() {
+		spielstand.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
-            	System.out.println("Label Text Changed");
+            	spielstand.setText(t1);
+            	System.out.println("Spielstand hat sich geaendert");
             }
-        }); */
+        }); 
+		
+		satzstatus.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> ov, String t, String t1) {
+            	satzstatus.setText(t1);
+            	System.out.println("Satzstatzs hat sich geaendert");
+            }
+        }); 
 
 		Label spielmodi = new Label("Spielmodus:");
 		spielmodi.setPadding(new Insets(20, 0, 0, 0));
