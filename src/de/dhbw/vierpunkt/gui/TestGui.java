@@ -146,53 +146,53 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		}
 		
 		// Grundlegende Eigenschaften der Stage
-		primaryStage.setFullScreen(false); 		// automatisches Oeffnen im Fullscreen
+		primaryStage.setFullScreen(false); 							// automatisches Oeffnen im Fullscreen
 		primaryStage.setTitle("VierPunkt");
 		primaryStage.setResizable(true);
 
 		// Layout Boxen
-		VBox root = new VBox(); 				// aeusserste Box
+		VBox root = new VBox(); 									// aeusserste Box
 		root.setId("root");
 		
 		HBox content = new HBox();
-		content.setPrefWidth(breite); 			// content ueber gesamte Bildschirmbreite
-		content.setAlignment(Pos.TOP_CENTER); 	// alle Inhalte werden mittig ausgerichtet
+		content.setPrefWidth(breite); 								// content ueber gesamte Bildschirmbreite
+		content.setAlignment(Pos.TOP_CENTER); 						// alle Inhalte werden mittig ausgerichtet
 
-		/********************************************** MENUBAR ******************************************************/
+		/************************************************ MENUBAR ******************************************************/
 		// MenuBar Hauptkategorien
-		final Menu options = new Menu("Optionen");
+		final Menu options = new Menu("Optionen");					// Initialisieren der HauptMenuPunkte
 		final Menu themes = new Menu("Themen");
 
 		// Menubar, Hauptkategorien setzen
-		MenuBar menuBar = new MenuBar();
+		MenuBar menuBar = new MenuBar();							// Erstellen der MenuBar
 		menuBar.setId("menu");
-		menuBar.getMenus().addAll(options, themes);
+		menuBar.getMenus().addAll(options, themes);					// Hinzufuegen der HauptMenuPunkte
 
-		// Unterkategorien fuer "vierpunkt"
-		MenuItem menu00 = new MenuItem("neues Spiel");
+		// Unterkategorien fuer "options"							
+		MenuItem menu00 = new MenuItem("neues Spiel");				
 		MenuItem menu01 = new MenuItem("bereits gespielte Spiele");
 		MenuItem menu02 = new MenuItem("Spiel beenden");
-		options.getItems().addAll(menu00, menu01, menu02);
+		options.getItems().addAll(menu00, menu01, menu02);			// Punkte unter den MenuPunkt Optionen haengen
 		
 		// Unterkategorien fuer "themen"
 		MenuItem menu10 = new MenuItem("Suessigkeiten");
 		MenuItem menu11 = new MenuItem("Halloween");
 		MenuItem menu12 = new MenuItem("Food");
 		MenuItem menu13 = new MenuItem("Sports");
-		themes.getItems().addAll(menu10, menu11, menu12, menu13);
+		themes.getItems().addAll(menu10, menu11, menu12, menu13);	// Punkte unter den MenuPunkt Themen haengen
 
-		/******************************************* UEBERSCHRIFT *********************************************************/
+		/********************************************** UEBERSCHRIFT ***************************************************/
 
 		// Ansicht der Ueberschrift
-		ImageView headingImg = new ImageView();
+		ImageView headingImg = new ImageView();						// ImageView fuer das Bild der Ueberschrift
 		headingImg.setId("headerImg");
-		headingImg.setFitWidth(breite / 2); 			// Ueberschrift soll die Haelfte des Bildschirms breit sein
-		headingImg.setFitHeight((breite / 2) / 3.33); // Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
+		headingImg.setFitWidth(breite / 2); 						// Ueberschrift soll die Haelfte des Bildschirms breit sein
+		headingImg.setFitHeight((breite / 2) / 3.33); 				// Aufrechterhalten des Verhaeltnisses (Quotient: 3.33)
 		headingImg.setPreserveRatio(true);			
 
 		// Container, in dem die Ueberschrift platziert wird
-		HBox headerHBox = new HBox();
-		headerHBox.setId("titel");
+		HBox headerHBox = new HBox();								// HBox (Anordnung horizontal)
+		headerHBox.setId("titel");									// Id fuer Formatierung mit CSS
 
 		// Rechtecke als Platzhalter, um die Ueberschrift mittig zu platzieren
 		Rectangle headingRectLeft = new Rectangle(breite / 4, (breite / 2) / 3.33);
@@ -208,12 +208,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// Hauptcontainer erhaelt den Inhalt
 		root.getChildren().addAll(menuBar, headerHBox, content);
 
-		/******************************************** CONTAINERBOXEN IN CONTENT ************************************************/
+		/************************************** CONTAINERBOXEN IN CONTENT **************************************************/
 		
 
 		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
 		// Erzeugen der rechten Containerbox
-		VBox vbRight = new VBox();
+		VBox vbRight = new VBox();												// VBox um Inhalte untereinander anzuordnen
 		vbRight.setPrefWidth(breite / 4);
 		vbRight.setSpacing(10);
 		vbRight.setPadding(new Insets(50, 0, 0, 50));
@@ -246,16 +246,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// Methode, die die Zahlenbeschriftung durch entsprechenden Text ersetzt und die Rueckgabewerte festlegt
 		spielmodus.setLabelFormatter(new StringConverter<Double>() {
 			@Override
-			public String toString(Double n) {
-				if (n == 0)return "gegen den Computer";
+			public String toString(Double n) {				// Beschriftung an den verschiedenen Units
+				if (n == 0)return "gegen den Computer";		
 				if (n > 0 && n < 2)return "manuell";
 				if (n == 2)return "automatisch";
 				return "automatisch";
 			}
 			@Override
-			public Double fromString(String x) {
+			public Double fromString(String x) {			// Rueckgabewerte der verschiedenen Wahlmoeglichkeiten
 				switch (x) {
-				case "manuell":return 1d;
+				case "manuell":return 1d;					
 				case "gegen den Computer":return 0d;
 				case "automatisch":return 2d;
 				default:return 2d;
@@ -263,11 +263,11 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			}
 		});
 		
-		Button start = new Button("Spiel starten");
+		Button start = new Button("Spiel starten");			
 		
 		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
 		Rectangle platzhalter0 = new Rectangle(10, 40);
-		platzhalter0.setOpacity(0);
+		platzhalter0.setOpacity(0);												// nicht sichtbar (100% transparent)
 
 		// Einfuegen der Elemente in die rechte Box
 		vbRight.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
@@ -283,12 +283,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		// Ueberschrift Spieler
 		Label spielerfarben = new Label("Spieler");
 		
-		// Name mit Spielstein Spieler 1
-		ImageView i1 = new ImageView(getImage1());
+		// Name mit Spielstein Spieler
+		ImageView i1 = new ImageView(getImage1());								// Darstellung des richtigfarbigen Spielsteins
 		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
-		Label s1 = new Label(getNames1());
+		Label s1 = new Label(getNames1());										// Anzeige des beim Start angegebenen Namens
 		
-		// Name mit Spielstein Spieler 2
+		// Name mit Spielstein Gegner
 		ImageView i2 = new ImageView(getImage2());
 		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
 		Label s2 = new Label(getNames2());
@@ -300,32 +300,32 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		p1.setOpacity(0);
 		
 		// zur Box Hinzufuegen
-		HBox box3 = new HBox();
-		box3.getChildren().addAll(s1, i1, s2, i2);
+		HBox box3 = new HBox();													// HBox, damit die Steine neben den Spielern angezeigt werden
+		box3.getChildren().addAll(s1, i1, s2, i2);								
 		
-		Button einstellungen = new Button("Einstellungen");
+		Button einstellungen = new Button("Einstellungen");						// Hier sind alle Einstellungen vorzunehmen
 		
-		ImageView bild = new ImageView();
+		ImageView bild = new ImageView();										// Passend zu jedem Thema ein anderes Bild
 		bild.setId("bild");
 		bild.setFitWidth(breite / 4); // Breite soll ein Viertel des Fensters betragen
 		bild.setPreserveRatio(true); // Das Verhaeltnis soll beibehalten werden
 		
-		Rectangle platzhalter2 = new Rectangle(l, 2*l);
+		Rectangle platzhalter2 = new Rectangle(l, 2*l);							// Platzhalter, damit das Bild nicht ganz am Boden sitzt
 		platzhalter2.setOpacity(0);
 				
 		
 		/******* INHALTE DER MITTLEREN CONTAINERBOX *********************/
 		// Erzeugen der mittleren Containerbox
-		VBox boxmitte = new VBox();
+		VBox boxmitte = new VBox();												// VBox, um die GridPane des Spielfelds anzuordnen
 		boxmitte.setId("boxmitte");
-		boxmitte.setPrefWidth(7 * l);
+		boxmitte.setPrefWidth(7 * l);											// Breite an die Anzahl der Spalten angepasst
 		boxmitte.setPadding(new Insets(30, 0, 50, 0));
 		boxmitte.setMinWidth(7 * l);
 		
-		Rectangle platzhalter1 = new Rectangle(7 * l, l);
+		Rectangle platzhalter1 = new Rectangle(7 * l, l);						// Platzhalter zum Anzeigen der Spielsteine ueber der Grid
 		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
 		
-		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
+		// Erzeugen eines GridPanes spielfeld 
 		createSpielfeld(spielfeld);
 		
 		// Einfuegen der Elemente in die mittlere Box
@@ -340,47 +340,47 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		/******* INHALTE DER LOGIN STAGE ************************/
 		
 		// login Felder
-		Label playerLab = new Label("Spieler: ");
-		TextField playerInput= new TextField();
+		Label playerLab = new Label("Spieler: ");								
+		TextField playerInput= new TextField();									// TextField zur Eingabe des Namens
 		if(playerInput.getText() != null && ! playerInput.getText().trim().isEmpty()){
-			setNames1(playerInput.getText());
+			setNames1(playerInput.getText());									// Name darf nicht leer bleiben
 		}
 		
 		Label opponentLab = new Label("Gegner: ");
-		TextField opponentInput= new TextField();
+		TextField opponentInput= new TextField();								// TextField zur Eingabe des GegnerNamens
 		if(opponentInput.getText() != null && ! opponentInput.getText().trim().isEmpty()){
-			setNames2(opponentInput.getText());
+			setNames2(opponentInput.getText());									// Name darf nicht leer bleiben
 		}
 
- 		Stage loginStage = new Stage();
+ 		Stage loginStage = new Stage();											//Erzeugen einer neuen Stage als Popup
  		Button login = new Button("Spiel starten");
  		VBox vb = new VBox();
  		vb.setAlignment(Pos.CENTER);
  		vb.setPadding(new Insets(10, 10, 10, 10));
  		
- 		Label meldung = new Label("Bitte Spielernamen eingeben");
- 		meldung.setOpacity(0);
+ 		Label meldung = new Label("Bitte Spielernamen eingeben");				// Meldung wenn ein Name fehlt
+ 		meldung.setOpacity(0);													// Anzeige in login EventHandler
  		meldung.setStyle("-fx-font-weight: lighter;");
  		
- 		HBox hb5 = new HBox();
+ 		HBox hb5 = new HBox();													
  		playerLab.setPrefWidth(200);
- 		hb5.getChildren().addAll(playerLab, playerInput);
+ 		hb5.getChildren().addAll(playerLab, playerInput);						// Anordnung Label und Eingabefeld nebeneinander
  		hb5.setSpacing(10);
  		
  		HBox hb6 = new HBox();
  		opponentLab.setPrefWidth(200);
- 		hb6.getChildren().addAll(opponentLab, opponentInput);
+ 		hb6.getChildren().addAll(opponentLab, opponentInput);					// Anordnung Label und Eingabefeld nebeneinander
  		hb6.setSpacing(10);
  		
- 		Rectangle p2 = new Rectangle(20, 15);
+ 		Rectangle p2 = new Rectangle(20, 15);									// PLatzhalter (transparent)
  		p2.setOpacity(0);
  		Rectangle p3 = new Rectangle(20, 15);
  		p3.setOpacity(0);
  		
- 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);
+ 		vb.getChildren().addAll(hb5, hb6, p2, meldung, p3, login);				// Alle Elemente untereinander in der loginStage
  		Scene scene2 = new Scene(vb, 400, 250);
  		loginStage.setScene(scene2);
- 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm());
+ 	    scene2.getStylesheets().add(TestGui.class.getResource("Gui.css").toExternalForm()); // CSS-Datei
  	    loginStage.initModality(Modality.APPLICATION_MODAL);
  	    loginStage.setTitle("Spielernamen");
  	    loginStage.setFullScreen(false); 
@@ -392,65 +392,65 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         u1.setId("textEinstellungen");
 		
 		// X oder O
-		ToggleGroup group = new ToggleGroup();
+		ToggleGroup group = new ToggleGroup();									// Buttons wie Ein-/Ausschalter
 		ToggleButton tb1 = new ToggleButton("X");
 		tb1.setToggleGroup(group);
-		tb1.setSelected(true);
+		tb1.setSelected(true);													// Standardauswahl X
 		tb1.getStyleClass().add("togglebutton");
 		ToggleButton tb2 = new ToggleButton("O");
 		tb2.setToggleGroup(group);
 		tb2.getStyleClass().add("togglebutton");
-		HBox hb4 = new HBox();
-        hb4.getChildren().addAll(tb1, tb2);
+		HBox hb4 = new HBox();							
+        hb4.getChildren().addAll(tb1, tb2);										// Anordnung nebeneinander in HBox
         hb4.setSpacing(10);
 		
 		// Schnittstelle
 		Label schnittstelle = new Label("Schnittstelle");
-		CheckBox file = new CheckBox("File");
+		CheckBox file = new CheckBox("File");									// Checkbox zu Auswahl der Schnittstelle 
 		file.getStyleClass().add("checkBox");
-		Text keinOrdner = new Text("ACHTUNG! Es wurde kein Ordner ausgewaehlt!");
+		Text keinOrdner = new Text("ACHTUNG! Es wurde kein Ordner ausgewaehlt!"); // Fehlermeldung
 		keinOrdner.setStyle("-fx-fill: red;");
-		keinOrdner.setOpacity(0);
+		keinOrdner.setOpacity(0);												// Fehlermeldung zunaechst nicht sichtbar
 		HBox hb = new HBox();
 		hb.getChildren().addAll(file, keinOrdner);
-		DirectoryChooser chooser = new DirectoryChooser();
+		DirectoryChooser chooser = new DirectoryChooser();						// Funktion zum Ordner auswaehlen
 		
 		CheckBox pusher = new CheckBox("Pusher");
 		pusher.getStyleClass().add("checkBox");
 		
-		// Pusher Credentials
+		// Pusher Credentials													// Eingabefelder fuer die drei Pusher Credentials
         Label cred1 = new Label("App ID:");
         TextField app1 = new TextField ();
-        app1.setText(appId);
+        app1.setText(appId);													// Vorbelegung des Textfeldes mit dem Default Wert
         
-        HBox hb1 = new HBox();
+        HBox hb1 = new HBox();													// Zur Darstellung von Label und Textfeld nebeneinander
         hb1.getChildren().addAll(cred1, app1);
         hb1.setSpacing(10);
         
         Label cred2 = new Label("App Key: ");
         TextField app2 = new TextField ();
         app2.setPrefWidth(200);
-        app2.setText(appKey);
+        app2.setText(appKey);													// Vorbelegung des Textfeldes mit dem Default Wert
         
-        HBox hb2 = new HBox();
+        HBox hb2 = new HBox();													// Zur Darstellung von Label und Textfeld nebeneinander
         hb2.getChildren().addAll(cred2, app2);
         hb2.setSpacing(10);
         
         Label cred3 = new Label("App Secret: ");
         TextField app3 = new TextField ();
         app3.setPrefWidth(200);
-        app3.setText(appSecret);
+        app3.setText(appSecret);												// Vorbelegung des Textfeldes mit dem Default Wert
        
-        HBox hb3 = new HBox();
+        HBox hb3 = new HBox();													// Zur Darstellung von Label und Textfeld nebeneinander
         hb3.getChildren().addAll(cred3, app3);
         hb3.setSpacing(10);
         
-        hb1.setOpacity(0);
+        hb1.setOpacity(0);														// Default nicht angezeigt - Aenderung durch Pusher Checkbox
         hb2.setOpacity(0);
         hb3.setOpacity(0);
         
 		// Zeit
-		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");
+		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");		// Anzeige des Default Wertes
 		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
 		zeit.setMajorTickUnit(100); 						// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
@@ -463,10 +463,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
-		content.getChildren().addAll(boxlinks, boxmitte, vbRight);
+		content.getChildren().addAll(boxlinks, boxmitte, vbRight);		// Alle drei Container in den Content Teil einfuegen
 		
 		
-		/*********************** LISTENER *****************************/
+		/*********************************************************************************************************************
+		 ***************************************************** LISTENER ******************************************************
+		 ********************************************************************************************************************/
+		// Bei Aenderung des Spielstandes, wird der neue Text (t1) angezeigt
 		spielstand.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -475,6 +478,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             }
         }); 
 		
+		// Bei Aenderung des Satzstatzs, wird der neue Text (t1) angezeigt
 		satzstatus.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> ov, String t, String t1) {
@@ -483,6 +487,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             }
         }); 
 		
+		// Bei Aenderung des Spielmodus werden verschiedene Methoden in changeSpielmodus aufgerufen
 		spielmodus.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
@@ -491,6 +496,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		    }
 		});
 		
+		// Bei Aenderung des der Zugzeit, wird die neue Zugzeit angezeigt und durch Start mit uebergeben
 		zeit.valueProperty().addListener(new ChangeListener<Number>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Number> observable,
@@ -500,6 +506,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		    }
 		});
 		
+		// Bei Aenderung des ToggleButtons, aendert sich der Wert des eigenen Spielers von x zu o oder andersherum
 		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
 		        Toggle toggle, Toggle new_toggle) {
@@ -510,44 +517,44 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		         }
 		});
 		
-		/*************************************************************************************************************
-		 *************************************************************************************************************
-		 ***************************************       EVENTHANDLER       *******************************************
-		 *************************************************************************************************************
-		 *************************************************************************************************************/
+		/*********************************************************************************************************************
+		 *************************************************** EVENTHANDLER ****************************************************
+		 ********************************************************************************************************************/
+		// Bei Klicken auf die Pusher Checkbox erscheinen die Credentials Felder
 		pusher.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent arg0) {
                 if(file.isSelected()){
              	   file.setSelected(false); 
-             	   keinOrdner.setOpacity(0);
-             	   pusher.setSelected(true);
+             	   keinOrdner.setOpacity(0);					// das Haekchen bei File wird entfernt
+             	   pusher.setSelected(true);					// das Haekchen bei Pusher wird gesetzt
                 }else{pusher.setSelected(true);}
-                setSchnittstelle("pusher");
-                hb1.setOpacity(1);
+                setSchnittstelle("pusher");						// Schnittstelle wird auf Pusher gesetzt und bei Start uebergeben
+                hb1.setOpacity(1);								// Anzeigen der Credentials
                 hb2.setOpacity(1);
                 hb3.setOpacity(1);
             }
     	});
-		
+
+		// Bei Klicken auf die File Checkbox erscheind der FileChooser
 		file.setOnMouseClicked(new EventHandler<MouseEvent>(){
 		     @Override
 		     public void handle(MouseEvent arg0) {
 		         if(pusher.isSelected()){
-		      	   pusher.setSelected(false);   
-		      	   file.setSelected(true);
+		      	   pusher.setSelected(false);   				// das Haekchen bei Pusher wird entfernt
+		      	   file.setSelected(true);						// das Haekchen bei File wird gesetzt
 		         }else{file.setSelected(true);}
-		         setSchnittstelle("file");
+		         setSchnittstelle("file");						// Schnittstelle wird auf File gesetzt und bei start uebergeben
 		         hb1.setOpacity(0);
 		         hb2.setOpacity(0);
 		         hb3.setOpacity(0);
 		         
 		         File dir = chooser.showDialog(primaryStage);
-		 	    if (dir == null) {
+		 	    if (dir == null) {								// wenn kein Ordner ausgewaehlt wurde wird Meldung angezeigt
 		 	        System.out.println("Kein Ordner ausgewählt");
 		 	        keinOrdner.setOpacity(1);
 		 	    }else{
-		 	    	fileString = dir.getPath();
+		 	    	fileString = dir.getPath();					// Pfad des ausgewaehlten Ordners wird gespeichert und in start uebergeben
 		 	    	System.out.println(fileString);
 		 	    	keinOrdner.setOpacity(0);
 		 	    }
