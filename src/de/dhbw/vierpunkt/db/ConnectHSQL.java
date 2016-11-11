@@ -173,7 +173,7 @@ public class ConnectHSQL {
 	 */
 	public String[][] getLastTenGames() {
 		String[][] highscore = null;
-		highscore = save10Result(executeSQL("SELECT * FROM GAME ORDER BY G_ID DESC LIMIT 10;"));
+		highscore = save10Result(executeSQL("SELECT * FROM GAME  WHERE WINNER IS NOT NULL ORDER BY G_ID DESC LIMIT 10;"));
 		return highscore;
 	}
 
