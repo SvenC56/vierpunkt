@@ -228,7 +228,8 @@ public class AI_Logic_Test {
 				
 				// new try
 				// in column?
-				if (game.getRow()-y>=1) {
+				if (game.getRow()-y>=4) {
+				//if (game.getRow()-y>=4) {
 					if (isRow(game.field, 2, x, y, 0, 1) == 4) {
 						return (int) Double.POSITIVE_INFINITY;
 					}	else if (isRow(game.field, 1, x, y, 0, 1) == 4) {
@@ -307,19 +308,39 @@ public class AI_Logic_Test {
 			
 	 private static int isRow(int[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-		 if (y<=2 && x <= 3) {
-		 if (	((field[y][x] == player) || (field[y][x] == 0)) && ((field[y+1*dy][x+1*dx] == player) || (field[y+1*dy][x+1*dx] == 0))
-			&& ((field[y+2*dy][x+2*dx] == player) || (field[y+2*dy][x+2*dx] == 0)) && ((field[y+3*dy][x+3*dx] == player) || (field[y+3*dy][x+3*dx] == 0))) {
+		 
+//		 if (field[y][x] == player) { // current field ist von uns belegt
+//			 cnt++; // Count ist 1
+//			 if (	(0<=(y+1*dy)) && ((y+1*dy)<=ROW) && (0<=(x+1*dx)) && ((x+1*dx)<=COLUMN)	) {
+//				 if (field[y+1*dy][x+1*dx] == player) { // nächstes auch 
+//					 cnt++; // Count ist 2
+//					 if (	(0<=(y+2*dy)) && ((y+2*dy)<=ROW) && (0<=(x+2*dx)) && ((x+2*dx)<=COLUMN)	) {
+//						 if (field[y+2*dy][x+2*dx] == player) { // übernächstes auch
+//							 cnt++; // Count ist 3
+//							 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)	) {
+//								 if (field[y+3*dy][x+3*dx] == player) { // 3.nächstes auch
+//									 cnt++; // Count ist 4
+//								 }
+//							 }	 
+//						 }
+//					 }
+//				 }
+//			 }
+
+		 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
+				&& ((field[y][x] == player) || (field[y][x] == 0)) 
+				&& ((field[y+1*dy][x+1*dx] == player) || (field[y+1*dy][x+1*dx] == 0))
+				&& ((field[y+2*dy][x+2*dx] == player) || (field[y+2*dy][x+2*dx] == 0)) 
+				&& ((field[y+3*dy][x+3*dx] == player) || (field[y+3*dy][x+3*dx] == 0))) {
 				
 			 for (int i = 0; i < 4; i++) {
 				 if (field[y+i*dy][x+i*dx] == player) {
 					 cnt++;
 				 }
 			 }
-			}
-		 }
+			} 
 		 return cnt;
-	 	} 
+	 }
 	 
 			public static int getAlphaBeta(GameLogic game, int depth, int alpha, int beta) {
 				
@@ -337,7 +358,7 @@ public class AI_Logic_Test {
 					minimax_curr = beta; // minimize output for opponent
 				}
 				
-				if (depth <= 0)
+				if (depth == 0)
 					return evaluate(game); // evaluate game situation by counting the coins in row/ in diagonal/ in column
 				else {
 					// calculate all possible moves
@@ -380,12 +401,13 @@ public class AI_Logic_Test {
 						values[i] = getAlphaBeta(game_tmp, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 					}
 				
-						int move = (int) Double.NEGATIVE_INFINITY;
+						// int move = (int) Double.NEGATIVE_INFINITY;
+						int move = -1;
 						int max = (int) Double.NEGATIVE_INFINITY;
 						for (int j = 0; j <= game.getColumn(); j++) {
-							if ((values[j] > max) && (game.validPosition(j) != -1)) { // position is valid and current value is higher than old value
-								max = values[j]; // currently the highest value
+							if ((values[j] >= max) && (game.validPosition(j) != -1)) { // position is valid and current value is higher than old value
 								move = j; // currently the best move
+								max = values[j]; // currently the highest value
 							}
 						}
 						System.out.println("move: " + move);
@@ -403,7 +425,7 @@ public class AI_Logic_Test {
  */
 			int test = 0;
 
-		//	BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
+			//BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
 	      
 			
 	while(test == 0) { 
@@ -422,11 +444,11 @@ public class AI_Logic_Test {
 			      System.out.print("Server ist dran              "
 			      		+ "");
 			      System.out.println("eval" + evaluate(game));
-			      System.out.print("Enter column");
-			      // String s = br.readLine();
-			     // int input = Integer.parseInt(s);
-			    //  x = input;
-			       x = (int) (Math.random()*7);
+			      //System.out.print("Enter column");
+			       //String s = br.readLine();
+			      //int input = Integer.parseInt(s);
+			     // x = input;
+			     x = (int) (Math.random()*7);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println("Server hat in Spalte gelegt " + x);
