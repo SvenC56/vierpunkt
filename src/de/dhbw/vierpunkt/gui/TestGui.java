@@ -646,52 +646,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		 *************************************************************************************************************/
 		
 		Scene scene = new Scene(root);
+		/*primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
+			@Override public void handle(WindowEvent e){
+				onCloseEvent();
+			}
+		});*/
 		
 		menu13.setOnAction(new EventHandler<ActionEvent>() {
 		    @Override public void handle(ActionEvent e) {
-		    	final Stage close = new Stage();
-		    	close.setTitle("Schliessen");
-		    	close.initModality(Modality.APPLICATION_MODAL);
-		    	close.initOwner(primaryStage);
-		        VBox vbox = new VBox(20);
-		        vbox.setPadding(new Insets(10, 10, 10, 10));                
-		        
-		        Label nachricht = new Label();
-		        nachricht.setText("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
-		        nachricht.setWrapText(true);
-		        Button beenden = new Button("Beenden");
-		        Button abbrechen = new Button("Abbrechen");
-		        HBox hbox = new HBox();
-		        hbox.getChildren().addAll(beenden, abbrechen);
-		        hbox.setAlignment(Pos.BASELINE_CENTER);
-		        hbox.setSpacing(20);
-		        
-		       abbrechen.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		        	@Override
-		        	public void handle(MouseEvent arg0){
-		        		
-		        		close.close();
-		        	}
-		        });
-		       beenden.setOnMouseClicked(new EventHandler<MouseEvent>(){
-		        	@Override
-		        	public void handle(MouseEvent arg0){
-		        		
-		        		close.close();
-		        		Platform.exit();
-		        	}
-		        });
-		        // Einfuegen in die VBox
-		        vbox.getChildren().addAll(nachricht, hbox);
-		        Scene themaScene = new Scene(vbox, 500, 200);
-		        
-		        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-		        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-		        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-		        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-		      
-		        close.setScene(themaScene);
-		        close.show();
+		    	onCloseEvent();
 		    	}
 		});		menu11.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
@@ -1432,7 +1395,51 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         spieleStage.show();	
 		}
 		
-	
+	public void onCloseEvent(){
+		final Stage close = new Stage();
+    	close.setTitle("Schliessen");
+    	close.initModality(Modality.APPLICATION_MODAL);
+    	close.initOwner(primaryStage);
+        VBox vbox = new VBox(20);
+        vbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label nachricht = new Label();
+        nachricht.setText("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
+        nachricht.setWrapText(true);
+        Button beenden = new Button("Beenden");
+        Button abbrechen = new Button("Abbrechen");
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(beenden, abbrechen);
+        hbox.setAlignment(Pos.BASELINE_CENTER);
+        hbox.setSpacing(20);
+        
+       abbrechen.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		
+        		close.close();
+        	}
+        });
+       beenden.setOnMouseClicked(new EventHandler<MouseEvent>(){
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		
+        		close.close();
+        		Platform.exit();
+        	}
+        });
+        // Einfuegen in die VBox
+        vbox.getChildren().addAll(nachricht, hbox);
+        Scene themaScene = new Scene(vbox, 500, 200);
+        
+        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+      
+        close.setScene(themaScene);
+        close.show();
+	}
 	
 	public void onConnectionError(){
 		// neue Stage
