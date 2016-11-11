@@ -1135,10 +1135,26 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
      ********************************************************************************************************************/
 	 static Spiele selectedGame;
 	 static String personX;
+	 private final TableView<Spiele> table = new TableView<>();
+	 
+	 ConnectHSQL db = new ConnectHSQL();
+		String[][] alleGames = db.getLastTenGames();
+     
+     private final ObservableList<Spiele> items = FXCollections.observableArrayList(/*
+     		new Spiele(alleGames[0][0], alleGames[0][1], alleGames[0][2], alleGames[0][3]),
+             new Spiele(alleGames[1][0], alleGames[1][1], alleGames[1][2], alleGames[1][3]),
+             new Spiele(alleGames[2][0], alleGames[2][1], alleGames[2][2], alleGames[2][3]),
+             new Spiele(alleGames[3][0], alleGames[3][1], alleGames[3][2], alleGames[3][3]),
+             new Spiele(alleGames[4][0], alleGames[4][1], alleGames[4][2], alleGames[4][3]),
+             new Spiele(alleGames[5][0], alleGames[5][1], alleGames[5][2], alleGames[5][3]),
+             new Spiele(alleGames[6][0], alleGames[6][1], alleGames[6][2], alleGames[6][3]),
+             new Spiele(alleGames[7][0], alleGames[7][1], alleGames[7][2], alleGames[7][3]),
+             new Spiele(alleGames[8][0], alleGames[8][1], alleGames[8][2], alleGames[8][3]),
+             new Spiele(alleGames[9][0], alleGames[9][1], alleGames[9][2], alleGames[9][3])*/);
+     
 	public void bisherigeSpiele(){
 		
-		ConnectHSQL db = new ConnectHSQL();
-		String[][] alleGames = db.getLastTenGames();
+		
 		
 		//String[][] alleSaetze = db.getHighscoreMatch(G_ID);
 		
@@ -1158,11 +1174,31 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         Label spieleLabel = new Label("Bisherige Spiele:");
        
        
-        TableView<Spiele> table = new TableView<>();
-       // table.setEditable(true);
+        
 
-
+        table.setEditable(true);
+        
         TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
+        gameIDCol.setMinWidth(100);
+        gameIDCol.setCellValueFactory(
+                new PropertyValueFactory<Spiele, String>("gameID"));
+        
+        TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");
+        player1Col.setMinWidth(100);
+        player1Col.setCellValueFactory(
+                new PropertyValueFactory<Spiele, String>("player1"));
+        
+        TableColumn<Spiele, String> player2Col = new TableColumn<>("Spieler 2");
+        player2Col.setMinWidth(100);
+        player2Col.setCellValueFactory(
+                new PropertyValueFactory<Spiele, String>("player2"));
+        
+        TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
+        winnerCol.setMinWidth(100);
+        winnerCol.setCellValueFactory(
+                new PropertyValueFactory<Spiele, String>("winner"));
+        
+        /*TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");
         gameIDCol.setCellValueFactory(new PropertyValueFactory<>("gameID"));
         gameIDCol.setMinWidth(100);
         gameIDCol.setId("spalte0");
@@ -1174,20 +1210,33 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         player2Col.setMinWidth(250);
         TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");
         winnerCol.setCellValueFactory(new PropertyValueFactory<>("winner"));
-        winnerCol.setMinWidth(250);
-        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);
+        winnerCol.setMinWidth(250);*/
        
-        ObservableList<Spiele> items = FXCollections.observableArrayList();
+       
+        
+       
         
         for (int i = 0; i < 10; i++) {
-        	String game = alleGames[i][0];
+         
+          	try{
+                items.add(new Spiele(alleGames[i][0], alleGames[i][1], alleGames[i][2], alleGames[i][3]));
+                }
+                catch(Exception ex){
+                    System.out.println("Empty fields or illegal arguments passed.");
+                }
+   
+        	/*String game = alleGames[i][0];
         	String player1 = alleGames[i][1];
         	String player2 = alleGames[i][2];
         	String winner = alleGames[i][3];
-        	items.add(new Spiele(game, player1, player2, winner));
-        	System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]);
+        	items.addAll(new Spiele(game, player1, player2, winner));*/
+        	System.out.println(items);
+        	//System.out.println(alleGames[i][0]+ alleGames[i][1]+ alleGames[i][2]+ alleGames[i][3]);
 		}
-        table.setItems(items);
+        System.out.println(items);
+ table.setItems(items);
+        
+        table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);
         
         Slider satz = new Slider(0, 2, 1); 	
        
