@@ -20,7 +20,7 @@ public class AlphaBeta {
 			minimax_curr = beta; // minimize output for opponent
 		}
 		
-		if (depth <= 0)
+		if (depth == 0)
 			return match.evaluate(); // evaluate game situation by counting the coins in row/ in diagonal/ in column
 		else {
 			// calculate all possible moves
@@ -63,16 +63,16 @@ public class AlphaBeta {
 				values[i] = getAlphaBeta(demoMatch, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 			}
 		
-				int move = (int) Double.NEGATIVE_INFINITY;
+				int move = -1;
 				int max = (int) Double.NEGATIVE_INFINITY;
 				for (int j = 0; j <= match.getColumn(); j++) {
-					if ((values[j] > max) && (match.validPosition(j) != -1)) { // position is valid and current value is higher than old value
-						max = values[j]; // currently the highest value
+					if ((values[j] >= max) && (match.validPosition(j) != -1)) { // position is valid and current value is higher than old value
 						move = j; // currently the best move
+						max = values[j]; // currently the highest value
 					}
 				}
-				System.out.println("move: " + move);
-				System.out.println("max: " + max);
+				//System.out.println("move: " + move);
+				//System.out.println("max: " + max);
 				return move; // best possible move after all columns have been evaluated
 			
 	}
