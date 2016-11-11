@@ -48,13 +48,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
 	
 	/** Hauptstage */	
-	public static Stage primaryStage = new Stage();
+	public static Stage primaryStage = new Stage();					
 	
 	/** Variablendeklaration fuer die Einstellungsattribute */	
-	private String schnittstelle = "pusher";
-	private int zugzeit = 1000;
-	private char xodero = 'x';
-	private String fileString = new String();
+	private String schnittstelle = "pusher";									// Gibt die Art der Schnittstelle an
+	private int zugzeit = 1000;													// Gibt die Zugzeit in ms an
+	private char xodero = 'x';													// Gibt an, ob Spieler x oder o ist
+	private String fileString = new String();									// File fuer die Dateischnittstelle
 	
 	/** Variablendeklaration und default -initialisierung der Pusher Credentials */	
 	private String appId="255967";
@@ -62,44 +62,38 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	private String appSecret="66b722950915220b298c";
 	
 	/** Variablendeklaration und -initialisierung der Spielerbelegung */
-	// Spielernamen
-	private static String names1;
-	private static String names2;
-	// Spieler fuer das automatische Spiel
-	public static char spieler = 'x'; 		
-	public char gegner = 'o';
-	// Spieler fuer das manuelle Spiel
-	public char manuellerSpieler= 'x';
+	private static String names1;												// Spielername Spieler (wir)
+	private static String names2;												// Spielername Gegner
+	
+	public static char spieler = 'x'; 											// Spieler fuer das automatische Spiel
+	public char gegner = 'o';													// Gegner fuer das automatische Spiel
+	
+	public char manuellerSpieler= 'x';											// Spieler fuer das manuelle Spiel
 	
 	/** Groeßen- und Laengeneinheiten */
-	// Seitenlaenge der Grids
-	private final int l = 70; 				
-	// Breite des geoeffneten Fensters in Double
-	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;
-	private boolean fullscreen = true;
+	private final int l = 70; 													// Seitenlaenge der Grids
+	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;	// Breite des geoeffneten Fensters in Double
+	private boolean fullscreen = true;											// Fuer einfaches Umstellen auf Fullscreen
 	
-	/** Defaultbelegung des Themas fuer die Verknuepfung mit der CSS-Datei */
+	/** Defaultbelegung des Themas fuer die jeweilige Verknuepfung mit der CSS-Datei */
 	private static int thema = 1;
 	
-	/*Darzustellende Informationen */
-	private Text spielstand = new Text("0 : 0");
-	private Text satzstatus = new Text("Spiel noch nicht begonnen");
-	// Deklarieren des Hauptspielfelds
-	public GridPane spielfeld = new GridPane();
-	// Deklarieren des Spielfelds fuer die bereits gespielten Spiele
-    public GridPane spielfeld2 = new GridPane();
-	// Variable fuer die Farbe des Spielfelds
-    public Color color = Color.rgb(0, 0, 0);
+	/**Darzustellende Informationen */
+	private Text spielstand = new Text("0 : 0");								// Belegung mit Default Werten
+	private Text satzstatus = new Text("Spiel noch nicht begonnen");			// Belegung mit Default Werten
+	public GridPane spielfeld = new GridPane();									// Deklarieren des Hauptspielfelds
+    public GridPane spielfeld2 = new GridPane();								// Deklarieren des Spielfelds fuer die bereits gespielten Spiele
+    public Color color = Color.rgb(0, 0, 0);									// Variable fuer die Farbe des Spielfelds
     
-    // Deklarieren der Variablen fuer die Methode bisherigeSpiele()
-    static Spiele selectedGame;
-	static String personX;
-	private final TableView<Spiele> table = new TableView<>();
-	private ConnectHSQL db = new ConnectHSQL();
-	private String[][] alleGames = db.getLastTenGames();
+    /** Deklarieren der Variablen fuer die Methode bisherigeSpiele()*/
+    static Spiele selectedGame;													// Das in der Tabelle ausgewaehlte Spiel
+	static String personX;														// Person, die den Zug gemacht hat
+	private final TableView<Spiele> table = new TableView<>();					// Tabellenansicht der Spiele
+	private ConnectHSQL db = new ConnectHSQL();									// Verknuepfung mit der Datenbank
+	private String[][] alleGames = db.getLastTenGames();						// Array fuer die letzten 10 Spiele
     private final ObservableList<Spiele> items = FXCollections.observableArrayList();
 	
-	//Erzeugen der Spielsteine
+	/**Erzeugen der verschiedenen Spielsteine*/
     public javafx.scene.image.Image image1 = new javafx.scene.image.Image(getClass().getResource("kuerbis.png").toExternalForm());
 	public javafx.scene.image.Image image2 = new javafx.scene.image.Image(getClass().getResource("fledermaus.png").toExternalForm());
     public javafx.scene.image.Image image3 = new javafx.scene.image.Image(getClass().getResource("spielstein_grau.png").toExternalForm());
@@ -112,9 +106,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
     
-    
-    
-    // Getter und Setter Methoden
+    /**Getter und Setter Methoden*/
     public void setSatzstatus(String satzstatus) {this.satzstatus.setText(satzstatus);}
 	public void setSpielstand(String spielstand) {this.spielstand.setText(spielstand);}
     public void setZugzeit(int zugzeit) {this.zugzeit = zugzeit;}
@@ -144,7 +136,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	public char getXodero() {return xodero;}
 
 	/*********************************************************************************************************************
-	 ******************************************* START METHODE *********************************************************
+	 ******************************************* START METHODE ***********************************************************
 	 ********************************************************************************************************************/
 	
 	public void start(Stage primaryStage) {
@@ -613,7 +605,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 					if(spieler == 'x'){
 						gegner = 'o';
 					}else{gegner = 'x';}
-					createGrids();}
+					createGrids(spielfeld);}
 				
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
 				Thread t1 = new Thread(){
@@ -683,7 +675,10 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 					gegner = 'o';
 				}else{gegner = 'x';}
 				
-				createGrids();
+				if(spielmodus.getValue()==2){
+					createGrids_automatisch(spielfeld);
+				}else{createGrids(spielfeld);}
+				
 				}
 		});
 		/*********************** BEREITS GESPIELTE SPIELE *****************************/
@@ -719,7 +714,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							i2.setImage(gruen);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());
-							createGrids();
+							if(spielmodus.getValue()==2){
+								createGrids_automatisch(spielfeld);
+							}else{createGrids(spielfeld);}
 							thema = 4;
 						}
 			        });
@@ -747,7 +744,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							setImage2(fledermaus);
 							i1.setImage(kuerbis);
 							i2.setImage(fledermaus);
-							createGrids();
+							if(spielmodus.getValue()==2){
+								createGrids_automatisch(spielfeld);
+							}else{createGrids(spielfeld);}
 							thema = 1;
 						}
 			        });
@@ -775,7 +774,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							setImage2(burger);
 							i1.setImage(pizza);
 							i2.setImage(burger);
-							createGrids();
+							if(spielmodus.getValue()==2){
+								createGrids_automatisch(spielfeld);
+							}else{createGrids(spielfeld);}
 							thema = 2;
 						}
 			        });
@@ -802,7 +803,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							setImage2(baseball);
 							i1.setImage(basketball);
 							i2.setImage(baseball);
-							createGrids();
+							if(spielmodus.getValue()==2){
+								createGrids_automatisch(spielfeld);
+							}else{createGrids(spielfeld);}
 							thema = 3;
 						}
 			        });
@@ -908,25 +911,19 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		createSpielfeld(spielfeld2);
 		
 		// manuell
-		if(spielmodus.getValue() == 1 ){
-			createGrids();
-		}
-				
+		if(spielmodus.getValue() == 1 ){ createGrids(spielfeld);}
 		// automatisch
-		if(spielmodus.getValue() == 2){
-			createGrids_automatisch(spielfeld);
-		}
+		if(spielmodus.getValue() == 2){createGrids_automatisch(spielfeld);}
 		
 		loginStage.show();
 		
 	}
-	/*********************************************************************************************************************
-	 *********************************************************************************************************************
-	 **********************************************************************************************************************
-	 *********************************************************************************************************************
-     *******************************************  SPIELFELD ERZEUGEN METHODE  ********************************************
-     ********************************************************************************************************************/
 	
+	/*********************************************************************************************************************
+	 ******************************************* SPIELFELD METHODEN ******************************************************
+	 ********************************************************************************************************************/
+	
+	/******************************* Erzeugt die Zeilen und Spalten der GridPane ****************************************/
 	public void createSpielfeld(GridPane spielfeldGrid){
 		spielfeldGrid.setId("spielfeld");
 		// Erzeugen der Spalten (7)
@@ -941,78 +938,161 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				new RowConstraints(l, l, Double.MAX_VALUE));
 	}
 	
-	public static void setCSS(Scene scene){
-		scene.getStylesheets().clear();
-		if(thema == 1){ scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){ scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-	}
-	
-	public void changeSpielmodus(Number newValue, Button einstellungen, Button start, Slider spielmodus){
-		/** bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt*/
-    	if(newValue.intValue() == 2){		
-    		einstellungen.setOpacity(1);
-    		einstellungen.setDisable(false);
-    		start.setOpacity(1);
-    		start.setDisable(false);
-    		createGrids_automatisch(spielfeld);		// Das Spielfeld wird erzeugt (Grid nicht clickbar)
-    	}
-    	/** bei manuellem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder ausgeblendet*/
-    	if(newValue.intValue() == 1){
-    		einstellungen.setOpacity(0);
-    		einstellungen.setDisable(true);
-    		start.setOpacity(0);
-    		start.setDisable(true);
-    		createGrids();							// Das Spielfeld wird erzeugt (Grid clickbar)
-    	}
-    	/** bei manuellem Spiel gegen die KI wird eine Meldung ausgegeben*/
-    	if(newValue.intValue()==0){
-    		
-    		final Stage notImpl = new Stage();
-    		notImpl.setTitle("Noch nicht Implementiert");
-    		notImpl.initModality(Modality.APPLICATION_MODAL);
-    		notImpl.initOwner(primaryStage);
-	        
-	        Label msg = new Label();
-	        msg.setText("Diese Funktion wurde noch nicht implementiert. Bitte waehle einen anderen Spielmodus.");
-	        msg.setWrapText(true);
-	        
-	        Button manuell = new Button("Manuell");
-	        manuell.setOnMouseClicked(new EventHandler<MouseEvent>(){
-	        	@Override
-	        	public void handle(MouseEvent arg0){
-	        		spielmodus.setValue(1);
-	        		notImpl.close();
-	        	}
-	        });
-	        
-	        Button auto = new Button("Automatisch");
-	        auto.setOnMouseClicked(new EventHandler<MouseEvent>(){
-	        	@Override
-	        	public void handle(MouseEvent arg0){
-	        		spielmodus.setValue(2);
-	        		notImpl.close();
-	        	}
-	        });
-	      
-	        HBox hb = new HBox();
-	        hb.getChildren().addAll(manuell, auto);
-	        hb.setAlignment(Pos.BASELINE_CENTER);
-	        hb.setSpacing(20);
-	        
-	        VBox vb = new VBox(20);
-	        vb.setPadding(new Insets(10, 10, 10, 10)); 
-	        vb.getChildren().addAll(msg, hb);
-	        
-	        Scene themaScene = new Scene(vb, 500, 200);
-	        setCSS(themaScene);
-	   
-	        notImpl.setScene(themaScene);
-	        notImpl.show();  
-    	}
-	}
-	
+	/*********************************** Belegung der GridPane mit Feldelementen ****************************************/   
+	public void createGrids_automatisch(GridPane spielfeld){
+	    	spielfeld.getChildren().clear();
+	    	
+	        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+	            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+	            
+	            // Darstellung des Rahmens/ der Zellen    
+	            Rectangle rect = new Rectangle(l,l);
+	            Circle circ = new Circle((l/2)-5);
+	            circ.centerXProperty().set(l/2);
+	            circ.centerYProperty().set(l/2);
+	            Shape cell = Path.subtract(rect, circ);
+	            cell.setId("cell");
+	            cell.setFill(color);
+	            cell.setStroke(color.darker());
+	            
+	            // Ansicht der Spielsteine
+	            ImageView spielstein = new ImageView(image1);
+	            spielstein.setImage(image1);
+	            spielstein.setId("spielstein" + anzahlspalten);
+	            spielstein.setFitWidth(l-10);
+	            spielstein.setPreserveRatio(true);  
+	            
+	            // Vorschau der Spielsteine
+	            ImageView vorschauspielstein = new ImageView(image3);
+	            vorschauspielstein.setFitWidth(l-10);
+	            vorschauspielstein.setPreserveRatio(true); 
+	            vorschauspielstein.setOpacity(0.5);
+	            
+	            spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+	            
+	            // Zellen werden gefuellt
+	            StackPane stack = new StackPane();
+	            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+	            spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
+	            }
+	         }
+	    }
+
+	/************************* Belegung der GridPane mit Feldelementen und MouseEvents **********************************/
+	public void createGrids(GridPane spielfeld){
+	    	spielfeld.getChildren().clear();
+	    	
+	        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
+	            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
+	            
+	            // Darstellung des Rahmens/ der Zellen    
+	            Rectangle rect = new Rectangle(l,l);
+	            Circle circ = new Circle((l/2)-5);
+	            circ.centerXProperty().set(l/2);
+	            circ.centerYProperty().set(l/2);
+	            Shape cell = Path.subtract(rect, circ);
+	            cell.setId("cell");
+	            cell.setFill(color);
+	            cell.setStroke(color.darker());
+	           
+	            // Ansicht der Spielsteine
+	            ImageView spielstein = new ImageView(image1);
+	            spielstein.setImage(image1);
+	            spielstein.setId("spielstein" + anzahlspalten);
+	            spielstein.setFitWidth(l-10);
+	            spielstein.setPreserveRatio(true);  
+	            
+	            // Vorschau der Spielsteine
+	            ImageView vorschauspielstein = new ImageView(image3);
+	            vorschauspielstein.setImage(image1);
+	            vorschauspielstein.setFitWidth(l-10);
+	            vorschauspielstein.setPreserveRatio(true); 
+	            vorschauspielstein.setOpacity(0.5);
+	            
+	            /*******************************************************************************************************************
+	             *******************************************  ANZEIGE IM SPIELFELD  ************************************************
+	             *******************************************************************************************************************/ 
+	            
+	        	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
+	               vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
+	                   @Override
+	                   public void handle(MouseEvent arg0) {
+	                       if(manuellerSpieler=='x'){vorschauspielstein.setImage(image1);      
+	                       }else{vorschauspielstein.setImage(image2);}
+	                   }
+	               });
+	               
+	               // Beim Verlassen des Vorschau-Spielsteins erscheint wieder der graue Hintergrund
+	                vorschauspielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
+	                   @Override
+	                   public void handle(MouseEvent arg0) {
+	                       vorschauspielstein.setImage(image3);
+	                   }
+	               });
+	                
+	               spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
+	            
+	               // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
+	               spielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
+	               @Override
+	                   public void handle(MouseEvent arg0) {
+	                       vorschauspielstein.setImage(image3);
+	                       if(manuellerSpieler=='x'){ vorschauspielstein.setImage(image1);
+	                       }else{vorschauspielstein.setImage(image2); }
+	                   }
+	               });
+	               
+	               // Beim Verlassen des Spielsteins erscheint wieder der graue Hintergrund
+	              spielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
+	                   @Override
+	                   public void handle(MouseEvent arg0) {
+	                        vorschauspielstein.setImage(image3);
+	                   }
+	               });
+	              
+	              // Setzen der Spielsteine
+	              spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	                   @Override public void handle(MouseEvent arg0) { 
+	                	   if(manuellerSpieler == 'x'){
+	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   manuellerSpieler = 'o';
+	                	   }else{
+	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   manuellerSpieler = 'x';
+	                	   }
+	                   }
+	               });
+	              
+	               // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
+	               vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	                   @Override public void handle(MouseEvent arg0) {
+	                	   if(manuellerSpieler == 'x'){
+	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   manuellerSpieler = 'o';
+	                	   }else{
+	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   manuellerSpieler = 'x';
+	                	   }
+	                   }
+	               });
+	           
+	            /*******************************************************************************************************************
+	             *******************************************  ZELLEN FUELLEN  ******************************************************
+	             *******************************************************************************************************************/
+	            // Zellen werden gefuellt
+	            StackPane stack = new StackPane();
+	            vorschauspielstein.setImage(image3);                         		// Hintergrund grau
+	            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
+	            spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
+	            }
+	        }
+	    }
+		
+	/*********************************************************************************************************************
+	 ******************************************* NEUE STAGES METHODEN ****************************************************
+	 ********************************************************************************************************************/
+
+	/********************************** Anzeige der 10 zuletzt gespielten Spiele ****************************************/
 	public void bisherigeSpiele(){
 		
 		// neue Stage
@@ -1173,6 +1253,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         spieleStage.show();	
 		}
 		
+	/************************** Abfrage, ob das Fenster wirklich geschlossen werden soll ********************************/
 	public void onCloseEvent(){
 		final Stage close = new Stage();
     	close.setTitle("Schliessen");
@@ -1181,15 +1262,17 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         
     	VBox vbox = new VBox(20);
     	HBox hbox = new HBox();
-    	Label nachricht = new Label();
+    	Label nachricht = new Label("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
     	Button beenden = new Button("Beenden");
         Button abbrechen = new Button("Abbrechen");
-    	
-        vbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        vbox.getChildren().addAll(nachricht, hbox);
         hbox.getChildren().addAll(beenden, abbrechen);
+        
+        vbox.setPadding(new Insets(10, 10, 10, 10));                
+        
         hbox.setAlignment(Pos.BASELINE_CENTER);
         hbox.setSpacing(20);
-        nachricht.setText("Wollen Sie wirklich beenden? Angefangene Spiele werden NICHT gespeichert!");
         nachricht.setWrapText(true);
        
         abbrechen.setOnMouseClicked(new EventHandler<MouseEvent>(){
@@ -1206,13 +1289,13 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         	}
         });
        
-        vbox.getChildren().addAll(nachricht, hbox);
         Scene themaScene = new Scene(vbox, 500, 200);
         setCSS(themaScene);
         close.setScene(themaScene);
         close.show();
 	}
 	
+	/********************* Anzeige, dass ein Fehler bei der Pusher Connteciton aufgetreten ist **************************/
 	public void onConnectionError(){
 		// neue Stage
 		Platform.runLater(new Runnable() { 
@@ -1223,8 +1306,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         		connection.setTitle("Verbindungsfehler");
                 connection.initModality(Modality.APPLICATION_MODAL);
                 connection.initOwner(primaryStage);
-                VBox connectionVbox = new VBox(20);
-                connectionVbox.setPadding(new Insets(10, 10, 10, 10));                
+                     
                 
                 Label meldung = new Label();
                 meldung.setText("Der Pusher Server reagiert nicht, bitte Pusher Credentials in den Einstellungen ueberpruefen");
@@ -1236,62 +1318,61 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         				connection.close();
         			}
                 });
-                // Einfuegen in die VBox
+                
+                VBox connectionVbox = new VBox(20);
                 connectionVbox.getChildren().addAll(meldung, ok);
+                connectionVbox.setPadding(new Insets(10, 10, 10, 10)); 
+                
                 Scene connectionScene = new Scene(connectionVbox, 500, 800);
                 setCSS(connectionScene);
                 connection.setScene(connectionScene);
                 
                 connection.show();
-            	
             }
         });
 		
 	}
 	
+	/******************************** Anzeige, welcher Spieler den Satz gewonnen hat ************************************/
 	public void satzgewinner(char gewinner){
+		
 		satzstatus.setText("Satz beendet");
+		
 		// neue Stage
 		final Stage satz = new Stage();
 		satz.setTitle("Satzgewinner");
         satz.initModality(Modality.APPLICATION_MODAL);
         satz.initOwner(primaryStage);
-        VBox satzVbox = new VBox(20);
-        satzVbox.setPadding(new Insets(10, 10, 10, 10));                
         
         Label meldung = new Label();
-        
         if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(names1 + " hat den Satz gewonnen!");}
         else {meldung.setText(names2 + " hat den Satz gewonnen!");
 		}
         
-        // Einfuegen in die VBox
+        VBox satzVbox = new VBox(20);
         satzVbox.getChildren().addAll(meldung);
+        satzVbox.setPadding(new Insets(10, 10, 10, 10)); 
+        
         Scene dialogScene = new Scene(satzVbox, 500, 800);
         setCSS(dialogScene);
         
         satz.setScene(dialogScene);
+        
         PauseTransition delay = new PauseTransition(Duration.seconds(5));
         delay.setOnFinished( event -> satz.close() );
-       
         delay.play();
-        satz.show();
         
+        satz.show();
 	}
 	
-	
+	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
 	public static void gewinnermethode(char gewinner){
-		
-		Label gewinnernachricht = new Label();
 		
 		// neue Stage
 		final Stage gewinnerStage = new Stage();
 		gewinnerStage.setTitle("Gewinner");
 		gewinnerStage.initModality(Modality.APPLICATION_MODAL);
 		gewinnerStage.initOwner(primaryStage);
-        VBox gewinnerVbox = new VBox(20);
-        gewinnerVbox.setAlignment(Pos.CENTER);
-        gewinnerVbox.setPadding(new Insets(10, 10, 10, 10));                
         
         // Button zum Popup schliessen
         Button back = new Button("ok");
@@ -1302,205 +1383,115 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
             public void handle(MouseEvent arg0) {
      		   gewinnerStage.close();
         }});
+        Label gewinnernachricht = new Label();
         if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
 			gewinnernachricht.setText(names1 + " hat gewonnen!");
-		}else {		
-				gewinnernachricht.setText(names2 + " hat gewonnen!");
-			}
-        // Einfuegen in die VBox
-        gewinnerVbox.getChildren().addAll(gewinnernachricht, back);
-        Scene gewinnerScene = new Scene(gewinnerVbox, 800, 600);
-      
+		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}
+        
+        VBox vbox = new VBox(20);
+        vbox.getChildren().addAll(gewinnernachricht, back);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10, 10, 10, 10));  
+        
+        Scene gewinnerScene = new Scene(vbox, 800, 600);
         setCSS(gewinnerScene);
       
         gewinnerStage.setFullScreen(false);
         gewinnerStage.setScene(gewinnerScene);
-        gewinnerStage.show();	
-		
+        gewinnerStage.show();
 	}
 	
-
+	/************************************ Anzeigeanpassungen je nach Spielmodus *****************************************/
+	public void changeSpielmodus(Number newValue, Button einstellungen, Button start, Slider spielmodus){
+		/** bei automatischem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder angezeigt*/
+    	if(newValue.intValue() == 2){		
+    		einstellungen.setOpacity(1);
+    		einstellungen.setDisable(false);
+    		start.setOpacity(1);
+    		start.setDisable(false);
+    		createGrids_automatisch(spielfeld);		// Das Spielfeld wird erzeugt (Grid nicht clickbar)
+    	}
+    	/** bei manuellem Spiel werden die Buttons "Einstellungen" und "Spiel starten" wieder ausgeblendet*/
+    	if(newValue.intValue() == 1){
+    		einstellungen.setOpacity(0);
+    		einstellungen.setDisable(true);
+    		start.setOpacity(0);
+    		start.setDisable(true);
+    		createGrids(spielfeld);							// Das Spielfeld wird erzeugt (Grid clickbar)
+    	}
+    	/** bei manuellem Spiel gegen die KI wird eine Meldung ausgegeben*/
+    	if(newValue.intValue()==0){
+    		
+    		final Stage notImpl = new Stage();
+    		notImpl.setTitle("Noch nicht Implementiert");
+    		notImpl.initModality(Modality.APPLICATION_MODAL);
+    		notImpl.initOwner(primaryStage);
+	        
+	        Label msg = new Label();
+	        msg.setText("Diese Funktion wurde noch nicht implementiert. Bitte waehle einen anderen Spielmodus.");
+	        msg.setWrapText(true);
+	        
+	        Button manuell = new Button("Manuell");
+	        manuell.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	        	@Override
+	        	public void handle(MouseEvent arg0){
+	        		spielmodus.setValue(1);
+	        		notImpl.close();
+	        	}
+	        });
+	        
+	        Button auto = new Button("Automatisch");
+	        auto.setOnMouseClicked(new EventHandler<MouseEvent>(){
+	        	@Override
+	        	public void handle(MouseEvent arg0){
+	        		spielmodus.setValue(2);
+	        		notImpl.close();
+	        	}
+	        });
+	      
+	        HBox hb = new HBox();
+	        hb.getChildren().addAll(manuell, auto);
+	        hb.setAlignment(Pos.BASELINE_CENTER);
+	        hb.setSpacing(20);
+	        
+	        VBox vb = new VBox(20);
+	        vb.setPadding(new Insets(10, 10, 10, 10)); 
+	        vb.getChildren().addAll(msg, hb);
+	        
+	        Scene themaScene = new Scene(vb, 500, 200);
+	        setCSS(themaScene);
+	   
+	        notImpl.setScene(themaScene);
+	        notImpl.show();  
+    	}
+	}
 	
+	/*********************************************************************************************************************
+	 ******************************************* ZUM SPIELFELD ***********************************************************
+	 ********************************************************************************************************************/
 	
-    public void createGrids_automatisch(GridPane spielfeld){
-    	spielfeld.getChildren().clear();
-        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
-            
-            // Darstellung des Rahmens/ der Zellen    
-            Rectangle rect = new Rectangle(l,l);
-            Circle circ = new Circle((l/2)-5);
-            circ.centerXProperty().set(l/2);
-            circ.centerYProperty().set(l/2);
-            Shape cell = Path.subtract(rect, circ);
-            cell.setId("cell");
-            cell.setFill(color);
-            cell.setStroke(color.darker());
-            
-            /*******************************************************************************************************************
-             *******************************************  SPIELSTEINE  *********************************************************
-             *******************************************************************************************************************/            
-            
-            // Ansicht der Spielsteine
-            ImageView spielstein = new ImageView(image1);
-            spielstein.setImage(image1);
-            spielstein.setId("spielstein" + anzahlspalten);
-            spielstein.setFitWidth(l-10);
-            spielstein.setPreserveRatio(true);  
-            
-            // Vorschau der Spielsteine
-            ImageView vorschauspielstein = new ImageView(image3);
-            vorschauspielstein.setFitWidth(l-10);
-            vorschauspielstein.setPreserveRatio(true); 
-            vorschauspielstein.setOpacity(0.5);
-            
-            spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
-            
-            // Zellen werden gefuellt
-            StackPane stack = new StackPane();
-            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
-            spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-            }
-         }
-    }
-
-	public void createGrids(){
-    	spielfeld.getChildren().clear();
-        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
-            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
-            
-            // Darstellung des Rahmens/ der Zellen    
-            Rectangle rect = new Rectangle(l,l);
-            Circle circ = new Circle((l/2)-5);
-            circ.centerXProperty().set(l/2);
-            circ.centerYProperty().set(l/2);
-            Shape cell = Path.subtract(rect, circ);
-            cell.setId("cell");
-            cell.setFill(color);
-            cell.setStroke(color.darker());
-            
-            /*******************************************************************************************************************
-             *******************************************  SPIELSTEINE  *********************************************************
-             *******************************************************************************************************************/            
-            
-            // Ansicht der Spielsteine
-            ImageView spielstein = new ImageView(image1);
-            spielstein.setImage(image1);
-            spielstein.setId("spielstein" + anzahlspalten);
-            spielstein.setFitWidth(l-10);
-            spielstein.setPreserveRatio(true);  
-            
-            // Vorschau der Spielsteine
-            ImageView vorschauspielstein = new ImageView(image3);
-            vorschauspielstein.setImage(image1);
-            vorschauspielstein.setFitWidth(l-10);
-            vorschauspielstein.setPreserveRatio(true); 
-            vorschauspielstein.setOpacity(0.5);
-            
-            /*******************************************************************************************************************
-             *******************************************  ANZEIGE IM SPIELFELD  ************************************************
-             *******************************************************************************************************************/ 
-            
-        	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
-               vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                       if(manuellerSpieler=='x'){vorschauspielstein.setImage(image1);      
-                       }else{vorschauspielstein.setImage(image2);}
-                   }
-               });
-               
-               // Beim Verlassen des Vorschau-Spielsteins erscheint wieder der graue Hintergrund
-                vorschauspielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                       vorschauspielstein.setImage(image3);
-                   }
-               });
-                
-               spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
-            
-               // Spielsteine oberhalb des Spielfelds - Anzeige der Vorschau
-               spielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
-               @Override
-                   public void handle(MouseEvent arg0) {
-                       vorschauspielstein.setImage(image3);
-                       if(manuellerSpieler=='x'){ vorschauspielstein.setImage(image1);
-                       }else{vorschauspielstein.setImage(image2); }
-                   }
-               });
-               
-               // Beim Verlassen des Spielsteins erscheint wieder der graue Hintergrund
-              spielstein.setOnMouseExited(new EventHandler<MouseEvent>(){
-                   @Override
-                   public void handle(MouseEvent arg0) {
-                        vorschauspielstein.setImage(image3);
-                   }
-               });
-              
-              // Setzen der Spielsteine
-              spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override public void handle(MouseEvent arg0) { 
-                	   if(manuellerSpieler == 'x'){
-                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
-                		   manuellerSpieler = 'o';
-                	   }else{
-                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
-                		   manuellerSpieler = 'x';
-                	   }
-                	   
-                	   
-                	   }
-               });
-              
-               // Setzen der Spielsteine beim Klick auf die entsprechende Vorschau
-               vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
-                   @Override public void handle(MouseEvent arg0) {
-                	   if(manuellerSpieler == 'x'){
-                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
-                		   manuellerSpieler = 'o';
-                	   }else{
-                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
-                		   manuellerSpieler = 'x';
-                	   }
-                	   }
-               });
-           
-            /*******************************************************************************************************************
-             *******************************************  ZELLEN FUELLEN  ******************************************************
-             *******************************************************************************************************************/
-            // Zellen werden gefuellt
-            StackPane stack = new StackPane();
-            vorschauspielstein.setImage(image3);                         		// Hintergrund grau
-            stack.getChildren().addAll(cell, vorschauspielstein, spielstein);   // Fuellen der Zelle mit Rahmen, Vorschau oder Spielstein
-            spielfeld.add(stack, anzahlspalten, anzahlzeilen); 
-            }
-        }
-    }
-	
+	/****************************** Setzen des Spielsteins in der Farbe des Spielers ************************************/
     public void setSpielstein(int zeile, int spalte, char amZug){
     	satzstatus.setText("Satz spielen");
     	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))), amZug);
     }
     
+    /******************************** Anzeige des Spielsteins in der richtige Farbe *************************************/
     public void spielsteinAnzeigen(ImageView spielstein, char amZug){
     	if(spielstein.getTranslateY()!=0){ 
     		//spielstein.setTranslateY(-(l*(anzahlzeilen+1)));
             final TranslateTransition translateTransition = new TranslateTransition(Duration.millis(300), spielstein);
             translateTransition.setToY(0);				//Runterfallen der Steine
             translateTransition.play();
-            if(amZug=='x'){
-                spielstein.setImage(image1);
-                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);
-                
-            }else{
-                spielstein.setImage(image2);
-                System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);
-               
+            if(amZug=='x'){ spielstein.setImage(image1);
+                //System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);  
+            }else{ spielstein.setImage(image2);
+                //System.out.println((int)spielstein.getId().charAt(10)-48 + " " + amZug);
             }
         }
     }
     
+    /******************* Zugriff auf die Elemente in der GridPane an der jeweiligen Stelle ******************************/
     public StackPane getNodeByRowColumnIndex (final int row, final int column, GridPane spielfeld) {
         for (Node node : spielfeld.getChildren()) {
             if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
@@ -1509,6 +1500,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         } return null;
     }
     
+    /************* ImageView des ausgewaehlten Spielsteins zum veraendern des Spielsteinsymbols *************************/
     public ImageView getImageView (StackPane stack) throws NullPointerException {
     	try{
         ObservableList<Node> list = stack.getChildren();
@@ -1519,14 +1511,21 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     	}
     } 
     
-    
-	/*@Override
-	public void zugGespielt(int zug)
-	{
-		setSpielstein(plaetzeFreiInReihe[zug], zug);
-        plaetzeFreiInReihe[zug]--;
-        
-	}*/
+	
+	/*********************************************************************************************************************
+	 ******************************************* HILFSMETHODEN ***********************************************************
+	 ********************************************************************************************************************/
+  
+    /******************************** Auswahl der CSS-Date je nach aktuellem Thema **************************************/
+	public static void setCSS(Scene scene){
+		scene.getStylesheets().clear();
+		if(thema == 1){ scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
+        if(thema == 2){ scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
+        if(thema == 3){ scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
+        if(thema == 4){ scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
+	}
+ 
+	/********************************                                              **************************************/
 	@Override
 	public void zugGespielt(int zug, char amZug)
 	{
@@ -1535,21 +1534,24 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 	}
 	
+	/********************************                                              **************************************/
 	public void addNameListener(NameListener toAdd) {
 		NameListeners.add(toAdd);
 	}
 	
+	/********************************                                              **************************************/
 	public static void fireNames (String name1, String name2) {
 		for (NameListener name: NameListeners) {
 			name.startGame(name1, name2);
 		}
 	}
 	
+	/********************************                                              **************************************/
 	public void addParamListener(ParamListener toAdd){
 		listeners.add(toAdd);
 	}
 	
-	
+	/********************************                                              **************************************/
 	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung, 
 									  String AppID, String AppKey, String AppSecret){
 		for (ParamListener pl : listeners){
@@ -1557,10 +1559,12 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		}
 	}
 	
+	/********************************                                              **************************************/
 	public String getFileString(){
 		return fileString;
 	}
 	
+	/********************************                                              **************************************/
 	@Override
 	public void zugGespielt(char sieger) {
 		
@@ -1571,6 +1575,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		}
 	}
 	
+	/********************************                                              **************************************/
 	@Override
 	public void siegerAnzeigen(char sieger)
 	{	
