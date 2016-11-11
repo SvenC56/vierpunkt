@@ -330,10 +330,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 		// Einfuegen der Elemente in die mittlere Box
 		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
-				
-		
-		
-		
 		
 		/*********************************************************************************************************************
 		 ****************************************************************************************************
@@ -946,7 +942,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				new RowConstraints(l, l, Double.MAX_VALUE));
 	}
 	
-	public void setCSS(Scene scene){
+	public static void setCSS(Scene scene){
 		scene.getStylesheets().clear();
 		if(thema == 1){ scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
         if(thema == 2){ scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
@@ -1316,11 +1312,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         // Einfuegen in die VBox
         spieleVbox.getChildren().addAll(spieleLabel, table, hb);
         Scene spieleScene = new Scene(spieleVbox, 1200, 900);
-        if(thema == 1){ spieleScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ spieleScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){spieleScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ spieleScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-      
+        setCSS(spieleScene);
+       
         createGrids_automatisch(spielfeld2);
         spieleStage.setScene(spieleScene);
         //spieleStage.setFullScreen(true);
@@ -1363,12 +1356,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         // Einfuegen in die VBox
         vbox.getChildren().addAll(nachricht, hbox);
         Scene themaScene = new Scene(vbox, 500, 200);
-        
-        if(thema == 1){ themaScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ themaScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){ themaScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ themaScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-      
+        setCSS(themaScene);
         close.setScene(themaScene);
         close.show();
 	}
@@ -1399,12 +1387,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
                 // Einfuegen in die VBox
                 connectionVbox.getChildren().addAll(meldung, ok);
                 Scene connectionScene = new Scene(connectionVbox, 500, 800);
-                
-                if(thema == 1){ connectionScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-                if(thema == 2){ connectionScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-                if(thema == 3){connectionScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-                if(thema == 4){ connectionScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-              
+                setCSS(connectionScene);
                 connection.setScene(connectionScene);
                 
                 connection.show();
@@ -1430,21 +1413,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         else {meldung.setText(names2 + " hat den Satz gewonnen!");
 		}
         
-        
         // Einfuegen in die VBox
         satzVbox.getChildren().addAll(meldung);
         Scene dialogScene = new Scene(satzVbox, 500, 800);
+        setCSS(dialogScene);
         
-        if(thema == 1){ dialogScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ dialogScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ dialogScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-      
         satz.setScene(dialogScene);
         PauseTransition delay = new PauseTransition(Duration.seconds(5));
         delay.setOnFinished( event -> satz.close() );
        
-        
         delay.play();
         satz.show();
         
@@ -1481,12 +1458,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         // Einfuegen in die VBox
         gewinnerVbox.getChildren().addAll(gewinnernachricht, back);
         Scene gewinnerScene = new Scene(gewinnerVbox, 800, 600);
-        if(thema == 1){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());}
-        if(thema == 2){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());}
-        if(thema == 3){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());}
-        if(thema == 4){ gewinnerScene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
-       
-        
+      
+        setCSS(gewinnerScene);
+      
         gewinnerStage.setFullScreen(false);
         gewinnerStage.setScene(gewinnerScene);
         gewinnerStage.show();	
