@@ -208,13 +208,15 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		root.getChildren().addAll(menuBar, headerHBox, content);
 
 		/******************************************** CONTAINERBOXEN IN CONTENT ************************************************/
+		
+
+		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
 		// Erzeugen der rechten Containerbox
 		VBox vbRight = new VBox();
 		vbRight.setPrefWidth(breite / 4);
 		vbRight.setSpacing(10);
 		vbRight.setPadding(new Insets(50, 0, 0, 50));
-
-		/******* INHALTE DER RECHTEN CONTAINERBOX *********************/
+		
 		// Spielstand und Satzstatus anzeigen
 		Label spielstandanzeige = new Label("Spielstand: ");
 		spielstand.setId("text");
@@ -259,10 +261,53 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 				}
 			}
 		});
+		
+		Button start = new Button("Spiel starten");
+		
+		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
+		Rectangle platzhalter0 = new Rectangle(10, 40);
+		platzhalter0.setOpacity(0);
+
+		// Einfuegen der Elemente in die rechte Box
+		vbRight.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
+
 			
 		/******* INHALTE DER LINKEN CONTAINERBOX *********************/
+		// Erzeugen der linken Containerbox
+		VBox boxlinks = new VBox();
+		boxlinks.setId("boxlinks");
+		boxlinks.setPrefWidth(breite / 4);
+		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
+		
 		Button einstellungen = new Button("Einstellungen");
-		Button start = new Button("Spiel starten");
+		
+		/******* INHALTE DER MITTLEREN CONTAINERBOX *********************/
+		// Erzeugen der mittleren Containerbox
+		VBox boxmitte = new VBox();
+		boxmitte.setId("boxmitte");
+		boxmitte.setPrefWidth(7 * l);
+		boxmitte.setPadding(new Insets(30, 0, 50, 0));
+		boxmitte.setMinWidth(7 * l);
+		
+		Rectangle platzhalter1 = new Rectangle(7 * l, l);
+		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		
+		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
+		spielfeld.setId("spielfeld");
+		
+		// Erzeugen der Spalten (7)
+		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
+				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
+		// Erzeugen der Zeilen (6)
+		spielfeld.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
+				new RowConstraints(l, l, Double.MAX_VALUE));
+
+		// Einfuegen der Elemente in die mittlere Box
+		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
 				
 		/*********************** LISTENER *****************************/
 		spielstand.textProperty().addListener(new ChangeListener<String>() {
@@ -286,59 +331,20 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		    public void changed(ObservableValue<? extends Number> observable,
 		            Number oldValue, Number newValue) {
 		    	changeSpielmodus(newValue, einstellungen, start, spielmodus);
-
 		    }
 		});
 		
-		// Platzhalter, damit der nachfolgende Button weiter unten angeordnet wird
-		Rectangle platzhalter0 = new Rectangle(10, 40);
-		platzhalter0.setOpacity(0);
-
 		
-	
-		// Einfuegen der Elemente in die rechte Box
-		vbRight.getChildren().addAll(spielstandanzeige, spielstand, satzstatusanzeige, satzstatus, spielmodi, spielmodus, platzhalter0, start);
-
-		// Erzeugen der mittleren Containerbox
-		VBox boxmitte = new VBox();
-		boxmitte.setId("boxmitte");
-		boxmitte.setPrefWidth(7 * l);
-		boxmitte.setPadding(new Insets(30, 0, 50, 0));
-		boxmitte.setMinWidth(7 * l);
-
-		/******* INHALTE DER MITTLEREN CONTAINERBOX *********************/
-		Rectangle platzhalter1 = new Rectangle(7 * l, l);
-		platzhalter1.setOpacity(0); // Platzhalter nicht sichtbar
+		
 		
 		/*********************************************************************************************************************
-		 ******************************************* GRID FUER DAS SPIELFELD *********************************************************
+		 ******************************************* *********************************************************
 		 ********************************************************************************************************************/
 		
-		// Erzeugen eines GridPanes spielfeld im uebergeordneten GridPane grid
-		spielfeld.setId("spielfeld");
 		
-		
-		// Erzeugen der Spalten (7)
-		spielfeld.getColumnConstraints().addAll(new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE),
-				new ColumnConstraints(l, l, Double.MAX_VALUE), new ColumnConstraints(l, l, Double.MAX_VALUE));
-		// Erzeugen der Zeilen (6)
-		spielfeld.getRowConstraints().addAll(new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE), new RowConstraints(l, l, Double.MAX_VALUE),
-				new RowConstraints(l, l, Double.MAX_VALUE));
-				
-
-		// Einfuegen der Elemente in die mittlere Box
-		boxmitte.getChildren().addAll(platzhalter1, spielfeld);
 		
 		/******* INHALTE DER LINKEN CONTAINERBOX ************************/
-		// Erzeugen der linken Containerbox
-		VBox boxlinks = new VBox();
-		boxlinks.setId("boxlinks");
-		boxlinks.setPrefWidth(breite / 4);
-		boxlinks.setAlignment(Pos.BOTTOM_LEFT);
+		
 		
 		// login Felder
 		Label spieler1 = new Label("Spieler: ");
@@ -1490,7 +1496,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	}
 	
 	public void satzgewinner(char gewinner){
-		setSatzstatus("Satz beendet");
+		satzstatus.setText("Satz beendet");
 		// neue Stage
 		final Stage satz = new Stage();
 		satz.setTitle("Satzgewinner");
@@ -1728,7 +1734,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     }
 	
     public void setSpielstein(int zeile, int spalte, char amZug){
-    	setSatzstatus("Satz spielen");
+    	satzstatus.setText("Satz spielen");
     	spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(zeile, spalte, spielfeld))), amZug);
     }
     
