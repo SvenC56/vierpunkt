@@ -76,6 +76,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	private final int l = 70; 				
 	// Breite des geoeffneten Fensters in Double
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;
+	private boolean fullscreen = true;
 	
 	/** Defaultbelegung des Themas fuer die Verknuepfung mit der CSS-Datei */
 	private static int thema = 1;
@@ -605,7 +606,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         	}
         });
         
-        // Einfuegen in die VBox
         themaVbox.getChildren().addAll(nachricht, hbox);
         Scene themaScene = new Scene(themaVbox, 500, 200);
        
@@ -645,12 +645,19 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
  	    loginStage.setTitle("Spielernamen");
  	    loginStage.setFullScreen(false); 
     
+ 	    
+ 	    
+ 	    
+ 	    
+ 	    
+ 	    
+ 	    
        
 		// neues Spiel
 		menu00.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent e) {
 				primaryStage.setScene(scene);
-				// primaryStage.setFullScreen(true);
+				primaryStage.setFullScreen(fullscreen);
 				spieler = getXodero();
 				if(spieler == 'x'){
 					gegner = 'o';
@@ -682,7 +689,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							
 							changeTheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(false);
+							primaryStage.setFullScreen(fullscreen);
 							setColor(Color.PURPLE);
 							setImage1(orange);
 							setImage2(gruen);
@@ -710,7 +717,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							
 							changeTheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(false);
+							primaryStage.setFullScreen(fullscreen);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Halloween.css").toExternalForm());
 							setColor(Color.BLACK);
@@ -738,7 +745,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 							
 							changeTheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(false);
+							primaryStage.setFullScreen(fullscreen);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Food.css").toExternalForm());
 							setColor(Color.DARKGREEN);
@@ -765,7 +772,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 			            public void handle(MouseEvent arg0) {
 							changeTheme.close();
 							primaryStage.setScene(scene);
-							primaryStage.setFullScreen(false);
+							primaryStage.setFullScreen(fullscreen);
 							scene.getStylesheets().clear();
 							scene.getStylesheets().add(TestGui.class.getResource("Sport.css").toExternalForm());
 							setColor(Color.CADETBLUE);
