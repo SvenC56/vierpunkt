@@ -75,8 +75,8 @@ public class Turn {
 			this.match.setCurrentPlayer(this.match.getGame().getPlayer(1));
 		}
 	 if (this.match.getMatchWinner() == null || !this.match.getEven())	{
-		 this.y = this.match.validPosition(x);
 		 this.x = x;
+		 this.y = this.match.validPosition(this.x);
 		 if (this.y != -1) {
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
@@ -111,11 +111,12 @@ public class Turn {
 		}
 		else {
 		 this.x = ki.calcMove(this.match, this.depth);
-		}
-		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
+		 if (this.x == -1) {
+			this.x = this.setValidRandomTurn(this.x);
+		}}
 		System.out.println("Unsere KI empfiehlt: " + this.x);
+		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		this.y = this.match.validPosition(x);
-		if (this.y != -1) {
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
@@ -132,8 +133,6 @@ public class Turn {
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
 		return this.x;
-		}
-		return -1;
 	}
 	
 	public void addGameWinnerListener (GameWinnerListener toAdd) {
@@ -144,6 +143,13 @@ public class Turn {
 		for(GameWinnerListener gwl : GameWinnerListeners){
 			gwl.gewinnermethode(gewinnerName);
 		}
+	}
+	
+	public int setValidRandomTurn(int x) {
+		  while (this.match.validPosition(x)== -1) {
+			 x = (int) (Math.random()*7);
+		  }
+		 return x;
 	}
 	
 }
