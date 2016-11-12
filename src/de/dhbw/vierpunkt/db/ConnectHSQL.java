@@ -9,6 +9,10 @@ package de.dhbw.vierpunkt.db;
 
 import java.io.File;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
+
+import com.sun.org.apache.xerces.internal.xs.StringList;
 
 public class ConnectHSQL {
 	/**
@@ -77,24 +81,30 @@ public class ConnectHSQL {
 	 **/
 	public String[][] saveResult(ResultSet result) {
 		try {
-			int row = 0; // Zeilenwert
-			ResultSet temp = result;
-			while (temp.next()) {
-				row++;
-			}
-			temp.close();
-			row = 13;
-			String[][] returnStatements = new String[row][result.getMetaData().getColumnCount()];
+
+			List<String> list = new LinkedList<String>();
 			int y = 0;
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
 				for (int column = 1; column <= maxColumns; column++) {
-					returnStatements[y][(column - 1)] = result.getString(column);
+					list.add(result.getString(column));
 				}
 				y++; // hochzaehlen des Zeilenwerts
 			}
+			String[][] returnStatements = new String[list.size() / result.getMetaData().getColumnCount()][result
+					.getMetaData().getColumnCount()];
+			int row = 0;
+			int x = 0;
+			while (row < (list.size() / result.getMetaData().getColumnCount())) {
+				for (int column = 0; column < result.getMetaData().getColumnCount(); column++) {
+					returnStatements[row][column] = (String) list.get(x);
+					x++;
+				}
+				row++; // hochzaehlen des Zeilenwerts
+			}
 			return returnStatements;
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -162,7 +172,7 @@ public class ConnectHSQL {
 			if (transformStringToInt(lastGID) == transformStringToInt(failGID)) {
 				System.err.println("Das " + (transformStringToInt(matchnumber) + 1) + ". Match mit der GameID "
 						+ failGID + " war unvollstaendig.");
-				return save10Result(executeSQL("SELECT * FROM TURN WHERE M_ID = " + failMID));
+				return saveResult(executeSQL("SELECT * FROM TURN WHERE M_ID = " + failMID));
 			}
 
 		} catch (SQLException e) {
