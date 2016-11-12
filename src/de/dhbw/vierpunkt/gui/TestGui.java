@@ -700,7 +700,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 					createGrids(spielfeld);}					// Spielfeld leer mit MouseEvents
 				
 				// Uebergabe der Parameter an das PusherInterface
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+				fireParamEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
 				Thread t1 = new Thread(){
 					@Override
 					public void run(){
@@ -1613,7 +1613,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     	}
     } 
     
-	
+
 	/*********************************************************************************************************************
 	 ******************************************* HILFSMETHODEN ***********************************************************
 	 ********************************************************************************************************************/
@@ -1627,7 +1627,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         if(thema == 4){ scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
 	}
  
-	/********************************                                              **************************************/
+	/******************************** Der vom Interface empfangene Zug wird dem GUI uebergeben und auf dem Spielfeld dargestellt  **************************************/
 	@Override
 	public void zugGespielt(int zug, char amZug)
 	{
@@ -1636,25 +1636,25 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		
 	}
 	
-	/********************************                                              **************************************/
+	/******************************** Ermoeglicht das hinzufuegen von Listenern fuer NameEvents, dabei werden die bei der Anmeldung eingebenen Namen uebergeben  **************************************/
 	public void addNameListener(NameListener toAdd) {
 		NameListeners.add(toAdd);
 	}
 	
-	/********************************                                              **************************************/
+	/******************************** Das NameEvent wird getriggered und an die Listener verschickt  **************************************/
 	public static void fireNames (String name1, String name2) {
 		for (NameListener name: NameListeners) {
 			name.startGame(name1, name2);
 		}
 	}
 	
-	/********************************                                              **************************************/
+	/******************************** Ermoeglicht das hinzufuegen von Listenern fuer ParamEvents, dabei werden die in den Einstellungen festgelegten Werte uebergeben **************************************/
 	public void addParamListener(ParamListener toAdd){
 		listeners.add(toAdd);
 	}
 	
-	/********************************                                              **************************************/
-	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung, 
+	/********************************  Das ParamEvent wird getriggered und an die Listener verschickt  **************************************/
+	public static void fireParamEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung, 
 									  String AppID, String AppKey, String AppSecret){
 		for (ParamListener pl : listeners){
 			pl.startParameterAuswerten(Zugzeit, Schnittstelle, Kontaktpfad, spielerKennung, AppID, AppKey, AppSecret);
@@ -1666,18 +1666,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		return fileString;
 	}
 	
-	/********************************                                              **************************************/
-	@Override
-	public void zugGespielt(char sieger) {
-		
-		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
-		gewinnermethode(sieger);
-		for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-			plaetzeFreiInReihe[i]=5;
-		}
-	}
-	
-	/********************************                                              **************************************/
+
+	/******************************** Auf das GewinnerEvent wird reagiert indem die Satzgewinner-Methode aufgerufen wird und der Sieger als 'x' oder 'o' uebergeben wird **************************************/
 	@Override
 	public void siegerAnzeigen(char sieger)
 	{	
