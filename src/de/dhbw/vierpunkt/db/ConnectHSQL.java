@@ -77,18 +77,21 @@ public class ConnectHSQL {
 	 **/
 	public String[][] saveResult(ResultSet result) {
 		try {
-
 			int row = 0; // Zeilenwert
-			while (result.next()) {
+			ResultSet temp = result;
+			while (temp.next()) {
 				row++;
 			}
+			temp.close();
+			row = 13;
 			String[][] returnStatements = new String[row][result.getMetaData().getColumnCount()];
+			int y = 0;
 			while (result.next()) {
 				int maxColumns = result.getMetaData().getColumnCount();
 				for (int column = 1; column <= maxColumns; column++) {
-					returnStatements[row][(column - 1)] = result.getString(column);
+					returnStatements[y][(column - 1)] = result.getString(column);
 				}
-				row++; // hochzaehlen des Zeilenwerts
+				y++; // hochzaehlen des Zeilenwerts
 			}
 			return returnStatements;
 		} catch (SQLException e) {
@@ -108,11 +111,13 @@ public class ConnectHSQL {
 			int y = 0; // Zeilenwert
 			String[][] returnStatements = new String[10][result.getMetaData().getColumnCount()];
 			while (result.next()) {
-				int maxColumns = result.getMetaData().getColumnCount();
-				for (int i = 1; i <= maxColumns; i++) {
-					returnStatements[y][(i - 1)] = result.getString(i);
+				if (y < 10) {
+					int maxColumns = result.getMetaData().getColumnCount();
+					for (int column = 1; column <= maxColumns; column++) {
+						returnStatements[y][(column - 1)] = result.getString(column);
+					}
+					y++;
 				}
-				y++; // hochzaehlen des Zeilenwerts
 			}
 			return returnStatements;
 		} catch (SQLException e) {
@@ -123,13 +128,14 @@ public class ConnectHSQL {
 	}
 
 	/**
-	 * Diese Methode checkt ob es in der Laufzeit Probleme gab
+	 * Diese Methode checkt ob es in der Laufzeit Probleme gab.
 	 **/
-	public void catchWrongState() {
+	public String[][] catchWrongState() {
 		ResultSet result = executeSQL("SELECT G_ID FROM MATCH ORDER BY G_ID DESC LIMIT 1");
 		ResultSet result2 = executeSQL("SELECT * FROM MATCH WHERE SCORE IS NULL ORDER BY M_ID DESC LIMIT 1;");
 		String lastGID = "";
 		String failGID = "";
+		String failMID = "";
 		String matchnumber = "";
 		try {
 			while (result.next()) {
@@ -144,20 +150,41 @@ public class ConnectHSQL {
 					if (i == 1) {
 						failGID += result2.getString(i);
 					}
+					if (i == 2) {
+						failMID += result2.getString(i);
+					}
 					if (i == 3) {
 						matchnumber += result2.getString(i);
+					} else {
 					}
-					else{}
-				}
-				if (Integer.parseInt(lastGID) == Integer.parseInt(failGID)) {
-					System.err.println("Das " + (Integer.parseInt(matchnumber)+1) + ". Match mit der GameID " + failGID + " war unvollstaendig.");
-					
 				}
 			}
+			if (transformStringToInt(lastGID) == transformStringToInt(failGID)) {
+				System.err.println("Das " + (transformStringToInt(matchnumber) + 1) + ". Match mit der GameID "
+						+ failGID + " war unvollstaendig.");
+				return save10Result(executeSQL("SELECT * FROM TURN WHERE M_ID = " + failMID));
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Das letzte Spiel war okay.");
+		return null;
+	}
+
+	/**
+	 * Transformation von String ins Arrays. Geht nur bei Feldern, wo sicher ist
+	 * das nur Zahlen enthalten sind.
+	 **/
+	public int transformStringToInt(String number) {
+		if (number == null) {
+			return 0;
+		}
+		if (number == "") {
+			return 0;
+		}
+		return Integer.parseInt(number);
 	}
 
 	/**

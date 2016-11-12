@@ -59,17 +59,13 @@ public class PusherInterface implements Runnable, Observer
 	 * @see ServerStatus
 	 */
 	private static ServerStatus serverstatus = new ServerStatus("unchanged");
+	private static ZugStatus zugstatus = new ZugStatus(0);
 	
 	/**
 	 * Timer, der die Beobachtung des Serverstatus unterstuetzt
 	 */
-	private static Timer timer;
-	
-	/**
-	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
-	 */
-	private static int timervalue = 30;	
-	private static int incrementalVal = 0;
+	private static Timer serverTimer;
+	private static Timer zugTimer;
 	
 	
 	/**
@@ -77,6 +73,16 @@ public class PusherInterface implements Runnable, Observer
 	 */
 	public static int zugZeit = 1000;
 	
+	
+	/**
+	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
+	 */
+	private static int serverTimerValue = 30;
+	private static int zugTimerValue = zugZeit;
+	private static int incrementalVal = 0;
+	private static int incrementalVal2 = 0;
+	
+
 	
 	/**
 	 * Beim Start des Spiels wird festgelegt, ob der Spieler X oder O ist
@@ -94,6 +100,7 @@ public class PusherInterface implements Runnable, Observer
 	
 	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung, Game game){
 		this.zugZeit = zugZeit;
+		zugTimerValue = zugZeit;
 		this.MyAppID = AppID;
 		this.MyAppKey = AppKey;
 		this.MyAppSecret = AppSecret;
@@ -114,19 +121,30 @@ public class PusherInterface implements Runnable, Observer
 		// Die Pusher Klasse beobachtet den ServerStatus
 		serverstatus.addObserver(this);
 		// Der Timer wird initialisiert, alle 1000 Millisekunden wird der Wert des Timers um 1 verringert
-		timer = new Timer(1000, new ActionListener(){
+		serverTimer = new Timer(1000, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				timervalue--;
-				if (timervalue == 0){
+				serverTimerValue--;
+				if (serverTimerValue == 0){
 					// Wenn der Timer nicht dur ServerEvents neu gestartet wird, wird ein Absturz angenommen und folgender Code ausgefuehrt
 					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
 					fireServerConnectionErrorEvent();
-					timer.stop();
+					serverTimer.stop();
 					firstMessage = true;
 					}
 				}
 			});
 		
+		// Die Pusher Klasse beobachtet den SatzStatus
+		zugstatus.addObserver(this);
+		zugTimer = new Timer(200, new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				zugTimerValue = zugTimerValue - 200;
+				if (zugTimerValue == 0){
+					System.err.println("Die KI konnte waehrend der Zugzeit keinen Zug berechnen, ein Zufallszug wird gespielt");
+					zugTimer.stop();
+				}
+			}
+		});
 				
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
@@ -213,11 +231,12 @@ public class PusherInterface implements Runnable, Observer
 		        	
 		        // Spielstein wird in der GUI eingeworfen
 		        fireZugEvent(zug, gegnerKennung);
+		        System.out.println("In der GUI sollte angezeigt werden: Wurf in Spalte " + zug  + " von Spieler " + gegnerKennung);
 		        
 		        // Aktion des Servers wird registriert
 		        incrementalVal++;
 		        if (firstMessage == true){
-		        	timer.start();
+		        	serverTimer.start();
 		        	firstMessage = false;
 		        }
 		        serverstatus.setValueToWatch("changed" + incrementalVal);
@@ -231,6 +250,7 @@ public class PusherInterface implements Runnable, Observer
 		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
+		        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
 		        	// der Spielstein wird in der GUI eingeworfen
 		        	fireZugEvent(move, spielerKennung);
 		        }
@@ -242,18 +262,24 @@ public class PusherInterface implements Runnable, Observer
 		        	if (spielerKennung == 'x'){
 		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
 		        	}
+		        	try {
+		        	Thread.sleep(1000);
+		        	} catch (Exception e ){ e.getMessage();};
 		        	fireGewinnerEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
-		        	timer.stop();
+		        	serverTimer.stop();
 					firstMessage = true;
 		        	
 		        	// Wird aufgerufen wenn Spieler O gewinnt	
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	try {
+			        	Thread.sleep(1000);
+			        	} catch (Exception e ){ e.getMessage();};
 		        	fireGewinnerEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
-		        	timer.stop();
+		        	serverTimer.stop();
 					firstMessage = true;
 		        }
 		       			        
@@ -378,8 +404,8 @@ public class PusherInterface implements Runnable, Observer
 	@Override
 	public void update(Observable o, Object arg)
 	{
-		timervalue = 30;
-		System.out.println(arg);
+		serverTimerValue = 30;
+		//System.out.println(arg);
 	}
 
 }
