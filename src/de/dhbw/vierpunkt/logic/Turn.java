@@ -112,6 +112,7 @@ public class Turn {
 		else {
 		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		 this.x = ki.calcMove(this.match, this.depth);
+		 System.out.println("Unsere KI empfiehlt: " + this.x);
 		 if (this.x == -1) {
 			this.x = this.setValidRandomTurn(); 
 		 }
@@ -119,7 +120,6 @@ public class Turn {
 			 this.y = this.match.validPosition(x);
 			 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 }
-		System.out.println("Unsere KI empfiehlt: " + this.x);
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
 		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
