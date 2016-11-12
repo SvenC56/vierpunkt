@@ -12,6 +12,7 @@ public class Game implements NameListener {
 	/**************************************************************/
 	/******************* Attribute ********************************/
 	/**************************************************************/
+	private int GameID;
 	private int matchID;
 	private static final int PLAYER = 1;
 	private Player player[] = new Player[PLAYER+1];
@@ -83,6 +84,16 @@ public class Game implements NameListener {
 		void setMatchID(int matchID) {
 			this.matchID = matchID;
 		}
+		
+		public int getGameID() {
+			return GameID;
+		}
+
+
+
+		public void setGameID(int gameID) {
+			GameID = gameID;
+		}
 	
 	
 	/**************************************************************/
@@ -101,6 +112,7 @@ public class Game implements NameListener {
 		this.player[1].setIsOpponent(true);
 		this.winner = null;
 		db.createGame(name1, name2);
+		this.setGameID(db.getGameID());
 		startMatch();
 		
 		}
@@ -130,12 +142,13 @@ public class Game implements NameListener {
 		 
 	}
 	
-	int checkWinner() {
+	Player checkWinner() {
 		int count = 1;
 		for (int i = 0; i <= MATCHES; i++) {
 			if (this.match[i].winnerIs() != null || this.match[i].getEven()) {
 				count++;
 			}
+			
 		if (count == 3) {
 			if (this.player[0].getWins() <= 2 && this.player[1].getWins() >= 1) {
 				this.winner = player[0];
@@ -149,7 +162,7 @@ public class Game implements NameListener {
 			}
 		}
 		}
-		return count;
+		return this.winner;
 	}
 	
 	Player winnerIs() {
@@ -173,4 +186,5 @@ public class Game implements NameListener {
 			this.currentMatch.setCurrentPlayer(this.player[0]);
 		}
 	}
+	
 }
