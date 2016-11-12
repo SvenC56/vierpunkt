@@ -66,11 +66,12 @@ public class Turn {
 		if (this.turnNumber == 0) {
 			this.match.setCurrentPlayer(this.match.getGame().getPlayer(1));
 		}
-	 this.y = this.match.validPosition(x);
-	 this.x = x;
-	 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-	 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
-	 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
+	 if (this.match.getMatchWinner() == null || !this.match.getEven())	{
+		 this.y = this.match.validPosition(x);
+		 this.x = x;
+		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
+		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
 	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 		//Hier wird die Datenbank informiert und der Score gespeichert
 		 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
@@ -78,6 +79,7 @@ public class Turn {
 	 this.match.getGame().setNextPlayer();
 	 this.match.setTurnActive(false); 
 	 this.match.setNewTurn();
+	 }
 	} 
 	
 	
@@ -96,6 +98,7 @@ public class Turn {
 		else {
 		 x = ki.calcMove(this.match, this.depth);
 		}
+		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		int y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
@@ -108,6 +111,8 @@ public class Turn {
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
 		return x;
+		}
+		return -1;
 	}
 	
 }

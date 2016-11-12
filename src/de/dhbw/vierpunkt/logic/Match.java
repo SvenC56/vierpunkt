@@ -159,7 +159,7 @@ public class Match {
 		}
 		
 		public Player getCurrentPlayer() {
-			return currentPlayer;
+			return this.currentPlayer;
 		}
 
 		 void setCurrentPlayer(Player currentPlayer) {
@@ -221,11 +221,8 @@ public class Match {
 				for (int i = 0; i <= TURNS; i++) {
 					if (turn[i] == null) { //Sucht nach der naechsten freien Position im turn-Array
 						turn[i] = new Turn (i, this.currentPlayer, this); //legt neuen Turn an
-						System.out.println("Es wurde ein turn an stelle " + i +" gefunden"); //Kontrollausgabe
+						//System.out.println("Es wurde ein turn an stelle " + i +" gefunden"); //Kontrollausgabe
 						this.setTurnActive(true);
-						if (this.turnActive) {	//Kontrollausgabe
-							System.out.println("IS TRUE");
-						}
 						this.setMatchTurnNumber(i);	//setzt die aktuelle MatchTurnNumber (fuer getCurrentTurn())
 						return this.turn[i];
 					}
@@ -252,11 +249,6 @@ public class Match {
 	 Match getDemoMatch() {
 		Match match2 = this;
 //		match2.setCurrentPlayer(this.getCurrentPlayer());
-//		for (int x = 0; x <= COLUMN; x++) {
-//			for (int y = 0; y <= ROW; y++) {
-//				match2.setField(x, y, this.getFieldPlayer(x, y));
-//			}
-//		}
 		return match2;
 	}
 	
