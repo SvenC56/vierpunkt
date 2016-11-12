@@ -112,7 +112,7 @@ public class Turn {
 		else {
 		 this.x = ki.calcMove(this.match, this.depth);
 		 if (this.x == -1) {
-			this.x = this.setValidRandomTurn(this.x);
+			this.x = this.setValidRandomTurn();
 		}}
 		System.out.println("Unsere KI empfiehlt: " + this.x);
 		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
@@ -145,9 +145,9 @@ public class Turn {
 		}
 	}
 	
-	public int setValidRandomTurn(int x) {
+	public int setValidRandomTurn() {
 		  while (this.match.validPosition(x)== -1) {
-			 x = (int) (Math.random()*7);
+			 int x = (int) (Math.random()*7);
 		  }
 		 return x;
 	}
