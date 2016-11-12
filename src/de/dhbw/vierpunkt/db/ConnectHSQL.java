@@ -123,6 +123,44 @@ public class ConnectHSQL {
 	}
 
 	/**
+	 * Diese Methode checkt ob es in der Laufzeit Probleme gab
+	 **/
+	public void catchWrongState() {
+		ResultSet result = executeSQL("SELECT G_ID FROM MATCH ORDER BY G_ID DESC LIMIT 1");
+		ResultSet result2 = executeSQL("SELECT * FROM MATCH WHERE SCORE IS NULL ORDER BY M_ID DESC LIMIT 1;");
+		String lastGID = "";
+		String failGID = "";
+		String matchnumber = "";
+		try {
+			while (result.next()) {
+				int maxColumns = result.getMetaData().getColumnCount();
+				for (int i = 1; i <= maxColumns; i++) {
+					lastGID += result.getString(i);
+				}
+			}
+			while (result2.next()) {
+				int maxColumns = result2.getMetaData().getColumnCount();
+				for (int i = 1; i <= maxColumns; i++) {
+					if (i == 1) {
+						failGID += result2.getString(i);
+					}
+					if (i == 3) {
+						matchnumber += result2.getString(i);
+					}
+					else{}
+				}
+				if (Integer.parseInt(lastGID) == Integer.parseInt(failGID)) {
+					System.err.println("Das " + (Integer.parseInt(matchnumber)+1) + ". Match mit der GameID " + failGID + " war unvollständig.");
+					
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
 	 * uebermittlung eines Spiels in die DB
 	 **/
 	public void setGameDb(String Player1, String Player2) {
@@ -173,7 +211,8 @@ public class ConnectHSQL {
 	 */
 	public String[][] getLastTenGames() {
 		String[][] highscore = null;
-		highscore = save10Result(executeSQL("SELECT * FROM GAME  WHERE WINNER IS NOT NULL ORDER BY G_ID DESC LIMIT 10;"));
+		highscore = save10Result(
+				executeSQL("SELECT * FROM GAME  WHERE WINNER IS NOT NULL ORDER BY G_ID DESC LIMIT 10;"));
 		return highscore;
 	}
 
