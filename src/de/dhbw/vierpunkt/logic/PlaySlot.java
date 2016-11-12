@@ -15,6 +15,7 @@ public class PlaySlot {
 	}
 
 	public Player getOwnedBy() {
+
 		return ownedBy;
 	}
 

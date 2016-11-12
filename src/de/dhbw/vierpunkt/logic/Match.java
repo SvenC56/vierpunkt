@@ -464,27 +464,31 @@ public class Match {
 		 int cnt = 0;
 			if (player == 2) {
 			 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
-					 && ((field[y][x].getOwnedBy().getIsOpponent() == true) || (field[y][x].getOwnedBy() == null)) 
-					 && ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-					 && ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == true) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) 
-					 && ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == true) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+					 && ((field[y][x].getOwnedBy() == null) || (field[y][x].getOwnedBy().getIsOpponent() == true)) 
+					 && ((field[y+1*dy][x+1*dx].getOwnedBy() == null) || (field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true))
+					 && ((field[y+2*dy][x+2*dx].getOwnedBy() == null) || (field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == true)) 
+					 && ((field[y+3*dy][x+3*dx].getOwnedBy() == null) || (field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == true))) {
 					
 				 for (int i = 0; i < 4; i++) {
+					 if (field[y+i*dy][x+i*dx].getOwnedBy() != null) {
 					 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == true) {
 						 cnt++;
+					 }
 					 }
 				 }
 				}
 			} else if (player == 1) {
 				 if (		(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
-						 	&& ((field[y][x].getOwnedBy().getIsOpponent() == false) || (field[y][x].getOwnedBy() == null)) 
-						 	&& ((field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false) || (field[y+1*dy][x+1*dx].getOwnedBy() == null))
-							&& ((field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == false) || (field[y+2*dy][x+2*dx].getOwnedBy() == null)) 
-							&& ((field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == false) || (field[y+3*dy][x+3*dx].getOwnedBy() == null))) {
+						 	&& ((field[y][x].getOwnedBy() == null) || (field[y][x].getOwnedBy().getIsOpponent() == false)) 
+						 	&& ((field[y+1*dy][x+1*dx].getOwnedBy() == null) || (field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false))
+							&& ((field[y+2*dy][x+2*dx].getOwnedBy() == null) || (field[y+2*dy][x+2*dx].getOwnedBy().getIsOpponent() == false)) 
+							&& ((field[y+3*dy][x+3*dx].getOwnedBy() == null) || (field[y+3*dy][x+3*dx].getOwnedBy().getIsOpponent() == false))) {
 								
 							 for (int i = 0; i < 4; i++) {
+								 if (field[y+i*dy][x+i*dx].getOwnedBy() != null) {
 								 if (field[y+i*dy][x+i*dx].getOwnedBy().getIsOpponent() == false) {
 									 cnt++;
+								 }
 								 }
 							 }
 							}
