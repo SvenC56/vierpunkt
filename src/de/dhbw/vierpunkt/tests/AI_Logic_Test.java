@@ -70,7 +70,7 @@ public class AI_Logic_Test {
 	 * 
 	 * 
 	 * eine funktion die das match, game saved!
-	 * Wenn wir Daten vom Server bekommen (gegner)
+	 * Wenn wir Daten vom  bekommen (gegner)
 	 */
 		
 	int getCurrentPlayer() {
@@ -146,7 +146,7 @@ public class AI_Logic_Test {
 	/**
 	 * Prueft, ob ein Spieler gewonnen hat! Gibt einen int zurueck
 	 * @return
-	 * 1 --> Spieler 1 oder Server
+	 * 1 --> Spieler 1 oder 
 	 * 2 --> Spieler 2 oder Agent
 	 * 3 --> UNENTSCHIEDEN
 	 * 0 --> noch kein Gewinner
@@ -211,7 +211,7 @@ public class AI_Logic_Test {
 		    for (int x=0; x<7; x++) System.out.print("__");  System.out.println("_");
 		    for (int x=0; x<7; x++) System.out.print(" " + x);  System.out.println();
 		    System.out.println();
-		    System.out.println((this.currentPlayer==1 ? "Server" : "Agent") + " ist am Zug.");
+		    System.out.println((this.currentPlayer==1 ? "" : "Agent") + " ist am Zug.");
 		  }
 
 	 static int evaluate(GameLogic game) { // bewertet die Spielsituation
@@ -408,7 +408,53 @@ public class AI_Logic_Test {
 							if ((values[j] >= max) && (game.validPosition(j) != -1)) { // position is valid and current value is higher than old value
 								move = j; // currently the best move
 								max = values[j]; // currently the highest value
-							}
+								/**
+								 * KI Fallback: Sichergehen, dass dem Gegner in keinem Fall eine Vorlage gemacht wird
+								 * 				Sichergehen, dass wir in jedem Fall dem Gegner einen Sieg verbauen
+								 
+								if (isRow(game.field, 1, j, game.validPosition(j), 0, 1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, 0) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}	
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, 1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, -1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								}if (isRow(game.field, 1, j, game.validPosition(j), 0, 1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, 0) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}	
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, 1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								} else if (isRow(game.field, 1, j, game.validPosition(j), 1, -1) == 3) {
+									move = (int) Math.random()*7;
+									while (move == j) {
+										move = (int) Math.random()*7;
+									}
+								}
+								*/
+								}
 						}
 						System.out.println("move: " + move);
 						System.out.println("max: " + max);
@@ -439,9 +485,9 @@ public class AI_Logic_Test {
 
 			    int x;
 			    
-			    if (game.getCurrentPlayer() == 1) {      // Server ist dran
+			    if (game.getCurrentPlayer() == 1) {      //  ist dran
 		   
-			      System.out.print("Server ist dran              "
+			      System.out.print(" ist dran              "
 			      		+ "");
 			      System.out.println("eval" + evaluate(game));
 			      System.out.print("Enter column");
@@ -451,7 +497,7 @@ public class AI_Logic_Test {
 			    // x = (int) (Math.random()*7);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
-			      System.out.println("Server hat in Spalte gelegt " + x);
+			      System.out.println(" hat in Spalte gelegt " + x);
 			      System.out.println("Bewertung: " + evaluate(game));
 			      
 		      // Sieg?
@@ -459,7 +505,7 @@ public class AI_Logic_Test {
 			    	   test++;
 			    	  game.runInConsole();
 			    	  System.out.println(evaluate(game));
-			        System.out.println("Server hat gewonnen...");
+			        System.out.println(" hat gewonnen...");
 			        break;
 			      };
 			      
