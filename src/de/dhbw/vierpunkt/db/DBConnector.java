@@ -19,6 +19,7 @@ public class DBConnector {
 	}
 
 	/**
+	 * Loescht alle Eintraege eines Spiels aus der DB
 	 */
 	public void deleteGame(int G_ID, int M_ID){
 		db.deleteGame(G_ID, M_ID);

@@ -198,6 +198,7 @@ public class ConnectHSQL {
 	}
 
 	/**
+	 * Loescht alle Eintraege eines Spiels aus der DB
 	 */
 	public void deleteGame(int G_ID, int M_ID) {
 		executeSQL("DELETE FROM TURN WHERE M_ID= " + M_ID);
