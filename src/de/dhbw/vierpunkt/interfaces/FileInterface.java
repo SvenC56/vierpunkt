@@ -16,7 +16,9 @@ import javax.swing.Timer;
 import java.io.*;
 
 public class FileInterface implements Runnable, Observer {
-
+	/**
+	 * Initialisierung der Variablen
+	 */
 	public static String serverString ="";
 	public static int zug;
 	public static int move;
@@ -31,14 +33,17 @@ public class FileInterface implements Runnable, Observer {
 	public static String kontaktPfad = "C:\\FileInterface\\";
 	public static int zugZeit = 1000;
 	
-	
+	/**
+	 * Getter und Setter für Kontaktpfad
+	 * @return kontaktPfad
+	 */
 	public static String getKontaktPfad()	{
 		return kontaktPfad;
 	}
-
 	public static void setKontaktPfad(String kontaktPfad)	{
 		FileInterface.kontaktPfad = kontaktPfad;
 	}
+	
 	/**
 	 * Der zum Status des Servers zu beobachtende Wert
 	 * @see ServerStatus
@@ -82,10 +87,13 @@ public class FileInterface implements Runnable, Observer {
 	@Override
 	public void run()
 	{
+		// Das FileInterface beobachtet den ServerStatus 
 		serverstatus.addObserver(this);
+		// Der Timer wird initialisiert, alle 1000 Millisekunden wird der Wert des Timers um 1 verringert
 		timer = new Timer(1000, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				timervalue--;
+				// Wenn der Timer nicht dur ServerEvents neu gestartet wird, wird ein Absturz angenommen und folgender Code ausgefuehrt
 				if (timervalue == 0){
 					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
 					fireServerConnectionErrorEvent();
@@ -171,6 +179,7 @@ public class FileInterface implements Runnable, Observer {
 					} catch (InterruptedException e){e.getMessage();}
 						}catch (IOException e){e.getMessage();}
 			
+			// Wenn der serverString false enthaelt, ist das Match beendet und der uebergebene Spieler gewinnt.
 		} else if  (serverString.contains("false") && serverString.contains("Spieler X")){
 			System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
         	System.out.println("");
@@ -246,10 +255,19 @@ public class FileInterface implements Runnable, Observer {
 		return data;
 	}
 	
+	/**
+	 * Fuegt Listener fuer ZugeEvents hinzu
+	 * @param toAdd
+	 */
 	public void addListener(ZugListener toAdd){
 		listeners.add(toAdd);
 	}
 	
+	/**
+	 * Sendet ZugEvents an Listener
+	 * @param zug
+	 * @param spieler
+	 */
 	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug, spieler);
@@ -265,16 +283,29 @@ public class FileInterface implements Runnable, Observer {
 		}
 	}
 
+	/**
+	 * Fuegt GewinnerListener hinzu
+	 * @param toAdd
+	 */
 	public void addGewinnerListener(GewinnerListener toAdd){
 		gewinnerListeners.add(toAdd);
 	}
 	
+	/**
+	 * Sendet GewinnerEvents an GewinnerListener
+	 * @param sieger
+	 */
 	public static void fireGewinnerEvent(char sieger){
 		for (GewinnerListener gwl : gewinnerListeners){
 			gwl.siegerAnzeigen(sieger);
 		}
 	}
 	
+	/**
+	 * Hier wird der uebergebene Kontaktpfad in ein von Java interpretierbares Format ueberfuehrt. Bsp: C:\FileInterface wird zu C:\\FileInterface\\
+	 * @param kontaktpfad
+	 * @return kontaktpfad
+	 */
 	public static String getNewPath(String kontaktpfad){
 		
 		int stelleSlash = 0;
@@ -287,6 +318,9 @@ public class FileInterface implements Runnable, Observer {
 		return kontaktpfad;
 	}
 	
+	/**
+	 * Bei empfangen einer Nachricht vom Server wird der Timer zurueckgesetzt
+	 */
 	@Override
 	public void update(Observable o, Object arg)
 	{
