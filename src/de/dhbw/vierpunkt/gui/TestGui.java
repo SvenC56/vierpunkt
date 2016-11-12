@@ -1651,6 +1651,18 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		}
 	}
 	
+	public static void startManGame(String name1, String name2) {
+		for (NameListener game: NameListeners) {
+			game.startManGame(name1, name2);
+	}
+	}
+	
+	public static void setManTurn(String name, int x, int y) {
+		for (NameListener turn: NameListeners) {
+			turn.setManTurn(name, x, y);
+	}
+	}
+	
 	/********************************                                              **************************************/
 	public void addParamListener(ParamListener toAdd){
 		listeners.add(toAdd);

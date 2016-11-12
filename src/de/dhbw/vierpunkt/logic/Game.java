@@ -22,6 +22,7 @@ public class Game implements NameListener {
 	//maximale Anzahl Matches = 3
 	private static final int MATCHES = 2;
 	private Match match[] = new Match[MATCHES+1];
+	private Match manMatch;
 	
 	/**************************************************************/
 	/******************* KONSTRUKTOR *******************************/
@@ -105,6 +106,25 @@ public class Game implements NameListener {
 	 * (non-Javadoc)
 	 * @see de.dhbw.vierpunkt.logic.NameListener#startGame(java.lang.String, java.lang.String)
 	 **/
+		
+	public void startManGame(String name1, String name2) {
+		this.player[0] = new Player(name1);
+		this.player[1] = new Player(name2);
+		this.player[1].setIsOpponent(true);
+		manMatch = new Match(this, 0);
+
+	}
+	
+	/**
+	 * Startet manuellen Turn
+	 * @param name
+	 * @param x
+	 * @param y
+	 */
+	public void setManTurn(String name, int x, int y) {
+		this.manMatch.startManTurn(name, x, y);
+	}
+		
 	public void startGame(String name1, String name2) {
 		
 		this.player[0] = new Player(name1);

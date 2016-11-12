@@ -195,17 +195,27 @@ public class Match {
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
-//			
-//		public void startTurn() {
-//			while (!this.turnActive){
-//				setNewTurn();
-//				while (this.turnActive) {
-//			
-//				}
-//				
-//			}
-//				 
-//			}	
+	/**		
+	 * Setzt einen Zug im manuellen Spiel, ohne Pruefung und KI
+	 * @param name
+	 * @param x
+	 * @param y
+	 */
+		public void startManTurn(String name, int x, int y) {
+			if (this.getGame().getPlayer(0).getName() == name) {
+				this.setField(x, y, this.getGame().getPlayer(0));
+				
+			}
+			else if (this.getGame().getPlayer(0).getName() == name) {
+				this.setField(x, y, this.getGame().getPlayer(0));
+			}
+			if (this.checkWinner()!=null) {
+				this.setMatchWinner(this.checkWinner());
+				this.getGame().setWinner(matchWinner);
+				System.out.println("Gewonnen hat: " + this.getMatchWinner().getName());
+			}
+				 
+			}	
 		/**
 		 * Liefert den aktuellen Zug zurueck (fuer Interfaces)
 		 * @return
