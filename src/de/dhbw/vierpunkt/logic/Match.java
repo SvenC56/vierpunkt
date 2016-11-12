@@ -308,7 +308,7 @@ public class Match {
 	 /**
 	  * Ueberprueft ob ein Match-Winner existiert (Spiel gewonnen)
 	  */
-	 void checkWinner() {
+	 Player checkWinner() {
 			//pruefe nur, wenn move >= 4! Sonst ist kein Gewinn moeglich
 			if (this.getMatchTurnNumber() >= 7) {
 				
@@ -321,7 +321,14 @@ public class Match {
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
 					this.setMatchWinner(currentPlayer);
-					currentPlayer.setWins();
+					if (currentPlayer != this.getGame().getPlayer(0)){
+						this.getGame().getPlayer(0).setWins();
+						this.setMatchWinner(this.getGame().getPlayer(0));
+					}
+					else {
+						this.getGame().getPlayer(1).setWins();
+						this.setMatchWinner(this.getGame().getPlayer(1));
+					}
 					this.matchActive = false;
 					}
 				
@@ -334,8 +341,10 @@ public class Match {
 				if (counter == 7 && this.matchWinner== null) {
 						this.even = true;
 						this.matchActive = false;
+						return null;
 						}
 					}
+			return this.matchWinner;
 			}
 	 
 	

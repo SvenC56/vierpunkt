@@ -77,17 +77,16 @@ public class Turn {
 		 this.x = x;
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
-		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
-	 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
-		//Hier wird die Datenbank informiert und der Score gespeichert
-		 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
-		 if ( this.match.getGame().checkWinner() != null) {
-		 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
-		 //HIER KOMMT DIE UEBERGABE AN DIE GUI
-		
-		 fireGameWinnerEvent(this.match.getGame().checkWinner().getName());
+		 //Prueft auf Gewinner
+		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
+			 //Hier wird die Datenbank informiert und der Score gespeichert
+			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
+			 //Prueft auf Spielgewinner
+			 if ( this.match.getGame().checkWinner() != null) {
+				 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
+				 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
+				 }
 		 }
-	 }
 	 this.match.getGame().setNextPlayer();
 	 this.match.setTurnActive(false); 
 	 this.match.setNewTurn();
@@ -114,14 +113,14 @@ public class Turn {
 		this.y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
-		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
-		 if (this.match.getMatchWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
+		 //Prueft auf Gewinner
+		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 			 //Hier wird die Datenbank informiert und der Score gespeichert
 			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
+			 //Prueft auf Spielgewinner
 			 if ( this.match.getGame().checkWinner() != null) {
 				 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
-				 //HIER KOMMT DIE UEBERGABE AN DIE GUI
-				 fireGameWinnerEvent(this.match.getGame().checkWinner().getName());
+				 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 				 }
 		 }
 		 this.match.getGame().setNextPlayer();
