@@ -150,7 +150,7 @@ public class ConnectHSQL {
 					else{}
 				}
 				if (Integer.parseInt(lastGID) == Integer.parseInt(failGID)) {
-					System.err.println("Das " + (Integer.parseInt(matchnumber)+1) + ". Match mit der GameID " + failGID + " war unvollständig.");
+					System.err.println("Das " + (Integer.parseInt(matchnumber)+1) + ". Match mit der GameID " + failGID + " war unvollstaendig.");
 					
 				}
 			}
