@@ -105,7 +105,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
     public javafx.scene.image.Image baseball = new javafx.scene.image.Image(getClass().getResource("baseball.png").toExternalForm());
     public javafx.scene.image.Image orange = new javafx.scene.image.Image(getClass().getResource("spielstein_orange.png").toExternalForm());
     public javafx.scene.image.Image gruen = new javafx.scene.image.Image(getClass().getResource("spielstein_gruen.png").toExternalForm());
-    
+  
     /**Getter und Setter Methoden*/
     public void setSatzstatus(String satzstatus) {this.satzstatus.setText(satzstatus);}
 	public void setSpielstand(String spielstand) {this.spielstand.setText(spielstand);}
@@ -1424,7 +1424,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		gewinnerStage.setTitle("Gewinner");
 		gewinnerStage.initModality(Modality.APPLICATION_MODAL);
 		gewinnerStage.initOwner(primaryStage);
-        
+		
         // Button zum Popup schliessen
         Button back = new Button("ok");
         
@@ -1438,6 +1438,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
 			gewinnernachricht.setText(names1 + " hat gewonnen!");				// Name je nach Spieler oder Gegner
 		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}
+        
         
         VBox vbox = new VBox(20);
         vbox.getChildren().addAll(gewinnernachricht, back);
