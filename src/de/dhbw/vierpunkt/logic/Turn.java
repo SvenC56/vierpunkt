@@ -153,6 +153,7 @@ public class Turn {
 	 * @return
 	 */
 	public int setValidRandomTurn() {
+		System.out.println("HANDLE ERROR!");
 		int y=-1;
 		  while (y == -1) {
 			 int x = (int) (Math.random()*7);
