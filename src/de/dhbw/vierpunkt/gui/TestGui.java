@@ -73,7 +73,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	/** Groeßen- und Laengeneinheiten */
 	private final int l = 70; 													// Seitenlaenge der Grids
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;	// Breite des geoeffneten Fensters in Double
-	private boolean fullscreen = false;											// Fuer einfaches Umstellen auf Fullscreen
+	private boolean fullscreen = true;											// Fuer einfaches Umstellen auf Fullscreen
 	
 	/** Defaultbelegung des Themas fuer die jeweilige Verknuepfung mit der CSS-Datei */
 	private static int thema = 1;
@@ -461,6 +461,40 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 
 		// Einfuegen der Elemente in die linke Box
 		boxlinks.getChildren().addAll(spielerfarben, box3, p, einstellungen, bild, platzhalter2);
+		
+		/******* INHALTE DER CHANGETHEME STAGE ************************/
+		
+		Scene scene = new Scene(root);
+		
+		// changeTheme Stage
+		final Stage changeTheme = new Stage();						// Nachfrage, ob Theme wirklich gewechselt werden soll
+		changeTheme.setTitle("Themenwechsel");
+		changeTheme.initModality(Modality.APPLICATION_MODAL);
+		changeTheme.initOwner(primaryStage);
+        VBox themaVbox = new VBox(20);
+        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
+        
+        Label nachricht = new Label();
+        nachricht.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
+        nachricht.setWrapText(true);								// automatischer Textumbruch
+        Button open = new Button("Thema wechseln");					// Thema wird tatsaechlich gewechselt, je in den Themenmethoden
+        Button close = new Button("Abbrechen");						// altes Thema wird beibehalten
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(open, close);						// Anordnung der buttons nebeneinander
+        hbox.setAlignment(Pos.BASELINE_CENTER);
+        hbox.setSpacing(20);
+        
+        close.setOnMouseClicked(new EventHandler<MouseEvent>(){		// neue Stage wird wieder geschlossen
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		changeTheme.close();
+        	}
+        });
+        
+        themaVbox.getChildren().addAll(nachricht, hbox);
+        Scene themaScene = new Scene(themaVbox, 500, 200);
+       
+        changeTheme.setScene(themaScene);	
 
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, vbRight);		// Alle drei Container in den Content Teil einfuegen
@@ -602,6 +636,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
             public void handle(MouseEvent arg0) {
+				//satzgewinner(gegner);
 				if(spielmodus.getValue()==2){					// wenn Slider auf automatisch
 					spieler = getXodero();
 					if(spieler == 'x'){
@@ -640,40 +675,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		 *************************************************************************************************************
 		 *************************************************************************************************************/
 		
-		Scene scene = new Scene(root);
 		
-		// changeTheme Stage
-		final Stage changeTheme = new Stage();						// Nachfrage, ob Theme wirklich gewechselt werden soll
-		changeTheme.setTitle("Themenwechsel");
-		changeTheme.initModality(Modality.APPLICATION_MODAL);
-		changeTheme.initOwner(primaryStage);
-        VBox themaVbox = new VBox(20);
-        themaVbox.setPadding(new Insets(10, 10, 10, 10));                
-        
-        Label nachricht = new Label();
-        nachricht.setText("Das laufende Spiel wird abgebrochen, wenn das Thema gewechselt wird.");
-        nachricht.setWrapText(true);								// automatischer Textumbruch
-        Button open = new Button("Thema wechseln");					// Thema wird tatsaechlich gewechselt, je in den Themenmethoden
-        Button close = new Button("Abbrechen");						// altes Thema wird beibehalten
-        HBox hbox = new HBox();
-        hbox.getChildren().addAll(open, close);						// Anordnung der buttons nebeneinander
-        hbox.setAlignment(Pos.BASELINE_CENTER);
-        hbox.setSpacing(20);
-        
-        close.setOnMouseClicked(new EventHandler<MouseEvent>(){		// neue Stage wird wieder geschlossen
-        	@Override
-        	public void handle(MouseEvent arg0){
-        		changeTheme.close();
-        	}
-        });
-        
-        themaVbox.getChildren().addAll(nachricht, hbox);
-        Scene themaScene = new Scene(themaVbox, 500, 200);
-       
-        changeTheme.setScene(themaScene);	
-        
-        
-    
  	    /*********************** NEUES SPIEL *****************************/
 		menu00.setOnAction(new EventHandler<ActionEvent>(){			// je nach eingestelltem Spielmodus wird eine neue Grid erzeugt
 			@Override public void handle(ActionEvent e) {
@@ -1018,9 +1020,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	            vorschauspielstein.setPreserveRatio(true); 
 	            vorschauspielstein.setOpacity(0.5);								// Vorschau wird halbtransparent angezeigt
 	            
-	            /*******************************************************************************************************************
-	             *******************************************  ANZEIGE IM SPIELFELD  ************************************************
-	             *******************************************************************************************************************/ 
+	            /*******************************************  ANZEIGE IM SPIELFELD  ************************************************/ 
 	            
 	        	// Methode zur Vorschau - jeweiliger Spielstein wird angezeigt
 	               vorschauspielstein.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -1304,6 +1304,46 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         close.show();
 	}
 	
+	/********************* Anzeige, dass ein Fehler bei der Server Connteciton aufgetreten ist **************************/
+	public void onServerConnectionError(){
+	// neue Stage
+			Platform.runLater(new Runnable() { 
+	            @Override
+	            public void run() {
+	            	
+	            	final Stage serverConnection = new Stage();							// neue Stage als Popup
+	            	serverConnection.setTitle("Verbindungsfehler");
+	            	serverConnection.initModality(Modality.APPLICATION_MODAL);
+	            	serverConnection.initOwner(primaryStage);
+	                     
+	                
+	                Label meldung = new Label();
+	                meldung.setText("Der Server reagiert nicht, bitte das Spiel neu starten");
+	                meldung.setWrapText(true);
+	                Button ok = new Button("ok");										// Button der das popup schliesst
+	                
+	                ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
+	        			@Override
+	                    public void handle(MouseEvent arg0) {
+	        				serverConnection.close();									// Schliessen der Stage - zurueck zur Hauptstage
+	        			}
+	                });
+	                
+	                VBox serverVbox = new VBox(20);
+	                serverVbox.getChildren().addAll(meldung, ok);
+	                serverVbox.setPadding(new Insets(10, 10, 10, 10)); 
+	                serverVbox.setAlignment(Pos.CENTER);								// Anordnung in der Mitte
+	                
+	                Scene connectionScene = new Scene(serverVbox, 500, 800);
+	                setCSS(connectionScene);											// Style der Meldung je nach Thema
+	                serverConnection.setScene(connectionScene);				
+	                serverConnection.setFullScreen(false);
+	                
+	                serverConnection.show();											// Anzeigen der Stage
+	            }	
+			});
+	 }
+	
 	/********************* Anzeige, dass ein Fehler bei der Pusher Connteciton aufgetreten ist **************************/
 	public void onConnectionError(){
 		// neue Stage
@@ -1354,6 +1394,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         satz.initOwner(primaryStage);
         
         Label meldung = new Label();
+        meldung.setWrapText(true);
         if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(names1 + " hat den Satz gewonnen!");}
         else {meldung.setText(names2 + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
 		}
@@ -1371,6 +1412,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         delay.setOnFinished( event -> satz.close() );
         delay.play();
         
+        satz.setFullScreen(false);
         satz.show();
 	}
 	
