@@ -1444,8 +1444,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         
         Label meldung = new Label();
         meldung.setWrapText(true);
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(names1 + " hat den Satz gewonnen!");}
-        else {meldung.setText(names2 + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(getNames1() + " hat den Satz gewonnen!");}
+        else {meldung.setText(getNames1() + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
 		}
         
         VBox satzVbox = new VBox(20);
