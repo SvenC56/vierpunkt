@@ -84,8 +84,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	public GridPane spielfeld = new GridPane();									// Deklarieren des Hauptspielfelds
     public GridPane spielfeld2 = new GridPane();								// Deklarieren des Spielfelds fuer die bereits gespielten Spiele
     public Color color = Color.rgb(0, 0, 0);									// Variable fuer die Farbe des Spielfelds
+    public Boolean startedGame = false;											// wenn true wird abgefragt, ob Spiel fortgesetzt werden soll
     
-    /** Deklarieren der Variablen fuer die Methode bisherigeSpiele()*/
+	/** Deklarieren der Variablen fuer die Methode bisherigeSpiele()*/
     static Spiele selectedGame;													// Das in der Tabelle ausgewaehlte Spiel
 	static String personX;														// Person, die den Zug gemacht hat
 	private final TableView<Spiele> table = new TableView<>();					// Tabellenansicht der Spiele
@@ -120,6 +121,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	public void setNames2(String names2){this.names2 = names2;}
 	public void setXodero(char xodero) {this.xodero = xodero;}
     public void setColor(Color color) {	this.color = color;}
+   	public void setStartedGame(Boolean startedGame) {this.startedGame = startedGame;}
+
 	
     public Text getSpielstand() {return spielstand;}
 	public Text getSatzstatus() {return satzstatus;}
@@ -134,6 +137,7 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	public String getNames1() {return names1;}
 	public String getNames2() {return names2;}
 	public char getXodero() {return xodero;}
+	public Boolean getStartedGame() {return startedGame;}
 
 	/*********************************************************************************************************************
 	 ******************************************* START METHODE ***********************************************************
@@ -496,6 +500,48 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
        
         changeTheme.setScene(themaScene);	
 
+        /******* INHALTE DER SPIELFORTSETZEN STAGE ************************/ 
+
+		// continue Stage
+		final Stage continueGame = new Stage();						// Nachfrage, ob Spiel fortgesetzt werden soll
+		continueGame.setTitle("Spiel fortsetzen");
+		continueGame.initModality(Modality.APPLICATION_MODAL);
+		continueGame.initOwner(primaryStage);
+        VBox conGameVbox = new VBox(20);
+        conGameVbox.setPadding(new Insets(10, 10, 10, 10));   
+        conGameVbox.setAlignment(Pos.CENTER);
+        
+        Label question = new Label();
+        question.setText("Es gibt ein bereits angefangenes Spiel. Dieses Spiel fortsetzen?");
+        question.setWrapText(true);												// automatischer Textumbruch
+        Button continueG = new Button("Ja, Spiel fortsetzen");					// Spiel wird fortgesetzt
+        Button skip = new Button("Nein, Spiel verwerfen");						// neues Spiel wird begonnen und altes Spiel verworfen
+        HBox conGamehbox = new HBox();
+        conGamehbox.getChildren().addAll(continueG, skip);						// Anordnung der buttons nebeneinander
+        conGamehbox.setAlignment(Pos.BASELINE_CENTER);
+        conGamehbox.setSpacing(20);
+        
+        continueG.setOnMouseClicked(new EventHandler<MouseEvent>(){				// angefangenes Spiel wird aus der DB geladen
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		// hier wird noch der Aufruf der Datenbank eingefuegt
+        	}
+        });
+        skip.setOnMouseClicked(new EventHandler<MouseEvent>(){					// neue Stage wird wieder geschlossen
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		continueGame.close();
+        	}
+        });
+        
+        conGameVbox.getChildren().addAll(question, conGamehbox);
+        Scene continueGameScene = new Scene(conGameVbox, 800, 200);
+        setCSS(continueGameScene);
+       
+        continueGame.setScene(continueGameScene);	
+
+        
+      
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
 		content.getChildren().addAll(boxlinks, boxmitte, vbRight);		// Alle drei Container in den Content Teil einfuegen
 		
@@ -636,13 +682,16 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		start.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
             public void handle(MouseEvent arg0) {
-				//satzgewinner(gegner);
 				if(spielmodus.getValue()==2){					// wenn Slider auf automatisch
 					spieler = getXodero();
 					if(spieler == 'x'){
 						gegner = 'o';
 					}else{gegner = 'x';}
 	            	createGrids_automatisch(spielfeld);			// Spielfeld leer und ohne MouseEvents
+	            	if(startedGame){
+	            		continueGame.show();
+	            	}
+	            	
 				}else{
 					spieler = getXodero();
 					if(spieler == 'x'){
@@ -1334,9 +1383,9 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	                serverVbox.setPadding(new Insets(10, 10, 10, 10)); 
 	                serverVbox.setAlignment(Pos.CENTER);								// Anordnung in der Mitte
 	                
-	                Scene connectionScene = new Scene(serverVbox, 500, 800);
-	                setCSS(connectionScene);											// Style der Meldung je nach Thema
-	                serverConnection.setScene(connectionScene);				
+	                Scene serverConnectionScene = new Scene(serverVbox, 500, 800);
+	                setCSS(serverConnectionScene);											// Style der Meldung je nach Thema
+	                serverConnection.setScene(serverConnectionScene);				
 	                serverConnection.setFullScreen(false);
 	                
 	                serverConnection.show();											// Anzeigen der Stage
