@@ -40,7 +40,7 @@ import de.dhbw.vierpunkt.logic.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerListener {
+public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerListener, GameWinnerListener {
 
 	/** Gibt den aktuellen Fuellstand aller Spalten an*/	
 	static int[] plaetzeFreiInReihe = new int[7];
@@ -1467,7 +1467,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	}
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
-	public static void gewinnermethode(char gewinner){
+	public void gewinnermethode(String gewinner){
 		
 		// neue Stage
 		final Stage gewinnerStage = new Stage();								// neue Stage als Popup, wenn Spiel gewonnen
@@ -1484,10 +1484,10 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
             public void handle(MouseEvent arg0) {
      		   gewinnerStage.close();											// schliessen der PopupStage - zurueck zur HauptStage
         }});	
-        Label gewinnernachricht = new Label();
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
+        Label gewinnernachricht = new Label(gewinner + " hat gewonnen!");
+       /* if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
 			gewinnernachricht.setText(names1 + " hat gewonnen!");				// Name je nach Spieler oder Gegner
-		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}
+		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}*/
         
         
         VBox vbox = new VBox(20);
@@ -1679,4 +1679,5 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
             }
         });
 	}
+	
 }
