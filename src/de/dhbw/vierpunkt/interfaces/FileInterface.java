@@ -88,6 +88,7 @@ public class FileInterface implements Runnable, Observer {
 				timervalue--;
 				if (timervalue == 0){
 					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
+					fireServerConnectionErrorEvent();
 					}
 				}
 			});
@@ -252,6 +253,15 @@ public class FileInterface implements Runnable, Observer {
 	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug, spieler);
+		}
+	}
+	
+	/**
+	 * Triggert das ServerConnectionError Event und sendet es an alle Listener
+	 */
+	public static void fireServerConnectionErrorEvent(){
+		for(ZugListener zl : listeners){
+			zl.onServerConnectionError();
 		}
 	}
 
