@@ -110,14 +110,16 @@ public class Turn {
 			this.x = 3;
 		}
 		else {
+		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		 this.x = ki.calcMove(this.match, this.depth);
 		 if (this.x == -1) {
-			this.x = this.setValidRandomTurn();
-		}}
+			this.x = this.setValidRandomTurn(); 
+		 }
+		 else {
+			 this.y = this.match.validPosition(x);
+			 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
+		 }
 		System.out.println("Unsere KI empfiehlt: " + this.x);
-		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
-		this.y = this.match.validPosition(x);
-		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
 		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
@@ -132,6 +134,7 @@ public class Turn {
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
+		}
 		return this.x;
 	}
 	
@@ -145,10 +148,18 @@ public class Turn {
 		}
 	}
 	
+	/**
+	 * Setzt einen zufaelligen Zug, sollte KI oder Game zu langsam sein
+	 * @return
+	 */
 	public int setValidRandomTurn() {
-		  while (this.match.validPosition(x)== -1) {
+		int y=-1;
+		  while (y == -1) {
 			 int x = (int) (Math.random()*7);
+			 y = this.match.validPosition(x);
 		  }
+		  this.match.setField(this.x, this.y, this.player);
+		  
 		 return x;
 	}
 	
