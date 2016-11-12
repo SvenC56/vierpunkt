@@ -64,6 +64,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	/** Variablendeklaration und -initialisierung der Spielerbelegung */
 	private static String names1;												// Spielername Spieler (wir)
 	private static String names2;												// Spielername Gegner
+	private static TextField playerInput;
+	private static TextField opponentInput;
 	
 	public static char spieler = 'x'; 											// Spieler fuer das automatische Spiel
 	public char gegner = 'o';													// Gegner fuer das automatische Spiel
@@ -345,13 +347,13 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		
 		// login Felder
 		Label playerLab = new Label("Spieler: ");								
-		TextField playerInput= new TextField();									// TextField zur Eingabe des Namens
+		playerInput= new TextField();									// TextField zur Eingabe des Namens
 		if(playerInput.getText() != null && ! playerInput.getText().trim().isEmpty()){
 			setNames1(playerInput.getText());									// Name darf nicht leer bleiben
 		}
 		
 		Label opponentLab = new Label("Gegner: ");
-		TextField opponentInput= new TextField();								// TextField zur Eingabe des GegnerNamens
+		opponentInput= new TextField();								// TextField zur Eingabe des GegnerNamens
 		if(opponentInput.getText() != null && ! opponentInput.getText().trim().isEmpty()){
 			setNames2(opponentInput.getText());									// Name darf nicht leer bleiben
 		}
@@ -1445,8 +1447,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         
         Label meldung = new Label();
         meldung.setWrapText(true);
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText("Spieler " + spieler + " hat den Satz gewonnen!");}
-        else {meldung.setText("Spieler " + gegner + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText("Spieler " + playerInput.getText() + " hat den Satz gewonnen!");}
+        else {meldung.setText("Spieler " + opponentInput.getText() + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
 		}
         
         VBox satzVbox = new VBox(20);
