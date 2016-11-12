@@ -68,8 +68,7 @@ public class PusherInterface implements Runnable, Observer
 	/**
 	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
 	 */
-	private static int timervalue = 30;
-	
+	private static int timervalue = 30;	
 	private static int incrementalVal = 0;
 	
 	
@@ -78,6 +77,10 @@ public class PusherInterface implements Runnable, Observer
 	 */
 	public static int zugZeit = 1000;
 	
+	
+	/**
+	 * Beim Start des Spiels wird festgelegt, ob der Spieler X oder O ist
+	 */
 	public static char spielerKennung = 'x';
 	public static char gegnerKennung = 'o';
 	private static Game game;
@@ -107,11 +110,14 @@ public class PusherInterface implements Runnable, Observer
 	
 	public void run(){
 		
+		// Die Pusher Klasse beobachtet den ServerStatus
 		serverstatus.addObserver(this);
+		// Der Timer wird initialisiert, alle 1000 Millisekunden wird der Wert des Timers um 1 verringert
 		timer = new Timer(1000, new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				timervalue--;
 				if (timervalue == 0){
+					// Wenn der Timer nicht dur ServerEvents neu gestartet wird, wird ein Absturz angenommen und folgender Code ausgefuehrt
 					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
 					}
 				}
@@ -267,7 +273,7 @@ public class PusherInterface implements Runnable, Observer
 	/**
 	 * Aus dem von Pusher empfangenen Event-String wird der Zug des Gegners als Integer erfasst.
 	 * @param data
-	 * @return
+	 * @return zug
 	 */
 	public static int getGegnerzug (String data){
 		int zug;
@@ -284,6 +290,13 @@ public class PusherInterface implements Runnable, Observer
 		}
 	
 	
+	/**
+	 * Ein in str uebergebener String wird auf das n-te vorkommen vom String s ueberprueft, es wird die Position des Strings als Integer zurueckgegeben
+	 * @param str
+	 * @param s
+	 * @param n
+	 * @return pos
+	 */
 	public static int ordinalIndexOf(String str, String s, int n) {
 	    int pos = str.indexOf(s, 0);
 	    while (n-- > 0 && pos != -1)
@@ -291,51 +304,61 @@ public class PusherInterface implements Runnable, Observer
 	    return pos;
 	}
 	
-
+	/**
+	 * Ermoeglicht das hinzufuegen von Klassen als Listenern fuer ZugEvents, die das Zuglistener Interface implementieren
+	 * @param toAdd
+	 */
 	public void addListener(ZugListener toAdd){
 		listeners.add(toAdd);
 	}
 	
-	
-//	public static void fireZugEvent(int zug){
-//		for (ZugListener zl : listeners){
-//			zl.zugGespielt(zug);
-//		}
-//	}
-	
+	/**
+	 * Triggert das ZugEvent und sendet es an alle Listener
+	 */
 	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug, spieler);
 		}
 	}
-	
-	public static void fireZugEvent(char spieler){
-		for (ZugListener zl : listeners){
-			zl.zugGespielt(spieler);
-		}
-	}
-	
+
+	/**
+	 * Ermoeglicht das hinzufuegen von Klassen als Listenern fuer ConnectionErrorEvents, die das ConnectionErrorListener Interface implementieren
+	 * @param toAdd
+	 */
 	public void addErrorListener(ConnectionErrorListener toAdd){
 		errorListeners.add(toAdd);
 	}
 	
+	
+	/**
+	 * Triggert das ConnectionErrorEvent und sendet es an alle Listener
+	 */
 	public static void fireErrorEvent(){
 		for (ConnectionErrorListener cel : errorListeners){
 			cel.onConnectionError();
 		}
 	}
 	
+	/**
+	 * Ermoeglicht das hinzufuegen von Klassen als Listenern fuer GewinnerEvents, die das GewinnerListener Interface implementieren
+	 * @param toAdd
+	 */
 	public void addGewinnerListener(GewinnerListener toAdd){
 		gewinnerListeners.add(toAdd);
 	}
 	
+	/**
+	 * Triggert das GewinnerEvent und sendet es an alle Listener
+	 */
 	public static void fireGewinnerEvent(char sieger){
 		for (GewinnerListener gwl : gewinnerListeners){
 			gwl.siegerAnzeigen(sieger);
 		}
 	}
 
-
+	/**
+	 * Wenn der beobachtete Wert sich aendert (bei ServerEvents ueber den Pusher Channel) wird der Timer zurueckgesetzt
+	 */
 	@Override
 	public void update(Observable o, Object arg)
 	{

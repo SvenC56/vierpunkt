@@ -10,5 +10,4 @@ public interface ZugListener{
 	
 
 	void zugGespielt(int zug, char spieler);
-	void zugGespielt(char sieger);
 }

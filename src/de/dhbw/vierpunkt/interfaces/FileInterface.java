@@ -249,24 +249,12 @@ public class FileInterface implements Runnable, Observer {
 		listeners.add(toAdd);
 	}
 	
-//	public static void fireZugEvent(int zug){
-//		for (ZugListener zl : listeners){
-//			zl.zugGespielt(zug);
-//		}
-//	}
-	
 	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug, spieler);
 		}
 	}
-	
-	public static void fireZugEvent(char spieler){
-		for (ZugListener zl : listeners){
-			zl.zugGespielt(spieler);
-		}
-	}
-	
+
 	public void addGewinnerListener(GewinnerListener toAdd){
 		gewinnerListeners.add(toAdd);
 	}
