@@ -8,8 +8,8 @@ public class Turn {
 	/**************************************************************/
 	private int turnNumber;
 	private Player player;
-	private int x;
-	private int y;
+	private int x=0;
+	private int y=0;
 	private AlphaBeta ki = new AlphaBeta();
 	private static int depth = 6;
 	private Match match;
@@ -89,17 +89,17 @@ public class Turn {
 	 * @return
 	 */
 	public int startAgentTurn() {
-		int x;
 		System.out.println("Start Agent turnID:" + this.turnNumber);
 		if (this.turnNumber == 0) {
 			this.match.setCurrentPlayer(this.match.getGame().getPlayer(0));
-			x = 3;
+			this.x = 3;
 		}
 		else {
-		 x = ki.calcMove(this.match, this.depth);
+		 this.x = ki.calcMove(this.match, this.depth);
 		}
 		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
-		int y = this.match.validPosition(x);
+		System.out.println("Unsere KI empfiehlt: " + this.x);
+		this.y = this.match.validPosition(x);
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 this.match.checkWinner(); //Prueft, ob es einen Gewinner im Match gibt
@@ -110,7 +110,7 @@ public class Turn {
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
-		return x;
+		return this.x;
 		}
 		return -1;
 	}

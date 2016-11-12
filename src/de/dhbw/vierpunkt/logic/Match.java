@@ -221,7 +221,7 @@ public class Match {
 				for (int i = 0; i <= TURNS; i++) {
 					if (turn[i] == null) { //Sucht nach der naechsten freien Position im turn-Array
 						turn[i] = new Turn (i, this.currentPlayer, this); //legt neuen Turn an
-						//System.out.println("Es wurde ein turn an stelle " + i +" gefunden"); //Kontrollausgabe
+						System.out.println("TURN " + i +" GELADEN!"); //Kontrollausgabe
 						this.setTurnActive(true);
 						this.setMatchTurnNumber(i);	//setzt die aktuelle MatchTurnNumber (fuer getCurrentTurn())
 						return this.turn[i];
