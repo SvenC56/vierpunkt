@@ -1354,7 +1354,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         close.show();
 	}
 	
-	/********************* Anzeige, dass ein Fehler bei der Server Connteciton aufgetreten ist **************************/
+	/********************* Anzeige, dass ein Fehler bei der Server Conntection aufgetreten ist **************************/
 	public void onServerConnectionError(){
 	// neue Stage
 			Platform.runLater(new Runnable() { 
@@ -1394,7 +1394,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 			});
 	 }
 	
-	/********************* Anzeige, dass ein Fehler bei der Pusher Connteciton aufgetreten ist **************************/
+	/********************* Anzeige, dass ein Fehler bei der Pusher Conntection aufgetreten ist **************************/
 	public void onConnectionError(){
 		// neue Stage
 		Platform.runLater(new Runnable() { 
@@ -1467,7 +1467,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	}
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
-	public static void gewinnermethode(char gewinner){
+	public static void gewinnermethode(String gewinner){
 		
 		// neue Stage
 		final Stage gewinnerStage = new Stage();								// neue Stage als Popup, wenn Spiel gewonnen
@@ -1484,10 +1484,11 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
             public void handle(MouseEvent arg0) {
      		   gewinnerStage.close();											// schliessen der PopupStage - zurueck zur HauptStage
         }});	
-        Label gewinnernachricht = new Label();
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
+        Label gewinnernachricht = new Label(gewinner + " hat gewonnen!");
+        
+        /*if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){
 			gewinnernachricht.setText(names1 + " hat gewonnen!");				// Name je nach Spieler oder Gegner
-		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}
+		}else {	gewinnernachricht.setText(names2 + " hat gewonnen!");}*/
         
         
         VBox vbox = new VBox(20);
