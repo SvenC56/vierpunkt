@@ -1,4 +1,9 @@
 package de.dhbw.vierpunkt.logic;
+import java.util.ArrayList;
+import java.util.List;
+
+import de.dhbw.vierpunkt.gui.GameWinnerListener;
+import de.dhbw.vierpunkt.interfaces.GewinnerListener;
 import de.dhbw.vierpunkt.logic.AlphaBeta;
 
 public class Turn {
@@ -13,6 +18,7 @@ public class Turn {
 	private AlphaBeta ki = new AlphaBeta();
 	private static int depth = 6;
 	private Match match;
+	private static List<GameWinnerListener> GameWinnerListeners = new ArrayList<GameWinnerListener>();
 	
 	
 	
@@ -78,8 +84,8 @@ public class Turn {
 		 if ( this.match.getGame().checkWinner() != null) {
 		 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 		 //HIER KOMMT DIE UEBERGABE AN DIE GUI
-		//HIER KOMMT DIE UEBERGABE AN DIE GUI
-		 this.match.getGame().checkWinner().getName();
+		
+		 fireGameWinnerEvent(this.match.getGame().checkWinner().getName());
 		 }
 	 }
 	 this.match.getGame().setNextPlayer();
@@ -115,7 +121,7 @@ public class Turn {
 			 if ( this.match.getGame().checkWinner() != null) {
 				 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 				 //HIER KOMMT DIE UEBERGABE AN DIE GUI
-				 this.match.getGame().checkWinner().getName();
+				 fireGameWinnerEvent(this.match.getGame().checkWinner().getName());
 				 }
 		 }
 		 this.match.getGame().setNextPlayer();
@@ -124,6 +130,16 @@ public class Turn {
 		return this.x;
 		}
 		return -1;
+	}
+	
+	public void addGameWinnerListener (GameWinnerListener toAdd) {
+		GameWinnerListeners.add(toAdd);
+	}
+	
+	public void fireGameWinnerEvent(String gewinnerName){
+		for(GameWinnerListener gwl : GameWinnerListeners){
+			gwl.gewinnermethode(gewinnerName);
+		}
 	}
 	
 }

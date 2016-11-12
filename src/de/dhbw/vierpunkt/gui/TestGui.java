@@ -40,7 +40,7 @@ import de.dhbw.vierpunkt.logic.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerListener {
+public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerListener, GameWinnerListener {
 
 	/** Gibt den aktuellen Fuellstand aller Spalten an*/	
 	static int[] plaetzeFreiInReihe = new int[7];
@@ -65,12 +65,15 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	private static String names1;												// Spielername Spieler (wir)
 	private static String names2;												// Spielername Gegner
 	
+	static TextField playerInput;
+	static TextField opponnentInput;
+	
 	public static char spieler = 'x'; 											// Spieler fuer das automatische Spiel
 	public char gegner = 'o';													// Gegner fuer das automatische Spiel
 	
 	public char manuellerSpieler= 'x';											// Spieler fuer das manuelle Spiel
 	
-	/** Groeßen- und Laengeneinheiten */
+	/** Groessen- und Laengeneinheiten */
 	private final int l = 70; 													// Seitenlaenge der Grids
 	private double breite = Toolkit.getDefaultToolkit().getScreenSize().width;	// Breite des geoeffneten Fensters in Double
 	private boolean fullscreen = true;											// Fuer einfaches Umstellen auf Fullscreen
@@ -345,7 +348,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		
 		// login Felder
 		Label playerLab = new Label("Spieler: ");								
-		TextField playerInput= new TextField();									// TextField zur Eingabe des Namens
+		playerInput= new TextField();									// TextField zur Eingabe des Namens
 		if(playerInput.getText() != null && ! playerInput.getText().trim().isEmpty()){
 			setNames1(playerInput.getText());									// Name darf nicht leer bleiben
 		}
@@ -1445,8 +1448,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         
         Label meldung = new Label();
         meldung.setWrapText(true);
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText("Spieler " + spieler + " hat den Satz gewonnen!");}
-        else {meldung.setText("Spieler " + gegner + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText("Spieler " + playerInput.getText() + " hat den Satz gewonnen!");}
+        else {meldung.setText("Spieler " + opponnentInput.getText() + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
 		}
         
         VBox satzVbox = new VBox(20);
@@ -1467,7 +1470,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	}
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
-	public static void gewinnermethode(char gewinner){
+	public void gewinnermethode(char gewinner){
 		
 		// neue Stage
 		final Stage gewinnerStage = new Stage();								// neue Stage als Popup, wenn Spiel gewonnen
