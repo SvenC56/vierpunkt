@@ -40,7 +40,7 @@ import de.dhbw.vierpunkt.logic.NameListener;
  *
  * @author janaschaub
  */
-public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerListener {
+public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerListener {
 
 	/** Gibt den aktuellen Fuellstand aller Spalten an*/	
 	static int[] plaetzeFreiInReihe = new int[7];
@@ -117,8 +117,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 	public void setAppSecret(String appSecret) {this.appSecret = appSecret;}
     public void setImage1(javafx.scene.image.Image image1) {this.image1 = image1;}
 	public void setImage2(javafx.scene.image.Image image2) {this.image2 = image2;}
-	public void setNames1(String names1){this.names1 = names1;}
-	public void setNames2(String names2){this.names2 = names2;}
+	public void setNames1(String names1){TestGui.names1 = names1;}
+	public void setNames2(String names2){TestGui.names2 = names2;}
 	public void setXodero(char xodero) {this.xodero = xodero;}
     public void setColor(Color color) {	this.color = color;}
    	public void setStartedGame(Boolean startedGame) {this.startedGame = startedGame;}
@@ -1445,8 +1445,8 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
         
         Label meldung = new Label();
         meldung.setWrapText(true);
-        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText(getNames1() + " hat den Satz gewonnen!");}
-        else {meldung.setText(getNames1() + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
+        if(gewinner == 'x' && spieler == 'x' || gewinner == 'o' && spieler == 'o'){ meldung.setText("Spieler " + spieler + " hat den Satz gewonnen!");}
+        else {meldung.setText("Spieler " + gegner + " hat den Satz gewonnen!");				// wenn Spieler gewonnen hat, anzeige seines Namens, sonst Name des Gegners
 		}
         
         VBox satzVbox = new VBox(20);
@@ -1667,16 +1667,6 @@ public class TestGui implements ZugListener,ConnectionErrorListener, GewinnerLis
 		return fileString;
 	}
 	
-	/********************************                                              **************************************/
-	@Override
-	public void zugGespielt(char sieger) {
-		
-		// hier kommt die Methode, die bei Spielende aufgerufen werden soll, sieger enthaelt 'x' oder 'o' als char
-		gewinnermethode(sieger);
-		for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-			plaetzeFreiInReihe[i]=5;
-		}
-	}
 	
 	/********************************                                              **************************************/
 	@Override

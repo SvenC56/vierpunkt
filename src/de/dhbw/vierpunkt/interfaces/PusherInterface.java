@@ -103,6 +103,7 @@ public class PusherInterface implements Runnable, Observer
 		if (spielerKennung == 'x'){
 				this.gegnerKennung = 'o';
 		} else {
+			
 			this.gegnerKennung = 'x';
 		}
 	}
@@ -119,6 +120,9 @@ public class PusherInterface implements Runnable, Observer
 				if (timervalue == 0){
 					// Wenn der Timer nicht dur ServerEvents neu gestartet wird, wird ein Absturz angenommen und folgender Code ausgefuehrt
 					System.err.println("Server vermutlich abgestuerzt. Bitte Programm erneut starten.");
+					fireServerConnectionErrorEvent();
+					timer.stop();
+					firstMessage = true;
 					}
 				}
 			});
@@ -240,7 +244,8 @@ public class PusherInterface implements Runnable, Observer
 		        	}
 		        	fireGewinnerEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
-		        	
+		        	timer.stop();
+					firstMessage = true;
 		        	
 		        	// Wird aufgerufen wenn Spieler O gewinnt	
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
@@ -248,6 +253,8 @@ public class PusherInterface implements Runnable, Observer
 		        	System.out.println("");
 		        	fireGewinnerEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
+		        	timer.stop();
+					firstMessage = true;
 		        }
 		       			        
 		    }
@@ -318,6 +325,15 @@ public class PusherInterface implements Runnable, Observer
 	public static void fireZugEvent(int zug, char spieler){
 		for (ZugListener zl : listeners){
 			zl.zugGespielt(zug, spieler);
+		}
+	}
+	
+	/**
+	 * Triggert das ServerConnectionError Event und sendet es an alle Listener
+	 */
+	public static void fireServerConnectionErrorEvent(){
+		for(ZugListener zl : listeners){
+			zl.onServerConnectionError();
 		}
 	}
 
