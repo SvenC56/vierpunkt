@@ -32,6 +32,8 @@ public class Turn {
 		this.turnNumber=turnNumber;
 		this.player=player;
 		this.match = match;
+		this.x= 0;
+		this.y=0;
 	}
 	
 
@@ -75,6 +77,7 @@ public class Turn {
 	 if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		 this.y = this.match.validPosition(x);
 		 this.x = x;
+		 if (this.y != -1) {
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
@@ -87,7 +90,7 @@ public class Turn {
 				 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 				 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 				 }
-		 }}
+		 }}}
 	 this.match.getGame().setNextPlayer();
 	 this.match.setTurnActive(false); 
 	 this.match.setNewTurn();
@@ -112,6 +115,7 @@ public class Turn {
 		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
 		System.out.println("Unsere KI empfiehlt: " + this.x);
 		this.y = this.match.validPosition(x);
+		if (this.y != -1) {
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
@@ -123,7 +127,7 @@ public class Turn {
 					 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 					 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 					 }
-			 }}
+			 }}}
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();

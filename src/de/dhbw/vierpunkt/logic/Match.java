@@ -88,6 +88,7 @@ public class Match {
 	 */
 	public Match(Game game, int matchNumber) {
 		this.game = game;
+		this.matchTurnNumber = 0;
 		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
