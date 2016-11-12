@@ -198,6 +198,14 @@ public class ConnectHSQL {
 	}
 
 	/**
+	 */
+	public void deleteGame(int G_ID, int M_ID) {
+		executeSQL("DELETE FROM TURN WHERE M_ID= " + M_ID);
+		executeSQL("DELETE FROM MATCH WHERE G_ID= " + G_ID);
+		executeSQL("DELETE FROM GAME WHERE G_ID= " + G_ID);
+	}
+
+	/**
 	 * uebermittlung eines Spiels in die DB
 	 **/
 	public void setGameDb(String Player1, String Player2) {
@@ -282,11 +290,11 @@ public class ConnectHSQL {
 	}
 
 	/**
-	 * 	Methode gibt G_ID zurueck, benoetigt die M_ID
+	 * Methode gibt G_ID zurueck, benoetigt die M_ID
 	 */
 	public int getGIDByMID(int MID) {
 		String[][] temp = saveResult((executeSQL("SELECT G_ID FROM MATCH WHERE M_ID = " + MID)));
-		if(temp[0][0] != null){
+		if (temp[0][0] != null) {
 			return transformStringToInt(temp[0][0]);
 		}
 		return 0;

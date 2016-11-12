@@ -10,11 +10,20 @@ public class DBConnector {
 
 	private ConnectHSQL db = new ConnectHSQL();
 
+	/**
+	 * Diese Methode checkt ob es in der Laufzeit Probleme gab.
+	 */
 	public String[][] catchWrongState() {
 		String[][] state = db.catchWrongState();
 		return state;
 	}
 
+	/**
+	 */
+	public void deleteGame(int G_ID, int M_ID){
+		db.deleteGame(G_ID, M_ID);
+	}
+	
 	/**
 	 * uebermittlung der letzten 10 Spiele aus Game
 	 */
