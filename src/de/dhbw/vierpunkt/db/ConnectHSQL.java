@@ -282,6 +282,7 @@ public class ConnectHSQL {
 	}
 
 	/**
+	 * 	Methode gibt G_ID zurueck, benoetigt die M_ID
 	 */
 	public int getGIDByMID(int MID) {
 		String[][] temp = saveResult((executeSQL("SELECT G_ID FROM MATCH WHERE M_ID = " + MID)));
