@@ -282,7 +282,17 @@ public class ConnectHSQL {
 	}
 
 	/**
-	 * R�ckgabe der IDs
+	 */
+	public int getGIDByMID(int MID) {
+		String[][] temp = saveResult((executeSQL("SELECT G_ID FROM MATCH WHERE M_ID = " + MID)));
+		if(temp[0][0] != null){
+			return transformStringToInt(temp[0][0]);
+		}
+		return 0;
+	}
+
+	/**
+	 * Rueckgabe der IDs
 	 */
 	public int getMaxId(String tableName) {
 		try {

@@ -18,7 +18,6 @@ public class Testing {
 			  } // end of for
 			  System.out.println();
 			} // end of for
-
 	}
 
 }
