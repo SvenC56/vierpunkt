@@ -522,17 +522,42 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         conGamehbox.getChildren().addAll(continueG, skip);						// Anordnung der buttons nebeneinander
         conGamehbox.setAlignment(Pos.BASELINE_CENTER);
         conGamehbox.setSpacing(20);
+        String[][] alleZuege = db.catchWrongState();
         
         continueG.setOnMouseClicked(new EventHandler<MouseEvent>(){				// angefangenes Spiel wird aus der DB geladen
         	@Override
         	public void handle(MouseEvent arg0){
-        		// hier wird noch der Aufruf der Datenbank eingefuegt
+        		
+        		continueGame.close();
+        		
+        		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
+	               
+   	     		Thread playThread = new Thread(){
+   	     			@Override
+   	     			public void run(){
+	   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
+     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
+         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld))), 'x');
+         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
+         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld))), 'o');
+         	                	}
+    							//try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+    							//catch (InterruptedException e) {e.printStackTrace();}
+     	                	}
+	   	     			}	
+   	     			}
+   	     		};
+   	     		playThread.start();
+        		
         	}
         });
         skip.setOnMouseClicked(new EventHandler<MouseEvent>(){					// neue Stage wird wieder geschlossen
         	@Override
         	public void handle(MouseEvent arg0){
         		continueGame.close();
+        		db.deleteGame(Integer.parseInt(alleZuege[0][5]), Integer.parseInt(alleZuege[0][0]));
+        		
         	}
         });
         
@@ -691,7 +716,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 						gegner = 'o';
 					}else{gegner = 'x';}
 	            	createGrids_automatisch(spielfeld);			// Spielfeld leer und ohne MouseEvents
-	            	if(startedGame){
+	            	if(db.catchWrongState()!=null){
 	            		continueGame.show();
 	            	}
 	            	
