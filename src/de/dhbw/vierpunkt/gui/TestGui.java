@@ -694,7 +694,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 							
 						} else {
 							System.out.println("es sind Zuege vorhanden");
-							System.out.println(alleZuege[0].length);
+							System.out.println(alleZuege.length);
 							for (int i = 0; i < alleZuege.length; i++) {
 								System.out.println(alleZuege[i][0]+" "+alleZuege[i][1]+" "+alleZuege[i][2]+" "+alleZuege[i][3]+" "+alleZuege[i][4]);
 							}
@@ -1599,7 +1599,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	   	     		Thread playThread = new Thread(){
 	   	     			@Override
 	   	     			public void run(){
-		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+		   	     			for (int i = 0; i < alleZuege.length; i++) {
 	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
 	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
 	         	                		setSpielstein(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), 'x');
