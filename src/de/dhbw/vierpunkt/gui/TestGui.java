@@ -564,7 +564,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         	@Override
         	public void handle(MouseEvent arg0){
         		continueGame.close();
-        		//db.deleteGame(Integer.parseInt(alleZuege[0][5]), Integer.parseInt(alleZuege[0][0]));
+        		int mid = db.transformStringToInt(alleZuege[0][1]);
+        		db.deleteGame(db.getGIDByMID(mid), mid);
         		// Uebergabe der Parameter an das PusherInterface
 				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
 				Thread t1 = new Thread(){
