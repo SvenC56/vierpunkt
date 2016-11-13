@@ -29,7 +29,7 @@ import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 public class PusherInterface implements Runnable, Observer
 {
 	private static int count = 0;
-    private static boolean fallbackActive = true;
+    private static boolean fallbackActive = false;
     private static GameLogic fallbackGame = new GameLogic();
     private static int depth = 6;
     
