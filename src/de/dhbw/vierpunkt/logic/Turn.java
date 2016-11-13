@@ -64,7 +64,8 @@ public class Turn {
 				 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 				 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 				 }
-		 }}}
+		 }
+			 this.match.getGame().startMatch();}}
 	 this.match.getGame().setNextPlayer();
 	 this.match.setTurnActive(false); 
 	 this.match.setNewTurn();
@@ -112,7 +113,8 @@ public class Turn {
 					 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 					 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 					 }
-			 }}
+			 }
+			 this.match.getGame().startMatch();}
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
@@ -149,13 +151,14 @@ public class Turn {
 			 //Prueft auf Gewinner	
 			 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
 				 //Hier wird die Datenbank informiert und der Score gespeichert
-				 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
+				 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());
 				 if (this.match.getMatchNumber() == 2){
 					 if ( this.match.getGame().checkWinner() != null) {
 						 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 						 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 						 }
-				 }}
+				 }
+				 this.match.getGame().startMatch();}
 			 this.match.getGame().setNextPlayer();
 			 this.match.setTurnActive(false);
 			 this.match.setNewTurn();	  

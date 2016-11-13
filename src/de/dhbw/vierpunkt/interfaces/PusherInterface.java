@@ -231,7 +231,10 @@ public class PusherInterface implements Runnable, Observer
 		        	if (zugZeit >= 8000){
 		        	// der Move wird von der Logik berechnet
 		        	 move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
-		        	} else {move = (int) Math.random()*7;}
+		        	} else {move = game.getCurrentMatch().getCurrentTurn().setValidRandomTurn();
+		        			//(int) Math.random()*7;
+		        	//int move = (int) (Math.random()*7);
+		        	}
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
