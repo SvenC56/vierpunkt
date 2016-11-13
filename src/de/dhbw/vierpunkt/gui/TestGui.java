@@ -1071,7 +1071,14 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	/************************* Belegung der GridPane mit Feldelementen und MouseEvents **********************************/
 	public void createGrids(GridPane spielfeld){
 	    	spielfeld.getChildren().clear();									// Loeschen der Elemente in der Grid
-	    	startManGame(names1, names2);
+	    	Thread t2 = new Thread(){
+				@Override
+				public void run(){
+					startManGame(names1, names2);		// Uebergabe der Namen an die KI
+				}
+			};
+			t2.start();
+	    	
 	    	System.out.println("startManGame gestartet");
 	        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
 	            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
