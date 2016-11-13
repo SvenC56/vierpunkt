@@ -746,26 +746,21 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	    				
 	            	}else{
 	            		System.out.println(db.catchWrongState().toString());
-	            		boolean empty = true;
-	            		String[][] alleZuege = db.catchWrongState();
-	            		for(int i=0; i< alleZuege[0].length;i++){
-	            			if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){
-	            				empty = false;
-	            			}
-	            		}
-	            		  if(empty == true){
-	            			// Uebergabe der Parameter an das PusherInterface
-			    				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
-			    				Thread t1 = new Thread(){
-			    					@Override
-			    					public void run(){
-			    						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
-			    					}
-			    				};
-			    				t1.start();
-	            		  }else{
-	            			  continueGame.show();
-	            		  }
+						String[][] alleZuege = db.catchWrongState();
+						if (alleZuege == null) { // Uebergabe der Parameter an das PusherInterface
+							fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
+									getAppKey(), getAppSecret());
+							Thread t1 = new Thread() {
+								@Override
+								public void run() {
+									fireNames(playerInput.getText(), opponentInput.getText());
+									// Uebergabe der Namen an die KI
+								}
+							};
+							t1.start();
+						} else {
+							continueGame.show();
+						}
 	            		
 	            		
 	            		/*boolean empty = true;
