@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import de.dhbw.vierpunkt.logic.Game;
 import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 
 public class AI_Logic_Test {
@@ -36,6 +37,7 @@ public class AI_Logic_Test {
 				private int move = 0; // --> maximale Anzahl Zuege 69!
 				private int[][] field = new int[ROW + 1][COLUMN + 1];
 				private int currentPlayer = 2; //Der aktuelle Spieler
+				private Game game;
 
 		public GameLogic() {
 			// Array durchlaufen und mit Nullen fuellen + move auf false setzen, da
@@ -46,6 +48,16 @@ public class AI_Logic_Test {
 					this.field[y][x] = 0;
 				}
 			}
+		}
+		
+		public GameLogic(Game game) {
+			this.move = 0;
+			for (int y = 0; y <= ROW; y++) {
+				for (int x = 0; x <= COLUMN; x++) {
+					this.field[y][x] = 0;
+				}
+			}
+			this.game = game;
 		}
 	
 		/**
@@ -127,6 +139,8 @@ public class AI_Logic_Test {
 	/**
 	 * Spielt den Zug --> Verbindung zum Interface, liefert Spalte zurueck
 	 */
+
+	
 	public void playTurn(int x, int player){
 		//Maximierung, da eigener Spieler
 		
@@ -134,12 +148,12 @@ public class AI_Logic_Test {
 
 	}
 	
-	
-	/**
-	 * Setzt den Chip eines Spielers
-	 * 
-	 * @param x
-	 */
+//	
+//	/**
+//	 * Setzt den Chip eines Spielers
+//	 * 
+//	 * @param x
+//	 */
 	 void setChip(int x) {
 		int y = this.validPosition(x);
 		this.setField(x, y);
