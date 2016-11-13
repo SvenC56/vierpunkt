@@ -679,7 +679,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 						if (alleZuege.length==0) { 
 							System.out.println("es sind keine Zuege vorhanden");
 							db.deleteGame(Integer.parseInt(db.getLastFailMatch()[0][1]), Integer.parseInt(db.getLastFailMatch()[0][0]));
-							if(db.getLastFailMatch()==null){fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
+							fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
 									getAppKey(), getAppSecret());
 							Thread t1 = new Thread() {
 								@Override
@@ -688,14 +688,17 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 									// Uebergabe der Namen an die KI
 								}
 							};
-							t1.start();}
-							else{
-								continueGame(continueGame, db.getLastFailMatch());
-							}
+							t1.start();
+							
+							
 							
 						} else {
 							System.out.println("es sind Zuege vorhanden");
 							System.out.println(alleZuege[0].length);
+							for (int i = 0; i < alleZuege.length; i++) {
+								System.out.println(alleZuege[i][0]+" "+alleZuege[i][1]+" "+alleZuege[i][2]+" "+alleZuege[i][3]+" "+alleZuege[i][4]);
+							}
+							
 							continueGame(continueGame, alleZuege);
 							
 						}
@@ -1586,8 +1589,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         	public void handle(MouseEvent arg0){
         		
         		continueGame.close();
-        		
-        			
+        	
         		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
 	               
         		 for (int i = 0; i < plaetzeFreiInReihe.length; i++){
@@ -1600,15 +1602,14 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
 	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
 	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
-	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	         	                		setSpielstein(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), 'x');
+	     	                			
 	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
-	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
-	         	                	}
-	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+	         	                		
+	         	                		setSpielstein(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), 'o');
+	         	                		
+	         	                	}plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	    							try {Thread.sleep(100);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
 	    							catch (InterruptedException e) {e.printStackTrace();}
 	     	                	}
 		   	     			}	
