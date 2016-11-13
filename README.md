@@ -5,11 +5,11 @@ Programming project for an AI for the game 'Connect 4'
 
 ## Documentation
 
-Visit the [**JavaDoc**](https://htmlpreview.github.io/?https://github.com/SvenC56/vierpunkt/blob/master/doc/index.html) for more informations.
+Visit the [**JavaDoc**](https://htmlpreview.github.io/?https://github.com/SvenC56/vierpunkt/blob/master/doc/index.html) for more information.
 
-For the whole documentation of the project you can follow this link: [Project Documentation](https://github.com/SvenC56/vierpunkt/blob/master/Bundle_Dokumentation/BundleDokumentation_Gruppe4_WWI14SCA.pdf) 
+Follow this link in order to read the entire project documentation: [Project Documentation](https://github.com/SvenC56/vierpunkt/blob/master/Bundle_Dokumentation/BundleDokumentation_Gruppe4_WWI14SCA.pdf) 
 
-Beside these two information sources you can look up the import tutorial and the performance specification in the [Wiki](https://github.com/SvenC56/vierpunkt/wiki). 
+If you are interested in an import tutorial or the functional specification please read the articles in the embedded [Wiki](https://github.com/SvenC56/vierpunkt/wiki). 
 
 ## Contributors
 
