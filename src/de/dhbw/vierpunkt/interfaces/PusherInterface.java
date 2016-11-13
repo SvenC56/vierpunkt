@@ -257,7 +257,7 @@ public class PusherInterface implements Runnable, Observer
 		        	Thread.sleep(1000);
 		        	} catch (Exception e ){ e.getMessage();};
 		        	
-		        	fireGewinnerEvent('x');
+		        	fireGewinnerEvent('x', game.getCurrentMatch().getScore());
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
 		        	serverTimer.stop();
 					firstMessage = true;
@@ -273,7 +273,7 @@ public class PusherInterface implements Runnable, Observer
 			        	Thread.sleep(1000);
 			        	} catch (Exception e ){ e.getMessage();};
 			        	
-		        	fireGewinnerEvent('o');
+		        	fireGewinnerEvent('o', game.getCurrentMatch().getScore());
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        	serverTimer.stop();
 					firstMessage = true;
@@ -388,9 +388,10 @@ public class PusherInterface implements Runnable, Observer
 	/**
 	 * Triggert das GewinnerEvent und sendet es an alle Listener
 	 */
-	public static void fireGewinnerEvent(char sieger){
+	public static void fireGewinnerEvent(char sieger, String Spielstand){
 		for (GewinnerListener gwl : gewinnerListeners){
 			gwl.siegerAnzeigen(sieger);
+			gwl.setSpielstand(Spielstand);
 		}
 	}
 

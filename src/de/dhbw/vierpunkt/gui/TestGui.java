@@ -1704,5 +1704,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
             }
         });
 	}
+
+
 	
 }
