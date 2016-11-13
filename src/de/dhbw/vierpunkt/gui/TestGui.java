@@ -457,7 +457,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         
 		// Zeit
 		Label zeitlabel = new Label("Zugzeit:   " + zugzeit + " ms");		// Anzeige des Default Wertes
-		Slider zeit = new Slider(0, 5000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
+		Slider zeit = new Slider(0, 10000, 100); 			// Slider geht von 0 bis 2 in 1er Abstaenden
 		zeit.setMinorTickCount(0);
 		zeit.setMajorTickUnit(100); 						// Man kann nur auf den Zahlen 0, 1, 2 landen, nicht dazwischen
 		zeit.setSnapToTicks(true); 							// Der Punkt rutzscht zur naechsten Zahl
@@ -1530,6 +1530,11 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         
         satz.setFullScreen(false);
         satz.show();
+        
+        for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+			plaetzeFreiInReihe[i]=5;
+		}
+        createGrids_automatisch(spielfeld);
 	}
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
