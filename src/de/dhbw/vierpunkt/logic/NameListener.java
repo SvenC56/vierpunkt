@@ -4,7 +4,7 @@ package de.dhbw.vierpunkt.logic;
  * @author tobias
  *
  */
-public interface LogicListener {
+public interface NameListener {
 	/**
 	 * Startet ein neues Spiel
 	 * @param name1

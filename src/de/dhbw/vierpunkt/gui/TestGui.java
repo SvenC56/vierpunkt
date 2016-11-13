@@ -35,7 +35,7 @@ import de.dhbw.vierpunkt.db.ConnectHSQL;
 import de.dhbw.vierpunkt.interfaces.GewinnerListener;
 import de.dhbw.vierpunkt.interfaces.ParamListener;
 import de.dhbw.vierpunkt.interfaces.ZugListener;
-import de.dhbw.vierpunkt.logic.LogicListener;
+import de.dhbw.vierpunkt.logic.NameListener;
 /**
  *
  * @author janaschaub
@@ -44,7 +44,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 
 	/** Gibt den aktuellen Fuellstand aller Spalten an*/	
 	static int[] plaetzeFreiInReihe = new int[7];
-	private static List<LogicListener> NameListeners = new ArrayList<LogicListener>();
+	private static List<NameListener> NameListeners = new ArrayList<NameListener>();
 	private static List<ParamListener> listeners = new ArrayList<ParamListener>();
 	
 	/** Hauptstage */	
@@ -1810,25 +1810,25 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	}
 	
 	/********************************                                              **************************************/
-	public void addNameListener(LogicListener toAdd) {
+	public void addNameListener(NameListener toAdd) {
 		NameListeners.add(toAdd);
 	}
 	
 	/********************************                                              **************************************/
 	public static void fireNames (String name1, String name2) {
-		for (LogicListener name: NameListeners) {
+		for (NameListener name: NameListeners) {
 			name.startGame(name1, name2);
 		}
 	}
 	
 	public static void startManGame(String name1, String name2) {
-		for (LogicListener game: NameListeners) {
+		for (NameListener game: NameListeners) {
 			game.startManGame(name1, name2);
 	}
 	}
 	
 	public static void setManTurn(String name, int x, int y) {
-		for (LogicListener turn: NameListeners) {
+		for (NameListener turn: NameListeners) {
 			turn.setManTurn(name, x, y);
 	}
 	}
