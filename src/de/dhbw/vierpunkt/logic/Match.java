@@ -258,8 +258,20 @@ public class Match {
 	 * @return
 	 */
 	 Match getDemoMatch() {
-		Match match2 = this;
+	//	Match match2 = this;
 //		match2.setCurrentPlayer(this.getCurrentPlayer());
+		 /** Änderungen JaLo
+		  * 
+		  */
+		 Match match2 = new Match(1);
+		 match2.setCurrentPlayer(currentPlayer);
+		 for (int i = 0; i <= COLUMN; i++) 
+			 for (int j = 0; j <= ROW; j++) {
+				 match2.setField(i, j, this.getFieldPlayer(i, j));
+			 }
+		 /** Änderungen JaLo
+		  * 
+		  */
 		return match2;
 	}
 	
@@ -450,10 +462,8 @@ public class Match {
 			        } 
 				}
 				}
-				
-				//System.out.println("agentCount2 " + agentCount2 + " agentCount3 " + agentCount3 + " oppCount2 " + oppCount2 + " oppCount3 " + oppCount3);
-				return agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
-				
+				int eval = agentCount2 + 100 * agentCount3 - oppCount2 - 500 * oppCount3;
+				return eval;		
 			}
 	 
 	 
@@ -474,7 +484,10 @@ public class Match {
 	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-			if (player == 2) {
+		 /** Änderungen JaLo: player == 1 / player == 2 vertauscht
+		  * 
+		  */
+			if (player == 1) {
 			 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
 					 && ((field[y][x].getOwnedBy() == null) || (field[y][x].getOwnedBy().getIsOpponent() == true)) 
 					 && ((field[y+1*dy][x+1*dx].getOwnedBy() == null) || (field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == true))
@@ -489,7 +502,7 @@ public class Match {
 					 }
 				 }
 				}
-			} else if (player == 1) {
+			} else if (player == 2) {
 				 if (		(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
 						 	&& ((field[y][x].getOwnedBy() == null) || (field[y][x].getOwnedBy().getIsOpponent() == false)) 
 						 	&& ((field[y+1*dy][x+1*dx].getOwnedBy() == null) || (field[y+1*dy][x+1*dx].getOwnedBy().getIsOpponent() == false))

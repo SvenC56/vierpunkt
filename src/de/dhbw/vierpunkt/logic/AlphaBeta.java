@@ -3,6 +3,31 @@ package de.dhbw.vierpunkt.logic;
 
 public class AlphaBeta {
 	
+public static int calcMove(Match match, int depth) { // method to be evoked by game main to find the best possible move for our agent
+		
+		int [] values = new int[match.getColumn()+1];
+		Match demoMatch;
+		
+		for (int i = 0; i <= match.getColumn(); i++) 
+			if (match.validPosition(i) != -1) { //position is valid
+				demoMatch = match.getDemoMatch(); // copy current game situation to simulate moves without actually changing the play field
+				demoMatch.setChip(i); // simulate that our agent is placing coins in column i
+				values[i] = getAlphaBeta(demoMatch, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
+			}
+		
+				int move = -1;
+				int max = (int) Double.NEGATIVE_INFINITY;
+				for (int j = 0; j <= match.getColumn(); j++) {
+					if ((values[j] >= max) && (match.validPosition(j) != -1)) { // position is valid and current value is higher than old value
+						move = j; // currently the best move
+						max = values[j]; // currently the highest value
+					}
+				}
+				//System.out.println("move: " + move);
+				//System.out.println("max: " + max);
+				return move; // best possible move after all columns have been evaluated
+			
+	}
 
 	public static int getAlphaBeta(Match match, int depth, int alpha, int beta) {
 		
@@ -51,31 +76,7 @@ public class AlphaBeta {
 	}
 		
 	
-	public static int calcMove(Match match, int depth) { // method to be evoked by game main to find the best possible move for our agent
-		
-		int [] values = new int[match.getColumn()+1];
-		Match demoMatch;
-		
-		for (int i = 0; i <= match.getColumn(); i++) 
-			if (match.validPosition(i) != -1) { //position is valid
-				demoMatch = match.getDemoMatch(); // copy current game situation to simulate moves without actually changing the play field
-				demoMatch.setChip(i); // simulate that our agent is placing coins in column i
-				values[i] = getAlphaBeta(demoMatch, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
-			}
-		
-				int move = -1;
-				int max = (int) Double.NEGATIVE_INFINITY;
-				for (int j = 0; j <= match.getColumn(); j++) {
-					if ((values[j] >= max) && (match.validPosition(j) != -1)) { // position is valid and current value is higher than old value
-						move = j; // currently the best move
-						max = values[j]; // currently the highest value
-					}
-				}
-				//System.out.println("move: " + move);
-				//System.out.println("max: " + max);
-				return move; // best possible move after all columns have been evaluated
-			
-	}
+	
  
  
 }

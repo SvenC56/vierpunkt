@@ -28,7 +28,7 @@ public class AI_Logic_Test {
 	/******************* KONSTRUKTOR *******************************/
 	/**************************************************************/
 	
-	static class GameLogic {
+	public static class GameLogic {
 		
 		// Variable die Zuege mitzaehlt! //Move entspricht TURN
 				private int move = 0; // --> maximale Anzahl Zuege 69!
@@ -73,7 +73,7 @@ public class AI_Logic_Test {
 	 * Wenn wir Daten vom  bekommen (gegner)
 	 */
 		
-	int getCurrentPlayer() {
+	public int getCurrentPlayer() {
 		return this.currentPlayer;
 	}
 
@@ -95,7 +95,7 @@ public class AI_Logic_Test {
 	 * Setzt den aktuellen Spieler
 	 * @param value
 	 */
-	private void setCurrentPlayer(int value) {
+	public void setCurrentPlayer(int value) {
 		if (value == 1) {
 			this.currentPlayer = 1;		
 		}
@@ -214,7 +214,7 @@ public class AI_Logic_Test {
 		    System.out.println((this.currentPlayer==1 ? "" : "Agent") + " ist am Zug.");
 		  }
 
-	 static int evaluate(GameLogic game) { // bewertet die Spielsituation
+	 public static int evaluate(GameLogic game) { // bewertet die Spielsituation
 		// System.out.println("Ab jetzt sind wir in evaluate");
 		int agentCount2 = 0;
 		int agentCount3 = 0;
@@ -471,7 +471,7 @@ public class AI_Logic_Test {
  */
 			int test = 0;
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
+			// BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
 	      
 			
 	while(test == 0) { 
@@ -490,11 +490,11 @@ public class AI_Logic_Test {
 			      System.out.print(" ist dran              "
 			      		+ "");
 			      System.out.println("eval" + evaluate(game));
-			      System.out.print("Enter column");
-			       String s = br.readLine();
-			      int input = Integer.parseInt(s);
-			      x = input;
-			    // x = (int) (Math.random()*7);
+			      //System.out.print("Enter column");
+			       //String s = br.readLine();
+			      //int input = Integer.parseInt(s);
+			    //  x = input;
+			     x = (int) (Math.random()*7);
 			      game.playTurn(x, 1);
 			      game.setCurrentPlayer(2);
 			      System.out.println(" hat in Spalte gelegt " + x);
