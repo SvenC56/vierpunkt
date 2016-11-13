@@ -240,9 +240,16 @@ public class ConnectHSQL {
 				+ POS_Y + ", " + POS_X + ");");
 		executeSQL("INSERT INTO TURN (M_ID, PERSON, POS_Y, POS_X) VALUES( " + M_ID + ", '" + PERSON + "', " + POS_Y
 				+ ", " + POS_X + ");");
-
 	}
 
+	
+	/**
+	 */
+	public String[][] getLastFailMatch(){
+		String [][] temp = saveResult(executeSQL("SELECT * FROM MATCH WHERE SCORE IS NULL ORDER BY M_ID DESC LIMIT 1;"));
+		return temp;
+	}
+	
 	/**
 	 * uebermittlung des kompletten Highscores in das Game
 	 */
