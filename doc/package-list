@@ -3,6 +3,4 @@ de.dhbw.vierpunkt.db
 de.dhbw.vierpunkt.gui
 de.dhbw.vierpunkt.interfaces
 de.dhbw.vierpunkt.logic
-de.dhbw.vierpunkt.objects
 de.dhbw.vierpunkt.tests
-de.dhbw.vierpunkt.threadcommander
