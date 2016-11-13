@@ -204,6 +204,7 @@ public class ConnectHSQL {
 		executeSQL("DELETE FROM TURN WHERE M_ID= " + M_ID);
 		executeSQL("DELETE FROM MATCH WHERE G_ID= " + G_ID);
 		executeSQL("DELETE FROM GAME WHERE G_ID= " + G_ID);
+		System.out.println("Loeschen erfolgreich.");
 	}
 
 	/**
@@ -244,6 +245,7 @@ public class ConnectHSQL {
 
 	
 	/**
+	 * fallbackmethode falls keine Turns vorhanden sind. Waehlt immer das letzte unvollstaendige Match aus.
 	 */
 	public String[][] getLastFailMatch(){
 		String [][] temp = saveResult(executeSQL("SELECT * FROM MATCH WHERE SCORE IS NULL ORDER BY M_ID DESC LIMIT 1;"));
