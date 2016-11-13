@@ -59,13 +59,12 @@ public class PusherInterface implements Runnable, Observer
 	 * @see ServerStatus
 	 */
 	private static ServerStatus serverstatus = new ServerStatus("unchanged");
-	private static ZugStatus zugstatus = new ZugStatus(0);
+
 	
 	/**
 	 * Timer, der die Beobachtung des Serverstatus unterstuetzt
 	 */
 	private static Timer serverTimer;
-	private static Timer zugTimer;
 	
 	
 	/**
@@ -78,9 +77,7 @@ public class PusherInterface implements Runnable, Observer
 	 * Countdown, bei dessen Ablauf ein Beenden des Servers angenommen wird
 	 */
 	private static int serverTimerValue = 30;
-	private static int zugTimerValue = zugZeit;
 	private static int incrementalVal = 0;
-	private static int incrementalVal2 = 0;
 	
 
 	
@@ -100,7 +97,6 @@ public class PusherInterface implements Runnable, Observer
 	
 	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung, Game game){
 		this.zugZeit = zugZeit;
-		zugTimerValue = zugZeit;
 		this.MyAppID = AppID;
 		this.MyAppKey = AppKey;
 		this.MyAppSecret = AppSecret;
@@ -134,18 +130,6 @@ public class PusherInterface implements Runnable, Observer
 				}
 			});
 		
-		// Die Pusher Klasse beobachtet den SatzStatus
-		zugstatus.addObserver(this);
-		zugTimer = new Timer(200, new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				zugTimerValue = zugTimerValue - 200;
-				if (zugTimerValue == 0){
-					System.err.println("Die KI konnte waehrend der Zugzeit keinen Zug berechnen, ein Zufallszug wird gespielt");
-					zugTimer.stop();
-				}
-			}
-		});
-				
 		
 		// Das Pusher-Objekt wird mit dem App-Key des Testaccounts initialisiert
 		PusherOptions options = new PusherOptions();
@@ -219,12 +203,12 @@ public class PusherInterface implements Runnable, Observer
 		    public void onEvent(String channel1, String event, String data) {
 		    	// Zug des Gegners aus Nachricht von Server erhalten
 		        System.out.println("Empfangene Daten: " + data);
-		       int zug = getGegnerzug(data);
+
+		        int zug = getGegnerzug(data);
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
 		        
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
-		        // game.playTurn(zug, 1);
 		         game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
 		       	
 		        	
@@ -244,27 +228,35 @@ public class PusherInterface implements Runnable, Observer
 		        }
 		        
 		        if (data.contains("true")){
+
 		        	// der Move wird von der Logik berechnet
-		        	 //int move = (int) (Math.random()*7);
-		        	// int move = game.playTurn(-1, 2);
 		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+		        	
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
+		        	
 		        	// der Spielstein wird in der GUI eingeworfen
 		        	fireZugEvent(move, spielerKennung);
+
 		        }
 		        
 		        // Wird aufgerufen wenn Spieler X gewinnt
 		        if (data.contains("false") && data.contains("Spieler X")){
+		        	// Konsolenausgabe
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	
+		        	// Uebergabe des Gewinners an die Logik
 		        	if (spielerKennung == 'x'){
 		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
 		        	}
+		        	
+		        	// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein eingeworfen werden kann
 		        	try {
 		        	Thread.sleep(1000);
 		        	} catch (Exception e ){ e.getMessage();};
+		        	
 		        	fireGewinnerEvent('x');
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
 		        	serverTimer.stop();
@@ -272,11 +264,15 @@ public class PusherInterface implements Runnable, Observer
 		        	
 		        	// Wird aufgerufen wenn Spieler O gewinnt	
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
+		        	// Konsolenausgabe
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
+		        	
+		        	// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein eingeworfen werden kann
 		        	try {
 			        	Thread.sleep(1000);
 			        	} catch (Exception e ){ e.getMessage();};
+			        	
 		        	fireGewinnerEvent('o');
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        	serverTimer.stop();
@@ -402,10 +398,12 @@ public class PusherInterface implements Runnable, Observer
 	 * Wenn der beobachtete Wert sich aendert (bei ServerEvents ueber den Pusher Channel) wird der Timer zurueckgesetzt
 	 */
 	@Override
-	public void update(Observable o, Object arg)
+	public void update(Observable serverstatus, Object arg)
 	{
 		serverTimerValue = 30;
 		//System.out.println(arg);
 	}
+	
+	
 
 }
