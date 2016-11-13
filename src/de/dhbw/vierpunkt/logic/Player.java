@@ -40,7 +40,7 @@ public class Player {
 		this.wins++;
 	}
 
-	 String getName() {
+	 public String getName() {
 		return name;
 	}
 }

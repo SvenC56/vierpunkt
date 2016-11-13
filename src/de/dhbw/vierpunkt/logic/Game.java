@@ -46,7 +46,7 @@ public class Game implements NameListener {
 			return currentMatch;
 		}
 		 
-		Player getPlayer(int i) {
+	  public Player getPlayer(int i) {
 			return this.player[i];
 		}
 		
@@ -54,7 +54,7 @@ public class Game implements NameListener {
 			return this.db;
 		}
 		
-		int getMatchID() {
+		public int getMatchID() {
 			return matchID;
 		}
 
