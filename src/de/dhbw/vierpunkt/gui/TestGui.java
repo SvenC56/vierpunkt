@@ -532,22 +532,30 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         		
         		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
 	               
-   	     		Thread playThread = new Thread(){
-   	     			@Override
-   	     			public void run(){
-	   	     			for (int i = 0; i < alleZuege[0].length; i++) {
-     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
-     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
-         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld))), 'x');
-         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
-         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld))), 'o');
-         	                	}
-    							//try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
-    							//catch (InterruptedException e) {e.printStackTrace();}
-     	                	}
-	   	     			}	
-   	     			}
-   	     		};
+        		 for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+	        			plaetzeFreiInReihe[i]=5;
+	        		}
+	                
+	   	     		Thread playThread = new Thread(){
+	   	     			@Override
+	   	     			public void run(){
+		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
+	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
+	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
+	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	         	                	}
+	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+	    							catch (InterruptedException e) {e.printStackTrace();}
+	     	                	}
+		   	     			}	
+	   	     			}
+	   	     		};
    	     		playThread.start();
         		
         	}
@@ -556,7 +564,16 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         	@Override
         	public void handle(MouseEvent arg0){
         		continueGame.close();
-        		db.deleteGame(Integer.parseInt(alleZuege[0][5]), Integer.parseInt(alleZuege[0][0]));
+        		//db.deleteGame(Integer.parseInt(alleZuege[0][5]), Integer.parseInt(alleZuege[0][0]));
+        		// Uebergabe der Parameter an das PusherInterface
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+				Thread t1 = new Thread(){
+					@Override
+					public void run(){
+						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
+					}
+				};
+				t1.start();
         		
         	}
         });
@@ -716,8 +733,61 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 						gegner = 'o';
 					}else{gegner = 'x';}
 	            	createGrids_automatisch(spielfeld);			// Spielfeld leer und ohne MouseEvents
-	            	if(db.catchWrongState()!=null){
-	            		continueGame.show();
+	            	if(db.catchWrongState()==null){
+	            		
+	            		fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+	    				Thread t1 = new Thread(){
+	    					@Override
+	    					public void run(){
+	    						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
+	    					}
+	    				};
+	    				t1.start();
+	    				
+	            	}else{
+	            		System.out.println(db.catchWrongState().toString());
+	            		boolean empty = true;
+	            		String[][] alleZuege = db.catchWrongState();
+	            		for(int i=0; i< alleZuege[0].length;i++){
+	            			if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){
+	            				empty = false;
+	            			}
+	            		}
+	            		  if(empty == true){
+	            			// Uebergabe der Parameter an das PusherInterface
+			    				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+			    				Thread t1 = new Thread(){
+			    					@Override
+			    					public void run(){
+			    						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
+			    					}
+			    				};
+			    				t1.start();
+	            		  }else{
+	            			  continueGame.show();
+	            		  }
+	            		
+	            		
+	            		/*boolean empty = true;
+	            		String[][] alleZuege = db.catchWrongState();
+	            		for(int i=0; i< alleZuege[0].length;i++){
+	            		       if(alleZuege[i][0] != null){
+	            		    	   empty = false;
+	            		       }
+	            		}
+	            		  if(empty == true){
+	            			// Uebergabe der Parameter an das PusherInterface
+			    				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+			    				Thread t1 = new Thread(){
+			    					@Override
+			    					public void run(){
+			    						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
+			    					}
+			    				};
+			    				t1.start();
+	            		  }else{
+	            			  continueGame.show();
+	            		  }*/
 	            	}
 	            	
 				}else{
@@ -727,15 +797,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 					}else{gegner = 'x';}
 					createGrids(spielfeld);}					// Spielfeld leer mit MouseEvents
 				
-				// Uebergabe der Parameter an das PusherInterface
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
-				Thread t1 = new Thread(){
-					@Override
-					public void run(){
-						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
-					}
-				};
-				t1.start();
+				
 				
 				//Diese Methode muss in das Event Match beendet verschoben werden!
 				for (int i = 0; i < plaetzeFreiInReihe.length; i++){
