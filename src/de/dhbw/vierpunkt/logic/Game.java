@@ -7,7 +7,7 @@ import de.dhbw.vierpunkt.db.DBConnector;
  * @author tobias
  *
  */
-public class Game implements LogicListener {
+public class Game implements NameListener {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
@@ -82,7 +82,7 @@ public class Game implements LogicListener {
 	/**Startet ein neues Spiel und legt hierfuer zwei Spieler an
 	 * Diese Klasse laeuft und legt jeweils ein neues Match an sobald ein Match abgeschlossen wurde, maximal 3
 	 * (non-Javadoc)
-	 * @see de.dhbw.vierpunkt.logic.LogicListener#startGame(java.lang.String, java.lang.String)
+	 * @see de.dhbw.vierpunkt.logic.NameListener#startGame(java.lang.String, java.lang.String)
 	 **/
 		
 	public void startManGame(String name1, String name2) {
