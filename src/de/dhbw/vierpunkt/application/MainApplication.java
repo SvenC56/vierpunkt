@@ -18,11 +18,16 @@ public class MainApplication extends Application implements ParamListener{
 	 */
 	public static void main(String[] args) throws InterruptedException
 	{
+		// Die MainApplication bekommt die StartParameter aus GUI
 		gui.addParamListener(main);
+		// Die Logik bekommt die eingegebenen Spielernamen
 		gui.addNameListener(game);
 		
+		// GUI bekommt die empfangenen Zuege von der Pusher Klasse
 		pushy.addListener(gui);
+		// GUI Bekommt die Error Meldungen aus der Pusher Klasse
 		pushy.addErrorListener(gui);
+		// GUI bekommt die Gewinner von der Pusher Klasse gemeldet
 		pushy.addGewinnerListener(gui);
 		
 		launch(args);
