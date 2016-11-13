@@ -1295,10 +1295,31 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");				// neue Spalte Gewinner mit dem Datentyp der Werte aus der Tabelle
         winnerCol.setMinWidth(100);
         winnerCol.setCellValueFactory(new PropertyValueFactory<Spiele, String>("winner"));
-        
-        for (int i = 0; i < alleGames[0].length; i++) {										// Hinzufuegen aller Spielattribute zu der itemlist
-          	try{items.add(new Spiele(alleGames[i][0], alleGames[i][1], alleGames[i][2], alleGames[i][3])); }
-            catch(Exception ex){System.out.println("Empty fields or illegal arguments passed.");}
+		
+		for (int row = 0; row < alleGames.length; row++) { // Zeile
+			String firstcolumn = null;
+			String secondcolumn = null;
+			String thridcolumn = null;
+			String fourthcolumn = null;
+			for (int column = 0; column < alleGames[row].length; column++) { // Spalte Hinzufuegen aller Spielattribute zu der itemlist
+				if (column == 0) {
+					firstcolumn = alleGames[row][column];
+				}
+				if (column == 1) {
+					secondcolumn = alleGames[row][column];
+				}
+				if (column == 2) {
+					thridcolumn = alleGames[row][column];
+				}
+				if (column == 3) {
+					fourthcolumn = alleGames[row][column];
+				}
+			}
+			try {
+				items.add(new Spiele(firstcolumn, secondcolumn, thridcolumn, fourthcolumn));
+			} catch (Exception ex) {
+				System.out.println("Empty fields or illegal arguments passed.");
+			}
 		}
         
         table.setItems(items);																// Anzeigen der Zeilen gefuellt mit den Spielen der Datenbank
