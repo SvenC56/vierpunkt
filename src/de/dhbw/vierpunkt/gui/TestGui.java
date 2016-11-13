@@ -529,7 +529,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         	public void handle(MouseEvent arg0){
         		
         		continueGame.close();
-        		
+        		if(alleZuege.length!=0){
+        			
         		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
 	               
         		 for (int i = 0; i < plaetzeFreiInReihe.length; i++){
@@ -557,6 +558,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	   	     			}
 	   	     		};
    	     		playThread.start();
+        		}
+        		
         		
         	}
         });
@@ -735,7 +738,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 					}else{gegner = 'x';}
 	            	createGrids_automatisch(spielfeld);			// Spielfeld leer und ohne MouseEvents
 	            	if(db.catchWrongState()==null){
-	            		
+	            		System.out.println("Kein abgebrochenes Spiel vorhanden");
 	            		fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
 	    				Thread t1 = new Thread(){
 	    					@Override
@@ -746,9 +749,11 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	    				t1.start();
 	    				
 	            	}else{
-	            		System.out.println(db.catchWrongState().toString());
+	            		System.out.println( "Es ist ein abgebrochenes Spiel vorhanden");
+	            		
 						String[][] alleZuege = db.catchWrongState();
-						if (alleZuege == null) { // Uebergabe der Parameter an das PusherInterface
+						if (alleZuege.length==0) { 
+							System.out.println("es sind keine Zuege vorhanden");
 							fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
 									getAppKey(), getAppSecret());
 							Thread t1 = new Thread() {
@@ -760,6 +765,11 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 							};
 							t1.start();
 						} else {
+							System.out.println("es sind Zuege vorhanden");
+							System.out.println(alleZuege[0].length);
+							for (int i = 0; i < alleZuege[0].length; i++) {
+								System.out.println(alleZuege[i][0]+ " "+ alleZuege[i][3]+ " "+ alleZuege[i][4]);
+							}
 							continueGame.show();
 						}
 	            		
