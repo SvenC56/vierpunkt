@@ -78,7 +78,7 @@ public class PusherInterface implements Runnable, Observer
 	 */
 	private static int serverTimerValue = 30;
 	private static int incrementalVal = 0;
-	
+	private static int move;
 
 	
 	/**
@@ -228,10 +228,10 @@ public class PusherInterface implements Runnable, Observer
 		        }
 		        
 		        if (data.contains("true")){
-
+		        	if (zugZeit >= 8000){
 		        	// der Move wird von der Logik berechnet
-		        	int move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
-		        	
+		        	 move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+		        	} else {move = (int) Math.random()*7;}
 		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 		        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
