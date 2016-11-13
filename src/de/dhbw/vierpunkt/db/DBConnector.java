@@ -71,6 +71,14 @@ public class DBConnector {
 		dbMatch.run();
 	}
 
+	/**
+	 * fallbackmethode falls keine Turns vorhanden sind. Waehlt immer das letzte unvollstaendige Match aus.
+	 */
+	public String[][] getLastFailMatch(){
+		String [][] dbArray = db.getLastFailMatch();
+		return dbArray;
+	}
+	
 	public int getGameID() {
 		return db.getMaxId("GAME");
 	}
