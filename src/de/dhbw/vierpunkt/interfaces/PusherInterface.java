@@ -22,11 +22,14 @@ import com.pusher.client.connection.ConnectionStateChange;
 
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.logic.Game;
+import de.dhbw.vierpunkt.tests.AI_Logic_Test;
+import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 
 
 
 public class PusherInterface implements Runnable, Observer
 {
+	private static int count = 0;
 	/**
 	 * App-ID der Pusher Instanz des Clients
 	 */
@@ -207,10 +210,38 @@ public class PusherInterface implements Runnable, Observer
 		        int zug = getGegnerzug(data);
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
 		        
+		        boolean fallbackActive = false;
+		        AI_Logic_Test fallback = new AI_Logic_Test();
+		        GameLogic fallbackGame = new GameLogic();
+		        int depth = 6;
+		        
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
-		         game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);
-		       	
+		        	if (fallbackActive) {
+		        		 if (fallbackGame.getCurrentPlayer() == 1) {      //  ist dran
+		        			   
+		   			      System.out.print(" ist dran              "
+		   			      		+ "");
+		   			      System.out.println("eval" + fallbackGame.evaluate(fallbackGame));
+		   			      fallbackGame.playTurn(zug, 1);
+		   			      fallbackGame.setCurrentPlayer(2);
+		   			      System.out.println(" hat in Spalte gelegt " + zug);
+		   			      System.out.println("Bewertung: " + fallbackGame.evaluate(fallbackGame));
+		   			      
+		   		      // Sieg?
+		   			      if (fallbackGame.evaluate(fallbackGame)==(int)Double.NEGATIVE_INFINITY) {
+		   			    	  fallbackGame.runInConsole();
+		   			    	  System.out.println(fallbackGame.evaluate(fallbackGame));
+		   			        System.out.println(" hat gewonnen...");
+		   			      };
+		   			      
+		   			      fallbackGame.runInConsole();
+		   			    
+		   			    }
+		   			      
+		        	} else {
+				         game.getCurrentMatch().getCurrentTurn().startOpponentTurn(zug);	
+		        	}
 		        	
 		        	
 		        // Spielstein wird in der GUI eingeworfen
@@ -226,22 +257,58 @@ public class PusherInterface implements Runnable, Observer
 		        serverstatus.setValueToWatch("changed" + incrementalVal);
 
 		        }
+		       
 		        
 		        if (data.contains("true")){
-		        	if (zugZeit >= 8000){
-		        	// der Move wird von der Logik berechnet
-		        	 move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
-		        	} else {move = game.getCurrentMatch().getCurrentTurn().setValidRandomTurn();
-		        			//(int) Math.random()*7;
-		        	//int move = (int) (Math.random()*7);
-		        	}
-		        	// der von der Logik berechnete Move wird an den Pusher uebertragen
-		        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
-		        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
-		        	
-		        	// der Spielstein wird in der GUI eingeworfen
-		        	fireZugEvent(move, spielerKennung);
+		        	if (fallbackActive) {
 
+					    	 System.out.println("Wir sind dran          "
+					    	 		+ "");
+					    	 if (count == 0) {
+					    		 move = 3;
+					    		 fallbackGame.playTurn(3, 2);
+					    		 count++;
+					    	 } else {
+					    	System.out.println("eval" + fallbackGame.evaluate(fallbackGame));
+					      // x = (int) (Math.random()*6); // falls KI nicht getestet werden soll, sondern nur Zufallszahl
+					    	move = fallbackGame.calcMove(fallbackGame, depth);
+					      fallbackGame.playTurn(move, 2);
+					      System.out.println("Wir haben in Spalte gelegt " + move);
+					      fallbackGame.setCurrentPlayer(1);
+					    	 }
+
+					      // Sieg?
+					      if (fallbackGame.evaluate(fallbackGame)==(int)Double.POSITIVE_INFINITY) {
+					    	  fallbackGame.runInConsole();
+					    	  System.out.println(fallbackGame.evaluate(fallbackGame));
+					        System.out.println(" Wir haben gewonnen!");
+					        
+					      };
+					      
+					      fallbackGame.runInConsole();
+					      
+					      System.out.println("_____________________________________");
+					      System.out.println();
+	
+					    System.out.println();
+	
+		        		
+		        	} else {
+			        	if (zugZeit >= 8000){
+			        	// der Move wird von der Logik berechnet
+			        	 move = game.getCurrentMatch().getCurrentTurn().startAgentTurn();
+			        	} else {move = game.getCurrentMatch().getCurrentTurn().setValidRandomTurn();
+			        			//(int) Math.random()*7;
+			        	//int move = (int) (Math.random()*7);
+			        	}
+		        	   }
+			        	// der von der Logik berechnete Move wird an den Pusher uebertragen
+			        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
+			        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
+			        	
+			        	// der Spielstein wird in der GUI eingeworfen
+			        	fireZugEvent(move, spielerKennung);
+		     
 		        }
 		        
 		        // Wird aufgerufen wenn Spieler X gewinnt
@@ -283,6 +350,7 @@ public class PusherInterface implements Runnable, Observer
 		        }
 		       			        
 		    }
+
 
 			@Override
 			public void onSubscriptionSucceeded(String channel)

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
+
 public class AI_Logic_Test {
 	
 	/*****************************************************************************************************/
@@ -549,6 +551,8 @@ public class AI_Logic_Test {
 		 } // End of while(true) loop
 		}
 	}
+
+
 }
 
 
