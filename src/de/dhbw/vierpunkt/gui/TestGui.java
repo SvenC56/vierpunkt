@@ -740,7 +740,9 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 				
 				if(spielmodus.getValue()==2){
 					createGrids_automatisch(spielfeld);				// Spielfeld ohne MouseEvent
-				}else{createGrids(spielfeld);}						// Spielfeld mit MouseEvent
+				}else{
+					spielmodus.setValue(1);
+					createGrids(spielfeld);}						// Spielfeld mit MouseEvent
 				
 				}
 		});
@@ -1044,7 +1046,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	/************************* Belegung der GridPane mit Feldelementen und MouseEvents **********************************/
 	public void createGrids(GridPane spielfeld){
 	    	spielfeld.getChildren().clear();									// Loeschen der Elemente in der Grid
-	    	
+	    	startManGame(names1, names2);
+	    	System.out.println("startManGame gestartet");
 	        for(int anzahlzeilen=0;anzahlzeilen<spielfeld.getRowConstraints().size(); anzahlzeilen++){
 	            for(int anzahlspalten=0; anzahlspalten<spielfeld.getColumnConstraints().size(); anzahlspalten++){
 	            
@@ -1115,11 +1118,15 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	              spielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
 	                   @Override public void handle(MouseEvent arg0) { 
 	                	   if(manuellerSpieler == 'x'){									// je nach aktuellem Spieler wird die richtige Farbe gesetzt
+	                		   System.out.println(playerInput.getText() + " " + GridPane.getColumnIndex(spielstein.getParent()) + " " + GridPane.getRowIndex(spielstein.getParent()));
 	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   setManTurn(playerInput.getText(), GridPane.getColumnIndex(spielstein.getParent()),GridPane.getRowIndex(spielstein.getParent()));
 	                		   manuellerSpieler = 'o';
 	                	   }else{
+	                		   System.out.println(opponentInput.getText() + " " + GridPane.getColumnIndex(spielstein.getParent()) + " " + GridPane.getRowIndex(spielstein.getParent()));
 	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
-	                		   manuellerSpieler = 'x';
+	                		   setManTurn(opponentInput.getText(), GridPane.getColumnIndex(spielstein.getParent()), GridPane.getRowIndex(spielstein.getParent()));
+	                		    manuellerSpieler = 'x';
 	                	   }
 	                   }
 	               });
@@ -1128,10 +1135,14 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	               vorschauspielstein.setOnMouseClicked(new EventHandler<MouseEvent>(){
 	                   @Override public void handle(MouseEvent arg0) {
 	                	   if(manuellerSpieler == 'x'){
+	                		   System.out.println( playerInput.getText() + " " + GridPane.getColumnIndex(spielstein.getParent()) + " " + GridPane.getRowIndex(spielstein.getParent()));
 	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   setManTurn(playerInput.getText(), GridPane.getColumnIndex(spielstein.getParent()),GridPane.getRowIndex(spielstein.getParent()));
 	                		   manuellerSpieler = 'o';
 	                	   }else{
+	                		   System.out.println(opponentInput.getText()+ " " + GridPane.getColumnIndex(spielstein.getParent()) + " " + GridPane.getRowIndex(spielstein.getParent()));
 	                		   spielsteinAnzeigen(spielstein, manuellerSpieler);
+	                		   setManTurn(opponentInput.getText(), GridPane.getColumnIndex(spielstein.getParent()), GridPane.getRowIndex(spielstein.getParent()));
 	                		   manuellerSpieler = 'x';
 	                	   }
 	                   }
