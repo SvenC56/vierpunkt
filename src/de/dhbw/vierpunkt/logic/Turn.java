@@ -28,7 +28,7 @@ public class Turn {
 
 		
 	
-	public Turn(int turnNumber, Player player, Match match) {
+	 Turn(int turnNumber, Player player, Match match) {
 		this.turnNumber=turnNumber;
 		this.player=player;
 		this.match = match;
@@ -37,32 +37,6 @@ public class Turn {
 	}
 	
 
-	/**************************************************************/
-	/****************** Getter / Setter ***************************/
-	/**************************************************************/
-	
-	Player getPlayer() {
-		return this.player;
-	}
-
-	int getX() {
-		return x;
-	}
-
-	void setX(int x) {
-		this.x = x;
-	}
-
-	int getY() {
-		return y;
-	}
-
-	void setY(int y) {
-		this.y = y;
-	}
-	
-	
-	
 	/**************************************************************/
 	/******************* METHODEN *********************************/
 	/**************************************************************/
@@ -105,32 +79,35 @@ public class Turn {
 	 */
 	public int startAgentTurn() {
 		System.out.println("Start Agent turnID:" + this.turnNumber);
+		//Beim ersten Wurf ist Spalte in der Mitte optimal
 		if (this.turnNumber == 0) {
 			this.match.setCurrentPlayer(this.match.getGame().getPlayer(0));
 			this.x = 3;
 			this.y = this.match.validPosition(x);
 			 this.match.setField(this.x, this.y, this.player);
 		}
-		
-		if ((this.match.getMatchWinner() == null || !this.match.getEven()))	{
-		 if (this.turnNumber != 0) {
+		//Nur Spielen, wenn kein Gewinner in Match feststeht
+		if ((this.match.getMatchWinner() == null || !this.match.getEven()))	{ 
+		if (this.turnNumber != 0) { // Ab dem zweiten Zug...
 			 this.x = ki.calcMove(this.match, this.depth);
 			 System.out.println("Unsere KI empfiehlt: " + this.x);
-			 if (this.x == -1) {
+			 if (this.x == -1) { //Sollte ein Fehler bei der Kalkulation auftreten
 				 this.x = this.setValidRandomTurn(); 
-				 
+				 return this.x;
 			 	}
 			 else {
 				 this.y = this.match.validPosition(x);
 				 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)	 
 			 	}
 		 }
+		 //Speichern des Zuges in der Datenbank
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner	
 		 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
 			 //Hier wird die Datenbank informiert und der Score gespeichert
 			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
-			 if (this.match.getMatchNumber() == 2){
+			 this.match.setMatchActive(false);
+			 if (this.match.getMatchNumber() == 2){ //Wenn letztes Match erreicht
 				 if ( this.match.getGame().checkWinner() != null) {
 					 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 					 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
@@ -154,21 +131,36 @@ public class Turn {
 	}
 	
 	/**
-	 * Setzt einen zufaelligen Zug, sollte KI oder Game zu langsam sein
+	 * Setzt einen zufaelligen Zug, sollten wir zu langsam sein
 	 * @return
 	 */
 	public int setValidRandomTurn() {
-		System.out.println("HANDLE ERROR!");
-		int y=-1;
-		  while (y == -1) {
-			 int x = (int) (Math.random()*7);
-			 y = this.match.validPosition(x);
+		System.out.println("HANDLE ERROR! Play Random Turn!");
+		this.y = -1;
+		int randomX=0;
+		  while (y == -1) { //Durch die Schleife solange bis validPosition gefunden wurde
+			 randomX = (int) (Math.random()*7);
+			 this.y = this.match.validPosition(randomX);
 		  }
+		  this.x = randomX;
 		  this.match.setField(this.x, this.y, this.player);
-		  
-		 return x;
+		  System.out.println("Saved Random Turn");
+		  this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+			 //Prueft auf Gewinner	
+			 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
+				 //Hier wird die Datenbank informiert und der Score gespeichert
+				 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
+				 if (this.match.getMatchNumber() == 2){
+					 if ( this.match.getGame().checkWinner() != null) {
+						 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
+						 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
+						 }
+				 }}
+			 this.match.getGame().setNextPlayer();
+			 this.match.setTurnActive(false);
+			 this.match.setNewTurn();	  
+		 return this.x;
 	}
-	
 }
 	
 

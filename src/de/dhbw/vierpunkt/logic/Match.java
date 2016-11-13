@@ -86,7 +86,7 @@ public class Match {
 	 * @param game
 	 * @param matchNumber
 	 */
-	public Match(Game game, int matchNumber) {
+	Match(Game game, int matchNumber) {
 		this.game = game;
 		this.matchTurnNumber = 0;
 		this.matchNumber = matchNumber;
@@ -96,18 +96,7 @@ public class Match {
 			}
 		}
 	}
-	/**
-	 * Konstruktor fuer die KI
-	 * @param matchNumber
-	 */
-	public Match(int matchNumber) {
-		this.matchNumber = matchNumber;
-		for (int x = 0; x <= COLUMN; x++ ) {
-			for (int y = 0; y <= ROW; y++) {
-				this.field[y][x] = new PlaySlot(null);
-			}
-		}
-	}
+	
 	
 	/**************************************************************/
 	/****************** Getter / Setter ***************************/
@@ -127,7 +116,7 @@ public class Match {
 			return COLUMN;
 		}
 		
-	  int getRow() {
+	  private int getRow() {
 			return ROW;
 		}
 	 
@@ -135,7 +124,7 @@ public class Match {
 		 return this.even;
 	 }
 	 
-	  int getMatchNumber() {
+	 int getMatchNumber() {
 		 return this.matchNumber;
 	 }
 
@@ -147,20 +136,8 @@ public class Match {
 		this.matchWinner = winner;
 		}
 	
-	PlaySlot getField(int x, int y) {
-		return this.field[y][x];
-	}
-	
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
-		}
-	 
-		Turn[] getTurns() {
-			return turn;
-		}
-
-		void setTurns(Turn turns[]) {
-			this.turn = turns;
 		}
 		
 		public Player getCurrentPlayer() {
@@ -171,10 +148,6 @@ public class Match {
 			this.currentPlayer = currentPlayer;
 		}
 		
-		  boolean isTurnActive() {
-				return turnActive;
-			}
-
 			void setTurnActive(boolean turnActive) {
 				this.turnActive = turnActive;
 			}
@@ -183,15 +156,12 @@ public class Match {
 				return game;
 			}
 
-			void setGame(Game game) {
-				this.game = game;
-			}
-			
-			int getMatchTurnNumber() {
+
+			private int getMatchTurnNumber() {
 				return matchTurnNumber;
 			}
 
-			void setMatchTurnNumber(int matchTurnNumber) {
+			private void setMatchTurnNumber(int matchTurnNumber) {
 				this.matchTurnNumber = matchTurnNumber;
 			}
 			
@@ -252,7 +222,7 @@ public class Match {
 		 * @param y
 		 * @return
 		 */
-		Player getFieldPlayer(int x, int y) {
+		private Player getFieldPlayer(int x, int y) {
 				return this.field[y][x].getOwnedBy();
 				}
 	
@@ -263,20 +233,14 @@ public class Match {
 	 * @return
 	 */
 	 Match getDemoMatch() {
-	//	Match match2 = this;
-//		match2.setCurrentPlayer(this.getCurrentPlayer());
-		 /** Aenderungen JaLo
-		  * 
-		  */
+	
 		 Match match2 = new Match(this.game, this.matchNumber);
 		 match2.setCurrentPlayer(currentPlayer);
 		 for (int i = 0; i <= COLUMN; i++) 
 			 for (int j = 0; j <= ROW; j++) {
 				 match2.setField(i, j, this.getFieldPlayer(i, j));
 			 }
-		 /** Aenderungen JaLo
-		  * 
-		  */
+		
 		return match2;
 	}
 	
@@ -489,7 +453,7 @@ public class Match {
 	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-		 /** �nderungen JaLo: player == 1 / player == 2 vertauscht
+		 /** Aenderungen JaLo: player == 1 / player == 2 vertauscht
 		  * 
 		  */
 			if (player == 1) {
@@ -527,125 +491,4 @@ public class Match {
 		 return cnt;
 	 	} 
 
-	 
-//	 /** Gibt Anzahl der Chips des gleichen Spieler in Spalte zurueck **/
-//		 int inColumn(int x, int y) {
-//			// System.err.println("Methode inColumn wurde aufgerufen!");
-//			int count = 0; // Zaehler der validen Chips des gleichen Spielers in
-//							// Spalte
-//			int temp = y;
-//			if ( this.getFieldPlayer(x, y) == this.getCurrentPlayer() || this.getFieldPlayer(x, y) == null) {
-//				count++;
-//				y--;
-//			}
-//			for (; y > -1; y--) { // von unten nach oben!
-//				if (this.getFieldPlayer(x,y) == this.getCurrentPlayer()) {
-//					count++;
-//				} else
-//					break;
-//			}
-//			if (count < 4 && temp <= ROW) { // von oben nach unten! (nur, wenn
-//											// Counter 4 noch nicht erreicht, da
-//											// Spiel sonst gewonnen)
-//				y = temp + 1;
-//				for (; y <= ROW; y++) { // Limitiert durch Anzahl Zeilen!
-//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//						count++;
-//					} else
-//						break;
-//				}
-//			}
-//			return count;
-//		}
-//
-//		
-//		/** Gibt Anzahl der Chips des gleichen Spielers in der Diagonale zurueck **/
-//		 int inDiagonal(int x, int y) {
-//			// System.err.println("Methode inDiagonal wurde aufgerufen!");
-//			int count = 0;
-//			int startX = x;
-//			int startY = y;
-//			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//				count++;
-//				x++;
-//				y--;
-//			}
-//			// Prueft oben - rechts
-//			for (; (x <= COLUMN && y > -1); x++, y--) {
-//				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//					count++;
-//				} else
-//					break;
-//			}
-//			// Prueft oben - links
-//			if (count < 4 && (y > -1 && x > -1)) {
-//				x = startX - 1;
-//				y = startY - 1;
-//				for (; (x > -1 && y > -1); x--, y--) {
-//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//						count++;
-//					} else
-//						break;
-//				}
-//			}
-//
-//			if (count < 4 && (y <= ROW && x > -1)) {
-//				x = startX - 1;
-//				y = startY + 1;
-//				// Prueft unten - links
-//				for (; (x > -1 && y <= ROW); x--, y++) {
-//
-//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//						count++;
-//					} else
-//						break;
-//				}
-//			}
-//			if (count < 4 && (y <= ROW && x <= COLUMN)) {
-//				x = startX + 1;
-//				y = startY + 1;
-//				// Prueft unten - rechts
-//				for (; (x <= COLUMN && y <= ROW); x++, y++) {
-//
-//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//						count++;
-//					} else
-//						break;
-//				}
-//			}
-//			return count;
-//		}
-
-	
-		 
-//		/** Gibt Anzahl der Chips des gleichen Spieler in Reihe (Zeile) zurueck **/
-//		 int inRow(int x, int y) {
-//			// System.err.println("Methode inRow wurde aufgerufen!");
-//			int count = 0;
-//			int temp = x;
-//			if (this.getFieldPlayer(x, y) == null || this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//				count++;
-//				x++;
-//			}
-//			for (; x <= COLUMN; x++) { // von links nach rechts! Limitiert durch
-//										// Anzahl Spalten!
-//				if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//					count++;
-//				} else
-//					break;
-//			}
-//			if (count < 4 && temp > 0) { // von rechts nach links (nur, wenn Counter
-//											// 4 noch nicht erreicht, da Spiel sonst
-//											// gewonnen)
-//				x = temp - 1;
-//				for (; x > -1; x--) {
-//					if (this.getFieldPlayer(x, y) == this.getCurrentPlayer()) {
-//						count++;
-//					} else
-//						break;
-//
-//				}
-//			}
-//			return count;
-//		}
 }

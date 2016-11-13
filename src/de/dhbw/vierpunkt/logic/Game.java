@@ -7,7 +7,7 @@ import de.dhbw.vierpunkt.db.DBConnector;
  * @author tobias
  *
  */
-public class Game implements NameListener {
+public class Game implements LogicListener {
 	
 	/**************************************************************/
 	/******************* Attribute ********************************/
@@ -23,15 +23,6 @@ public class Game implements NameListener {
 	private static final int MATCHES = 2;
 	private Match match[] = new Match[MATCHES+1];
 	private Match manMatch;
-	
-	/**************************************************************/
-	/******************* KONSTRUKTOR *******************************/
-	/**************************************************************/
-	
-	
-	public Game() {
-			
-	}
 	
 
 	
@@ -50,23 +41,10 @@ public class Game implements NameListener {
 		this.winner = winner;
 	}
 	 
-	 Match getMatch(int i) {
-		 return this.match[i];
-	 }
-	 
-	 void setMatch(int i, Match match) {
-		 this.match[i] = match;
-	 }
 
 	  public Match getCurrentMatch() {
 			return currentMatch;
 		}
-
-
-		 void setCurrentMatch(Match currentMatch) {
-			this.currentMatch = currentMatch;
-		}
-		 
 		 
 		Player getPlayer(int i) {
 			return this.player[i];
@@ -82,17 +60,17 @@ public class Game implements NameListener {
 
 
 
-		void setMatchID(int matchID) {
+		private void setMatchID(int matchID) {
 			this.matchID = matchID;
 		}
 		
-		public int getGameID() {
+		 int getGameID() {
 			return GameID;
 		}
 
 
 
-		public void setGameID(int gameID) {
+		private void setGameID(int gameID) {
 			GameID = gameID;
 		}
 	
@@ -104,7 +82,7 @@ public class Game implements NameListener {
 	/**Startet ein neues Spiel und legt hierfuer zwei Spieler an
 	 * Diese Klasse laeuft und legt jeweils ein neues Match an sobald ein Match abgeschlossen wurde, maximal 3
 	 * (non-Javadoc)
-	 * @see de.dhbw.vierpunkt.logic.NameListener#startGame(java.lang.String, java.lang.String)
+	 * @see de.dhbw.vierpunkt.logic.LogicListener#startGame(java.lang.String, java.lang.String)
 	 **/
 		
 	public void startManGame(String name1, String name2) {
@@ -145,7 +123,6 @@ public class Game implements NameListener {
 			 if (this.match[i] == null) {	//wenn freie Position gefunden
 				this.match[i] = new Match(this, i);		//neues Match erstellen
 				this.currentMatch = match[i];			//als currentMatch() setzen
-			//	this.currentMatch.setCurrentPlayer(this.player[0]);	//den currentPlayer() setzen
 				db.createMatch(db.getGameID(), match[i].getMatchNumber()); // Match in DB speichern
 				setMatchID(db.getMatchID());
 				this.currentMatch.setMatchActive(true);
@@ -162,6 +139,10 @@ public class Game implements NameListener {
 		 
 	}
 	
+	/**
+	 * Ueberprueft ob es ein Game-Gewinner gibt und liefert den Gewinner zurueck
+	 * @return winner
+	 */
 	Player checkWinner() {
 		int count = 1;
 		for (int i = 0; i <= MATCHES; i++) {
@@ -185,15 +166,7 @@ public class Game implements NameListener {
 		return this.winner;
 	}
 	
-	Player winnerIs() {
-			if (this.winner != null) {
-				return this.winner;
-			}
-			else {
-				return null;
-			}
-	}
-	
+
 	/**
 	 * Der naechste Spieler ist dran. Methode wechselt den currentPlayer
 	 */
