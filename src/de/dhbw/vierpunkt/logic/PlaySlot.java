@@ -10,8 +10,8 @@ public class PlaySlot {
  */
 	private Player ownedBy = null;
 	
-	public PlaySlot() {
-		
+	public PlaySlot(Player player) {
+		this.ownedBy = player;
 	}
 
 	public Player getOwnedBy() {

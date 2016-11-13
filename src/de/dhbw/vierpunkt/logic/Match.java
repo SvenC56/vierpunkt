@@ -92,7 +92,7 @@ public class Match {
 		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
-				this.field[y][x] = new PlaySlot();
+				this.field[y][x] = new PlaySlot(null);
 			}
 		}
 	}
@@ -104,7 +104,7 @@ public class Match {
 		this.matchNumber = matchNumber;
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
-				this.field[y][x] = new PlaySlot();
+				this.field[y][x] = new PlaySlot(null);
 			}
 		}
 	}
@@ -146,7 +146,11 @@ public class Match {
 	public void setMatchWinner(Player winner) {
 		this.matchWinner = winner;
 		}
-
+	
+	PlaySlot getField(int x, int y) {
+		return this.field[y][x];
+	}
+	
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
 		}
@@ -212,6 +216,7 @@ public class Match {
 			if (this.checkWinner()!=null) {
 				this.setMatchWinner(this.checkWinner());
 				this.getGame().setWinner(matchWinner);
+				this.getGame().getWinner().setWins();
 				System.out.println("Gewonnen hat: " + this.getMatchWinner().getName());
 			}
 				 
@@ -260,16 +265,16 @@ public class Match {
 	 Match getDemoMatch() {
 	//	Match match2 = this;
 //		match2.setCurrentPlayer(this.getCurrentPlayer());
-		 /** Änderungen JaLo
+		 /** Aenderungen JaLo
 		  * 
 		  */
-		 Match match2 = new Match(1);
+		 Match match2 = new Match(this.game, this.matchNumber);
 		 match2.setCurrentPlayer(currentPlayer);
 		 for (int i = 0; i <= COLUMN; i++) 
 			 for (int j = 0; j <= ROW; j++) {
 				 match2.setField(i, j, this.getFieldPlayer(i, j));
 			 }
-		 /** Änderungen JaLo
+		 /** Aenderungen JaLo
 		  * 
 		  */
 		return match2;
@@ -484,7 +489,7 @@ public class Match {
 	  */
 	 private int isRow(PlaySlot[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
-		 /** Änderungen JaLo: player == 1 / player == 2 vertauscht
+		 /** ï¿½nderungen JaLo: player == 1 / player == 2 vertauscht
 		  * 
 		  */
 			if (player == 1) {

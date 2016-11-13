@@ -108,21 +108,26 @@ public class Turn {
 		if (this.turnNumber == 0) {
 			this.match.setCurrentPlayer(this.match.getGame().getPlayer(0));
 			this.x = 3;
+			this.y = this.match.validPosition(x);
+			 this.match.setField(this.x, this.y, this.player);
 		}
-		else {
-		if (this.match.getMatchWinner() == null || !this.match.getEven())	{
-		 this.x = ki.calcMove(this.match, this.depth);
-		 System.out.println("Unsere KI empfiehlt: " + this.x);
-		 if (this.x == -1) {
-			this.x = this.setValidRandomTurn(); 
-		 }
-		 else {
-			 this.y = this.match.validPosition(x);
-			 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
+		
+		if ((this.match.getMatchWinner() == null || !this.match.getEven()))	{
+		 if (this.turnNumber != 0) {
+			 this.x = ki.calcMove(this.match, this.depth);
+			 System.out.println("Unsere KI empfiehlt: " + this.x);
+			 if (this.x == -1) {
+				 this.x = this.setValidRandomTurn(); 
+				 
+			 	}
+			 else {
+				 this.y = this.match.validPosition(x);
+				 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)	 
+			 	}
 		 }
 		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
-		 //Prueft auf Gewinner
-		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
+		 //Prueft auf Gewinner	
+		 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
 			 //Hier wird die Datenbank informiert und der Score gespeichert
 			 this.match.getGame().getDb().saveMatchScore(this.match.getGame().getMatchID(), this.match.getScore());;
 			 if (this.match.getMatchNumber() == 2){
@@ -130,7 +135,7 @@ public class Turn {
 					 this.match.getGame().getDb().saveGameWinner(this.match.getGame().getGameID(), this.match.getGame().checkWinner().getName());
 					 fireGameWinnerEvent(this.match.getGame().getWinner().getName());
 					 }
-			 }}}
+			 }}
 		 this.match.getGame().setNextPlayer();
 		 this.match.setTurnActive(false);
 		 this.match.setNewTurn();
