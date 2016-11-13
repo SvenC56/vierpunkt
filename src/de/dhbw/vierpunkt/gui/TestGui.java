@@ -1211,9 +1211,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         Label spieleLabel = new Label("Bisherige Spiele:");
         Label spielstandanzeige = new Label("Spielstand: ");
         Label spielerLabel = new Label("Spieler: ");
-		Label spieler1 = new Label("names1");
-		Label spieler2 = new Label("names2");
-		Text spielstand_altesSpiel = new Text("3:1");
+		
+		Text spielstand_altesSpiel = new Text("1:0");
 		Rectangle platzhalter1 = new Rectangle(7 * l, l);
 		Rectangle platzhalter2 = new Rectangle(l, l);
 		Rectangle platzhalter3 = new Rectangle(l, l);
@@ -1230,7 +1229,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		hb.getChildren().addAll(spieleranzeige, grid, anzeige);						// 3 Hauptboxen werden nebeneinander angeordnet
         grid.getChildren().addAll(platzhalter1, spielfeld2);						// Das Spielfeld wird durch Platzhalter nach unten verschoben
 		anzeige.getChildren().addAll(satz, platzhalter7, play, platzhalter4);		// Anzeige des Sliders und des Play Buttons uebereinander
-		spieleranzeige.getChildren().addAll(spielerLabel, spieler1, spieler2, platzhalter2, spielstandanzeige, spielstand_altesSpiel, platzhalter3, back, platzhalter5);
+		
 		spieleVbox.getChildren().addAll(spieleLabel, table, hb);					// Anzeigen der Tabelle oberhalb des neuen Spielfeldes
         
         // weitere Details zu den Elementen
@@ -1322,45 +1321,79 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 			}
 		}
         
+		
+        
+        Label spieler1 = new Label("Spieler1");
+       
+        ImageView i1 = new ImageView(getImage1());								// Darstellung des richtigfarbigen Spielsteins
+		i1.setFitWidth(l-20);	i1.setFitHeight(l-20);
+		ImageView i2 = new ImageView(getImage2());								// Darstellung des richtigfarbigen Spielsteins
+		i2.setFitWidth(l-20);	i2.setFitHeight(l-20);
+		Label spieler2 = new Label("Spieler2");
+		
+	
         table.setItems(items);																// Anzeigen der Zeilen gefuellt mit den Spielen der Datenbank
         table.getColumns().addAll(gameIDCol, player1Col, player2Col, winnerCol);			// Anzeigen der Spalten
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 	          System.out.println(newSelection);  
 			  if (newSelection != null) {
 	                selectedGame = table.getSelectionModel().getSelectedItem();				// Speichern des Games der ausgewaehlten Zeile
-	          }
-        });
-        
-		play.setOnMouseClicked(new EventHandler<MouseEvent>(){								
-	     	   @Override
-	            public void handle(MouseEvent arg0) {
-	     		   
-	     		   	int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
+	                int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
 	                String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
 	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);		// speichern der MatchID nach entsprechendem Slider Wert
 	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
 	                
-	                personX = alleZuege[0][2];												// Spieler der den ersten Zug macht
-	               
-	   	     		Thread playThread = new Thread(){
-	   	     			@Override
-	   	     			public void run(){
-		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
-	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
-	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
-	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
-	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	         	                	}
-	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
-	    							catch (InterruptedException e) {e.printStackTrace();}
-	     	                	}
-		   	     			}	
-	   	     			}
-	   	     		};
-	   	     		playThread.start();
-	   	     	}
-	     });
+	                
+	                spieler1.setText(alleZuege[0][2]);
+	                spieler2.setText(alleZuege[1][2]);
+	                
+	                play.setOnMouseClicked(new EventHandler<MouseEvent>(){								
+	     	     	   @Override
+	     	            public void handle(MouseEvent arg0) {
+	     	     		   
+	     	     		   	
+	     	                personX = alleZuege[0][2];												// Spieler der den ersten Zug macht
+	     	               
+	     	                for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+	     	        			plaetzeFreiInReihe[i]=5;
+	     	        		}
+	     	                
+	     	   	     		Thread playThread = new Thread(){
+	     	   	     			@Override
+	     	   	     			public void run(){
+	     		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+	     	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
+	     	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
+	     	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	     	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
+	     	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	     	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	     	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	     	         	                	}
+	     	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+	     	    							catch (InterruptedException e) {e.printStackTrace();}
+	     	     	                	}
+	     		   	     			}	
+	     	   	     			}
+	     	   	     		};
+	     	   	     		playThread.start();
+	     	   	     	}
+	     	     });
+			  }
+        });
+        
+
+		HBox hbox1 = new HBox();
+		hbox1.getChildren().addAll(spieler1, i1);
+		HBox hbox2 = new HBox();
+		hbox2.getChildren().addAll(spieler2, i2);
+		
+		
+		spieleranzeige.getChildren().addAll(spielerLabel, hbox1, hbox2, platzhalter2, spielstandanzeige, spielstand_altesSpiel, platzhalter3, back, platzhalter5);
+        
+		
 	     		   
         // Button Action Event
         back.setOnMouseClicked(new EventHandler<MouseEvent>(){
