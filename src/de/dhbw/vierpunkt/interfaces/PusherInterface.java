@@ -22,7 +22,6 @@ import com.pusher.client.connection.ConnectionStateChange;
 
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.logic.Game;
-import de.dhbw.vierpunkt.tests.AI_Logic_Test;
 import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 
 
@@ -30,6 +29,10 @@ import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 public class PusherInterface implements Runnable, Observer
 {
 	private static int count = 0;
+    private static boolean fallbackActive = true;
+    private static GameLogic fallbackGame = new GameLogic();
+    private static int depth = 6;
+    
 	/**
 	 * App-ID der Pusher Instanz des Clients
 	 */
@@ -99,18 +102,18 @@ public class PusherInterface implements Runnable, Observer
 	}
 	
 	public PusherInterface(int zugZeit, String AppID, String AppKey, String AppSecret, char spielerKennung, Game game){
-		this.zugZeit = zugZeit;
-		this.MyAppID = AppID;
-		this.MyAppKey = AppKey;
-		this.MyAppSecret = AppSecret;
-		this.spielerKennung = spielerKennung;
-		this.game = game;
+		PusherInterface.zugZeit = zugZeit;
+		PusherInterface.MyAppID = AppID;
+		PusherInterface.MyAppKey = AppKey;
+		PusherInterface.MyAppSecret = AppSecret;
+		PusherInterface.spielerKennung = spielerKennung;
+		PusherInterface.game = game;
 		
 		if (spielerKennung == 'x'){
-				this.gegnerKennung = 'o';
+				PusherInterface.gegnerKennung = 'o';
 		} else {
 			
-			this.gegnerKennung = 'x';
+			PusherInterface.gegnerKennung = 'x';
 		}
 	}
 
@@ -210,11 +213,6 @@ public class PusherInterface implements Runnable, Observer
 		        int zug = getGegnerzug(data);
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
 		        
-		        boolean fallbackActive = false;
-		        AI_Logic_Test fallback = new AI_Logic_Test();
-		        GameLogic fallbackGame = new GameLogic();
-		        int depth = 6;
-		        
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        	if (fallbackActive) {
@@ -222,16 +220,16 @@ public class PusherInterface implements Runnable, Observer
 		        			   
 		   			      System.out.print(" ist dran              "
 		   			      		+ "");
-		   			      System.out.println("eval" + fallbackGame.evaluate(fallbackGame));
+		   			      System.out.println("eval" + GameLogic.evaluate(fallbackGame));
 		   			      fallbackGame.playTurn(zug, 1);
 		   			      fallbackGame.setCurrentPlayer(2);
 		   			      System.out.println(" hat in Spalte gelegt " + zug);
-		   			      System.out.println("Bewertung: " + fallbackGame.evaluate(fallbackGame));
+		   			      System.out.println("Bewertung: " + GameLogic.evaluate(fallbackGame));
 		   			      
 		   		      // Sieg?
-		   			      if (fallbackGame.evaluate(fallbackGame)==(int)Double.NEGATIVE_INFINITY) {
+		   			      if (GameLogic.evaluate(fallbackGame)==(int)Double.NEGATIVE_INFINITY) {
 		   			    	  fallbackGame.runInConsole();
-		   			    	  System.out.println(fallbackGame.evaluate(fallbackGame));
+		   			    	  System.out.println(GameLogic.evaluate(fallbackGame));
 		   			        System.out.println(" hat gewonnen...");
 		   			      };
 		   			      
@@ -269,20 +267,19 @@ public class PusherInterface implements Runnable, Observer
 					    		 fallbackGame.playTurn(3, 2);
 					    		 count++;
 					    	 } else {
-					    	System.out.println("eval" + fallbackGame.evaluate(fallbackGame));
+					    	System.out.println("eval" + GameLogic.evaluate(fallbackGame));
 					      // x = (int) (Math.random()*6); // falls KI nicht getestet werden soll, sondern nur Zufallszahl
-					    	move = fallbackGame.calcMove(fallbackGame, depth);
+					    	move = GameLogic.calcMove(fallbackGame, depth);
 					      fallbackGame.playTurn(move, 2);
 					      System.out.println("Wir haben in Spalte gelegt " + move);
 					      fallbackGame.setCurrentPlayer(1);
 					    	 }
 
 					      // Sieg?
-					      if (fallbackGame.evaluate(fallbackGame)==(int)Double.POSITIVE_INFINITY) {
+					      if (GameLogic.evaluate(fallbackGame)==(int)Double.POSITIVE_INFINITY) {
 					    	  fallbackGame.runInConsole();
-					    	  System.out.println(fallbackGame.evaluate(fallbackGame));
+					    	  System.out.println(GameLogic.evaluate(fallbackGame));
 					        System.out.println(" Wir haben gewonnen!");
-					        
 					      };
 					      
 					      fallbackGame.runInConsole();
