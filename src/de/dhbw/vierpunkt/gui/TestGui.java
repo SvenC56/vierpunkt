@@ -509,85 +509,9 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		continueGame.setTitle("Spiel fortsetzen");
 		continueGame.initModality(Modality.APPLICATION_MODAL);
 		continueGame.initOwner(primaryStage);
-        VBox conGameVbox = new VBox(20);
-        conGameVbox.setPadding(new Insets(10, 10, 10, 10));   
-        conGameVbox.setAlignment(Pos.CENTER);
         
-        Label question = new Label();
-        question.setText("Es gibt ein bereits angefangenes Spiel. Dieses Spiel fortsetzen?");
-        question.setWrapText(true);												// automatischer Textumbruch
-        Button continueG = new Button("Ja, Spiel fortsetzen");					// Spiel wird fortgesetzt
-        Button skip = new Button("Nein, Spiel verwerfen");						// neues Spiel wird begonnen und altes Spiel verworfen
-        HBox conGamehbox = new HBox();
-        conGamehbox.getChildren().addAll(continueG, skip);						// Anordnung der buttons nebeneinander
-        conGamehbox.setAlignment(Pos.BASELINE_CENTER);
-        conGamehbox.setSpacing(20);
-        String[][] alleZuege = db.catchWrongState();
         
-        continueG.setOnMouseClicked(new EventHandler<MouseEvent>(){				// angefangenes Spiel wird aus der DB geladen
-        	@Override
-        	public void handle(MouseEvent arg0){
-        		
-        		continueGame.close();
-        		if(alleZuege.length!=0){
-        			
-        		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
-	               
-        		 for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-	        			plaetzeFreiInReihe[i]=5;
-	        		}
-	                
-	   	     		Thread playThread = new Thread(){
-	   	     			@Override
-	   	     			public void run(){
-		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
-	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
-	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
-	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
-	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
-	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
-	         	                	}
-	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
-	    							catch (InterruptedException e) {e.printStackTrace();}
-	     	                	}
-		   	     			}	
-	   	     			}
-	   	     		};
-   	     		playThread.start();
-        		}
-        		
-        		
-        	}
-        });
-        skip.setOnMouseClicked(new EventHandler<MouseEvent>(){					// neue Stage wird wieder geschlossen
-        	@Override
-        	public void handle(MouseEvent arg0){
-        		continueGame.close();
-        		int mid = db.transformStringToInt(alleZuege[0][1]);
-        		db.deleteGame(db.getGIDByMID(mid), mid);
-        		// Uebergabe der Parameter an das PusherInterface
-				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
-				Thread t1 = new Thread(){
-					@Override
-					public void run(){
-						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
-					}
-				};
-				t1.start();
-        		
-        	}
-        });
         
-        conGameVbox.getChildren().addAll(question, conGamehbox);
-        Scene continueGameScene = new Scene(conGameVbox, 800, 200);
-        setCSS(continueGameScene);
-       
-        continueGame.setScene(continueGameScene);	
-
         
       
 		/******* CONTAINERBOXEN EINFUEGEN ************************/
@@ -754,7 +678,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 						String[][] alleZuege = db.catchWrongState();
 						if (alleZuege.length==0) { 
 							System.out.println("es sind keine Zuege vorhanden");
-							fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
+							db.deleteGame(Integer.parseInt(db.getLastFailMatch()[0][1]), Integer.parseInt(db.getLastFailMatch()[0][0]));
+							if(db.getLastFailMatch()==null){fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(),
 									getAppKey(), getAppSecret());
 							Thread t1 = new Thread() {
 								@Override
@@ -763,14 +688,16 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 									// Uebergabe der Namen an die KI
 								}
 							};
-							t1.start();
+							t1.start();}
+							else{
+								continueGame(continueGame, db.getLastFailMatch());
+							}
+							
 						} else {
 							System.out.println("es sind Zuege vorhanden");
 							System.out.println(alleZuege[0].length);
-							for (int i = 0; i < alleZuege[0].length; i++) {
-								System.out.println(alleZuege[i][0]+ " "+ alleZuege[i][3]+ " "+ alleZuege[i][4]);
-							}
-							continueGame.show();
+							continueGame(continueGame, alleZuege);
+							
 						}
 	            		
 	            		
@@ -1637,6 +1564,101 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		}
         createGrids_automatisch(spielfeld);
 	}
+	/***********************************************************************************/
+	public void continueGame(Stage continueGame, String[][] alleZuege){
+		VBox conGameVbox = new VBox(20);
+        conGameVbox.setPadding(new Insets(10, 10, 10, 10));   
+        conGameVbox.setAlignment(Pos.CENTER);
+		Label question = new Label();
+        question.setText("Es gibt ein bereits angefangenes Spiel. Dieses Spiel fortsetzen?");
+        question.setWrapText(true);												// automatischer Textumbruch
+        Button continueG = new Button("Ja, Spiel fortsetzen");					// Spiel wird fortgesetzt
+        Button skip = new Button("Nein, Spiel verwerfen");						// neues Spiel wird begonnen und altes Spiel verworfen
+        HBox conGamehbox = new HBox();
+        conGamehbox.getChildren().addAll(continueG, skip);						// Anordnung der buttons nebeneinander
+        conGamehbox.setAlignment(Pos.BASELINE_CENTER);
+        conGamehbox.setSpacing(20);
+        
+        
+        
+        continueG.setOnMouseClicked(new EventHandler<MouseEvent>(){				// angefangenes Spiel wird aus der DB geladen
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		
+        		continueGame.close();
+        		
+        			
+        		personX = alleZuege[0][2];											// Spieler der den ersten Zug macht
+	               
+        		 for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+	        			plaetzeFreiInReihe[i]=5;
+	        		}
+	                
+	   	     		Thread playThread = new Thread(){
+	   	     			@Override
+	   	     			public void run(){
+		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
+	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
+	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
+	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+	         	                	}
+	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+	    							catch (InterruptedException e) {e.printStackTrace();}
+	     	                	}
+		   	     			}	
+	   	     			}
+	   	     		};
+   	     		playThread.start();
+        		
+        		
+        		
+        	}
+        });
+        skip.setOnMouseClicked(new EventHandler<MouseEvent>(){					// neue Stage wird wieder geschlossen
+        	@Override
+        	public void handle(MouseEvent arg0){
+        		continueGame.close();
+        		int mid = db.transformStringToInt(alleZuege[0][1]);
+        		db.deleteGame(db.getGIDByMID(mid), mid);
+        		// Uebergabe der Parameter an das PusherInterface
+				fireStartEvent(getZugzeit(), getSchnittstelle(), getFileString(), getXodero(), getAppId(), getAppKey(), getAppSecret());
+				Thread t1 = new Thread(){
+					@Override
+					public void run(){
+						fireNames(playerInput.getText(), opponentInput.getText());		// Uebergabe der Namen an die KI
+					}
+				};
+				t1.start();
+        		
+        	}
+        });
+        
+        conGameVbox.getChildren().addAll(question, conGamehbox);
+        Scene continueGameScene = new Scene(conGameVbox, 800, 200);
+        setCSS(continueGameScene);
+       
+        continueGame.setScene(continueGameScene);	
+        
+        continueGame.show();
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
 	public void gewinnermethode(String gewinner){
