@@ -1335,50 +1335,55 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 	          System.out.println(newSelection);  
 			  if (newSelection != null) {
-	                selectedGame = table.getSelectionModel().getSelectedItem();				// Speichern des Games der ausgewaehlten Zeile
-	                int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
-	                String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
-	                int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);		// speichern der MatchID nach entsprechendem Slider Wert
-	                String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
-	                
-	                
-	                spieler1.setText(alleZuege[0][2]);
-	                spieler2.setText(alleZuege[1][2]);
-	                
-	                play.setOnMouseClicked(new EventHandler<MouseEvent>(){								
-	     	     	   @Override
-	     	            public void handle(MouseEvent arg0) {
-	     	     		   
-	     	     		   	
-	     	                personX = alleZuege[0][2];												// Spieler der den ersten Zug macht
-	     	               
-	     	                for (int i = 0; i < plaetzeFreiInReihe.length; i++){
-	     	        			plaetzeFreiInReihe[i]=5;
-	     	        		}
-	     	                
-	     	   	     		Thread playThread = new Thread(){
-	     	   	     			@Override
-	     	   	     			public void run(){
-	     		   	     			for (int i = 0; i < alleZuege[0].length; i++) {
-	     	     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
-	     	     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
-	     	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
-	     	     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
-	     	         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
-	     	         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	     	         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
-	     	         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
-	     	         	                	}
-	     	    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
-	     	    							catch (InterruptedException e) {e.printStackTrace();}
-	     	     	                	}
-	     		   	     			}	
-	     	   	     			}
-	     	   	     		};
-	     	   	     		playThread.start();
-	     	   	     	}
-	     	     });
+	               
+				  selectedGame = table.getSelectionModel().getSelectedItem();				// Speichern des Games der ausgewaehlten Zeile
+			        int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
+			        String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
+			        int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);		// speichern der MatchID nach entsprechendem Slider Wert
+			           
+			    
+			        
+			        String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
+			        
+			        
+			        spieler1.setText(alleZuege[0][2]);
+			        spieler2.setText(alleZuege[1][2]);
+			        
+			        play.setOnMouseClicked(new EventHandler<MouseEvent>(){								
+				     	   @Override
+				            public void handle(MouseEvent arg0) {
+				     		   
+				     		   	
+				                personX = alleZuege[0][2];												// Spieler der den ersten Zug macht
+				               
+				                for (int i = 0; i < plaetzeFreiInReihe.length; i++){
+				        			plaetzeFreiInReihe[i]=5;
+				        		}
+				                
+				   	     		Thread playThread = new Thread(){
+				   	     			@Override
+				   	     			public void run(){
+					   	     			for (int i = 0; i < alleZuege[0].length; i++) {
+				     	                	if(alleZuege[i][4] != null &&alleZuege[i][3]!= null){		// solange keine NullWerte in der Tabelle
+				     	                		if(personX.equals(alleZuege[i][2])){					// wenn Person die Startperson ist, setzte die Farbe, wenn nicht die andere
+				         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+				     	                			spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'x');
+				     	                			plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+				         	                	} else{							// Spielstein in der Grid wird gesetzt mit der Spalte und Zeile aus der DB Tabelle Zuege
+				         	                		//spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(Integer.parseInt(alleZuege[i][4]), Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+				         	                		spielsteinAnzeigen(getImageView((getNodeByRowColumnIndex(plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])], Integer.parseInt(alleZuege[i][3]), spielfeld2))), 'o');
+				         	                		plaetzeFreiInReihe[Integer.parseInt(alleZuege[i][3])]--;
+				         	                	}
+				    							try {Thread.sleep(2000);} 								// nach jedem angezeigten Zug wird 2 Sekunden gewartet
+				    							catch (InterruptedException e) {e.printStackTrace();}
+				     	                	}
+					   	     			}	
+				   	     			}
+				   	     		};
+				   	     		playThread.start();
+				   	     	}
+				     });
+	    		
 			  }
         });
         
@@ -1409,6 +1414,12 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         spieleStage.show();	
 		}
 		
+	
+	public void gameReplay(Slider satz, Button play, Label spieler1, Label spieler2){
+	    
+	}
+	
+	
 	/************************** Abfrage, ob das Fenster wirklich geschlossen werden soll ********************************/
 	public void onCloseEvent(){
 		final Stage close = new Stage();										// Erzeugen einer neuen Stage
@@ -1567,7 +1578,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		}
         createGrids_automatisch(spielfeld);
 	}
-	/***********************************************************************************/
+	
+	/***************************** ein angefangenes Spiel wieder anzeigen zum spielen ***********************************/
 	public void continueGame(Stage continueGame, String[][] alleZuege){
 		VBox conGameVbox = new VBox(20);
         conGameVbox.setPadding(new Insets(10, 10, 10, 10));   
@@ -1649,17 +1661,6 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         continueGame.show();
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	/******************************** Anzeige, welcher Spieler das Spiel gewonnen hat ***********************************/
 	public void gewinnermethode(String gewinner){
@@ -1823,7 +1824,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         if(thema == 4){ scene.getStylesheets().add(TestGui.class.getResource("Sweets.css").toExternalForm());}
 	}
  
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	@Override
 	public void zugGespielt(int zug, char amZug)
 	{
@@ -1832,36 +1833,38 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		
 	}
 	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	public void addNameListener(NameListener toAdd) {
 		NameListeners.add(toAdd);
 	}
 	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	public static void fireNames (String name1, String name2) {
 		for (NameListener name: NameListeners) {
 			name.startGame(name1, name2);
 		}
 	}
 	
+	/********************************************************************************************************************/
 	public static void startManGame(String name1, String name2) {
 		for (NameListener game: NameListeners) {
 			game.startManGame(name1, name2);
 	}
 	}
 	
+	/********************************************************************************************************************/
 	public static void setManTurn(String name, int x, int y) {
 		for (NameListener turn: NameListeners) {
 			turn.setManTurn(name, x, y);
 	}
 	}
 	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	public void addParamListener(ParamListener toAdd){
 		listeners.add(toAdd);
 	}
 	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	public static void fireStartEvent(int Zugzeit, String Schnittstelle, String Kontaktpfad, char spielerKennung, 
 									  String AppID, String AppKey, String AppSecret){
 		for (ParamListener pl : listeners){
@@ -1869,13 +1872,12 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		}
 	}
 	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	public String getFileString(){
 		return fileString;
 	}
 	
-	
-	/********************************                                              **************************************/
+	/********************************************************************************************************************/
 	@Override
 	public void siegerAnzeigen(char sieger)
 	{	
