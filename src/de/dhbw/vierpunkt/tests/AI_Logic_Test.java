@@ -47,6 +47,14 @@ public class AI_Logic_Test {
 				}
 			}
 		}
+		
+		public void emptyField() {
+			for (int y = 0; y <= ROW; y++) {
+				for (int x = 0; x <= COLUMN; x++) {
+					this.field[y][x] = 0;
+				}
+			}
+		}
 	
 		/**
 		 * Erstellt eine Kopie des derzeitigen Spiels zur Analyse in der KI 
@@ -479,9 +487,9 @@ public class AI_Logic_Test {
 	
 			GameLogic game = new GameLogic();
 			int count = 0;
-			while (true) {
+			while (true) { 
 			
-			int depth = 6;
+			int depth = 7;
 			    System.out.println("depth: " + depth);
 
 			    int x;
