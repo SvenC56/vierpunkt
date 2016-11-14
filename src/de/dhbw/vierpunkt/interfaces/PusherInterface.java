@@ -395,8 +395,9 @@ public class PusherInterface implements Runnable, Observer
 						game.getDb().saveTurn(game.getMatchID(),
 								game.getPlayer(1).getName(), zug, yO - 1);
 					}
-					game.getDb().saveMatchScore(game.getMatchID(),
-							game.getCurrentMatch().getScore());
+					System.out.println("MatchID bevor Save:" + game.getDb().getMatchID());
+					game.getDb().saveMatchScore(game.getDb().getMatchID(), game.getCurrentMatch().getScore());
+			
 					;
 
 					// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein
@@ -434,7 +435,8 @@ public class PusherInterface implements Runnable, Observer
 						game.getDb().saveTurn(game.getMatchID(),
 								game.getPlayer(1).getName(), zug, yO - 1);
 					}
-					game.getDb().saveMatchScore(game.getMatchID(),
+					System.out.println("MatchID bevor Save:" + game.getDb().getMatchID());
+					game.getDb().saveMatchScore(game.getDb().getMatchID(),
 							game.getCurrentMatch().getScore());
 					;
 
