@@ -71,7 +71,7 @@ public class MainApplication extends Application implements ParamListener{
 		
 		// wenn Datei als Schnittstelle ausgewaehlt wurde wird der file Thread gestartet
 		else {
-				FileInterface filey = new FileInterface(spielerKennung, Kontaktpfad, Zugzeit);	
+				FileInterface filey = new FileInterface(spielerKennung, Kontaktpfad, Zugzeit, game);	
 				// das GUI Objekt wird zum Listener fuer Zug-Events der Schnittstelle	
 				filey.addListener(gui);
 	
