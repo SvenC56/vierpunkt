@@ -15,7 +15,7 @@ public static int calcMove(Match match, int depth) { // method to be evoked by g
 				values[i] = getAlphaBeta(demoMatch, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 			}
 		
-				int move = -1;
+				int move = (int) Double.NEGATIVE_INFINITY;
 				int max = (int) Double.NEGATIVE_INFINITY;
 				for (int j = 0; j <= match.getColumn(); j++) {
 					if ((values[j] >= max) && (match.validPosition(j) != -1)) { // position is valid and current value is higher than old value

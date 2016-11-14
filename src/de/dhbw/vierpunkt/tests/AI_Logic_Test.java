@@ -402,9 +402,8 @@ public class AI_Logic_Test {
 						game_tmp.setChip(i); // simulate that our agent is placing coins in column i
 						values[i] = getAlphaBeta(game_tmp, depth, (int) Double.NEGATIVE_INFINITY, (int) Double.POSITIVE_INFINITY);
 					}
-				
-						// int move = (int) Double.NEGATIVE_INFINITY;
-						int move = -1;
+
+						int move = (int) Double.NEGATIVE_INFINITY;
 						int max = (int) Double.NEGATIVE_INFINITY;
 						for (int j = 0; j <= game.getColumn(); j++) {
 							if ((values[j] >= max) && (game.validPosition(j) != -1)) { // position is valid and current value is higher than old value
