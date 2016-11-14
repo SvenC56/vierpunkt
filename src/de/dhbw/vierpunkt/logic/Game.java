@@ -171,7 +171,7 @@ public class Game implements NameListener {
 	 * Der naechste Spieler ist dran. Methode wechselt den currentPlayer
 	 */
 	void setNextPlayer() {
-		System.out.println("Gerade spielte: " + this.currentMatch.getCurrentPlayer().getName());
+		//System.out.println("Gerade spielte: " + this.currentMatch.getCurrentPlayer().getName());
 		if (this.currentMatch.getCurrentPlayer() == this.getPlayer(0) ) {
 			this.currentMatch.setCurrentPlayer(this.player[1]);
 		}

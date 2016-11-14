@@ -322,9 +322,14 @@ public class PusherInterface implements Runnable, Observer
 		        	System.out.println("");
 		        	
 		        	// Uebergabe des Gewinners an die Logik
-		        	if (spielerKennung == 'x'){
-		        		game.getCurrentMatch().setMatchWinner(game.getCurrentMatch().getCurrentPlayer());
+		        	if (data.contains("-1")){
+		        		game.getCurrentMatch().setMatchWinner(game.getPlayer(0));
+		        	} else {
+		        		game.getCurrentMatch().setMatchWinner(game.getPlayer(1));
+		        		int yO = fallbackGame.validPosition(zug);
+		        		game.getDb().saveTurn(game.getMatchID(), game.getPlayer(1).getName(), zug, yO-1);
 		        	}
+		        	game.getDb().saveMatchScore(game.getMatchID(),game.getCurrentMatch().getScore());;
 		        	
 		        	// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein eingeworfen werden kann
 		        	try {
