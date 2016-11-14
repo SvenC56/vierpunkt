@@ -8,7 +8,7 @@ public class SetScore implements Runnable {
 	int M_ID;
 	String SCORE;
 
-	public SetScore(int G_ID, String SCORE) {
+	public SetScore(int M_ID, String SCORE) {
 		this.M_ID = M_ID;
 		this.SCORE = SCORE;
 	}
