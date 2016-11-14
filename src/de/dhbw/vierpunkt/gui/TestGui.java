@@ -57,9 +57,9 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	private String fileString = new String();									// File fuer die Dateischnittstelle
 	
 	/** Variablendeklaration und default -initialisierung der Pusher Credentials */	
-	private String appId="255967";
-	private String appKey="61783ef3dd40e1b399b2";
-	private String appSecret="66b722950915220b298c";
+	private String appId="134378";
+	private String appKey="d53b81cd7b8825964de1";
+	private String appSecret="17564429233fdd864b9b";
 	
 	/** Variablendeklaration und -initialisierung der Spielerbelegung */
 	private static String names1;												// Spielername Spieler (wir)
