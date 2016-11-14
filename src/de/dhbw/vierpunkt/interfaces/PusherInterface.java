@@ -30,7 +30,7 @@ public class PusherInterface implements Runnable, Observer
 {
 	private static int count = 0;
     private static boolean fallbackActive = false;
-    private static GameLogic fallbackGame;
+    private static GameLogic fallbackGame = new GameLogic();
     private static int depth = 6;
     
 	/**
@@ -108,7 +108,6 @@ public class PusherInterface implements Runnable, Observer
 		PusherInterface.MyAppSecret = AppSecret;
 		PusherInterface.spielerKennung = spielerKennung;
 		PusherInterface.game = game;
-		PusherInterface.fallbackGame = new GameLogic(game);
 		
 		if (spielerKennung == 'x'){
 				PusherInterface.gegnerKennung = 'o';
@@ -222,8 +221,7 @@ public class PusherInterface implements Runnable, Observer
 		   			      System.out.print(" ist dran              "
 		   			      		+ "");
 		   			      System.out.println("eval" + GameLogic.evaluate(fallbackGame));
-		   			     fallbackGame.playTurn(zug, 1);
-		   			     fallbackGame.checkWinner();
+		   			      fallbackGame.playTurn(zug, 1);
 		   			      fallbackGame.setCurrentPlayer(2);
 		   			      System.out.println(" hat in Spalte gelegt " + zug);
 		   			      System.out.println("Bewertung: " + GameLogic.evaluate(fallbackGame));
@@ -234,6 +232,7 @@ public class PusherInterface implements Runnable, Observer
 		   			    	  System.out.println(GameLogic.evaluate(fallbackGame));
 		   			        System.out.println(" hat gewonnen...");
 		   			      };
+		   			      
 		   			      fallbackGame.runInConsole();
 		   			    
 		   			    }
@@ -272,7 +271,6 @@ public class PusherInterface implements Runnable, Observer
 					      // x = (int) (Math.random()*6); // falls KI nicht getestet werden soll, sondern nur Zufallszahl
 					    	move = GameLogic.calcMove(fallbackGame, depth);
 					      fallbackGame.playTurn(move, 2);
-					      fallbackGame.checkWinner();
 					      System.out.println("Wir haben in Spalte gelegt " + move);
 					      fallbackGame.setCurrentPlayer(1);
 					    	 }

@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import de.dhbw.vierpunkt.db.DBConnector;
-import de.dhbw.vierpunkt.logic.Game;
 import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 
 public class AI_Logic_Test {
@@ -38,8 +36,6 @@ public class AI_Logic_Test {
 				private int move = 0; // --> maximale Anzahl Zuege 69!
 				private int[][] field = new int[ROW + 1][COLUMN + 1];
 				private int currentPlayer = 2; //Der aktuelle Spieler
-				private Game game;
-				private DBConnector db = new DBConnector();
 
 		public GameLogic() {
 			// Array durchlaufen und mit Nullen fuellen + move auf false setzen, da
@@ -50,16 +46,6 @@ public class AI_Logic_Test {
 					this.field[y][x] = 0;
 				}
 			}
-		}
-		
-		public GameLogic(Game game) {
-			this.move = 0;
-			for (int y = 0; y <= ROW; y++) {
-				for (int x = 0; x <= COLUMN; x++) {
-					this.field[y][x] = 0;
-				}
-			}
-			this.game = game;
 		}
 	
 		/**
@@ -141,49 +127,23 @@ public class AI_Logic_Test {
 	/**
 	 * Spielt den Zug --> Verbindung zum Interface, liefert Spalte zurueck
 	 */
-
-	
 	public void playTurn(int x, int player){
 		//Maximierung, da eigener Spieler
 		
-		this.setChip(x, player);
+		this.setChip(x);
 
 	}
 	
-//	
-//	/**
-//	 * Setzt den Chip eines Spielers
-//	 * 
-//	 * @param x
-//	 */
-	 void setChip(int x, int player) {
+	
+	/**
+	 * Setzt den Chip eines Spielers
+	 * 
+	 * @param x
+	 */
+	 void setChip(int x) {
 		int y = this.validPosition(x);
 		this.setField(x, y);
-		saveTurnInDB(x, y, player);
 		}
-	 
-	 void setChip(int x) {
-			int y = this.validPosition(x);
-			this.setField(x, y);
-			}
-	 
-	 
-/**
- * Speichert in die Datenbank den Zug
- */
-	private void saveTurnInDB(int x, int y, int player) {
-		
-		db.saveTurn(this.game.getMatchID(), this.getPlayerName(player), x, y);
-	}
-	
-	private String getPlayerName(int player) {
-		if (player == 1) {
-			return this.game.getPlayer(1).getName();
-		}
-		else {
-			return this.game.getPlayer(0).getName();
-		}
-	}
 	
 	/**
 	 * Prueft, ob ein Spieler gewonnen hat! Gibt einen int zurueck
@@ -255,35 +215,6 @@ public class AI_Logic_Test {
 		    System.out.println();
 		    System.out.println((this.currentPlayer==1 ? "" : "Agent") + " ist am Zug.");
 		  }
-	  
-	  
-	 public void checkWinner() {
-		 if (move < 7) {
-		 // Sieg?
-	      if (this.evaluate(this)==(int)Double.NEGATIVE_INFINITY) {
-	    	  this.game.getPlayer(1).setWins();
-	    	  db.saveMatchScore(this.game.getMatchID(), this.game.getCurrentMatch().getScore());
-	   
-	      }
-	      else if (this.evaluate(this)==(int)Double.POSITIVE_INFINITY) {
-	    	  this.game.getPlayer(0).setWins();
-	    	  db.saveMatchScore(this.game.getMatchID(), this.game.getCurrentMatch().getScore());
-	    
-	      }
-	      else {
-	    	  int ctr = 0;
-	    	  for (int i= 0; i <= COLUMN; i++) {
-	    		  if (validPosition(i)== -1) {
-	    			  ctr++;
-	    		  }
-	    	  }
-	    	  if (ctr == 7) {
-	    		  System.out.println("UNENTSCHIEDEN");
-	    		  db.saveMatchScore(this.game.getMatchID(), this.game.getCurrentMatch().getScore());
-	    	  }
-	      }}
-	    
-	 }
 
 	 public static int evaluate(GameLogic game) { // bewertet die Spielsituation
 		// System.out.println("Ab jetzt sind wir in evaluate");
@@ -383,13 +314,13 @@ public class AI_Logic_Test {
 //		 if (field[y][x] == player) { // current field ist von uns belegt
 //			 cnt++; // Count ist 1
 //			 if (	(0<=(y+1*dy)) && ((y+1*dy)<=ROW) && (0<=(x+1*dx)) && ((x+1*dx)<=COLUMN)	) {
-//				 if (field[y+1*dy][x+1*dx] == player) { // nï¿½chstes auch 
+//				 if (field[y+1*dy][x+1*dx] == player) { // nächstes auch 
 //					 cnt++; // Count ist 2
 //					 if (	(0<=(y+2*dy)) && ((y+2*dy)<=ROW) && (0<=(x+2*dx)) && ((x+2*dx)<=COLUMN)	) {
-//						 if (field[y+2*dy][x+2*dx] == player) { // ï¿½bernï¿½chstes auch
+//						 if (field[y+2*dy][x+2*dx] == player) { // übernächstes auch
 //							 cnt++; // Count ist 3
 //							 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)	) {
-//								 if (field[y+3*dy][x+3*dx] == player) { // 3.nï¿½chstes auch
+//								 if (field[y+3*dy][x+3*dx] == player) { // 3.nächstes auch
 //									 cnt++; // Count ist 4
 //								 }
 //							 }	 
@@ -542,7 +473,7 @@ public class AI_Logic_Test {
  */
 			int test = 0;
 
-			// BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // fï¿½r manuellen Spielmodus
+			// BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
 	      
 			
 	while(test == 0) { 
