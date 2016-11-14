@@ -50,7 +50,7 @@ public class Game implements NameListener {
 			return this.player[i];
 		}
 		
-		DBConnector getDb() {
+		public DBConnector getDb() {
 			return this.db;
 		}
 		

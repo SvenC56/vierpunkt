@@ -208,7 +208,7 @@ public class PusherInterface implements Runnable, Observer
 		channel.bind("MoveToAgent", new PrivateChannelEventListener() {
 		    public void onEvent(String channel1, String event, String data) {
 		    	// Zug des Gegners aus Nachricht von Server erhalten
-		        System.out.println("Empfangene Daten: " + data);
+		        System.out.println("Empfangene Daten: " + data); 
 
 		        int zug = getGegnerzug(data);
 		        System.err.println("Gegner spielte in Spalte: "+ zug);
@@ -216,6 +216,8 @@ public class PusherInterface implements Runnable, Observer
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        	if (fallbackActive) {
+		        		int y = fallbackGame.validPosition(zug);
+				        game.getDb().saveTurn(game.getMatchID(), game.getPlayer(1).getName(), zug, y);
 		        		 if (fallbackGame.getCurrentPlayer() == 1) {      //  ist dran
 		        			   
 		   			      System.out.print(" ist dran              "
@@ -302,7 +304,10 @@ public class PusherInterface implements Runnable, Observer
 			        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 			        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 			        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
-			        	
+			        	if (fallbackActive) {
+			        	int y= fallbackGame.validPosition(move);
+			        	game.getDb().saveTurn(game.getMatchID(), game.getPlayer(0).getName(), move, y-1);
+			        	}
 			        	// der Spielstein wird in der GUI eingeworfen
 			        	fireZugEvent(move, spielerKennung);
 		     

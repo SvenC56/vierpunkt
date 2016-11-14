@@ -159,7 +159,7 @@ public class AI_Logic_Test {
 	 * Prueft, ob Chip eingeworfen werden kann gibt -1(keine valide Position)
 	 * oder Zeile zurueck!
 	 **/
-	int validPosition(int x) {
+	public int validPosition(int x) {
 		int temp = 0;
 		// Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x > -1 && x <= COLUMN) {
@@ -314,13 +314,13 @@ public class AI_Logic_Test {
 //		 if (field[y][x] == player) { // current field ist von uns belegt
 //			 cnt++; // Count ist 1
 //			 if (	(0<=(y+1*dy)) && ((y+1*dy)<=ROW) && (0<=(x+1*dx)) && ((x+1*dx)<=COLUMN)	) {
-//				 if (field[y+1*dy][x+1*dx] == player) { // nächstes auch 
+//				 if (field[y+1*dy][x+1*dx] == player) { // nï¿½chstes auch 
 //					 cnt++; // Count ist 2
 //					 if (	(0<=(y+2*dy)) && ((y+2*dy)<=ROW) && (0<=(x+2*dx)) && ((x+2*dx)<=COLUMN)	) {
-//						 if (field[y+2*dy][x+2*dx] == player) { // übernächstes auch
+//						 if (field[y+2*dy][x+2*dx] == player) { // ï¿½bernï¿½chstes auch
 //							 cnt++; // Count ist 3
 //							 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)	) {
-//								 if (field[y+3*dy][x+3*dx] == player) { // 3.nächstes auch
+//								 if (field[y+3*dy][x+3*dx] == player) { // 3.nï¿½chstes auch
 //									 cnt++; // Count ist 4
 //								 }
 //							 }	 
@@ -473,7 +473,7 @@ public class AI_Logic_Test {
  */
 			int test = 0;
 
-			// BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // für manuellen Spielmodus
+			// BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); // fï¿½r manuellen Spielmodus
 	      
 			
 	while(test == 0) { 

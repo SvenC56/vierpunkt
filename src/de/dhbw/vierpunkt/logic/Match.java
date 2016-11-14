@@ -249,7 +249,7 @@ public class Match {
 	 * @param x
 	 * @return
 	 */
-	 int validPosition(int x) {
+	 public int validPosition(int x) {
 		int temp = 0;
 		// Spalte muss im richtigen Bereich > 0 & kleiner max. Anzahl SPALTEN
 		if (x > -1 && x <= COLUMN) {
