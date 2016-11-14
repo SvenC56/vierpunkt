@@ -1195,6 +1195,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	 ********************************************************************************************************************/
 
 	/********************************** Anzeige der 10 zuletzt gespielten Spiele ****************************************/
+	public int slider = 1;
 	public void bisherigeSpiele(){
 		
 		// neue Stage
@@ -1278,19 +1279,19 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         
         // Initialisierung der Spalten der Tabelle
         TableColumn<Spiele, String> gameIDCol = new TableColumn<>("Spiele ID");				// neue Spalte Spiele ID mit dem Datentyp der Werte aus der Tabelle
-        gameIDCol.setMinWidth(100);
+        gameIDCol.setMinWidth(200);
         gameIDCol.setCellValueFactory(new PropertyValueFactory<Spiele, String>("gameID"));
         
         TableColumn<Spiele, String> player1Col = new TableColumn<>("Spieler 1");			// neue Spalte Spieler1 mit dem Datentyp der Werte aus der Tabelle
-        player1Col.setMinWidth(100);
+        player1Col.setMinWidth(200);
         player1Col.setCellValueFactory(new PropertyValueFactory<Spiele, String>("player1"));
         
         TableColumn<Spiele, String> player2Col = new TableColumn<>("Gegner");				// neue Spalte Gegner mit dem Datentyp der Werte aus der Tabelle
-        player2Col.setMinWidth(100);
+        player2Col.setMinWidth(200);
         player2Col.setCellValueFactory(new PropertyValueFactory<Spiele, String>("player2"));
         
         TableColumn<Spiele, String> winnerCol = new TableColumn<>("Gewinner");				// neue Spalte Gewinner mit dem Datentyp der Werte aus der Tabelle
-        winnerCol.setMinWidth(100);
+        winnerCol.setMinWidth(200);
         winnerCol.setCellValueFactory(new PropertyValueFactory<Spiele, String>("winner"));
 		
 		for (int row = 0; row < alleGames.length; row++) { // Zeile
@@ -1336,15 +1337,17 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 	          System.out.println(newSelection);  
 			  if (newSelection != null) {
 	               
-				  selectedGame = table.getSelectionModel().getSelectedItem();				// Speichern des Games der ausgewaehlten Zeile
-			        int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
-			        String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
-			        int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);		// speichern der MatchID nach entsprechendem Slider Wert
-			           
-			        spielstand_altesSpiel.setText(alleSaetze[(int)satz.getValue()][3]);
-			        
-			        String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
-			        
+				  	selectedGame = table.getSelectionModel().getSelectedItem();				// Speichern des Games der ausgewaehlten Zeile
+			       
+				  	
+				  	satz.valueProperty().addListener(new ChangeListener<Number>() {
+					    @Override
+					    public void changed(ObservableValue<? extends Number> observable,
+					            Number oldValue, Number newValue) {
+					    	slider = newValue.intValue();
+					    }
+					});
+				  	String[][] alleZuege = gameReplay(newSelection, slider-1, spielstand_altesSpiel);
 			        
 			        spieler1.setText(alleZuege[0][2]);
 			        spieler2.setText(alleZuege[1][2]);
@@ -1352,7 +1355,9 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 			        play.setOnMouseClicked(new EventHandler<MouseEvent>(){								
 				     	   @Override
 				            public void handle(MouseEvent arg0) {
-				     		   
+				     		 //satz.setDisable(true);
+				     		satz.disableProperty().setValue(Boolean.TRUE);
+				     		 createGrids_automatisch(spielfeld2);
 				     		   	
 				                personX = alleZuege[0][2];												// Spieler der den ersten Zug macht
 				               
@@ -1381,6 +1386,8 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 				   	     			}
 				   	     		};
 				   	     		playThread.start();
+				   	     	satz.disableProperty().setValue(Boolean.FALSE);
+				   	     		//satz.setDisable(false);
 				   	     	}
 				     });
 	    		
@@ -1415,8 +1422,15 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 		}
 		
 	
-	public void gameReplay(Slider satz, Button play, Label spieler1, Label spieler2){
-	    
+	public String[][] gameReplay(Spiele selectedGame, int satz, Text spielstand_altesSpiel ){
+		 int g_id = Integer.parseInt(selectedGame.getGameID());					// speichern der GameID des ausgewaehlten Spiels
+	        String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
+	        int m_id = Integer.parseInt(alleSaetze[satz][0]);		// speichern der MatchID nach entsprechendem Slider Wert
+	           
+	        spielstand_altesSpiel.setText(alleSaetze[satz][3]);
+	        
+	        String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
+	        return alleZuege;
 	}
 	
 	
