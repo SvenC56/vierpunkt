@@ -317,6 +317,7 @@ public class PusherInterface implements Runnable, Observer
 		        
 		        // Wird aufgerufen wenn Spieler X gewinnt
 		        if (data.contains("false") && data.contains("Spieler X")){
+		        	if(fallbackActive)fallbackGame.emptyField();
 		        	// Konsolenausgabe
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
@@ -343,6 +344,7 @@ public class PusherInterface implements Runnable, Observer
 		        	
 		        	// Wird aufgerufen wenn Spieler O gewinnt	
 		        } else if (data.contains("false") && data.contains("Spieler O")) {
+		        	if(fallbackActive)fallbackGame.emptyField();
 		        	// Konsolenausgabe
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
