@@ -89,7 +89,7 @@ public class Game implements NameListener {
 		this.player[0] = new Player(name1);
 		this.player[1] = new Player(name2);
 		this.player[1].setIsOpponent(true);
-		manMatch = new Match(this, 0);
+		manMatch = new Match(this, 0, 0);
 
 	}
 	

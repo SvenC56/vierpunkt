@@ -71,6 +71,11 @@ public class Match {
 	private PlaySlot[][] field = new PlaySlot[ROW + 1][COLUMN + 1]; //doing
 	
 	/**
+	 * Das Spielfeld zum manuellen Spielen
+	 */
+	private Player[][] manField = new Player[ROW+1][COLUMN+1];
+	
+	/**
 	 * Das Turn-Array, in welchem saemtliche Zuege abgelegt werden
 	 */
 	private Turn turn[] = new Turn[TURNS+1];
@@ -93,6 +98,17 @@ public class Match {
 		for (int x = 0; x <= COLUMN; x++ ) {
 			for (int y = 0; y <= ROW; y++) {
 				this.field[y][x] = new PlaySlot(null);
+			}
+		}
+	}
+	
+	Match(Game game, int matchNumber, int matchTurnNumber) {
+		this.game = game;
+		this.matchTurnNumber=matchTurnNumber;
+		this.matchNumber = matchNumber;
+		for (int x = 0; x <= COLUMN; x++) {
+			for (int y = 0; y <= ROW; y++) {
+				this.manField[y][x] = new Player();
 			}
 		}
 	}
@@ -175,23 +191,107 @@ public class Match {
 			winner.setWins();
 			this.matchWinner = winner;
 				}	
-			
+	/**
+	 * Diese Methode spielt einen manuellen Zug und prueft auf Gewinner		
+	 * @param name
+	 * @param x
+	 * @param y
+	 */
 		public void startManTurn(String name, int x, int y) {
-			if (this.getGame().getPlayer(0).getName() == name) {
-				this.setField(x, y, this.getGame().getPlayer(0));
+			if (this.getGame().getPlayer(0).getName() == name) {	//Agent
+				this.manField[y][x] = this.game.getPlayer(0);
+				this.matchTurnNumber++;
+			}//Gegner
+			else if (this.getGame().getPlayer(1).getName() == name) {
+				this.manField[y][x] = this.game.getPlayer(1);
+				this.matchTurnNumber++;
+			}
+			
+			if (this.matchTurnNumber>= 7) {
+				Player winner = checkManWinner();
+				if (winner != null) {
+					this.matchWinner = winner;
+					//Hier käme die Übergabe des Namens an die GUI
+					this.matchWinner.getName();
+					///
+				}
 				
 			}
-			else if (this.getGame().getPlayer(0).getName() == name) {
-				this.setField(x, y, this.getGame().getPlayer(0));
+			
 			}
-			if (this.checkWinner()!=null) {
-				this.setMatchWinner(this.checkWinner());
-				this.getGame().setWinner(matchWinner);
-				this.getGame().getWinner().setWins();
-				System.out.println("Gewonnen hat: " + this.getMatchWinner().getName());
-			}
-				 
-			}	
+		
+		/**
+		 * Gewinnlogik fuer manuelles Spiel
+		 * @return
+		 */
+		private Player checkManWinner() {
+			for (int x = 0; x <= this.getColumn(); x++) {
+				for (int y = 0; y <= this.getRow(); y++) {					
+					// new try
+					// in column?
+			if (this.getRow()-y>=4) {
+				 // 2==> 0 ; 1 ==> 1
+					if (isManRow(game.getPlayer(0), x, y, 0, 1) == 4) {
+						return game.getPlayer(0);
+					}	else if (isManRow(game.getPlayer(1), x, y, 0, 1) == 4) {
+						return game.getPlayer(1);
+				}}
+				
+				// in row?
+		        if (this.getColumn()-x>=4) {
+		          if (isManRow(game.getPlayer(0),x,y,1,0)==4) 
+		        	  return game.getPlayer(0);  // gewonnen
+		          else if (isManRow(game.getPlayer(1),x,y,1,0)==4)
+		        	  return game.getPlayer(1);  // verloren
+		        }
+				// in diagonal right?
+				if ((this.getRow()-y>=4) && (this.getColumn()-x>=4)) {
+					if (isManRow(game.getPlayer(0),x,y,1,1) == 4) {
+						return game.getPlayer(0);
+					}	else if (isManRow(game.getPlayer(1),x,y,1,1) == 4) {
+						return game.getPlayer(1);
+					}  
+			        } 
+				
+		        // in diagonal left?
+		        if ((this.getColumn()-x>=4) && (y>=3)) {
+		           if (isManRow(game.getPlayer(0),x,y,1,-1)==4) 
+		            return game.getPlayer(0);  // gewonnen
+		          else if (isManRow(game.getPlayer(1),x,y,1,-1)==4)
+		        	  return game.getPlayer(1);  // verloren
+		        }}}
+				return null;}
+		
+		        
+		     /**
+		      * Hilfsmethode um manuellen Gewinn zu erkennen   
+		      * @param player
+		      * @param x
+		      * @param y
+		      * @param dx
+		      * @param dy
+		      * @return
+		      */
+		   	 private int isManRow (Player player, int x, int y, int dx, int dy) {
+				 int cnt = 0;
+
+				 if (	(0<=(y+3*dy)) && ((y+3*dy)<=ROW) && (0<=(x+3*dx)) && ((x+3*dx)<=COLUMN)
+						&& ((this.manField[y][x] == player)) 
+						&& ((this.manField[y+1*dy][x+1*dx] == player))
+						&& ((this.manField[y+2*dy][x+2*dx] == player)) 
+						&& ((this.manField[y+3*dy][x+3*dx] == player))) {
+						
+					 for (int i = 0; i < 4; i++) {
+						 if (this.manField[y+i*dy][x+i*dx] == player) {
+							 cnt++;
+						 }
+					 }
+					} 
+				 return cnt;
+			 }
+			 
+		
+		
 		/**
 		 * Liefert den aktuellen Zug zurueck (fuer Interfaces)
 		 * @return
