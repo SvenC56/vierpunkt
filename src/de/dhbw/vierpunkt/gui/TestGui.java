@@ -1210,7 +1210,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         Label spielstandanzeige = new Label("Spielstand: ");
         Label spielerLabel = new Label("Spieler: ");
 		
-		Text spielstand_altesSpiel = new Text("1:0");
+		Text spielstand_altesSpiel = new Text("0:0");
 		Rectangle platzhalter1 = new Rectangle(7 * l, l);
 		Rectangle platzhalter2 = new Rectangle(l, l);
 		Rectangle platzhalter3 = new Rectangle(l, l);
@@ -1341,7 +1341,7 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
 			        String[][] alleSaetze = db.getHighscoreMatch(g_id);						// Anlegen eines Arrays mit den Saetzen des Spiels
 			        int m_id = Integer.parseInt(alleSaetze[(int)satz.getValue()][0]);		// speichern der MatchID nach entsprechendem Slider Wert
 			           
-			    
+			        spielstand_altesSpiel.setText(alleSaetze[(int)satz.getValue()][3]);
 			        
 			        String[][] alleZuege = db.getHighscoreTurn(g_id, m_id);					// Anlegen eines Arrays mit den Zuegen des Satzes
 			        
@@ -1452,6 +1452,12 @@ public class TestGui implements ZugListener, ConnectionErrorListener, GewinnerLi
         	@Override
         	public void handle(MouseEvent arg0){
         		close.close();													// Stage zur Meldung wird geschlossen
+        		try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		Platform.exit();												// gesamtes Spiel wird geschlossen
         	}
         });
