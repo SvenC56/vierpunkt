@@ -216,8 +216,6 @@ public class PusherInterface implements Runnable, Observer
 		        if (zug != -1){
 		        // Zug des Gegners wird in Logik uebertragen
 		        	if (fallbackActive) {
-		        		int y = fallbackGame.validPosition(zug);
-				        game.getDb().saveTurn(game.getMatchID(), game.getPlayer(1).getName(), zug, y);
 		        		 if (fallbackGame.getCurrentPlayer() == 1) {      //  ist dran
 		        			   
 		   			      System.out.print(" ist dran              "
@@ -304,10 +302,14 @@ public class PusherInterface implements Runnable, Observer
 			        	// der von der Logik berechnete Move wird an den Pusher uebertragen
 			        	channel.trigger("client-event", "{\"move\": \"" + move + "\"}");
 			        	System.out.println("Der von uns berechnete Zug: " + move + " wird ueber den Pusher verschickt.");
-			        	if (fallbackActive) {
+			        	/**
+			        	 * Speichern in die Datenbank
+			        	 */
 			        	int y= fallbackGame.validPosition(move);
+			        	int yO = fallbackGame.validPosition(zug);
+				        game.getDb().saveTurn(game.getMatchID(), game.getPlayer(1).getName(), zug, yO-1);
 			        	game.getDb().saveTurn(game.getMatchID(), game.getPlayer(0).getName(), move, y-1);
-			        	}
+			        
 			        	// der Spielstein wird in der GUI eingeworfen
 			        	fireZugEvent(move, spielerKennung);
 		     

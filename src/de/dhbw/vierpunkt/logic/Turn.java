@@ -53,7 +53,7 @@ public class Turn {
 		 this.y = this.match.validPosition(this.x);
 		 if (this.y != -1) {
 		 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)
-		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 //this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner
 		 if (this.match.checkWinner() != null || this.match.getEven()) { //wenn Gewinner oder unentschieden
 			 //Hier wird die Datenbank informiert und der Score gespeichert
@@ -101,8 +101,8 @@ public class Turn {
 				 this.match.setField(this.x, this.y, this.player); //In unser virtuelles Spielfeld legen (fuer KI)	 
 			 	}
 		 }
-		 //Speichern des Zuges in der Datenbank
-		 this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		 //Speichern des Zuges in der Datenbank --> jetzt in Pusher
+		 //this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 		 //Prueft auf Gewinner	
 		 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
 			 //Hier wird die Datenbank informiert und der Score gespeichert
@@ -147,7 +147,7 @@ public class Turn {
 		  this.x = randomX;
 		  this.match.setField(this.x, this.y, this.player);
 		  System.out.println("Saved Random Turn");
-		  this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
+		  //this.match.getGame().getDb().saveTurn(this.match.getGame().getMatchID(), this.match.getCurrentPlayer().getName(), x, this.y);
 			 //Prueft auf Gewinner	
 			 if ((this.match.checkWinner() != null || this.match.getEven()) && this.turnNumber >= 7) { //wenn Gewinner oder unentschieden
 				 //Hier wird die Datenbank informiert und der Score gespeichert
