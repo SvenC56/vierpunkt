@@ -36,7 +36,7 @@ public class Player {
 		return this.wins;
 	}
 	
-	 void setWins() {
+	 public void setWins() {
 		this.wins++;
 	}
 

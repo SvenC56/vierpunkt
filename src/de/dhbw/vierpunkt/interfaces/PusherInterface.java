@@ -20,7 +20,6 @@ import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionState;
 import com.pusher.client.connection.ConnectionStateChange;
 
-import de.dhbw.vierpunkt.db.DBConnector;
 import de.dhbw.vierpunkt.gui.ConnectionErrorListener;
 import de.dhbw.vierpunkt.logic.Game;
 import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
@@ -33,7 +32,6 @@ public class PusherInterface implements Runnable, Observer
     private static boolean fallbackActive = false;
     private static GameLogic fallbackGame;
     private static int depth = 6;
-    private static DBConnector db = new DBConnector();		//Fuer Fallback-Variante
     
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -225,6 +223,7 @@ public class PusherInterface implements Runnable, Observer
 		   			      		+ "");
 		   			      System.out.println("eval" + GameLogic.evaluate(fallbackGame));
 		   			     fallbackGame.playTurn(zug, 1);
+		   			     fallbackGame.checkWinner();
 		   			      fallbackGame.setCurrentPlayer(2);
 		   			      System.out.println(" hat in Spalte gelegt " + zug);
 		   			      System.out.println("Bewertung: " + GameLogic.evaluate(fallbackGame));
@@ -273,6 +272,7 @@ public class PusherInterface implements Runnable, Observer
 					      // x = (int) (Math.random()*6); // falls KI nicht getestet werden soll, sondern nur Zufallszahl
 					    	move = GameLogic.calcMove(fallbackGame, depth);
 					      fallbackGame.playTurn(move, 2);
+					      fallbackGame.checkWinner();
 					      System.out.println("Wir haben in Spalte gelegt " + move);
 					      fallbackGame.setCurrentPlayer(1);
 					    	 }
