@@ -32,10 +32,14 @@ public class AI_Logic_Test {
 	
 	public static class GameLogic {
 		
+		// Erkennung Gewinn von einem Spiel
+		static int s1 = 0; //Gegner gewinnt ein Match
+		static int s2 = 0;	// Agent gewinnt ein Match
+		
 		// Variable die Zuege mitzaehlt! //Move entspricht TURN
-				private int move = 0; // --> maximale Anzahl Zuege 69!
-				private int[][] field = new int[ROW + 1][COLUMN + 1];
-				private int currentPlayer = 2; //Der aktuelle Spieler
+		private int move = 0; // --> maximale Anzahl Zuege 69!
+		private int[][] field = new int[ROW + 1][COLUMN + 1];
+		private int currentPlayer = 2; //Der aktuelle Spieler
 
 		public GameLogic() {
 			// Array durchlaufen und mit Nullen fuellen + move auf false setzen, da
@@ -241,8 +245,10 @@ public class AI_Logic_Test {
 				if (game.getRow()-y>=4) {
 				//if (game.getRow()-y>=4) {
 					if (isRow(game.field, 2, x, y, 0, 1) == 4) {
+						s2++;
 						return (int) Double.POSITIVE_INFINITY;
 					}	else if (isRow(game.field, 1, x, y, 0, 1) == 4) {
+						s1++;
 						return (int) Double.NEGATIVE_INFINITY;
 					}	else if (isRow(game.field, 2, x, y, 0, 1) == 3) {
 						agentCount3++;
@@ -257,10 +263,14 @@ public class AI_Logic_Test {
 				
 				// in row?
 		        if (game.getColumn()-x>=4) {
-		          if (isRow(game.field,2,x,y,1,0)==4) 
+		          if (isRow(game.field,2,x,y,1,0)==4) {
+		        	  s2++;
 		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
-		          else if (isRow(game.field,1,x,y,1,0)==4)
+		          }
+		          else if (isRow(game.field,1,x,y,1,0)==4) {
+		        	  s1++;
 		            return (int) Double.NEGATIVE_INFINITY;  // verloren
+		          }
 		          // 3 gleiche Chips uebereinander?
 		          else if (isRow(game.field,2,x,y,1,0)==3) 
 		            agentCount3++; 
@@ -276,8 +286,10 @@ public class AI_Logic_Test {
 				// in diagonal right?
 				if ((game.getRow()-y>=4) && (game.getColumn()-x>=4)) {
 					if (isRow(game.field,2,x,y,1,1) == 4) {
+						s2++;
 			            return (int) Double.POSITIVE_INFINITY; 
 					}	else if (isRow(game.field,1,x,y,1,1) == 4) {
+						s1++;
 			            return (int) Double.NEGATIVE_INFINITY;
 					}  else if (isRow(game.field,2,x,y,1,1) == 3) {
 			            agentCount3++; 
@@ -292,10 +304,14 @@ public class AI_Logic_Test {
 				
 		        // in diagonal left?
 		        if ((game.getColumn()-x>=4) && (y>=3)) {
-		           if (isRow(game.field,2,x,y,1,-1)==4) 
+		           if (isRow(game.field,2,x,y,1,-1)==4) {
+		        	   s2++;
 		            return (int) Double.POSITIVE_INFINITY;  // gewonnen
-		          else if (isRow(game.field,1,x,y,1,-1)==4)
+		           }
+		          else if (isRow(game.field,1,x,y,1,-1)==4) {
+		        	  s1++;
 		            return (int) Double.NEGATIVE_INFINITY;  // verloren
+		          }
 		          // 3 gleiche Chips uebereinander?
 		          else if (isRow(game.field,2,x,y,1,-1)==3) 
 		            agentCount3++; 
@@ -315,7 +331,21 @@ public class AI_Logic_Test {
 			
 		}
 										
-			
+	
+	 public int isGameWinner() {
+		 int gameWinner = 0; // Game wird gewonnen, wenn 2 oder 3 Matches gewonnen werden
+		 
+		 if (s1 >= 2) { //Gegner hat 2 oder 3 Matches gewonnen -> Spiel gewonnen
+			 gameWinner = 1;
+		 } else if (s2 >= 2) { // Agent hat 2 oder 3 Matches gewonnen -> Spiel gewonnen
+			 gameWinner = 0;
+		 }
+		 
+		 return gameWinner;
+	 }
+	 
+	 
+	 
 	 private static int isRow(int[][] field, int player, int x, int y, int dx, int dy) {
 		 int cnt = 0;
 		 
