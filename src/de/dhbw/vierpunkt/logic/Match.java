@@ -131,10 +131,6 @@ public class Match {
 	 Player getMatchWinner() {
 		return matchWinner;
 		}
-
-	public void setMatchWinner(Player winner) {
-		this.matchWinner = winner;
-		}
 	
 	 void setField(int x, int y, Player player) {
 		field[y][x].setOwnedBy(player);
@@ -175,6 +171,11 @@ public class Match {
 	 * @param x
 	 * @param y
 	 */
+		public void setMatchWinner(Player winner) {
+			winner.setWins();
+			this.matchWinner = winner;
+				}	
+			
 		public void startManTurn(String name, int x, int y) {
 			if (this.getGame().getPlayer(0).getName() == name) {
 				this.setField(x, y, this.getGame().getPlayer(0));
@@ -307,18 +308,15 @@ public class Match {
 				//wenn positiv unendlich, dann hat der Agent (wir) gewonnen
 				if (this.evaluate() == (int)Double.POSITIVE_INFINITY) {
 				this.setMatchWinner(currentPlayer);
-				currentPlayer.setWins();
 				this.matchActive = false;
 				}
 				//wenn negativ unendlich, dann hat der Gegner gewonnen
 				else if (this.evaluate() == (int)Double.NEGATIVE_INFINITY) {
 					this.setMatchWinner(currentPlayer);
 					if (currentPlayer != this.getGame().getPlayer(0)){
-						this.getGame().getPlayer(0).setWins();
 						this.setMatchWinner(this.getGame().getPlayer(0));
 					}
 					else {
-						this.getGame().getPlayer(1).setWins();
 						this.setMatchWinner(this.getGame().getPlayer(1));
 					}
 					this.matchActive = false;
