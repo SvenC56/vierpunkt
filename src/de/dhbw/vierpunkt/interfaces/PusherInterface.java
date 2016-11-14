@@ -29,9 +29,9 @@ import de.dhbw.vierpunkt.tests.AI_Logic_Test.GameLogic;
 public class PusherInterface implements Runnable, Observer
 {
 	private static int count = 0;
-    private static boolean fallbackActive = false;
+    private static boolean fallbackActive = true;
     private static GameLogic fallbackGame = new GameLogic();
-    private static int depth = 6;
+    private static int depth = 2;
     
 	/**
 	 * App-ID der Pusher Instanz des Clients
@@ -332,9 +332,9 @@ public class PusherInterface implements Runnable, Observer
 		        	game.getDb().saveMatchScore(game.getMatchID(),game.getCurrentMatch().getScore());;
 		        	
 		        	// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein eingeworfen werden kann
-		        	try {
-		        	Thread.sleep(1000);
-		        	} catch (Exception e ){ e.getMessage();};
+//		        	try {
+//		        	Thread.sleep(1000);
+//		        	} catch (Exception e ){ e.getMessage();};
 		        	
 		        	fireGewinnerEvent('x', game.getCurrentMatch().getScore());
 		        	System.out.println("Sieger des Spiels ist Spieler X!");
@@ -347,11 +347,21 @@ public class PusherInterface implements Runnable, Observer
 		        	System.err.println("******************** \n" + "S P I E L   B E E N D E T\n" + "********************");
 		        	System.out.println("");
 		        	
+		        	// Uebergabe des Gewinners an die Logik
+		        	if (data.contains("-1")){
+		        		game.getCurrentMatch().setMatchWinner(game.getPlayer(0));
+		        	} else {
+		        		game.getCurrentMatch().setMatchWinner(game.getPlayer(1));
+		        		int yO = fallbackGame.validPosition(zug);
+		        		game.getDb().saveTurn(game.getMatchID(), game.getPlayer(1).getName(), zug, yO-1);
+		        	}
+		        	game.getDb().saveMatchScore(game.getMatchID(),game.getCurrentMatch().getScore());;
+		        	
 		        	// Vor Ausgabe der Nachricht wird gewartet, damit Spielstein eingeworfen werden kann
-		        	try {
-			        	Thread.sleep(1000);
-			        	} catch (Exception e ){ e.getMessage();};
-			        	
+//		        	try {
+//			        	Thread.sleep(1000);
+//			        	} catch (Exception e ){ e.getMessage();};
+//			        	
 		        	fireGewinnerEvent('o', game.getCurrentMatch().getScore());
 		        	System.out.println("Sieger des Spiels ist Spieler O!");
 		        	serverTimer.stop();
