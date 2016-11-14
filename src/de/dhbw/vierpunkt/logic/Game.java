@@ -130,7 +130,7 @@ public class Game implements NameListener {
 				break;
 			 }
 		 }
-			while (this.currentMatch.getMatchNumber() <= MATCHES || !this.currentMatch.getEven() || this.currentMatch.winnerIs() == null) {
+			while (this.currentMatch.getMatchNumber() <= MATCHES || !this.currentMatch.getEven() || this.currentMatch.checkWinner() == null) {
 				if (this.currentMatch.getMatchActive() == false) {
 					startMatch();
 					this.currentMatch.setNewTurn();
@@ -146,7 +146,7 @@ public class Game implements NameListener {
 	Player checkWinner() {
 		int count = 1;
 		for (int i = 0; i <= MATCHES; i++) {
-			if (this.match[i].winnerIs() != null || this.match[i].getEven()) {
+			if (this.match[i].checkWinner() != null || this.match[i].getEven()) {
 				count++;
 			}
 			

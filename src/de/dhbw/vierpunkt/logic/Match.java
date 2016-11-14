@@ -386,21 +386,6 @@ public class Match {
 			this.setField(x, y, this.currentPlayer);
 			}
 		 
-		 
-	/**
-	 * Liefert zurueck wer der Gewinner des Matches ist und prueft ob unentschieden gespielt wurde
-	 * @return
-	 */
-	 Player winnerIs() {
-		 if (this.matchWinner != null) {
-			 return this.matchWinner;
-		 }
-		 else if (this.matchWinner != null && this.even) {
-			 return null; 		//Kein Gewinner, unentschieden!
-		 }
-		 return null;
-	 }
-	 
 	 
 	 /**
 	  * Ueberprueft ob ein Match-Winner existiert (Spiel gewonnen)
