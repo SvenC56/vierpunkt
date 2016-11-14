@@ -1,6 +1,9 @@
 package de.dhbw.vierpunkt.logic;
 
+import java.util.ArrayList;
+import java.util.List;
 
+import de.dhbw.vierpunkt.gui.GameWinnerListener;
 
 /**
  * Ein Match ist eine Runde im Spiel (Game)
@@ -80,6 +83,7 @@ public class Match {
 	 */
 	private Turn turn[] = new Turn[TURNS+1];
 	
+	private static List<GameWinnerListener> GameWinnerListeners = new ArrayList<GameWinnerListener>();
 
 	
 	
@@ -211,8 +215,8 @@ public class Match {
 				Player winner = checkManWinner();
 				if (winner != null) {
 					this.matchWinner = winner;
-					//Hier käme die Übergabe des Namens an die GUI
-					this.matchWinner.getName();
+					fireGameWinnerEvent(this.matchWinner.getName());
+					
 					///
 				}
 				
@@ -588,5 +592,16 @@ public class Match {
 
 		 return cnt;
 	 	} 
+	 
+		
+		public void addGameWinnerListener (GameWinnerListener toAdd) {
+			GameWinnerListeners.add(toAdd);
+		}
+		
+		public void fireGameWinnerEvent(String gewinnerName){
+			for(GameWinnerListener gwl : GameWinnerListeners){
+				gwl.gewinnermethode(gewinnerName);
+			}
+		}
 
 }
